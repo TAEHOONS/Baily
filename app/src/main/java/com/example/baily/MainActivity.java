@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //스폰지밥 넌 해고야
         mETid=(EditText)findViewById(R.id.lp_id);
         mETpw=(EditText)findViewById(R.id.lp_pwd);
         mBloin=(Button) findViewById(R.id.lp_logBtn);
         mTVeid=(TextView) findViewById(R.id.lp_Errorid);
         mTVepw=(TextView) findViewById(R.id.lp_Errorpw);
-            // 바보
+// 바보
         usingDB();
 
     }
