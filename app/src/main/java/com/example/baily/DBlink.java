@@ -15,7 +15,7 @@ public class DBlink extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table user" +
                 "(_id integer primary key autoincrement," +
-                "id text,pw text,name text, age integer, address text);";
+                "id text,pw text,name text, email text);";
         db.execSQL(sql);
         sql = "create table baby" +
                 "(_id integer primary key autoincrement," +

@@ -88,15 +88,26 @@ public class MainActivity extends AppCompatActivity {
             mTVepw.setText("비밀번호가 틀렸습니다");
             // 아이디 OK 비번 OK
         else if(editId.equals(sqlId)&&editPw.equals(sqlPw))
-            NextScreen();
+            MainScreen(insetId);
 
     }
 
-    // 화면이동 -> 메인페이지
-    private void NextScreen() {
-        Intent intent = new Intent(this, MainPage.class);
-        startActivity(intent);
-        finish();
+    // 화면이동 -> 메인페이지 or 퍼스트 페이지
+    private void MainScreen(String userid) {
+        String sql = "select * from baby where parents = '"+userid+"'"; // 검생용
+        Cursor cursor = db.rawQuery(sql, null);
+        String sqlmom="",sqlname;
+        while (cursor.moveToNext()) {
+            sqlmom=cursor.getString(7);
+        }
+        if(sqlmom.equals(userid)) {
+            Intent intent = new Intent(this, MainPage.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(this, FirstPage.class);
+            startActivity(intent);
+        }
     }
 
     // 화면이동 -> 메인페이지->회원가입페이지
