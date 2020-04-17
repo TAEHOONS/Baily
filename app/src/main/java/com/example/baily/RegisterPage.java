@@ -30,7 +30,7 @@ public class RegisterPage extends AppCompatActivity {
         //고정 변수는 ""로 하고 변수로 할꺼면 그냥 하기
         //컬럼 이름은 DBlink.java 참조
         values.put("id", userid);
-        values.put("pw", userid);
+        values.put("pw", userpw);
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
     }
