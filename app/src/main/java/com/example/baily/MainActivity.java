@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     checkLogin (editId);
                 break;
             }
-            
+
         }
 
     }
