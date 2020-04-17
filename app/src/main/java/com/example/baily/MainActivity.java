@@ -52,16 +52,11 @@ public class MainActivity extends AppCompatActivity {
                     checkLogin (editId);
                 break;
             }
-
-            case R.id.lp_logJoin: {
-                RegisterScreen();
-                break;
-            }
-
-
+            
         }
 
     }
+
 
     //로그인 경우의 수 체크
     private void checkLogin (String insetId) {
@@ -94,16 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // 화면이동 -> 메인페이지
+    // 환면이동 -> 메인페이지
     private void NextScreen() {
         Intent intent = new Intent(this, MainPage.class);
-        startActivity(intent);
-        finish();
-    }
-
-    //화면이동 ->메인페이지->회원가입 페이지
-    private void RegisterScreen() {
-        Intent intent = new Intent(MainActivity.this, RegisterPage.class);
         startActivity(intent);
         finish();
     }

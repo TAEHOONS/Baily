@@ -19,7 +19,7 @@ public class DBlink extends SQLiteOpenHelper{
         db.execSQL(sql);
         sql = "create table baby" +
                 "(_id integer primary key autoincrement," +
-                "name text,sex integer,berth integer,relation text,tall integer,weight integer);";
+                "name text,sex integer,berth integer,relation text,tall integer,weight integer,parents text);";
         db.execSQL(sql);
 
     }
