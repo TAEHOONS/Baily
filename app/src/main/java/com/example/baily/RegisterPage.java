@@ -1,8 +1,13 @@
 package com.example.baily;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -59,8 +64,8 @@ public class RegisterPage extends AppCompatActivity {
         //values에 테이블의 column에 넣을값 x 넣기
         //고정 변수는 ""로 하고 변수로 할꺼면 그냥 하기
         //컬럼 이름은 DBlink.java 참조
-        values.put("id", userid);
-        values.put("pw", userpw);
+        values.put("id", userId);
+        values.put("pw", userPw);
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
     }
@@ -102,12 +107,5 @@ public class RegisterPage extends AppCompatActivity {
     private void usingDB(){
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
-
-        final EditText nameText = (EditText) findViewById(R.id.reg_nameEdt);
-        final EditText idText = (EditText) findViewById(R.id.reg_idEdt);
-        final EditText pwdText = (EditText)findViewById(R.id.reg_pwdEdt);
-        final EditText repwdText = (EditText)findViewById(R.id.reg_repwdEdt);
-        final EditText emailText = (EditText)findViewById(R.id.reg_emailnumEdt);
-
     }
 }
