@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         mBloin=(Button) findViewById(R.id.lp_logBtn);
         mTVeid=(TextView) findViewById(R.id.lp_Errorid);
         mTVepw=(TextView) findViewById(R.id.lp_Errorpw);
-        //스폰지밥 넌 해고야
         usingDB();
 
     }
