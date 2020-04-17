@@ -1,16 +1,15 @@
 package com.example.baily;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     String dbName = "user.db";
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     //로그인 경우의 수 체크
     private void checkLogin (String insetId) {
-        String sql = "select * from user where id = '"+insetId+"'"; // 검생용
+        String sql = "select * from user where id = '"+insetId+"'"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
         String sqlId="",sqlPw="",editId="",editPw="",sqlName="";
         while (cursor.moveToNext()) {
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
     private void RegisterScreen() {
         Intent intent = new Intent(MainActivity.this, RegisterPage.class);
         startActivity(intent);
-        finish();
     }
 
     //DB 생성및 연결

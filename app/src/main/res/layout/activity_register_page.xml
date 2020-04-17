@@ -182,14 +182,14 @@
 
     <Button
         android:id="@+id/reg_numckBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="16dp"
-        android:text="번호 확인"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reg_emailnumEdt" />
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="확인"
+        app:layout_constraintStart_toEndOf="@+id/reg_emailnumEdt"
+        app:layout_constraintTop_toBottomOf="@+id/ib_mailConfirm" />
 
     <Button
         android:id="@+id/reg_idckBtn"
@@ -200,6 +200,7 @@
         android:layout_marginTop="8dp"
         android:text="중복확인"
         app:layout_constraintStart_toEndOf="@+id/reg_idEdt"
-        app:layout_constraintTop_toBottomOf="@+id/lb_id" />
+        app:layout_constraintTop_toBottomOf="@+id/lb_id"
+        android:onClick="m_regOnClick"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
