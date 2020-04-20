@@ -1,14 +1,17 @@
 package com.example.baily;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 //ID중복체크를 위한 VALIDDATE 클래스
@@ -24,11 +27,13 @@ public class RegisterPage extends AppCompatActivity {
     EditText reg_textEdt;
     EditText reg_repwdEdt;
     EditText reg_pwdEdt;
+    Button reg_confirBtn;
 
     //여기에 추가적으로 인증번호
 
 
     String dbName = "user.db",mgetId="";
+    String mgetPassword, mgetRePassword;
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
@@ -42,6 +47,7 @@ public class RegisterPage extends AppCompatActivity {
         reg_textEdt=(EditText)findViewById(R.id.reg_idEdt);
         reg_repwdEdt= (EditText)findViewById(R.id.reg_repwdEdt);
         reg_pwdEdt=(EditText)findViewById(R.id.reg_pwdEdt);
+        reg_confirBtn=(Button)findViewById(R.id.reg_confirmBtn);
         usingDB();
 
 
@@ -56,6 +62,49 @@ public class RegisterPage extends AppCompatActivity {
             reg_repwdEdt.setTextColor(Color.parseColor("RED"));
         }
     }
+    //최종 회원가입 버튼 입력 처리
+    public void m_regRegClick(View v){
+        switch (v.getId()){
+            case R.id.reg_confirmBtn:{
+                mgetPassword=reg_pwdEdt.getText().toString();
+                mgetRePassword=reg_repwdEdt.getText().toString();
+
+                if(mgetPassword.equals(mgetRePassword))
+                    break;
+                else {
+                    AlertDialog.Builder ad = new AlertDialog.Builder(RegisterPage.this);
+                    ad.setIcon(R.mipmap.ic_launcher);
+                    ad.setTitle("비밀번호 재확인 요망");
+                    ad.setMessage("비밀번호가 틀립니다");
+
+                    ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                        }
+                    });
+                    ad.show();
+
+
+
+                }
+
+
+            }
+        }
+    }
+
+    // 아이디 중복체크 버튼 입력처리
+    public void m_regIdChkClick(View v){
+        switch (v.getId()) {
+            case R.id.reg_idckBtn: {
+                mgetId=reg_textEdt.getText().toString();
+                checkLogin (mgetId);
+            }
+        }
+    }
+
 
     //데이터 넣는법
     private void InsertData(String userId,String userPw){
@@ -90,20 +139,7 @@ public class RegisterPage extends AppCompatActivity {
     }
 
 
-    // 아이디 중복체크 버튼 입력처리
-    public void m_regOnClick(View v){
-        switch (v.getId()) {
-            case R.id.reg_idckBtn: {
-                mgetId=reg_textEdt.getText().toString();
-                checkLogin (mgetId);
-
-                }
-            }
-
-        }
-
-
-
+    // DB 사용
     private void usingDB(){
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
