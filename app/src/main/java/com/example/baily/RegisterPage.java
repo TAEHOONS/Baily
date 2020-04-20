@@ -33,7 +33,7 @@ public class RegisterPage extends AppCompatActivity {
 
 
     String dbName = "user.db",mgetId="";
-    String mgetPassword, mgetRePassword;
+    String mgetPassword, mgetRePassword , mgetIdCk;  // 최종확인할때 쓰는버튼
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
@@ -68,9 +68,32 @@ public class RegisterPage extends AppCompatActivity {
             case R.id.reg_confirmBtn:{
                 mgetPassword=reg_pwdEdt.getText().toString();
                 mgetRePassword=reg_repwdEdt.getText().toString();
+                mgetIdCk=reg_textEdt.getText().toString();
 
-                if(mgetPassword.equals(mgetRePassword))
+
+
+
+                //아이디 check --아이디가 빈칸일경우
+                if(mgetIdCk.equals("")){
+                    AlertDialog.Builder ad = new AlertDialog.Builder(RegisterPage.this);
+                    ad.setIcon(R.mipmap.ic_launcher);
+                    ad.setTitle("ID 재확인 요망");
+                    ad.setMessage("아이디는 빈 칸일 수 없습니다.");
+
+                    ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    ad.show();
+                }
+
+
+                //비밀번호 check
+                if(mgetPassword.equals(mgetRePassword)) {
                     break;
+                }
                 else {
                     AlertDialog.Builder ad = new AlertDialog.Builder(RegisterPage.this);
                     ad.setIcon(R.mipmap.ic_launcher);
@@ -81,14 +104,13 @@ public class RegisterPage extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-
                         }
                     });
                     ad.show();
-
-
-
                 }
+
+
+
 
 
             }
