@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mETid,mETpw;
     Button mBloin;
-    TextView mTVeid,mTVepw;
+    TextView mTVeid,mTVepw,mTVfid;
 
 
     @Override
@@ -32,7 +33,23 @@ public class MainActivity extends AppCompatActivity {
         mBloin=(Button) findViewById(R.id.lp_logBtn);
         mTVeid=(TextView) findViewById(R.id.lp_Errorid);
         mTVepw=(TextView) findViewById(R.id.lp_Errorpw);
+        mTVfid=(TextView)findViewById(R.id.lp_findID);
         usingDB();
+
+        // 터치 입력 처리 //findID,findPW
+        mTVfid.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        FindIdScreen();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
     }
 
@@ -54,10 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 RegisterScreen();
                 break;
             }
+
+
             
         }
 
     }
+
+
+
 
 
     //로그인 경우의 수 체크
@@ -112,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
     // 화면이동 -> 메인페이지->회원가입페이지
     private void RegisterScreen() {
         Intent intent = new Intent(MainActivity.this, RegisterPage.class);
+        startActivity(intent);
+    }
+
+    // 화면이동 -> 메인페이지 -> FIND_ID 페이지
+    private void FindIdScreen(){
+        Intent intent = new Intent(MainActivity.this,FindIdPage.class);
         startActivity(intent);
     }
 
