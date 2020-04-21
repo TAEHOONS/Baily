@@ -63,6 +63,7 @@ public class SecondPage extends AppCompatActivity {
         wm.copyFrom(cd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
         wm.width = (width / 3) *2;  //화면 너비의 절반
         wm.height = (height / 3)*2;  //화면 높이의 절반
+
         cd.setDialogListener(new HeightAndWeight.CustomDialogListener(){
             @Override
             public void onPositiveClicked(String hei, String wei) {

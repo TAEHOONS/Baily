@@ -11,19 +11,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".HeightAndWeight"></activity>
         <activity android:name=".ThirdPage" />
-        <activity android:name=".SecondPage" >
+        <activity android:name=".SecondPage" />
+        <activity android:name=".FirstPage" />
+        <activity android:name=".MainPage" />
+        <activity android:name=".RegisterPage" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-        <activity android:name=".FirstPage" />
-        <activity android:name=".MainPage" />
-        <activity android:name=".RegisterPage" />
-        <activity android:name=".MainActivity">
-
         </activity>
     </application>
 

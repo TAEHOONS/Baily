@@ -19,38 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class HeightAndWeight extends Dialog {
+
     EditText mHeightET,mWeightET;
+    Button mCompleBtn;
     private CustomDialogListener customDialogListener;
-
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.custom_dialog);
-
-        //연결
-        mHeightET = (EditText)findViewById(R.id.haw_heightET);
-        mWeightET = (EditText)findViewById(R.id.haw_weightET);
-
-
-    }
-
-    public void HAWonClick(View v) {
-        switch (v.getId()){
-            case R.id.haw_inputBtn: //확인 버튼을 눌렀을 때
-                //각각의 변수에 EidtText에서 가져온 값을 저장
-                String height = mHeightET.getText().toString();
-                String weight = mWeightET.getText().toString();
-
-
-                //인터페이스의 함수를 호출하여 변수에 저장된 값들을 Activity로 전달
-                customDialogListener.onPositiveClicked(height,weight);
-                dismiss();
-                break;
-
-        }
-    }
-
 
 
     public HeightAndWeight(Context context) {
@@ -58,6 +30,25 @@ public class HeightAndWeight extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);   //다이얼로그의 타이틀바를 없애주는 옵션입니다.
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  //다이얼로그의 배경을 투명으로 만듭니다.
         setContentView(R.layout.activity_height_and_weight);     //다이얼로그에서 사용할 레이아웃입니다.
+
+        mCompleBtn=(Button)findViewById(R.id.haw_inputBtn);
+        mHeightET = (EditText)findViewById(R.id.haw_heightET);
+        mWeightET = (EditText)findViewById(R.id.haw_weightET);
+
+       mCompleBtn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               //각각의 변수에 EidtText에서 가져온 값을 저장
+               String height = mHeightET.getText().toString();
+               String weight = mWeightET.getText().toString();
+
+
+               //인터페이스의 함수를 호출하여 변수에 저장된 값들을 Activity로 전달
+               customDialogListener.onPositiveClicked(height,weight);
+               dismiss();
+
+           }
+       });
 
 
     }
@@ -70,7 +61,6 @@ public class HeightAndWeight extends Dialog {
     public void setDialogListener(CustomDialogListener customDialogListener){
         this.customDialogListener = customDialogListener;
     }
-
 
 
 
