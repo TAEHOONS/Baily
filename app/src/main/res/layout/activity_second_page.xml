@@ -8,23 +8,147 @@
 
     //아기 정보입력
     <TextView
+        android:id="@+id/sp_ttTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="두번재 페이지"
         android:textSize="30dp"
         android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="100dp"
+        android:layout_marginLeft="80dp"
         />
-    // 이동
-    <Button
-        android:id="@+id/sp_plusBtn"
+
+
+
+    //이름 입력
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginHorizontal="100dp"
-        android:text="아기 추가하기"
-        android:textSize="30dp"
-        android:onClick="mOnClick"
+        android:layout_marginTop="211dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="이름"
+        android:textSize="20dp"
         />
+    <EditText
+        android:id="@+id/sp_nameET"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="이름"
+        android:textSize="20dp"
+        android:gravity="right"
+      />
+
+    //성별 입력 sp_sexET
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="251dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="성별"
+        android:textSize="20dp"
+        />
+    <EditText
+        android:id="@+id/sp_sexET"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="이름"
+        android:textSize="20dp"
+        android:gravity="right"
+        />
+
+    //출생 입력 sp_berthET
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="291dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="출생년"
+        android:textSize="20dp"
+        />
+    <EditText
+        android:id="@+id/sp_berthET"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="이름"
+        android:textSize="20dp"
+        android:gravity="right"
+        />
+
+    //관계 입력 sp_relaET
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="331dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="관계"
+        android:textSize="20dp"
+        />
+    <EditText
+        android:id="@+id/sp_relaET"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="320dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="이름"
+        android:textSize="20dp"
+        android:gravity="right"
+        />
+
+    //킼,몸무게 입력
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="371dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"
+        android:text="키 / 몸무게"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/sp_tallTV"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="371dp"
+        android:layout_marginLeft="210dp"
+        android:inputType="textPersonName"
+        android:text="선택"
+        android:textSize="20dp"
+        android:gravity="left"
+        />
+
+    //완료 버튼 sp_creatBtn
+
+    <Button
+        android:id="@+id/sp_tallBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:layout_marginLeft="150dp"
+        android:text="선택"
+        android:onClick="mOnClick"
+        ></Button>
+
+    <Button
+        android:id="@+id/sp_creatBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="150dp"
+        android:onClick="mOnClick"
+        android:text="확인"
+        android:textSize="30dp" />
 
 </RelativeLayout>
