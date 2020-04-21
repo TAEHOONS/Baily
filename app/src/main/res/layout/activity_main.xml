@@ -19,7 +19,7 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="아이디"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/lp_pwd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -36,7 +36,7 @@
         android:background="#FFFFFF"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="비밀번호"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/lp_logBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
