@@ -126,6 +126,7 @@ public class SecondPage extends AppCompatActivity {
                 Log.d("mBirth", mBirth);
             }
         });
+
         cd.show();
 
     }
