@@ -11,9 +11,9 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="110dp"
         android:gravity="center_horizontal"
-        android:text="아기의 키와 몸무게를 입력해주세요"
+        android:text="아기의 생년 월일을 입력하세요"
         android:textSize="15dp" />
 
     <LinearLayout
@@ -29,6 +29,7 @@
             android:gravity="center_horizontal">
 
             <NumberPicker
+                android:id="@+id/bp_NPyear"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -43,6 +44,21 @@
             android:gravity="center_horizontal">
 
             <NumberPicker
+                android:id="@+id/bp_NPmonth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </NumberPicker>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <NumberPicker
+                android:id="@+id/bp_NPday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -61,9 +77,10 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/haw_inputBtn"
+            android:id="@+id/bp_inputBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="확인"
             />
     </LinearLayout>

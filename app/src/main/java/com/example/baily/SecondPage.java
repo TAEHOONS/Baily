@@ -6,16 +6,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class SecondPage extends AppCompatActivity {
 
-    TextView mHWATV,mBerthTV;
-
-    public static final int REQUEST_CODE_PUTHAW = 7458;
-    public static final int REQUEST_CODE_GETHAW = 8778;
+    TextView mHWATV,mBirthTV;
+    RadioGroup mSexRG;
+    EditText mName,mHeadlin;
+    String mHeight,mWeight,mBirth;
 
     public static Activity activity;
 
@@ -23,8 +27,12 @@ public class SecondPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second_page);
+        mName=(EditText)findViewById(R.id.sp_nameET);
+        mHeadlin=(EditText)findViewById(R.id.sp_headlineET);
         mHWATV=(TextView)findViewById(R.id.sp_tallTV);
-        mBerthTV=(TextView)findViewById(R.id.sp_berthTV);
+        mBirthTV=(TextView)findViewById(R.id.sp_berthTV);
+        mSexRG=(RadioGroup)findViewById(R.id.sp_sexRG);
+
         activity = this;
 
     }
@@ -49,12 +57,28 @@ public class SecondPage extends AppCompatActivity {
 
     }
 
+    // 입력 -> 결과 확인  (데이터 이동)
     private void ThirdScreen() {
+
+
+
+        int id = mSexRG.getCheckedRadioButtonId();
+        //getCheckedRadioButtonId() 의 리턴값은 선택된 RadioButton 의 id 값.
+        RadioButton rb = (RadioButton) findViewById(id);
+
         Intent intent = new Intent(SecondPage.this, ThirdPage.class);
+        intent.putExtra("name",mName.getText().toString());
+        intent.putExtra("sex",rb.getText().toString());
+//        intent.putExtra("birth",);
+//        intent.putExtra("headline",);
+//        intent.putExtra("height",);
+//        intent.putExtra("weight",);
+//        intent.putExtra("userid",);
+
         startActivity(intent);
 
     }
-
+    // 몸무게 키 팜업창
     private void HAWPickerScreen() {
 
         DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
@@ -78,6 +102,7 @@ public class SecondPage extends AppCompatActivity {
         cd.show();
 
     }
+    // 생일 팜업창
     private void BerthPickerScreen() {
 
         DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
@@ -91,13 +116,16 @@ public class SecondPage extends AppCompatActivity {
         wm.width = (width / 3) *2;  //화면 너비의 절반
         wm.height = (height / 3)*2;  //화면 높이의 절반
 
+
         cd.setDialogListener(new BirthdayPicker.CustomDialogListener(){
             @Override
             public void onPositiveClicked(int year, int month,int day) {
-                mHWATV.setText(year+"년  "+month+"월  "+day+"일");
+                mBirthTV.setText(year+"년 "+month+"월 "+day+"일");
+                mBirth= String.valueOf(year).concat(String.valueOf(month));
+                mBirth=mBirth.concat(String.valueOf(day));
+                Log.d("mBirth", mBirth);
             }
         });
-
         cd.show();
 
     }
