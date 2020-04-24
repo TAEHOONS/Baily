@@ -27,6 +27,7 @@
         android:layout_marginTop="211dp"
         android:layout_marginLeft="100dp"
         android:inputType="textPersonName"
+
         android:text="이름"
         android:textSize="20dp"
         />
@@ -37,7 +38,7 @@
         android:layout_marginTop="200dp"
         android:layout_marginLeft="100dp"
         android:inputType="textPersonName"
-        android:text="이름"
+        android:hint="이름"
         android:textSize="20dp"
         android:gravity="right"
       />
@@ -74,16 +75,16 @@
         android:text="출생년"
         android:textSize="20dp"
         />
-    <EditText
-        android:id="@+id/sp_berthET"
+    <TextView
+        android:id="@+id/sp_berthTV"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginTop="291dp"
+        android:layout_marginLeft="210dp"
         android:inputType="textPersonName"
-        android:text="이름"
+        android:text="2020년 01월 11일"
         android:textSize="20dp"
-        android:gravity="right"
+        android:gravity="left"
         />
 
     //관계 입력 sp_relaET
@@ -131,16 +132,22 @@
         />
 
     //완료 버튼 sp_creatBtn
-
+    <Button
+        android:id="@+id/sp_berthBtn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="260dp"
+        android:layout_marginTop="400dp"
+        android:onClick="mOnClick"
+        android:text="생일" />
     <Button
         android:id="@+id/sp_tallBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="430dp"
-        android:layout_marginLeft="150dp"
-        android:text="선택"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="260dp"
+        android:layout_marginTop="450dp"
         android:onClick="mOnClick"
-        ></Button>
+        android:text="키몸무게" />
 
     <Button
         android:id="@+id/sp_creatBtn"
