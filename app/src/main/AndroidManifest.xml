@@ -17,11 +17,7 @@
         <activity android:name=".FindIdPage" />
         <activity android:name=".ThirdPage" />
         <activity android:name=".SecondPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".FirstPage" />
         <activity android:name=".MainPage" />
@@ -32,7 +28,11 @@
         <activity android:name=".FragDiary" />
         <activity android:name=".RegisterPage" />
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
