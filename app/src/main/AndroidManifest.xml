@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BerthdayPicker"></activity>
+        <activity android:name=".BirthdayPicker"></activity>
         <activity android:name=".FindPwPage3" />
         <activity android:name=".FindPwPage2" />
         <activity android:name=".FindPwPage" />
