@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mETid,mETpw;
     Button mBloin;
-    TextView mTVeid,mTVepw,mTVfid;
+    TextView mTVeid,mTVepw,mTVfid,mTVfpw;
 
 
     @Override
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mTVeid=(TextView) findViewById(R.id.lp_Errorid);
         mTVepw=(TextView) findViewById(R.id.lp_Errorpw);
         mTVfid=(TextView)findViewById(R.id.lp_findID);
+        mTVfpw=(TextView)findViewById(R.id.lp_findPwd);
         usingDB();
 
         // 터치 입력 처리 //findID,findPW
@@ -45,8 +46,22 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         FindIdScreen();
                         return true;
+
                     default:
                         return false;
+                }
+            }
+        });
+        mTVfpw.setOnTouchListener(new View.OnTouchListener(){
+            public boolean onTouch(View v, MotionEvent e){
+                switch (e.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        FindPwdScreen();
+                        return true;
+                    default:
+                        return  false;
                 }
             }
         });
@@ -142,6 +157,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,FindIdPage.class);
         startActivity(intent);
     }
+    // 화면이동 -> 메인페이지 -> FIND_PWD 페이지
+    private void FindPwdScreen(){
+        Intent intent = new Intent(MainActivity.this,FindPwPage.class);
+        startActivity(intent);
+    }
+
 
     //DB 생성및 연결
     private void usingDB(){
