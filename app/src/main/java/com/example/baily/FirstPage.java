@@ -18,12 +18,15 @@ public class FirstPage extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
+    private String mLoginId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
+        Intent intent=getIntent();
+        mLoginId =intent.getStringExtra("login");
         activity = this;
 
         usingDB();
@@ -45,6 +48,7 @@ public class FirstPage extends AppCompatActivity {
 
     private void SecondScreen() {
         Intent intent = new Intent(FirstPage.this, SecondPage.class);
+        intent.putExtra("login",mLoginId);
         startActivity(intent);
     }
 

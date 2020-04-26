@@ -138,10 +138,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if(sqlmom.equals(userid)) {
             Intent intent = new Intent(this, MainPage.class);
+            intent.putExtra("login",userid);
             startActivity(intent);
         }
         else{
             Intent intent = new Intent(this, FirstPage.class);
+            intent.putExtra("login",userid);
             startActivity(intent);
         }
     }
