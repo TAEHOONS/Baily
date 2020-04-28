@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -156,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery(sql, null);
         String sqlmom="",sqlname;
         while (cursor.moveToNext()) {
-            sqlmom=cursor.getString(7);
+            sqlmom=cursor.getString(9);
+            Log.d("db", sqlmom);
         }
         if(sqlmom.equals(userid)) {
             Intent intent = new Intent(this, MainPage.class);
