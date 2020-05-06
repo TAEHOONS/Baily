@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
+    boolean mNextPage=false;
 
     EditText mETid,mETpw;
     Button mBloin;
     TextView mTVeid,mTVepw,mTVfid,mTVfpw;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,41 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
 
-// Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("DB", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("DB", "Error adding document", e);
-                    }
-                });
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("DB", document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w("DB", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .permitDiskReads()
@@ -171,55 +138,115 @@ public class MainActivity extends AppCompatActivity {
 
 
     //로그인 경우의 수 체크
-    private void checkLogin (String insetId) {
-        String sql = "select * from user where id = '"+insetId+"'"; // 검색용
-        Cursor cursor = db.rawQuery(sql, null);
-        String sqlId="",sqlPw="",editId="",editPw="",sqlName="";
-        while (cursor.moveToNext()) {
-            sqlId=cursor.getString(1);
-            sqlPw=cursor.getString(2);
-            sqlName=cursor.getString(3);
-        }
-        editId=mETid.getText().toString();
-        editPw=mETpw.getText().toString();
+    private void checkLogin (final String insetId) {
+        // DB에서 받는값
+        final String sqlId = "";
+        String sqlPw="";
+        String sqlName="";
+        // edit에 id, pw 입력값
+        final String editId="",editPw="";
+        Log.d("검색", "시작");
+        final String finalEditPw = mETpw.getText().toString();
+
+
 
         mTVeid.setText("");
         mTVepw.setText("");
 
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("user").document(insetId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        if(finalEditPw.equals(null)|| finalEditPw.equals(""))
+                            mTVepw.setText("비밀번호를 입력해 주시길 바랍니다");
+                            // 아이디 OK 비번 False
+                        else if(!finalEditPw.equals(document.get("pw")))
+                            mTVepw.setText("비밀번호가 틀렸습니다");
+                            // 아이디 OK 비번 OK
+                        else if(finalEditPw.equals(document.get("pw")))
+                            loginAfter(insetId);
+
+                    } else {
+                        mTVeid.setText("아이디가 없습니다");
+                    }
+                } else {
+                    Log.d("검색", "get failed with ", task.getException());
+                }
+            }
+        });
+//        db.collection("users").document(insetId)
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d("검색", document.getId() + " => " + document.get("pw"));
+//
+//                            }
+//                        } else {
+//                            Log.d("검색", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+
+
+
         // 아이디 False 비번 False
-        if(!editId.equals(sqlId))
-            mTVeid.setText("아이디가 없습니다");
+
             // 아이디 OK 비번 Null
-        else if(editId.equals(sqlId)&&editPw.equals(null)||editPw.equals(""))
-            mTVepw.setText("비밀번호를 입력해 주시길 바랍니다");
-            // 아이디 OK 비번 False
-        else if(editId.equals(sqlId)&&!editPw.equals(sqlPw))
-            mTVepw.setText("비밀번호가 틀렸습니다");
-            // 아이디 OK 비번 OK
-        else if(editId.equals(sqlId)&&editPw.equals(sqlPw))
-            MainScreen(insetId);
+
 
     }
 
     // 화면이동 -> 메인페이지 or 퍼스트 페이지
-    private void MainScreen(String userid) {
-        String sql = "select * from baby where parents = '"+userid+"'"; // 검생용
-        Cursor cursor = db.rawQuery(sql, null);
-        String sqlmom="",sqlname;
-        while (cursor.moveToNext()) {
-            sqlmom=cursor.getString(9);
-            Log.d("db", sqlmom);
-        }
-        if(sqlmom.equals(userid)) {
-            Intent intent = new Intent(this, MainPage.class);
-            intent.putExtra("login",userid);
-            startActivity(intent);
-        }
-        else{
-            Intent intent = new Intent(this, FirstPage.class);
-            intent.putExtra("login",userid);
-            startActivity(intent);
-        }
+    private void loginAfter(final String userid) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        mNextPage=false;
+        // 컬렉션 일치 검색↓
+        db.collection("baby")
+                .whereEqualTo("parents", userid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("검색_스크린", "db 돌아감 ");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                mNextPage=true;
+                                Log.d("검색_스크린", "데이더 있어서 돌아감");
+
+                            }
+                            Log.d("검색_스크린", "아기 for문 끝");
+                            MainScreen(userid,mNextPage);
+
+                        } else {
+                            Log.d("검색_스크린", "아기가 없어요");
+                        }
+
+                    }
+                });
+
+    }
+
+
+    // 화면이동 -> 메인페이지 or 퍼스트 페이지
+    private void MainScreen(String id,boolean page){
+        Intent intent;
+        if(page==true)
+        intent = new Intent(this, MainPage.class);
+        else
+        intent = new Intent(this, FirstPage.class);
+
+        intent.putExtra("login",id);
+        startActivity(intent);
+
     }
 
     // 화면이동 -> 메인페이지->회원가입페이지
