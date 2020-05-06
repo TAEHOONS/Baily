@@ -1,5 +1,6 @@
 package com.example.baily;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -11,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
+
 public class ThirdPage extends AppCompatActivity {
 
-    String dbName = "user.db";
-    int dbVersion = 3;
-    private DBlink helper;
-    private SQLiteDatabase db;
 
     TextView tvName, tvSex, tvBrith, tvHeadline, tvHAW;
 
@@ -31,7 +34,7 @@ public class ThirdPage extends AppCompatActivity {
         setContentView(R.layout.activity_third_page);
         Intent intent = getIntent();
         mLoginId = intent.getStringExtra("login");
-        usingDB();
+
 
         tvName = (TextView) findViewById(R.id.tp_nameTV);
         tvSex = (TextView) findViewById(R.id.tp_sexTV);
@@ -74,40 +77,69 @@ public class ThirdPage extends AppCompatActivity {
         FirstPage fir = (FirstPage) FirstPage.activity;
         SecondPage scn = (SecondPage) SecondPage.activity;
 
-        insertBabyData();
+        putFireStore();
 
         fir.finish();
         scn.finish();
         finish();
     }
 
-    private void insertBabyData() {
-        Intent intent = getIntent();
-        Log.d("insertBabyData", "시작");
-        Log.d("insertBabyData", intent.getStringExtra("name"));
-        Log.d("insertBabyData", intent.getStringExtra("sex"));
-        Log.d("insertBabyData", "숫자 : "+intent.getExtras().getInt("year"));
-        //선언
-        ContentValues values = new ContentValues();
-        //values에 테이블의 column에 넣을값 x 넣기
-        //고정 변수는 ""로 하고 변수로 할꺼면 그냥 하기
-        //컬럼 이름은 DBlink.java 참조
-        values.put("name", intent.getStringExtra("name"));
-        values.put("sex", intent.getStringExtra("sex"));
-        values.put("ybirth", intent.getExtras().getInt("year"));
-        values.put("mbirth", intent.getExtras().getInt("month"));
-        values.put("dbirthy", intent.getExtras().getInt("day"));
-        values.put("headline", intent.getStringExtra("headline"));
-        values.put("tall", intent.getStringExtra("height"));
-        values.put("weight", intent.getStringExtra("weight"));
-        values.put("parents", mLoginId);
-        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
-        db.insert("baby", null, values);
+
+    public class InfoBaby {
+        // 무적권 public 으로해야 데이더 읽힘
+        public String name,sex,headline,tall,weight,parents;
+        public int year,month,day;
+
+        public InfoBaby() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public InfoBaby(String name,String sex, int year,int month,int day
+                ,String headline,String tall,String weight,String parents) {
+            this.name=name;
+            this.sex = sex;
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.headline = headline;
+            this.tall = tall;
+            this.weight = weight;
+            this.parents = parents;
+        }
+
     }
 
+    public void putFireStore(){
+        Log.w("입력", "입력시작");
+        Intent in = getIntent();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private void usingDB() {
-        helper = new DBlink(this, dbName, null, dbVersion);
-        db = helper.getWritableDatabase();
+        Log.w("입력", "class 에 넣기");
+        InfoBaby baby = new InfoBaby(in.getStringExtra("name")
+                ,in.getStringExtra("sex")
+                ,in.getExtras().getInt("year")
+                ,in.getExtras().getInt("month")
+                ,in.getExtras().getInt("day")
+                ,in.getStringExtra("headline")
+                ,in.getStringExtra("height")
+                ,in.getStringExtra("weight")
+                ,mLoginId);
+
+        Log.w("입력", "db 입력");
+        db.collection("baby")
+                .add(baby)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("입력", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("입력", "Error adding document", e);
+                    }
+                });
     }
+
 }
