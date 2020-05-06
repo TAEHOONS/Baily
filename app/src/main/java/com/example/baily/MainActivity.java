@@ -33,10 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    String dbName = "user.db";
-    int dbVersion = 3;
-    private DBlink helper;
-    private SQLiteDatabase db;
+
     boolean mNextPage=false;
 
     EditText mETid,mETpw;
@@ -64,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         mTVepw=(TextView) findViewById(R.id.lp_Errorpw);
         mTVfid=(TextView)findViewById(R.id.lp_findID);
         mTVfpw=(TextView)findViewById(R.id.lp_findPwd);
-        usingDB();
 
         // 터치 입력 처리 //findID,findPW
         mTVfid.setOnTouchListener(new View.OnTouchListener() {
@@ -266,10 +262,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    //DB 생성및 연결
-    private void usingDB(){
-        helper = new DBlink(this, dbName, null, dbVersion);
-        db = helper.getWritableDatabase();
-    }
 }
