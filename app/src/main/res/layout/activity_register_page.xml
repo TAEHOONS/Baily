@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/reg_repwdEdt" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/reg_emailEdt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -141,19 +141,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lb_email" />
 
-    <TextView
-        android:id="@+id/ib_mailConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="16dp"
-        android:text="이메일 인증번호"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reg_numsendBtn" />
-
     <EditText
         android:id="@+id/reg_emailnumEdt"
         android:layout_width="wrap_content"
@@ -163,34 +150,32 @@
         android:layout_marginTop="16dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="인증번호 입력"
+        android:hint="email인증번호 입력"
         android:inputType="textPersonName"
-        android:text=" "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ib_mailConfirm" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_emailEdt" />
 
     <Button
         android:id="@+id/reg_numsendBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="16dp"
-        android:text="인증번호 발송"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:onClick="m_regRegClick"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        android:text="인증번호 발송"
+        app:layout_constraintStart_toEndOf="@+id/reg_emailEdt"
+        app:layout_constraintTop_toBottomOf="@+id/lb_email" />
 
     <Button
         android:id="@+id/reg_numckBtn"
         android:layout_width="50dp"
         android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginTop="8dp"
         android:text="확인"
         app:layout_constraintStart_toEndOf="@+id/reg_emailnumEdt"
-        app:layout_constraintTop_toBottomOf="@+id/ib_mailConfirm" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_numsendBtn" />
 
     <Button
         android:id="@+id/reg_idckBtn"
@@ -208,12 +193,12 @@
         android:id="@+id/reg_confirmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="16dp"
+        android:onClick="m_regRegClick"
         android:text="회원가입"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reg_emailnumEdt"
-        android:onClick="m_regRegClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/reg_emailnumEdt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
