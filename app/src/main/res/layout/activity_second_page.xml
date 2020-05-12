@@ -6,19 +6,15 @@
     android:layout_height="match_parent"
     android:background="#EAEEFA"
     android:orientation="vertical"
-    android:weightSum="10"
+    android:weightSum="12"
     tools:context=".SecondPage">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-
         >
-
-
         //아기 정보입력
-
         <TextView
             android:id="@+id/sp_ttTV"
             android:layout_width="wrap_content"
@@ -32,166 +28,182 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="8"
         android:gravity="center"
-        android:orientation="vertical"
-        android:weightSum="9">
+        android:orientation="horizontal"
+        android:weightSum="4">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:gravity="center">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/sp_profileImg"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_baby"
-                android:onClick="mOnClick"
-                app:civ_border_color="#FFCCCCCC"
-                app:civ_border_width="2dp" />
-        </LinearLayout>
-        //이름 입력
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="이름"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/sp_nameET"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:hint="이름"
-                android:inputType="textPersonName"
-                android:textSize="20dp" />
-        </LinearLayout>
-        //성별 입력 sp_sexET
+            android:gravity="center"></LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="9">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="left">
 
-                android:inputType="textPersonName"
-                android:text="성별"
-                android:textSize="20dp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/sp_profileImg"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_margin="10dp"
+                    android:onClick="mOnClick"
+                    android:src="@drawable/ic_baby"
+                    app:civ_border_color="#FFCCCCCC"
+                    app:civ_border_width="2dp" />
+            </LinearLayout>
+            //이름 입력
 
-            <RadioGroup
-                android:id="@+id/sp_sexRG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left">
 
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:text="이름"
-                android:textSize="20dp">
-
-                <RadioButton
-                    android:id="@+id/sp_RBboy"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="남자" />
+                    android:inputType="textPersonName"
+                    android:text="이름"
+                    android:textSize="20dp" />
 
-                <RadioButton
-                    android:id="@+id/sp_RBgirl"
+                <EditText
+                    android:id="@+id/sp_nameET"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="이름"
+                    android:inputType="textPersonName"
+                    android:textSize="20dp" />
+            </LinearLayout>
+            //성별 입력 sp_sexET
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="여자" />
-            </RadioGroup>
-        </LinearLayout>
-        //출생 입력 sp_berthET
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
+                    android:inputType="textPersonName"
+                    android:text="성별"
+                    android:textSize="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <RadioGroup
+                    android:id="@+id/sp_sexRG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:inputType="textPersonName"
-                android:text="출생년   "
-                android:textSize="20dp" />
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:text="이름"
+                    android:textSize="20dp">
 
-            <TextView
-                android:id="@+id/sp_berthTV"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                    <RadioButton
+                        android:id="@+id/sp_RBboy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="남자" />
 
-                android:gravity="left"
-                android:inputType="textPersonName"
-                android:onClick="mOnClick"
-                android:text="2020년 01월 01일"
-                android:textSize="20dp" />
-        </LinearLayout>
-        //머리 둘레 입력 sp_headlineET
+                    <RadioButton
+                        android:id="@+id/sp_RBgirl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="여자" />
+                </RadioGroup>
+            </LinearLayout>
+            //출생 입력 sp_berthET
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="머리둘레   "
-                android:textSize="20dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <EditText
-                android:id="@+id/sp_headlineET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="출생년   "
+                    android:textSize="20dp" />
 
-                android:gravity="right"
-                android:hint="00.00 cm"
-                android:inputType="numberDecimal"
-                android:textSize="20dp" />
-        </LinearLayout>
-        //킼,몸무게 입력
+                <TextView
+                    android:id="@+id/sp_berthTV"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center">
+                    android:gravity="left"
+                    android:inputType="textPersonName"
+                    android:onClick="mOnClick"
+                    android:text="2020년 01월 01일"
+                    android:textSize="20dp" />
+            </LinearLayout>
+            //머리 둘레 입력 sp_headlineET
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:onClick="mOnClick"
-                android:text="키 / 몸무게"
-                android:textSize="20dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left">
 
-            <TextView
-                android:id="@+id/sp_tallTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:inputType="textPersonName"
-                android:onClick="mOnClick"
-                android:text="선택"
-                android:textSize="20dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="머리둘레   "
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/sp_headlineET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="right"
+                    android:hint="00.00 cm"
+                    android:inputType="numberDecimal"
+                    android:textSize="20dp" />
+            </LinearLayout>
+            //킼,몸무게 입력
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:onClick="mOnClick"
+                    android:text="키 / 몸무게"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/sp_tallTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="textPersonName"
+                    android:onClick="mOnClick"
+                    android:text="키 몸무게 입력"
+                    android:textSize="20dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     //완료 버튼 sp_creatBtn

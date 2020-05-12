@@ -24,7 +24,7 @@ import java.io.FileOutputStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SecondPage extends AppCompatActivity {
-    private final int GET_GALLERY_IMAGE = 160;
+    private final int GET_GALLERY_IMAGE = 150;
 
     TextView mHWATV, mBirthTV;
     RadioGroup mSexRG;
@@ -117,7 +117,7 @@ public class SecondPage extends AppCompatActivity {
         cd.setDialogListener(new HeightAndWeight.CustomDialogListener() {
             @Override
             public void onPositiveClicked(String hei, String wei) {
-                mHWATV.setText(hei + "cm  " + wei + "Km");
+                mHWATV.setText(hei + "cm  " + wei + "Kg");
                 mWeight=wei;
                 mHeight=hei;
             }
@@ -176,8 +176,8 @@ public class SecondPage extends AppCompatActivity {
 
         try{
             Log.d("저장", "파일 생성 전");
-            File file = new File("test.png");
-            FileOutputStream fos = openFileOutput("test.jpg" , 0);
+            File file = new File("test.jpg");
+            FileOutputStream fos = openFileOutput(mName.getText().toString()+".jpg" , 0);
             bm.compress(Bitmap.CompressFormat.PNG, 100 , fos);
             fos.flush();
             fos.close();

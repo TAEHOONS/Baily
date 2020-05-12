@@ -45,10 +45,10 @@
 
                 <!--                    아기의 프로필사진-->
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/h_profileImg"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="10dp"
-                    android:id="@+id/h_profileImg"
                     android:src="@drawable/ic_baby"
                     app:civ_border_color="#FFCCCCCC"
                     app:civ_border_width="2dp" />
