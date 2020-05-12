@@ -1,6 +1,8 @@
 package com.example.baily;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,8 +22,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FragHome extends Fragment {
 
+    String dbName = "user.db";
+    int dbVersion = 3;
+    private DBlink helper;
+    private SQLiteDatabase db;
+
+    private String mId,mBabyname,imgpath;
+
     private View view;
-    String imgpath = "data/data/com.example.baily/files/";
     private CircleImageView imageview;
     private TextView tvName;
 
@@ -36,23 +44,52 @@ public class FragHome extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_home, container, false);
+        usingDB(container);
+        getDBdata();
 
         imageview = (CircleImageView)view.findViewById(R.id.h_profileImg);
-        Log.d("Home", "id 연결 성공: ");
+        tvName=(TextView)view.findViewById(R.id.h_bNameTxt);
 
+        tvName.setText(mBabyname);
 
-        imgpath = imgpath.concat("연수.jpg");
-        Log.d("Home", "imgpath: " +imgpath);
-
-        Log.d("Home", "이미지 가져오기");
         try {
             Bitmap bm = BitmapFactory.decodeFile(imgpath);
             imageview.setImageBitmap(bm);
-            Log.d("Home", "이미지 성공: ");
         } catch (Exception e) {
-            Log.d("Home", "이미지 불러오기 실패: ");
         }
 
         return view;
     }
+
+    private void usingDB(ViewGroup container){
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+    }
+
+    private void getDBdata(){
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId=cursor.getString(1);
+            mBabyname=cursor.getString(2);
+            Log.d("Home", "db받기 id = " +mId+"  현재 아기 = "+mBabyname);
+        }
+
+       // 현재 사용 아기데이터
+        sql = "select * from baby where name='"+mBabyname+"'"; // 검색용
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            imgpath=cursor.getString(10);
+
+            Log.d("Home", "db받기 path = " +imgpath);
+        }
+
+
+    }
+
+
+
 }
