@@ -201,6 +201,7 @@ public class RegisterPage extends AppCompatActivity {
         values.put("pw", userPw);
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
+
     }
 
 

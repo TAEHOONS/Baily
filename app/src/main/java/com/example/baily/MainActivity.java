@@ -1,5 +1,6 @@
 package com.example.baily;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         mTVfid=(TextView)findViewById(R.id.lp_findID);
         mTVfpw=(TextView)findViewById(R.id.lp_findPwd);
         usingDB();
+
+
 
         // 터치 입력 처리 //findID,findPW
         mTVfid.setOnTouchListener(new View.OnTouchListener() {
@@ -151,27 +154,47 @@ public class MainActivity extends AppCompatActivity {
             mTVepw.setText("비밀번호가 틀렸습니다");
             // 아이디 OK 비번 OK
         else if(editId.equals(sqlId)&&editPw.equals(sqlPw))
-            MainScreen(insetId);
+            DBcopy(sqlId);
 
     }
 
+    // 로그인시 사용 적용
+    private void DBcopy(String id){
+        Log.d("db", "db 카피 실행");
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+        db.insert("thisusing", null, values);
+        Log.d("db", "db 끝");
+        MainScreen();
+    }
+
+
+
     // 화면이동 -> 메인페이지 or 퍼스트 페이지
-    private void MainScreen(String userid) {
-        String sql = "select * from baby where parents = '"+userid+"'"; // 검생용
+    private void MainScreen() {
+        String thisbaby="";
+
+        Log.d("db", "thisusing 검색");
+        String sql = "select * from thisusing where _id=1"; // 검생용
+        Log.d("db", "쿼리 실행");
         Cursor cursor = db.rawQuery(sql, null);
-        String sqlmom="",sqlname;
+        Log.d("db", "쿼리 성공");
+
         while (cursor.moveToNext()) {
-            sqlmom=cursor.getString(9);
-            Log.d("db", sqlmom);
+            thisbaby=cursor.getString(2);
+            Log.d("db", "아기 있나 보기"+thisbaby);
         }
-        if(sqlmom.equals(userid)) {
+
+
+
+
+        if(thisbaby!=null) {
             Intent intent = new Intent(this, MainPage.class);
-            intent.putExtra("login",userid);
             startActivity(intent);
         }
         else{
             Intent intent = new Intent(this, FirstPage.class);
-            intent.putExtra("login",userid);
             startActivity(intent);
         }
     }
@@ -199,4 +222,6 @@ public class MainActivity extends AppCompatActivity {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
     }
+
+
 }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,15 +32,16 @@ import java.io.ByteArrayOutputStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ThirdPage extends AppCompatActivity {
-
+    String dbName = "user.db";
+    int dbVersion = 3;
+    private DBlink helper;
+    private SQLiteDatabase db;
 
     TextView tvName, tvSex, tvBrith, tvHeadline, tvHAW;
-
+    InfoBaby baby;
     public static Activity activity;
     private CircleImageView imageview;
     String imgpath = "data/data/com.example.baily/files/";
-
-
 
     private String mLoginId,babypic;
 
@@ -47,8 +49,8 @@ public class ThirdPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third_page);
-        Intent intent = getIntent();
-        mLoginId = intent.getStringExtra("login");
+
+        usingDB();
 
         imageview = (CircleImageView) findViewById(R.id.tp_profileImg);
         tvName = (TextView) findViewById(R.id.tp_nameTV);
@@ -109,8 +111,11 @@ public class ThirdPage extends AppCompatActivity {
         FirstPage fir = (FirstPage) FirstPage.activity;
         SecondPage scn = (SecondPage) SecondPage.activity;
 
+        Log.d("3page", "putFireStore 시작");
         putFireStore();
-
+        Log.d("3page", "putFireStore 끝  putLocalDB 시작");
+        putLocalDB();
+        Log.d("3page", "putLocalDB 끝");
         fir.finish();
         scn.finish();
         finish();
@@ -141,13 +146,14 @@ public class ThirdPage extends AppCompatActivity {
 
     }
 
+    // Firebase에 저장
     public void putFireStore() {
         Log.w("입력", "입력시작");
         Intent in = getIntent();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Log.w("입력", "class 에 넣기");
-        InfoBaby baby = new InfoBaby(in.getStringExtra("name")
+        baby = new InfoBaby(in.getStringExtra("name")
                 , in.getStringExtra("sex")
                 , in.getExtras().getInt("year")
                 , in.getExtras().getInt("month")
@@ -201,5 +207,41 @@ public class ThirdPage extends AppCompatActivity {
         });
 
     }
+    // local DB 에 저장
+    public void putLocalDB(){
+        ContentValues values = new ContentValues();
 
+        values.put("name", baby.name);
+        values.put("sex", baby.sex);
+        values.put("ybirth", baby.year);
+        values.put("mbirth", baby.month);
+        values.put("dbirthy", baby.day);
+        values.put("headline", baby.headline);
+        values.put("tall", baby.tall);
+        values.put("weight", baby.weight);
+        values.put("parents", baby.parents);
+        values.put("imgpath", imgpath);
+        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+        Log.d("3page", "insert 시작");
+        db.insert("baby", null, values);
+        Log.d("3page", "insert 끝");
+
+        String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
+        Log.d("3page", "update 시작");
+        db.execSQL(sqlUpdate) ;
+        Log.d("3page", "update 끝");
+    }
+
+    private void usingDB(){
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        while (cursor.moveToNext()) {
+            mLoginId=cursor.getString(1);
+            Log.d("3page", "db받기 id = " +mLoginId);
+        }
+
+    }
 }

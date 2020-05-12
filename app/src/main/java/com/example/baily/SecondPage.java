@@ -40,8 +40,6 @@ public class SecondPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second_page);
-        Intent intent = getIntent();
-        mLoginId = intent.getStringExtra("login");
         mName = (EditText) findViewById(R.id.sp_nameET);
         mHeadlin = (EditText) findViewById(R.id.sp_headlineET);
         mHWATV = (TextView) findViewById(R.id.sp_tallTV);
@@ -88,7 +86,6 @@ public class SecondPage extends AppCompatActivity {
         RadioButton rb = (RadioButton) findViewById(id);
 
         Intent intent = new Intent(SecondPage.this, ThirdPage.class);
-        intent.putExtra("login", mLoginId);
         intent.putExtra("name", mName.getText().toString());
         intent.putExtra("sex", rb.getText().toString());
         intent.putExtra("year",mbirthY );intent.putExtra("month",mbirthM );intent.putExtra("day",mbirthD);
