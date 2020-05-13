@@ -48,7 +48,7 @@ public class SecondPage extends AppCompatActivity {
         imageview=(CircleImageView) findViewById(R.id.sp_profileImg);
 
         activity = this;
-
+    
     }
 
 
