@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -45,10 +48,10 @@ public class SecondPage extends AppCompatActivity {
         mHWATV = (TextView) findViewById(R.id.sp_tallTV);
         mBirthTV = (TextView) findViewById(R.id.sp_berthTV);
         mSexRG = (RadioGroup) findViewById(R.id.sp_sexRG);
-        imageview=(CircleImageView) findViewById(R.id.sp_profileImg);
+        imageview = (CircleImageView) findViewById(R.id.sp_profileImg);
 
         activity = this;
-    
+
     }
 
 
@@ -69,7 +72,7 @@ public class SecondPage extends AppCompatActivity {
             //이미지 터치시 갤러리 가기
             case R.id.sp_profileImg: {
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent. setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, GET_GALLERY_IMAGE);
                 break;
             }
@@ -88,8 +91,10 @@ public class SecondPage extends AppCompatActivity {
         Intent intent = new Intent(SecondPage.this, ThirdPage.class);
         intent.putExtra("name", mName.getText().toString());
         intent.putExtra("sex", rb.getText().toString());
-        intent.putExtra("year",mbirthY );intent.putExtra("month",mbirthM );intent.putExtra("day",mbirthD);
-        intent.putExtra("headline",mHeadlin.getText().toString() );
+        intent.putExtra("year", mbirthY);
+        intent.putExtra("month", mbirthM);
+        intent.putExtra("day", mbirthD);
+        intent.putExtra("headline", mHeadlin.getText().toString());
         intent.putExtra("height", mHeight);
         intent.putExtra("weight", mWeight);
         setPhotoNextScreen();
@@ -115,8 +120,8 @@ public class SecondPage extends AppCompatActivity {
             @Override
             public void onPositiveClicked(String hei, String wei) {
                 mHWATV.setText(hei + "cm  " + wei + "Kg");
-                mWeight=wei;
-                mHeight=hei;
+                mWeight = wei;
+                mHeight = hei;
             }
         });
 
@@ -143,7 +148,9 @@ public class SecondPage extends AppCompatActivity {
             @Override
             public void onPositiveClicked(int year, int month, int day) {
                 mBirthTV.setText(year + "년 " + month + "월 " + day + "일");
-                mbirthY=year; mbirthM=month; mbirthD=day;
+                mbirthY = year;
+                mbirthM = month;
+                mbirthD = day;
             }
         });
 
@@ -165,24 +172,50 @@ public class SecondPage extends AppCompatActivity {
 
     }
 
-    public void setPhotoNextScreen(){
+    public void setPhotoNextScreen() {
         Log.d("저장", "저장 시작");
-        Bitmap bm = ((BitmapDrawable)imageview.getDrawable()).getBitmap();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        Bitmap bm;
         Log.d("저장", "비트맵 받기");
 
+        bm = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
 
-        try{
+        try {
+
             Log.d("저장", "파일 생성 전");
-            File file = new File("test.jpg");
-            FileOutputStream fos = openFileOutput(mName.getText().toString()+".jpg" , 0);
-            bm.compress(Bitmap.CompressFormat.PNG, 100 , fos);
+            FileOutputStream fos = openFileOutput(mName.getText().toString() + ".jpg", 0);
+           //   사진 저장 타입, 사진 퀄리티, 사진 명칭
+            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
             fos.flush();
             fos.close();
 
+
             Toast.makeText(this, "file ok", Toast.LENGTH_SHORT).show();
-        }catch(Exception e) { Toast.makeText(this, "file error", Toast.LENGTH_SHORT).show();}
+        } catch (Exception e) {
+            Toast.makeText(this, "file error", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
+
+    public static Drawable getResizeFileImage(String file_route, int size, int width, int height){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = size;
+        Bitmap src = BitmapFactory.decodeFile(file_route, options);
+        Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
+        return new BitmapDrawable(resized);
+    }
+
+    public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = size;
+        Bitmap src = BitmapFactory.decodeResource(resources, id, options);
+        Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
+        return resized;
+    }
+
+
 
 }

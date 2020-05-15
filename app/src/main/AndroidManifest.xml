@@ -20,7 +20,9 @@
         <activity android:name=".FindIdPage2" />
         <activity android:name=".FindIdPage" />
         <activity android:name=".ThirdPage" />
-        <activity android:name=".SecondPage"></activity>
+        <activity android:name=".SecondPage">
+
+        </activity>
         <activity android:name=".FirstPage" />
         <activity android:name=".MainPage"></activity>
         <activity android:name=".FragStandard" />

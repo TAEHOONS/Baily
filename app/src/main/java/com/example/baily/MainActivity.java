@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 로그인시 현재 아이디 기록
     private void DBcopy(String id) {
+        Log.d("사용 아이디", "DBcopy");
+
         ContentValues values = new ContentValues();
 
         // 최초 실행시 동작
@@ -170,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean("checkFirst", true);
             editor.commit();
-            values.put("id", id);
+            values.put("_id", 1);
             db.insert("thisusing", null, values);
-            Log.d("사용 아이디", "DBcopy: insett 동작");
+            Log.d("사용 아이디", "DBcopy: insert 동작");
         } else {
             String sqlUpdate = "UPDATE thisusing SET id='" + id + "' WHERE _id=1";
             db.execSQL(sqlUpdate);
@@ -185,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 화면이동 -> 메인페이지 or 퍼스트 페이지
     private void MainScreen(String Loginid) {
+        Log.d("사용 아이디", "MainScreen");
+
         String thisbaby = "";
         getUserdata(Loginid);
 
@@ -229,13 +233,13 @@ public class MainActivity extends AppCompatActivity {
 
     // 자동 로그인
     private void AutoLogin() {
+        Log.d("사용 아이디", "AutoLogin");
         String sql = "select * from thisusing where _id=1"; // 검생용
         Cursor cursor = db.rawQuery(sql, null);
-        String login="",lsbaby="";
+        String login=null;
 
         while (cursor.moveToNext()) {
             login = cursor.getString(1);
-            lsbaby=cursor.getString(2);
             Log.d("사용 아이디", "아이디 확인" + login);
         }
         if (login != null)
@@ -243,6 +247,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUserdata(String id) {
+        Log.d("사용 아이디", "getUserdata");
+
         String sql = "select * from user where id = '" + id + "'"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
         String sqlbaby = "";
