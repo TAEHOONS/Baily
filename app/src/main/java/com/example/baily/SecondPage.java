@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,8 +16,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SecondPage extends AppCompatActivity {
+    private final int GET_GALLERY_IMAGE = 150;
 
     TextView mHWATV, mBirthTV;
     RadioGroup mSexRG;
@@ -24,19 +34,18 @@ public class SecondPage extends AppCompatActivity {
 
     private String mLoginId;
     public static Activity activity;
+    CircleImageView imageview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second_page);
-        Intent intent = getIntent();
-        mLoginId = intent.getStringExtra("login");
         mName = (EditText) findViewById(R.id.sp_nameET);
         mHeadlin = (EditText) findViewById(R.id.sp_headlineET);
         mHWATV = (TextView) findViewById(R.id.sp_tallTV);
         mBirthTV = (TextView) findViewById(R.id.sp_berthTV);
         mSexRG = (RadioGroup) findViewById(R.id.sp_sexRG);
-
+        imageview=(CircleImageView) findViewById(R.id.sp_profileImg);
 
         activity = this;
 
@@ -49,15 +58,21 @@ public class SecondPage extends AppCompatActivity {
                 ThirdScreen();
                 break;
             }
-            case R.id.sp_tallBtn: {
+            case R.id.sp_tallTV: {
                 HAWPickerScreen();
                 break;
             }
-            case R.id.sp_berthBtn: {
+            case R.id.sp_berthTV: {
                 BerthPickerScreen();
                 break;
             }
-
+            //이미지 터치시 갤러리 가기
+            case R.id.sp_profileImg: {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent. setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+                break;
+            }
         }
 
     }
@@ -71,14 +86,13 @@ public class SecondPage extends AppCompatActivity {
         RadioButton rb = (RadioButton) findViewById(id);
 
         Intent intent = new Intent(SecondPage.this, ThirdPage.class);
-        intent.putExtra("login", mLoginId);
         intent.putExtra("name", mName.getText().toString());
         intent.putExtra("sex", rb.getText().toString());
         intent.putExtra("year",mbirthY );intent.putExtra("month",mbirthM );intent.putExtra("day",mbirthD);
         intent.putExtra("headline",mHeadlin.getText().toString() );
         intent.putExtra("height", mHeight);
         intent.putExtra("weight", mWeight);
-
+        setPhotoNextScreen();
         startActivity(intent);
 
     }
@@ -100,7 +114,7 @@ public class SecondPage extends AppCompatActivity {
         cd.setDialogListener(new HeightAndWeight.CustomDialogListener() {
             @Override
             public void onPositiveClicked(String hei, String wei) {
-                mHWATV.setText(wei + "Kg  " + hei + "cm");
+                mHWATV.setText(hei + "cm  " + wei + "Kg");
                 mWeight=wei;
                 mHeight=hei;
             }
@@ -137,5 +151,38 @@ public class SecondPage extends AppCompatActivity {
 
     }
 
+    // 사진작업
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri selectedImageUri = data.getData();
+            imageview.setImageURI(selectedImageUri);
+
+        }
+
+    }
+
+    public void setPhotoNextScreen(){
+        Log.d("저장", "저장 시작");
+        Bitmap bm = ((BitmapDrawable)imageview.getDrawable()).getBitmap();
+        Log.d("저장", "비트맵 받기");
+
+
+        try{
+            Log.d("저장", "파일 생성 전");
+            File file = new File("test.jpg");
+            FileOutputStream fos = openFileOutput(mName.getText().toString()+".jpg" , 0);
+            bm.compress(Bitmap.CompressFormat.PNG, 100 , fos);
+            fos.flush();
+            fos.close();
+
+            Toast.makeText(this, "file ok", Toast.LENGTH_SHORT).show();
+        }catch(Exception e) { Toast.makeText(this, "file error", Toast.LENGTH_SHORT).show();}
+
+
+    }
 
 }
