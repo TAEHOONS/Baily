@@ -227,9 +227,10 @@ public class ThirdPage extends AppCompatActivity {
         Log.d("3page", "insert 끝");
 
         String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
-        Log.d("3page", "update 시작");
         db.execSQL(sqlUpdate) ;
-        Log.d("3page", "update 끝");
+        sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id="+mLoginId+"" ;
+        db.execSQL(sqlUpdate) ;
+
     }
 
     private void usingDB(){
