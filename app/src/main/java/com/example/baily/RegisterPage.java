@@ -230,14 +230,14 @@ public class RegisterPage extends AppCompatActivity {
     }
 
     // FireBase에 회원가입 정보넣기
-    public class members {
+    public class member {
 
         public String name,pw,email;
-        public members() {
+        public member() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
-        public members(String name,String password, String email) {
+        public member(String name,String password, String email) {
             this.name=name;
             this.pw = password;
             this.email = email;
@@ -247,7 +247,7 @@ public class RegisterPage extends AppCompatActivity {
 
     public void putFireStore(String id){
         FirebaseFirestore fdb = FirebaseFirestore.getInstance();
-        members member = new members(reg_nameEdt.getText().toString(),reg_pwdEdt.getText().toString(),reg_emailEdt.getText().toString());
+        member member = new member(reg_nameEdt.getText().toString(),reg_pwdEdt.getText().toString(),reg_emailEdt.getText().toString());
 
 
 
@@ -257,7 +257,7 @@ public class RegisterPage extends AppCompatActivity {
 
 
 // Add a new document with a generated ID
-        fdb.collection("members").document(id)
+        fdb.collection("member").document(id)
                 .set(member)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
