@@ -2,24 +2,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_baby1"
-        android:title="아기 1"
-        app:showAsAction="never"
-        />
 
-    <item android:id="@+id/menu_baby2"
-        android:title="아기 2"
-        app:showAsAction="never"
-        />
-
-    <item android:id="@+id/menu_baby3"
-        android:title="아기 3"
-        app:showAsAction="never"
-        />
-
-    <item android:id="@+id/menu_babyplus"
-        android:title="+ 아기 추가하기"
-        app:showAsAction="never"
-        />
 
 </menu>

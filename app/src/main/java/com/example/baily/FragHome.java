@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,19 +24,21 @@ import androidx.fragment.app.Fragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FragHome extends Fragment implements PopupMenu.OnMenuItemClickListener{
+public class FragHome extends Fragment {
 
     String dbName = "user.db";
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
 
-    ImageView writeBtn, menuBtn, profileImg;
     private String mId, mBabyname, imgpath;
     private Activity activity;
     private View view;
+    Menu menu;
+
     private CircleImageView imageview;
     private TextView tvName;
+    ImageView writeBtn, menuBtn, profileImg;
 
     @Nullable
     @Override
@@ -62,12 +63,14 @@ public class FragHome extends Fragment implements PopupMenu.OnMenuItemClickListe
             public void onClick(View v) {
                 Log.d("menu1", "onClick: ");
                 PopupMenu popup = new PopupMenu(getActivity(), v);
+                putMenuData(popup);
                 // This activity implements OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(getActivity(), "메뉴 터치 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        MenuClick(item);
                         return true;
                     }
+
                 });
                 popup.inflate(R.menu.menu);
                 popup.show();
@@ -85,34 +88,15 @@ public class FragHome extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        Log.d("menu1", "onCreateOptionsMenu: ");
-        inflater.inflate(R.menu.menu,menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_baby1 :
-                Toast.makeText(getActivity(), "fragA", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
-
-
+    // DB 연결
     private void usingDB(ViewGroup container) {
         helper = new DBlink(container.getContext(), dbName, null, dbVersion);
         db = helper.getWritableDatabase();
 
     }
 
+    // 현재값 받기
     private void getDBdata() {
         String sql = "select * from thisusing where _id=1"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
@@ -136,19 +120,20 @@ public class FragHome extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     }
 
+    public void putMenuData(PopupMenu popup) {
+        menu = popup.getMenu();
+        int limit=3;
 
+            menu.add(0, 1, 0, tvName.getText().toString());
+            menu.add(0, 2, 0, "+ 아기 추가하기");
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_baby1:
-                Log.d("menu1", "baby1 터치");
-                return true;
-            case R.id.menu_babyplus:
-                Log.d("menu1", "플러스 터치");
-                return true;
-            default:
-                return false;
-        }
     }
+
+    public void MenuClick(MenuItem item) {
+        Toast.makeText(getActivity(), "메뉴 터치 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        Log.d("menu1", "baby1 터치");
+
+    }
+
+
 }
