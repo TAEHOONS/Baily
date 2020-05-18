@@ -219,7 +219,7 @@ public class ThirdPage extends AppCompatActivity {
         values.put("headline", baby.headline);
         values.put("tall", baby.tall);
         values.put("weight", baby.weight);
-        values.put("parents", baby.parents);
+        values.put("parents", mLoginId);
         values.put("imgpath", imgpath);
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         Log.d("3page", "insert 시작");

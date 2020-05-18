@@ -1,6 +1,7 @@
 package com.example.baily;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,12 +32,12 @@ public class FragHome extends Fragment {
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
-
+    // mId= 현재 사용 id, baby, 사진경로
     private String mId, mBabyname, imgpath;
+    private int addItem=0;
     private Activity activity;
     private View view;
     Menu menu;
-
     private CircleImageView imageview;
     private TextView tvName;
     ImageView writeBtn, menuBtn, profileImg;
@@ -63,7 +65,7 @@ public class FragHome extends Fragment {
             public void onClick(View v) {
                 Log.d("menu1", "onClick: ");
                 PopupMenu popup = new PopupMenu(getActivity(), v);
-                putMenuData(popup);
+                MakeMenuData(popup);
                 // This activity implements OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -120,19 +122,52 @@ public class FragHome extends Fragment {
 
     }
 
-    public void putMenuData(PopupMenu popup) {
+    // 팝업 메뉴 생성 함수
+    public void MakeMenuData(PopupMenu popup) {
         menu = popup.getMenu();
-        int limit=3;
+        String sql = "select * from baby where parents='"+mId+"'"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
 
-            menu.add(0, 1, 0, tvName.getText().toString());
-            menu.add(0, 2, 0, "+ 아기 추가하기");
+        int maxbaby=0;
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            menu.add(0, maxbaby, 0, cursor.getString(1));
+            maxbaby++;
+            Log.d("Home", "maxbaby = "+maxbaby+"   아기이름 = "+cursor.getString(1));
+        }
+        addItem=maxbaby;
+        Log.d("Home", "maxbaby = "+maxbaby+"   addItem = "+addItem);
+        if(addItem<=2)
+        menu.add(0, maxbaby, 0, "+ 아기 추가하기");
 
     }
 
+    // 메뉴 터치 이벤트
     public void MenuClick(MenuItem item) {
         Toast.makeText(getActivity(), "메뉴 터치 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        Log.d("menu1", "baby1 터치");
+        Log.d("Home", "item.getItemId() = "+item.getItemId()+"  additem = "+addItem );
+        if (item.getItemId() == addItem) {
+            // + 버튼시
+            Intent intent = new Intent(getContext(), FirstPage.class);
+            startActivity(intent);
+        }
+        else if(item.getTitle().toString().equals(mBabyname)) {
+            // 자기 터치
+            Log.d("Home", "지금 데이터와 같음");
+            Log.d("Home", "item.getTitle() = "+item.getTitle());
+            Log.d("Home", "mBabyname = "+mBabyname);
+        }
+        else{
+            Log.d("Home", "아기 변경");
+            // 지금 thisusing에 baby를 다른 baby 로 변경
+            String userId = "UPDATE thisusing SET baby='"+item.getTitle().toString()+"' WHERE _id=1";
+            db.execSQL(userId) ;
 
+            // 새로 고침
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+
+        }
     }
 
 

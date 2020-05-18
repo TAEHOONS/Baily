@@ -201,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d("사용 아이디", "아기 있나 보기" + thisbaby);
         }
 
+        String userId = "UPDATE thisusing SET id='"+Loginid+"' WHERE _id=1";
+        db.execSQL(userId) ;
 
         if (thisbaby != null) {
             Log.d("사용 아이디", "메인페이지 가기");
