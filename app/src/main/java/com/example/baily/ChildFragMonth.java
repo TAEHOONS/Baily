@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -61,37 +59,44 @@ public class ChildFragMonth extends Fragment {
         monthBeforeBtn = (ImageView)view.findViewById(R.id.monthBeforeBtn);
         monthAfterBtn = (ImageView)view.findViewById(R.id.monthAfterBtn);
 
-        sFormat = new SimpleDateFormat("MM월");
+        sFormat = new SimpleDateFormat("yyyy년");
         mCal = Calendar.getInstance();
         mPlusCal = Calendar.getInstance();
 
         mCal.setTime(date);
         monthStartDate =sFormat.format(mCal.getTime());
+        monthDateTxt.setText(monthStartDate);
+        /*
         mPlusCal.setTime(date);
         mPlusCal.add(Calendar.DATE, +7);
         monthEndDate = sFormat.format(mPlusCal.getTime());
         monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
+         */
 
         monthBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCal.add(Calendar.DATE, -7);
+                mCal.add(Calendar.YEAR, -1);
                 monthStartDate =sFormat.format(mCal.getTime());
-
-                mPlusCal.add(Calendar.DATE, -7);
+                monthDateTxt.setText(monthStartDate);
+                /*
+                mPlusCal.add(Calendar.YEAR, -1);
                 monthEndDate = sFormat.format(mPlusCal.getTime());
                 monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
+                 */
             }
         });
         monthAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCal.add(Calendar.DATE, +7);
+                mCal.add(Calendar.YEAR, +1);
                 monthStartDate =sFormat.format(mCal.getTime());
-
-                mPlusCal.add(Calendar.DATE, +7);
+                monthDateTxt.setText(monthStartDate);
+                /*
+                mPlusCal.add(Calendar.YEAR, +1);
                 monthEndDate = sFormat.format(mPlusCal.getTime());
                 monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
+                 */
             }
         });
 
@@ -171,7 +176,7 @@ public class ChildFragMonth extends Fragment {
         monthAvgHeadTxt.setText(monthAvgHead+" cm");
 
         growMonthFeverCart.setData(dayFeverData);
-        monthAvgFeverTxt.setText(monthAvgFever+" 도");
+        monthAvgFeverTxt.setText(monthAvgFever+" °C");
         return view;
     }
 }

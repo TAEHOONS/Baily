@@ -59,37 +59,45 @@ public class ChildFragWeek extends Fragment {
         weekBeforeBtn = (ImageView)view.findViewById(R.id.weekBeforeBtn);
         weekAfterBtn = (ImageView)view.findViewById(R.id.weekAfterBtn);
 
-        sFormat = new SimpleDateFormat("MM월");
+        sFormat = new SimpleDateFormat("yy년 MM월");
         wCal = Calendar.getInstance();
         wPlusCal = Calendar.getInstance();
 
         wCal.setTime(date);
         weekStartDate =sFormat.format(wCal.getTime());
+        weekDateTxt.setText(weekStartDate);
+        /*
         wPlusCal.setTime(date);
-        wPlusCal.add(Calendar.DATE, +7);
+        wPlusCal.add(Calendar.MONTH, +1);
         weekEndDate = sFormat.format(wPlusCal.getTime());
-        weekDateTxt.setText(weekStartDate+" ~ "+weekEndDate);
+        */
 
         weekBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wCal.add(Calendar.DATE, -7);
+                wCal.add(Calendar.MONTH, -1);
                 weekStartDate =sFormat.format(wCal.getTime());
-
-                wPlusCal.add(Calendar.DATE, -7);
+                weekDateTxt.setText(weekStartDate);
+                /*
+                wPlusCal.add(Calendar.MONTH, -1);
                 weekEndDate = sFormat.format(wPlusCal.getTime());
                 weekDateTxt.setText(weekStartDate+" ~ "+weekEndDate);
+                */
             }
         });
         weekAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wCal.add(Calendar.DATE, +7);
+                wCal.add(Calendar.MONTH, +1);
                 weekStartDate =sFormat.format(wCal.getTime());
+                weekDateTxt.setText(weekStartDate);
 
-                wPlusCal.add(Calendar.DATE, +7);
+
+                /*
+                wPlusCal.add(Calendar.MONTH, +1);
                 weekEndDate = sFormat.format(wPlusCal.getTime());
                 weekDateTxt.setText(weekStartDate+" ~ "+weekEndDate);
+                */
             }
         });
 
@@ -169,7 +177,7 @@ public class ChildFragWeek extends Fragment {
         weekAvgHeadTxt.setText(weekAvgHead+" cm");
 
         growWeekFeverCart.setData(dayFeverData);
-        weekAvgFeverTxt.setText(weekAvgFever+" 도");
+        weekAvgFeverTxt.setText(weekAvgFever+" °C");
         return view;
     }
 }
