@@ -7,6 +7,24 @@
     android:background="#EAEEFA"
     tools:context=".FindPwPage3">
 
+    <View
+        android:id="@+id/view6"
+        android:layout_width="377dp"
+        android:layout_height="149dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="264dp"
+        android:background="@drawable/bora"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="1.0" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -16,7 +34,8 @@
         android:layout_marginTop="160dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:text="이메일로 인증번호를"
+        android:text="입력하신 이메일로 인증번호를"
+        android:textColor="#161B5B"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +49,8 @@
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:text="보내드렸습니다."
+        android:text="보내드렸습니다 인증번호를."
+        android:textColor="#161B5B"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +64,8 @@
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:text="인증번호를 입력하세요."
+        android:textColor="#161B5B"
+        android:text="입력해주세요."
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +82,7 @@
         android:layout_marginRight="32dp"
         android:ems="10"
         android:hint="인증번호"
+        android:background="@drawable/graytextbox"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,8 +98,17 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:text="확인"
+        android:background="@drawable/bora2"
         android:onClick="mOnClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fpp_emailnumEdt" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="-4dp"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
