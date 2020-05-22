@@ -35,20 +35,20 @@ public class HeightAndWeight extends Dialog {
         mHeightET = (EditText)findViewById(R.id.haw_heightET);
         mWeightET = (EditText)findViewById(R.id.haw_weightET);
 
-       mCompleBtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               //각각의 변수에 EidtText에서 가져온 값을 저장
-               String height = mHeightET.getText().toString();
-               String weight = mWeightET.getText().toString();
+        mCompleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //각각의 변수에 EidtText에서 가져온 값을 저장
+                String height = mHeightET.getText().toString();
+                String weight = mWeightET.getText().toString();
 
 
-               //인터페이스의 함수를 호출하여 변수에 저장된 값들을 Activity로 전달
-               customDialogListener.onPositiveClicked(height,weight);
-               dismiss();
+                //인터페이스의 함수를 호출하여 변수에 저장된 값들을 Activity로 전달
+                customDialogListener.onPositiveClicked(height,weight);
+                dismiss();
 
-           }
-       });
+            }
+        });
 
 
     }

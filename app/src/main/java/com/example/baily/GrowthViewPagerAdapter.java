@@ -15,14 +15,14 @@ public class GrowthViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-        case 0:
-            return ChildFragDay.newInstance();
-        case 1:
-            return ChildFragWeek.newInstance();
-        case 2:
-            return ChildFragMonth.newInstance();
-        default:
-            return null;
+            case 0:
+                return ChildFragDay.newInstance();
+            case 1:
+                return ChildFragWeek.newInstance();
+            case 2:
+                return ChildFragMonth.newInstance();
+            default:
+                return null;
         }
     }
 

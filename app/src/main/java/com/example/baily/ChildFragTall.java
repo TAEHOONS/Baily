@@ -27,7 +27,7 @@ public class ChildFragTall extends Fragment {
         return childFragTall;
     }
 
-    @Nullable
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.standard_child_frag_tall,container,false);
@@ -36,9 +36,9 @@ public class ChildFragTall extends Fragment {
 
         ArrayList<Entry> values = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
 
-            float val = (float) (Math.random() * 10);
+        for (int i = 0; i < 24; i++) {
+            float val = (float) (i* 10);
             values.add(new Entry(i, val));
         }
         LineDataSet set1;
