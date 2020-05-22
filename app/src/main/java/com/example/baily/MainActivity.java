@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         mTVfpw = (TextView) findViewById(R.id.lp_findPwd);
         usingDB();
 
+
+
+
+
         AutoLogin();
 
         // 터치 입력 처리 //findID,findPW
