@@ -78,7 +78,7 @@ public class RegisterPage extends AppCompatActivity {
         reg_textEdt = (EditText) findViewById(R.id.reg_idEdt);
         reg_pwdEdt = (EditText) findViewById(R.id.reg_pwdEdt);
         reg_repwdEdt = (EditText) findViewById(R.id.reg_repwdEdt);
-        reg_emailEdt = (EditText) findViewById(R.id.reg_emailEdt);
+        reg_emailEdt = (EditText) findViewById(R.id.reg_emailnumEdt);
         reg_confirBtn = (Button) findViewById(R.id.reg_confirmBtn);
         usingDB();
         Get_Internet(this);

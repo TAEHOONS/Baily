@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase db;
 
     EditText mETid, mETpw;
-    Button mBloin;
-    TextView mTVeid, mTVepw, mTVfid, mTVfpw;
+    Button mBloin,mBfid,mBfpw;
+    TextView mTVeid, mTVepw;
 
 
     @Override
@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         mBloin = (Button) findViewById(R.id.lp_logBtn);
         mTVeid = (TextView) findViewById(R.id.lp_Errorid);
         mTVepw = (TextView) findViewById(R.id.lp_Errorpw);
-        mTVfid = (TextView) findViewById(R.id.lp_findID);
-        mTVfpw = (TextView) findViewById(R.id.lp_findPwd);
+        mBfid = (Button) findViewById(R.id.lp_findid);
+        mBfpw = (Button) findViewById(R.id.lp_findpw);
         usingDB();
 
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         AutoLogin();
 
         // 터치 입력 처리 //findID,findPW
-        mTVfid.setOnTouchListener(new View.OnTouchListener() {
+        mBfid.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        mTVfpw.setOnTouchListener(new View.OnTouchListener() {
+        mBfpw.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent e) {
                 switch (e.getAction()) {
                     case MotionEvent.ACTION_DOWN:

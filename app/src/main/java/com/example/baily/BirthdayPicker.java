@@ -57,7 +57,7 @@ public class BirthdayPicker extends Dialog {
 
     public void getPickerdata() {
         mYear.setMaxValue(cYear);
-        mYear.setMinValue(cYear - 12);
+        mYear.setMinValue(cYear - 5);
         mYear.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); // 데이터 선택 시 editText 방지
         mYear.setWrapSelectorWheel(false);
         mYear.setValue(cYear);
