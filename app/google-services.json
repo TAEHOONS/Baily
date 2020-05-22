@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "56008395603",
+    "firebase_url": "https://baily-mom.firebaseio.com",
+    "project_id": "baily-mom",
+    "storage_bucket": "baily-mom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56008395603:android:b7c5ebf9119a099d566fa6",
+        "android_client_info": {
+          "package_name": "com.example.baily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56008395603-6g336kc5jus1r98k9eosjv0a909nt9p4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.baily",
+            "certificate_hash": "88404f1f9141fcc500172a709aa37f7f5af17430"
+          }
+        },
+        {
+          "client_id": "56008395603-f9kbumrrfkv5nsda31svpm96l2dlg0rj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRk6G0wudbogyHvlztdPCEAEnn9LosJOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56008395603-f9kbumrrfkv5nsda31svpm96l2dlg0rj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

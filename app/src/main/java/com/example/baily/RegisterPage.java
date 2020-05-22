@@ -1,5 +1,6 @@
 package com.example.baily;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,8 +18,21 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //ID중복체크를 위한 VALIDDATE 클래스
 //public class ValidateRequest extends StringRequest{}
@@ -29,10 +43,12 @@ public class RegisterPage extends AppCompatActivity {
     private String userPasswordCk;
     private String userEmail;
 
-    //TextView lb_id;
+   // FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     EditText reg_textEdt;
     EditText reg_repwdEdt;
     EditText reg_pwdEdt;
+    EditText reg_nameEdt;
+    EditText reg_emailEdt;
     Button reg_confirBtn;
 
     //여기에 추가적으로 인증번호
@@ -57,15 +73,19 @@ public class RegisterPage extends AppCompatActivity {
 
 
         //lb_id=(TextView)findViewById(R.id.lb_id);
+
+        reg_nameEdt = (EditText) findViewById(R.id.reg_nameEdt);
         reg_textEdt = (EditText) findViewById(R.id.reg_idEdt);
-        reg_repwdEdt = (EditText) findViewById(R.id.reg_repwdEdt);
         reg_pwdEdt = (EditText) findViewById(R.id.reg_pwdEdt);
+        reg_repwdEdt = (EditText) findViewById(R.id.reg_repwdEdt);
+        reg_emailEdt = (EditText) findViewById(R.id.reg_emailEdt);
         reg_confirBtn = (Button) findViewById(R.id.reg_confirmBtn);
         usingDB();
         Get_Internet(this);
 
         InsertData("200112", "1111");
     }
+
 
     //비밀번호 중복 체크
     private void ChkPwd(String userPassword, String userPasswordCk) {
@@ -76,8 +96,20 @@ public class RegisterPage extends AppCompatActivity {
         }
     }
 
+
     //최종 회원가입 버튼 입력 처리
     public void m_regRegClick(View v) {
+        //디비에 들어가는 버튼
+        reg_confirBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                putFireStore(reg_textEdt.getText().toString());
+
+
+                //여기 있던자리
+
+            }
+        });
         switch (v.getId()) {
             case R.id.reg_confirmBtn: {
                 mgetPassword = reg_pwdEdt.getText().toString();
@@ -120,6 +152,7 @@ public class RegisterPage extends AppCompatActivity {
                     ad.show();
                 }
 
+
             }
 
             case R.id.reg_numsendBtn: {
@@ -142,7 +175,7 @@ public class RegisterPage extends AppCompatActivity {
         }
     }
 
-
+    //인터넷 연결 확인
     public static void Get_Internet(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -168,6 +201,7 @@ public class RegisterPage extends AppCompatActivity {
         values.put("pw", userPw);
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
+
     }
 
 
@@ -194,5 +228,49 @@ public class RegisterPage extends AppCompatActivity {
     private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
+    }
+
+    // FireBase에 회원가입 정보넣기
+    public class member {
+
+        public String name,pw,email;
+        public member() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public member(String name,String password, String email) {
+            this.name=name;
+            this.pw = password;
+            this.email = email;
+        }
+
+    }
+
+    public void putFireStore(String id){
+        FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+        member member = new member(reg_nameEdt.getText().toString(),reg_pwdEdt.getText().toString(),reg_emailEdt.getText().toString());
+
+
+
+
+
+// Add a new document with a generated ID
+
+
+// Add a new document with a generated ID
+        fdb.collection("member").document(id)
+                .set(member)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("입력", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("에러", "Error writing document", e);
+                    }
+                });
     }
 }
