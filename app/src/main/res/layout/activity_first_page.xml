@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".FirstPage">
+    tools:context=".babyPlus.FirstPage">
 
     //아기 정보입력
 

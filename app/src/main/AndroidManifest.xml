@@ -13,25 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".main.setting"></activity>
-        <activity android:name=".BirthdayPicker" />
-        <activity android:name=".FindPwPage3" />
-        <activity android:name=".FindPwPage2" />
-        <activity android:name=".FindPwPage" />
-        <activity android:name=".FindIdPage2" />
-        <activity android:name=".FindIdPage" />
-        <activity android:name=".ThirdPage" />
-        <activity android:name=".SecondPage">
+        <activity android:name=".babyPlus.BirthdayPicker" />
+        <activity android:name=".log.FindPwPage3" />
+        <activity android:name=".log.FindPwPage2" />
+        <activity android:name=".log.FindPwPage" />
+        <activity android:name=".log.FindIdPage2" />
+        <activity android:name=".log.FindIdPage" />
+        <activity android:name=".babyPlus.ThirdPage" />
+        <activity android:name=".babyPlus.SecondPage">
 
         </activity>
-        <activity android:name=".FirstPage" />
+        <activity android:name=".babyPlus.FirstPage" />
         <activity android:name=".main.MainPage"></activity>
         <activity android:name=".main.standard.FragStandard" />
         <activity android:name=".main.growth.FragGrowth" />
         <activity android:name=".main.home.FragHome" />
         <activity android:name=".main.FragRecode" />
         <activity android:name=".main.FragDiary" />
-        <activity android:name=".RegisterPage" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".log.RegisterPage" />
+        <activity android:name=".log.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

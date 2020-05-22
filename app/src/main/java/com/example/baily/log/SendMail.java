@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.log;
 
 import android.content.Context;
 import android.util.Log;

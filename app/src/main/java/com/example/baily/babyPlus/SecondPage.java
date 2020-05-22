@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.babyPlus;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +21,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
+import com.example.baily.R;
+
 import java.io.FileOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;

@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.babyPlus;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.baily.R;
 
 public class HeightAndWeight extends Dialog {
 

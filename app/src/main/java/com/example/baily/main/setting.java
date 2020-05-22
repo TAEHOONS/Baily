@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.baily.DBlink;
-import com.example.baily.MainActivity;
+import com.example.baily.log.MainActivity;
 import com.example.baily.R;
 
 public class setting extends AppCompatActivity {

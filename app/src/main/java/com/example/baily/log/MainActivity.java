@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.log;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.baily.DBlink;
+import com.example.baily.R;
+import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.main.MainPage;
 import com.google.firebase.firestore.FirebaseFirestore;
 

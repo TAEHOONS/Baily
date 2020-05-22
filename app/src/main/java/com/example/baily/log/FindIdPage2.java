@@ -1,8 +1,10 @@
-package com.example.baily;
+package com.example.baily.log;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.baily.R;
 
 public class FindIdPage2 extends AppCompatActivity {
 

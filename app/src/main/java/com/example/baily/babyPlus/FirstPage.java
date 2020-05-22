@@ -1,13 +1,13 @@
-package com.example.baily;
+package com.example.baily.babyPlus;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.baily.R;
 
 public class FirstPage extends AppCompatActivity {
 

@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="12"
-    tools:context=".SecondPage">
+    tools:context=".babyPlus.SecondPage">
 
     <LinearLayout
         android:layout_width="match_parent"

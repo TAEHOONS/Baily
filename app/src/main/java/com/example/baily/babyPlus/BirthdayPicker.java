@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.babyPlus;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+
+import com.example.baily.R;
 
 import java.util.Calendar;
 

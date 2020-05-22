@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.log;
 
 
 import android.content.ContentValues;
@@ -22,17 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.baily.DBlink;
+import com.example.baily.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.HashMap;
-import java.util.Map;
 
 //ID중복체크를 위한 VALIDDATE 클래스
 //public class ValidateRequest extends StringRequest{}

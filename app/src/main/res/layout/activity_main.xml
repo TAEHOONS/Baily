@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="300"
-    tools:context=".MainActivity">
+    tools:context=".log.MainActivity">
 
     //로그인 상태 표시
 
