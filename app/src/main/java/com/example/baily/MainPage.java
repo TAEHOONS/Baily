@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
-
+//20200521
 public class MainPage extends AppCompatActivity {
 
     private FragmentPagerAdapter fragmentPagerAdapter;
