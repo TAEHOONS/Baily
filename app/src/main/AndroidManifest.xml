@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".setting"></activity>
+        <activity android:name=".main.setting"></activity>
         <activity android:name=".BirthdayPicker" />
         <activity android:name=".FindPwPage3" />
         <activity android:name=".FindPwPage2" />
@@ -24,12 +24,12 @@
 
         </activity>
         <activity android:name=".FirstPage" />
-        <activity android:name=".MainPage"></activity>
-        <activity android:name=".FragStandard" />
-        <activity android:name=".FragGrowth" />
-        <activity android:name=".FragHome" />
-        <activity android:name=".FragRecode" />
-        <activity android:name=".FragDiary" />
+        <activity android:name=".main.MainPage"></activity>
+        <activity android:name=".main.standard.FragStandard" />
+        <activity android:name=".main.growth.FragGrowth" />
+        <activity android:name=".main.home.FragHome" />
+        <activity android:name=".main.FragRecode" />
+        <activity android:name=".main.FragDiary" />
         <activity android:name=".RegisterPage" />
         <activity android:name=".MainActivity">
             <intent-filter>

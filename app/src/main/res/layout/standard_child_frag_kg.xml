@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChildFragKg">
+    tools:context=".main.standard.ChildFragKg">
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/kgLineCart"
         android:layout_marginTop="20dp"

@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.baily.DBlink;
+import com.example.baily.MainActivity;
+import com.example.baily.R;
 
 public class setting extends AppCompatActivity {
 

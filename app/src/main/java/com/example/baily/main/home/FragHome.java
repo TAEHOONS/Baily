@@ -1,6 +1,5 @@
-package com.example.baily;
+package com.example.baily.main.home;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,12 +13,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +33,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import com.example.baily.DBlink;
+import com.example.baily.FirstPage;
+import com.example.baily.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#EAEEFA"
-    tools:context=".FragHome">
+    tools:context=".main.home.FragHome">
 
         //가이드라인(비율)
         <androidx.constraintlayout.widget.Guideline

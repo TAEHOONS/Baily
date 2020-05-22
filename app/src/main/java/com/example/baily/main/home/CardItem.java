@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.main.home;
 
 public class CardItem {
 

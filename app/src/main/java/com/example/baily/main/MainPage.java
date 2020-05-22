@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.main;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.baily.R;
 import com.google.android.material.tabs.TabLayout;
 //20200521
 public class MainPage extends AppCompatActivity {

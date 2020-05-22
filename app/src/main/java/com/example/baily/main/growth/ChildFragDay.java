@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.main.growth;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;

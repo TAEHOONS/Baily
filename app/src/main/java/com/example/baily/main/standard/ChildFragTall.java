@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.main.standard;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -117,10 +118,10 @@ public class ChildFragTall extends Fragment {
         LineData data2 = new LineData(dataSets);
 
         // black lines and points
-        set1.setColor(Color.RED);
-        set1.setCircleColor(Color.RED);
-        set2.setColor(Color.BLUE);
-        set2.setCircleColor(Color.BLUE);
+        set1.setColor(Color.BLUE);
+        set1.setCircleColor(Color.BLUE);
+        set2.setColor(Color.RED);
+        set2.setCircleColor(Color.RED);
         // set data
         tallCart.setData(data1);
         tallCart.setData(data2);

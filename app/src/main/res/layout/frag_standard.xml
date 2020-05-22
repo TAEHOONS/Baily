@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FragStandard">
+    tools:context=".main.standard.FragStandard">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/standard_Tablayout"
         android:layout_width="match_parent"

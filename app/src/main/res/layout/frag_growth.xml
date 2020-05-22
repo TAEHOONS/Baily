@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#EAEEFA"
-    tools:context=".FragGrowth">
+    tools:context=".main.growth.FragGrowth">
 
 
     <com.google.android.material.tabs.TabLayout
