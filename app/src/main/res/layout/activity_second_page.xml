@@ -119,15 +119,15 @@
 
                     <RadioGroup
                         android:id="@+id/sp_sexRG"
-                        android:layout_width="154dp"
-                        android:layout_height="53dp"
+                        android:layout_width="142dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bora2"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:textSize="20dp"
-                        android:background="@drawable/bora2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.98"
+                        app:layout_constraintHorizontal_bias="0.925"
                         app:layout_constraintStart_toEndOf="@+id/textView11"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -194,8 +194,8 @@
 
                     <TextView
                         android:id="@+id/sp_berthTV"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="156dp"
+                        android:layout_height="26dp"
 
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
@@ -206,7 +206,8 @@
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.484" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
