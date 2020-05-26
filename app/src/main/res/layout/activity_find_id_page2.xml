@@ -76,11 +76,11 @@
                 android:ems="10"
                 android:hint="G-Mail을 입력해주세요"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="@+id/view3"
+                app:layout_constraintBottom_toTopOf="@+id/fip_emailBtn"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/view3"
                 app:layout_constraintTop_toTopOf="@+id/view3"
-                app:layout_constraintVertical_bias="0.22" />
+                app:layout_constraintVertical_bias="0.72" />
 
             <Button
                 android:id="@+id/fip_emailBtn"

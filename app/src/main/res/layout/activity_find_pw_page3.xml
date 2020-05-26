@@ -32,7 +32,7 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="보내드렸습니다 인증번호를."
+            android:text="보내드렸습니다 인증번호를"
             android:gravity="center"
             android:textColor="#161B5B"
             android:textSize="30sp"
@@ -75,7 +75,8 @@
                 android:background="@drawable/bora"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/fpp_emailnumEdt"
@@ -85,11 +86,11 @@
                 android:ems="10"
                 android:hint="인증번호"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="@+id/view6"
+                app:layout_constraintBottom_toTopOf="@+id/fpp_emailnumBtn"
                 app:layout_constraintEnd_toEndOf="@+id/view6"
                 app:layout_constraintStart_toStartOf="@+id/view6"
                 app:layout_constraintTop_toTopOf="@+id/view6"
-                app:layout_constraintVertical_bias="0.251" />
+                app:layout_constraintVertical_bias="0.758" />
 
             <Button
                 android:id="@+id/fpp_emailnumBtn"

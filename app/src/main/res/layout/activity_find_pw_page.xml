@@ -68,7 +68,6 @@
                 android:background="@drawable/bora"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,7 +83,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/view4"
                 app:layout_constraintStart_toStartOf="@+id/view4"
                 app:layout_constraintTop_toTopOf="@+id/view4"
-                app:layout_constraintVertical_bias="0.714" />
+                app:layout_constraintVertical_bias="0.758" />
 
             <Button
                 android:id="@+id/fpp_idBtn"
@@ -98,7 +97,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/view4"
                 app:layout_constraintStart_toStartOf="@+id/view4"
                 app:layout_constraintTop_toTopOf="@+id/view4"
-                app:layout_constraintVertical_bias="0.809" />
+                app:layout_constraintVertical_bias="0.783" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
