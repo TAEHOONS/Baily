@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="회원가입시 등록한"
+            android:fontFamily="@font/godo"
             android:textColor="#161B5B"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +34,8 @@
             android:id="@+id/fi_tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이름을 입력해 주세요"
+            android:text="이름을 입력해주세요"
+            android:fontFamily="@font/godo"
             android:textColor="#161B5B"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,8 +64,8 @@
                 android:background="@drawable/bora"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/fip_nameBtn"
@@ -72,11 +74,13 @@
                 android:background="@drawable/bora2"
                 android:onClick="mOnClick"
                 android:text="확인"
+                android:fontFamily="@font/godo"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view"
-                app:layout_constraintVertical_bias="0.809" />
+                app:layout_constraintVertical_bias="0.783" />
 
             <EditText
                 android:id="@+id/fip_nameEdt"
@@ -85,12 +89,13 @@
                 android:background="@drawable/graytextbox"
                 android:ems="10"
                 android:hint="이름을 적어주세요"
+                android:fontFamily="@font/godo"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toTopOf="@+id/fip_nameBtn"
                 app:layout_constraintEnd_toEndOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view"
-                app:layout_constraintVertical_bias="0.714" />
+                app:layout_constraintVertical_bias="0.758" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 

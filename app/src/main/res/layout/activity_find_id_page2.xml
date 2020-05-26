@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="회원가입 시 등록한"
+            android:text="회원가입시 등록한"
+            android:fontFamily="@font/godo"
             android:textColor="#161B5B"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이메일을 입력해주세요"
+            android:fontFamily="@font/godo"
             android:gravity="center"
             android:textColor="#161B5B"
             android:textSize="30sp"
@@ -65,8 +67,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.851" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <EditText
                 android:id="@+id/fip_emailEdt"
@@ -75,12 +76,13 @@
                 android:background="@drawable/graytextbox"
                 android:ems="10"
                 android:hint="G-Mail을 입력해주세요"
+                android:fontFamily="@font/godo"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toTopOf="@+id/fip_emailBtn"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/view3"
                 app:layout_constraintTop_toTopOf="@+id/view3"
-                app:layout_constraintVertical_bias="0.72" />
+                app:layout_constraintVertical_bias="0.758" />
 
             <Button
                 android:id="@+id/fip_emailBtn"
@@ -88,12 +90,14 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bora2"
                 android:text="확인"
+                android:fontFamily="@font/godo"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view3"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="@+id/view3"
                 app:layout_constraintTop_toTopOf="@+id/view3"
-                app:layout_constraintVertical_bias="0.738" />
+                app:layout_constraintVertical_bias="0.783" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

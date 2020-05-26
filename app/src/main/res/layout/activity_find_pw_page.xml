@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EAEEFA"
-    android:weightSum="10"
     android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".FindPwPage">
-
-
 
 
     <LinearLayout
@@ -17,31 +15,31 @@
         android:layout_height="0dp"
         android:layout_weight="5"
         android:gravity="center"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="비밀번호를 찾고자 하는"
-        android:textColor="#161B5B"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이디를 입력해 주세요"
+            android:text="비밀번호를 찾고자 하는"
+            android:fontFamily="@font/godo"
             android:textColor="#161B5B"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디를 입력해주세요"
+            android:fontFamily="@font/godo"
+            android:textColor="#161B5B"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </LinearLayout>
@@ -52,8 +50,7 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:gravity="center"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -78,6 +75,7 @@
                 android:background="@drawable/graytextbox"
                 android:ems="10"
                 android:hint="아이디"
+                android:fontFamily="@font/godo"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toTopOf="@+id/fpp_idBtn"
                 app:layout_constraintEnd_toEndOf="@+id/view4"
@@ -89,10 +87,11 @@
                 android:id="@+id/fpp_idBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:background="@drawable/bora2"
                 android:onClick="mOnClick"
                 android:text="확인"
+                android:fontFamily="@font/godo"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view4"
                 app:layout_constraintEnd_toEndOf="@+id/view4"
                 app:layout_constraintStart_toStartOf="@+id/view4"
