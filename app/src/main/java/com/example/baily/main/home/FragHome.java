@@ -34,11 +34,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.DBlink;
-import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.R;
+import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.caldate;
 import com.example.baily.main.MainPage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -192,10 +199,10 @@ public class FragHome extends Fragment {
         return view;
     }
 
-    // 사진작업
+    // 사진작업 터치시 갤러리 사진 선택
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        // 갤러리 접속 사진 가져오기
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
@@ -204,6 +211,8 @@ public class FragHome extends Fragment {
 
         }
 
+        setPhotoNextScreen();
+        savePhotoFB();
     }
 
     public static Drawable getResizeFileImage(String file_route, int size, int width, int height){
@@ -223,7 +232,63 @@ public class FragHome extends Fragment {
     }
 
 
+    // 사진 divice 에 저장
+    public void setPhotoNextScreen() {
+        Log.d("저장", "저장 시작");
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
 
+        Bitmap bm;
+        Log.d("저장", "비트맵 받기");
+
+        bm = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+
+        try {
+
+            Log.d("저장", "파일 생성 전");
+
+            FileOutputStream fos = getActivity().openFileOutput(mBabyname + ".jpg", 0);
+            //   사진 저장 타입, 사진 퀄리티, 사진 명칭
+            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            fos.flush();
+            fos.close();
+
+        } catch (Exception e) { }
+
+
+    }
+
+
+
+    // FB 에 사진 저장
+    public void savePhotoFB(){
+
+        // 사진 db 저장
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference mountainsRef = storageRef.child("Baily/"+mId+"/"+mBabyname+ ".jpg");
+
+        imageview.setDrawingCacheEnabled(true);
+        imageview.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("저장", "실패: ");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d("저장", "onSuccess: ");
+
+            }
+        });
+    }
 
 
 

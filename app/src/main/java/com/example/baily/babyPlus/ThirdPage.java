@@ -68,6 +68,7 @@ public class ThirdPage extends AppCompatActivity {
         Log.d("3page", "tvName = " + (tvName.getText().toString() + ".jpg"));
         Log.d("3page", "imgpath = " + imgpath);
 
+        //  이미지 좌표 가져와서 보기
         try {
             Bitmap bm = BitmapFactory.decodeFile(imgpath);
             imageview.setImageBitmap(bm);
