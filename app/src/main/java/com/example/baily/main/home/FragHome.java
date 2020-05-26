@@ -330,7 +330,8 @@ public class FragHome extends Fragment {
 
         caldate caldate=new caldate(BYear,BMonth,BDay);
 
-        homeDday.setText("D - "+caldate.result);
+        int calint=Integer.valueOf(caldate.result);
+        homeDday.setText("D + "+caldate.result+", "+(calint/30)+" 개월 "+(calint%30)+"일");
 
     }
 

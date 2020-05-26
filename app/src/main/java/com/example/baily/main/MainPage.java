@@ -95,8 +95,7 @@ public class MainPage extends AppCompatActivity {
             BDay = cursor.getInt(5);
         }
         caldate caldate=new caldate(BYear,BMonth,BDay);
-
-        DayText.setText("D - "+caldate.result);
+        DayText.setText("D + "+caldate.result);
     }
 
 
