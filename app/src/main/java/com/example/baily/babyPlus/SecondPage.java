@@ -24,6 +24,10 @@ import android.widget.Toast;
 import com.example.baily.R;
 
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,7 +37,7 @@ public class SecondPage extends AppCompatActivity {
     TextView mHWATV, mBirthTV;
     RadioGroup mSexRG;
     EditText mName, mHeadlin;
-    String mHeight, mWeight;
+    String mHeight = "0", mWeight = "0";
     int mbirthY, mbirthM, mbirthD;
 
     private String mLoginId;
@@ -52,7 +56,18 @@ public class SecondPage extends AppCompatActivity {
         imageview = (CircleImageView) findViewById(R.id.sp_profileImg);
 
         activity = this;
+        Date curTime = Calendar.getInstance().getTime();
 
+        SimpleDateFormat yearDate = new SimpleDateFormat("yyyy", Locale.getDefault());
+        SimpleDateFormat monthDate = new SimpleDateFormat("MM", Locale.getDefault());
+        SimpleDateFormat dayDate = new SimpleDateFormat("dd", Locale.getDefault());
+
+        mbirthY = Integer.valueOf(yearDate.format(curTime));
+        mbirthM = Integer.valueOf(monthDate.format(curTime));
+        mbirthD = Integer.valueOf(dayDate.format(curTime));
+
+
+        mBirthTV.setText(mbirthY + "년 " + mbirthM + "월 " + mbirthD + "일");
     }
 
 
@@ -95,7 +110,15 @@ public class SecondPage extends AppCompatActivity {
         intent.putExtra("year", mbirthY);
         intent.putExtra("month", mbirthM);
         intent.putExtra("day", mbirthD);
-        intent.putExtra("headline", mHeadlin.getText().toString());
+
+        String headlinNull=mHeadlin.getText().toString();
+        headlinNull = headlinNull.trim();
+
+
+        if (headlinNull.getBytes().length <= 0)
+            intent.putExtra("headline", "0");
+        else
+            intent.putExtra("headline", mHeadlin.getText().toString());
         intent.putExtra("height", mHeight);
         intent.putExtra("weight", mWeight);
         setPhotoNextScreen();
@@ -187,7 +210,7 @@ public class SecondPage extends AppCompatActivity {
 
             Log.d("저장", "파일 생성 전");
             FileOutputStream fos = openFileOutput(mName.getText().toString() + ".jpg", 0);
-           //   사진 저장 타입, 사진 퀄리티, 사진 명칭
+            //   사진 저장 타입, 사진 퀄리티, 사진 명칭
             bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
             fos.flush();
             fos.close();
@@ -201,7 +224,7 @@ public class SecondPage extends AppCompatActivity {
 
     }
 
-    public static Drawable getResizeFileImage(String file_route, int size, int width, int height){
+    public static Drawable getResizeFileImage(String file_route, int size, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = size;
         Bitmap src = BitmapFactory.decodeFile(file_route, options);
@@ -209,14 +232,13 @@ public class SecondPage extends AppCompatActivity {
         return new BitmapDrawable(resized);
     }
 
-    public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height){
+    public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = size;
         Bitmap src = BitmapFactory.decodeResource(resources, id, options);
         Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
         return resized;
     }
-
 
 
 }

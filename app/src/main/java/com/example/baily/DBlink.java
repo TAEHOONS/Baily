@@ -29,7 +29,12 @@ public class DBlink extends SQLiteOpenHelper{
                 "name text,sex text,ybirth Integer,mbirth Integer,dbirthy Integer,headline text" +
                 ",tall text,weight text,parents text,imgpath text);";
         db.execSQL(sql);
-
+        // 아기 정보 누적
+        sql = "create table growlog" +
+                "(_id integer primary key autoincrement," +
+                "name text,weight text,tall text,headline text" +
+                ",ybirth Integer,mbirth Integer,dbirthy Integer,parents text);";
+        db.execSQL(sql);
     }
 
     @Override
