@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="아기정보 입력"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="30dp" />
         </LinearLayout>
@@ -60,6 +61,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="아기 추가하기"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="30dp" />
         </LinearLayout>
@@ -96,6 +98,7 @@
                 android:background="@drawable/bora2"
                 android:onClick="mOnClick"
                 android:text="새로운 아기를 직접 등록합니다"
+                android:fontFamily="@font/godo"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view2"
                 app:layout_constraintEnd_toEndOf="@+id/view2"
