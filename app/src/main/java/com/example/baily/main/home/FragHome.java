@@ -218,21 +218,6 @@ public class FragHome extends Fragment {
         savePhotoFB();
     }
 
-    public static Drawable getResizeFileImage(String file_route, int size, int width, int height){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = size;
-        Bitmap src = BitmapFactory.decodeFile(file_route, options);
-        Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
-        return new BitmapDrawable(resized);
-    }
-
-    public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = size;
-        Bitmap src = BitmapFactory.decodeResource(resources, id, options);
-        Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
-        return resized;
-    }
 
 
     // 사진 divice 에 저장

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //AutoLogin();
+        AutoLogin();
 
         // 터치 입력 처리 //findID,findPW
         mBfid.setOnTouchListener(new View.OnTouchListener() {
