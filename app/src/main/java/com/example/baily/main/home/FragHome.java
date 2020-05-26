@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baily.DBlink;
 import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.R;
+import com.example.baily.caldate;
+import com.example.baily.main.MainPage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +51,8 @@ import static android.app.Activity.RESULT_OK;
 public class FragHome extends Fragment {
 
     String dbName = "user.db";
-    int dbVersion = 3;
+    int dbVersion = 3,BYear,BMonth,BDay;;
+
     private DBlink helper;
     private SQLiteDatabase db;
     // mId= 현재 사용 id, baby, 사진경로
@@ -64,7 +67,7 @@ public class FragHome extends Fragment {
     //기록한 몸무게, 키, 머리둘레 표시 텍스트
     TextView kgInfor, cmInfor, girthInfo;
     //기록한 날짜와 D-day표시 텍스트
-    TextView recodeDate, recodeDday;
+    TextView recodeDate, recodeDday,homeDday;
     String recodeDateNow,kg,cm,head,nowDday;
     //기록할때 몸무게, 키, 머리둘레 입력하는 에디트텍스트
     EditText kgAdd,cmAdd,girthAdd;
@@ -100,7 +103,7 @@ public class FragHome extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
-        getDBdata();
+
         kgInfor = (TextView)view.findViewById(R.id.h_kgInfoTxt);
         cmInfor = (TextView)view.findViewById(R.id.h_cmInfoTxt);
         girthInfo = (TextView)view.findViewById(R.id.h_girthInfoTxt);
@@ -108,8 +111,10 @@ public class FragHome extends Fragment {
         menuBtn = (ImageView) view.findViewById(R.id.h_bSelectBtn);
         imageview = (CircleImageView) view.findViewById(R.id.h_profileImg);
         tvName = (TextView) view.findViewById(R.id.h_bNameTxt);
-        tvName.setText(mBabyname);
+        homeDday = (TextView) view.findViewById(R.id.h_birthDdayTxt);
 
+        getDBdata();
+        tvName.setText(mBabyname);
         try {
             Bitmap bm = BitmapFactory.decodeFile(imgpath);
             imageview.setImageBitmap(bm);
@@ -154,6 +159,7 @@ public class FragHome extends Fragment {
                         girthAdd = (EditText)dialogView.findViewById(R.id.h_girthAddEdt);
                         recodeDate = (TextView)view.findViewById(R.id.h_recodeDateTxt);
                         recodeDday = (TextView)view.findViewById(R.id.h_recodeDdayTxt);
+
                         kg = kgAdd.getText().toString()+"kg";
                         cm =cmAdd.getText().toString()+"cm";
                         head =girthAdd.getText().toString()+"cm";
@@ -233,6 +239,8 @@ public class FragHome extends Fragment {
 
     // 현재값 받기
     private void getDBdata() {
+
+
         String sql = "select * from thisusing where _id=1"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
 
@@ -247,11 +255,17 @@ public class FragHome extends Fragment {
         sql = "select * from baby where name='" + mBabyname + "'"; // 검색용
         cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
+            BYear = cursor.getInt(3);
+            BMonth = cursor.getInt(4);
+            BDay = cursor.getInt(5);
             imgpath = cursor.getString(10);
 
             Log.d("Home", "db받기 path = " + imgpath);
         }
 
+        caldate caldate=new caldate(BYear,BMonth,BDay);
+
+        homeDday.setText("D - "+caldate.result);
 
     }
 
@@ -300,7 +314,11 @@ public class FragHome extends Fragment {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
 
+            ((MainPage)getActivity()).getDay();
+
+
         }
+
     }
 
 

@@ -30,9 +30,9 @@
                 android:gravity="center"
                 android:layout_weight="7">
                 <TextView
+                    android:id="@+id/mft_dDayTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/mft_dDayTxt"
                     android:text="D-day       "/>
             </LinearLayout>
             // 오른쪽 상단에 설정 레이아웃으로 이동할수 있는 설정버튼

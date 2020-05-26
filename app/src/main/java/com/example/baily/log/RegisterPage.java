@@ -228,6 +228,7 @@ public class RegisterPage extends AppCompatActivity {
     public class member {
 
         public String name,pw,email;
+
         public member() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
