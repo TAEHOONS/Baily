@@ -24,16 +24,16 @@
                 android:id="@+id/lb_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름"
                 android:fontFamily="@font/godo"
+                android:text="이름"
                 android:textColor="#000000"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.268"
+                app:layout_constraintHorizontal_bias="0.244"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219" />
+                app:layout_constraintVertical_bias="0.228" />
 
             <EditText
                 android:id="@+id/reg_nameEdt"
@@ -42,6 +42,7 @@
                 android:background="@drawable/edittext"
                 android:ems="10"
                 android:gravity="center"
+                android:fontFamily="@font/godo"
                 android:hint="이름을 입력해주세요"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,16 +70,16 @@
                 android:id="@+id/lb_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아이디"
                 android:fontFamily="@font/godo"
+                android:text="아이디"
                 android:textColor="#000000"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.284"
+                app:layout_constraintHorizontal_bias="0.257"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219" />
+                app:layout_constraintVertical_bias="0.228" />
 
             <Button
                 android:id="@+id/reg_idckBtn"
@@ -86,16 +87,16 @@
                 android:layout_height="26dp"
 
                 android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
                 android:onClick="m_regIdChkClick"
                 android:text="중복확인"
-                android:fontFamily="@font/godo"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/reg_idEdt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.446"
+                app:layout_constraintHorizontal_bias="0.526"
                 app:layout_constraintStart_toEndOf="@+id/lb_id"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.727" />
+                app:layout_constraintVertical_bias="0.8" />
 
             <EditText
                 android:id="@+id/reg_idEdt"
@@ -103,15 +104,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:hint="      아이디를 입력해주세요"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:hint="아이디를 입력해주세요"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.777" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
@@ -125,23 +126,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/lb_pwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="비밀번호"
-                android:fontFamily="@font/godo"
-                android:textColor="#000000"
-                android:textSize="23sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.318"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.123" />
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="@+id/lb_pwd"
+            app:layout_constraintTop_toBottomOf="@+id/lb_pwd">
 
             <EditText
                 android:id="@+id/reg_pwdEdt"
@@ -149,15 +136,29 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:hint="     비밀번호를 입력해주세요"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:hint="비밀번호를 입력해주세요"
                 android:inputType="textPassword"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.525"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.777" />
+
+            <TextView
+                android:id="@+id/lb_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/godo"
+                android:text="비밀번호"
+                android:textColor="#000000"
+                android:textSize="23sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.272"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,16 +180,16 @@
                 android:id="@+id/lb_rePwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 확인"
                 android:fontFamily="@font/godo"
+                android:text="비밀번호 확인"
                 android:textColor="#000000"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.371"
+                app:layout_constraintHorizontal_bias="0.315"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219" />
+                app:layout_constraintVertical_bias="0.228" />
 
             <EditText
                 android:id="@+id/reg_repwdEdt"
@@ -196,12 +197,12 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:hint="    비밀번호를 확인해주세요"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:hint="비밀번호를 확인해주세요"
                 android:inputType="textPassword"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.525"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.777" />
@@ -225,16 +226,16 @@
                 android:id="@+id/lb_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이메일"
                 android:fontFamily="@font/godo"
+                android:text="이메일"
                 android:textColor="#000000"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.298"
+                app:layout_constraintHorizontal_bias="0.257"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219" />
+                app:layout_constraintVertical_bias="0.228" />
 
             <EditText
                 android:id="@+id/editText6"
@@ -242,12 +243,12 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:hint="       G-Mail만 가능합니다"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:hint="G-Mail만 가능합니다"
                 android:inputType="textEmailAddress"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.525"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.777" />
@@ -271,34 +272,33 @@
                 android:id="@+id/ib_mailConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이메일 인증번호"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
+                android:text="이메일 인증번호"
                 android:textColor="#000000"
                 android:textSize="23sp"
                 app:layout_constraintBottom_toTopOf="@+id/reg_emailnumEdt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.393"
+                app:layout_constraintHorizontal_bias="0.339"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.516" />
+                app:layout_constraintVertical_bias="0.437" />
 
             <EditText
                 android:id="@+id/reg_emailnumEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
-                android:gravity="center"
                 android:ems="10"
-                android:hint="   인증번호 입력"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:hint="인증번호 입력"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/reg_numsendBtn"
-                app:layout_constraintEnd_toEndOf="@+id/ib_mailConfirm"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/ib_mailConfirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.861" />
+                app:layout_constraintVertical_bias="0.406" />
 
             <Button
                 android:id="@+id/reg_numsendBtn"
