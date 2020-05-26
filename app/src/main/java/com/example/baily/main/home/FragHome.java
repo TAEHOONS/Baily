@@ -174,7 +174,10 @@ public class FragHome extends Fragment {
 
                         List<CardItem> growDataList= new ArrayList<>();
                         MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
-                        adapter.addItem(position,new CardItem(kg, cm, head, recodeDateNow, nowDday));
+
+                        caldate caldate=new caldate(BYear,BMonth,BDay);
+                        String date="D + "+caldate.result;
+                        adapter.addItem(position,new CardItem(kg, cm, head, recodeDateNow, date));
                         recyclerView.setAdapter(adapter);
 
                     }
