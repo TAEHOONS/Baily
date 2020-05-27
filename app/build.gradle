@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.baily"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation files('libs/mail.jar')
     implementation files('libs/additionnal.jar')
+
+    implementation 'com.android.support:recyclerview-v7:29.0.0'
+    implementation 'com.android.support:support-v4:29.0.0'
+    implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
     
     // 유진 작성 - 겹치는건 주석처리함
   //  implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -54,7 +58,6 @@ dependencies {
     implementation "gun0912.ted:tedpermission:2.1.0"
   //  implementation 'de.hdodenhof:circleimageview:2.2.0'
     //noinspection GradleCompatible
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
     //noinspection GradleCompatible
     implementation 'com.android.support:cardview-v7:26.1.0'
  //   testImplementation 'junit:junit:4.12'

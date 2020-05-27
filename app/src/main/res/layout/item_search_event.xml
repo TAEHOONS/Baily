@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7ac9b9"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/text_eventName"
+            android:layout_width="270dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/text_eventDate_year"
+            android:layout_width="60dp"
+            android:layout_height="38dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/text_eventName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_eventDate_month_day"
+            android:layout_width="60dp"
+            android:layout_height="38dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/text_eventName"
+            app:layout_constraintTop_toBottomOf="@id/text_eventDate_year" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
