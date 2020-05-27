@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="140"
-    tools:context=".RegisterPage">
+    tools:context=".log.RegisterPage">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -238,7 +238,7 @@
                 app:layout_constraintVertical_bias="0.228" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
@@ -299,6 +299,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.406" />
+            <TextView
+                android:id="@+id/emailAuth_time_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:00"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/reg_numsendBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reg_emailnumEdt"
+                app:layout_constraintTop_toBottomOf="@+id/ib_mailConfirm" />
+
 
             <Button
                 android:id="@+id/reg_numsendBtn"
