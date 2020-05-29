@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
+
     <!--        아기변경및 추가 + 사진과 기본정보(Linear1-1)-->
     <LinearLayout
         android:id="@+id/baseLayout"
@@ -122,14 +123,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="459dp"
+            android:layout_height="416dp"
             android:background="#EAEEFA"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/h_rView"
                 android:layout_width="match_parent"
-                android:layout_height="396dp"
+                android:layout_height="match_parent"
                 tools:listitem="@layout/item_card" />
         </LinearLayout>
     </LinearLayout>

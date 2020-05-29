@@ -228,7 +228,7 @@ public class ChildFragDay extends Fragment {
 
         growDayFeverCart.setDescription(null);
         growDayFeverCart.setData(dayFeverData);
-        avgFeverTxt.setText(avgFever+" 도");
+        avgFeverTxt.setText(avgFever+" °C");
 
         return view;
     }
