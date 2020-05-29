@@ -1,11 +1,14 @@
 package com.example.baily.main.home;
 
+import java.util.ArrayList;
+
 public class CardItem {
 
-
+    int _id;
     private String kg,cm,head,recodeDateNow,nowDday;
 
-    public CardItem(String kg, String cm, String head, String recodeDateNow, String nowDday) {
+    public CardItem(int _id, String kg, String cm, String head, String recodeDateNow, String nowDday) {
+        this._id = _id;
         this.kg=kg;
         this.cm=cm;
         this.head=head;
@@ -13,6 +16,13 @@ public class CardItem {
         this.nowDday=nowDday;
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public String getKg() {
         return kg;
@@ -53,4 +63,5 @@ public class CardItem {
     public void setRecodeDateNow(String recodeDateNow) {
         this.recodeDateNow = recodeDateNow;
     }
+
 }

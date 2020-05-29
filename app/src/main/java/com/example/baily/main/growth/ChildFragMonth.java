@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -105,25 +107,25 @@ public class ChildFragMonth extends Fragment {
         ArrayList<Entry> cmValues = new ArrayList<>();
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 13; i++) {
             float val = (float) (Math.random() * 10);
             mKgSum = mKgSum + val;
             kgValues.add(new Entry(i, val));
             monthAvgWeight = mKgSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 13; i++) {
             float val = (float) (Math.random() * 10);
             mCmSum = mCmSum + val;
             cmValues.add(new Entry(i, val));
             monthAvgHeight = mCmSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 13; i++) {
             float val = (float) (Math.random() * 10);
             mHeadSum = mHeadSum + val;
             headValues.add(new Entry(i, val));
             monthAvgHead = mHeadSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 13; i++) {
             float val = (float) 36.5;
             mFeverSum = mFeverSum + val;
             feverValues.add(new Entry(i, val));
@@ -166,16 +168,71 @@ public class ChildFragMonth extends Fragment {
         dayFever.setColor(Color.GREEN);
         dayFever.setCircleColor(Color.GREEN);
 
+        //몸무게 차트 속성
+        XAxis kgXAxis = growMonthKgCart.getXAxis(); // x 축 설정
+        kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        kgXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis kgYAxisLeft = growMonthKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        kgYAxisLeft.setDrawLabels(false);
+        kgYAxisLeft.setDrawAxisLine(false);
+        kgYAxisLeft.setDrawGridLines(false);
+        YAxis kgYAxisRight = growMonthKgCart.getAxisRight(); //Y축의 오른쪽면 설정
+        kgYAxisRight.setLabelCount(4, true);
+
         // set data
+        growMonthKgCart.setDescription(null);
         growMonthKgCart.setData(dayKgData);
         monthAvgKgTxt.setText(monthAvgWeight+" kg");
 
+        //신장 차트 속성
+        XAxis cmXAxis = growMonthCmCart.getXAxis(); // x 축 설정
+        cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        cmXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis cmYAxisLeft = growMonthCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        cmYAxisLeft.setDrawLabels(false);
+        cmYAxisLeft.setDrawAxisLine(false);
+        cmYAxisLeft.setDrawGridLines(false);
+        YAxis cmYAxisRight = growMonthCmCart.getAxisRight(); //Y축의 오른쪽면 설정
+        cmYAxisRight.setLabelCount(4, true);
+
+        growMonthCmCart.setDescription(null);
         growMonthCmCart.setData(dayCmData);
         monthAvgCmTxt.setText(monthAvgHeight+" cm");
 
+
+        //머리둘레 차트 속성
+        XAxis headXAxis = growMonthHeadCart.getXAxis(); // x 축 설정
+        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        headXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis headYAxisLeft = growMonthHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        headYAxisLeft.setDrawLabels(false);
+        headYAxisLeft.setDrawAxisLine(false);
+        headYAxisLeft.setDrawGridLines(false);
+        YAxis headYAxisRight = growMonthHeadCart.getAxisRight(); //Y축의 오른쪽면 설정
+        headYAxisRight.setLabelCount(4, true);
+
+        growMonthHeadCart.setDescription(null);
         growMonthHeadCart.setData(dayHeadData);
         monthAvgHeadTxt.setText(monthAvgHead+" cm");
 
+
+        //체온 차트 속성
+        XAxis feverXAxis = growMonthFeverCart.getXAxis(); // x 축 설정
+        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
+        feverXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis feverYAxisLeft = growMonthFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        feverYAxisLeft.setDrawLabels(false);
+        feverYAxisLeft.setDrawAxisLine(false);
+        feverYAxisLeft.setDrawGridLines(false);
+        YAxis feverYAxisRight = growMonthFeverCart.getAxisRight(); //Y축의 오른쪽면 설정
+        feverYAxisRight.setLabelCount(4, true);
+
+
+        growMonthFeverCart.setDescription(null);
         growMonthFeverCart.setData(dayFeverData);
         monthAvgFeverTxt.setText(monthAvgFever+" °C");
         return view;

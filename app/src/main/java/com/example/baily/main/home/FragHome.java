@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,10 +80,15 @@ public class FragHome extends Fragment {
     View dialogView;
     //프로필변경관련
     private final int GET_GALLERY_IMAGE = 150;
-
+    Context context;
     Date now = new Date();
     SimpleDateFormat sFormat;
-    private int position=0;
+    private int position;
+    //기록 키값,,,하려고 했으나..
+    int id;
+
+    //리사이클러뷰 어댑터
+    MyRecyclerAdapter adapter;
 
     public static Fragment newInstance() {
         FragHome fragHome = new FragHome();
@@ -108,6 +111,8 @@ public class FragHome extends Fragment {
         view = inflater.inflate(R.layout.frag_home, container, false);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.h_rView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
 
@@ -172,13 +177,21 @@ public class FragHome extends Fragment {
                         head =girthAdd.getText().toString()+"cm";
                         nowDday =sFormat.format(now);
 
+
+
                         List<CardItem> growDataList= new ArrayList<>();
                         MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
+                        recyclerView.setAdapter(adapter);
 
                         caldate caldate=new caldate(BYear,BMonth,BDay);
                         String date="D + "+caldate.result;
-                        adapter.addItem(position,new CardItem(kg, cm, head, recodeDateNow, date));
-                        recyclerView.setAdapter(adapter);
+
+                        CardItem cardItem = new CardItem(id,kg, cm, head, recodeDateNow, date);
+                        growDataList.add(cardItem);
+                        //position++;
+                        //adapter.notifyItemInserted(position);
+                        adapter.notifyDataSetChanged();
+
 
                     }
                 });
