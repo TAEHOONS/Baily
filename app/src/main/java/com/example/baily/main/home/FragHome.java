@@ -1,6 +1,7 @@
 package com.example.baily.main.home;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -84,6 +85,7 @@ public class FragHome extends Fragment {
     View dialogView;
     //프로필변경관련
     private final int GET_GALLERY_IMAGE = 150;
+    RecyclerView recyclerView;
 
     Date now = new Date();
     SimpleDateFormat sFormat;
@@ -108,7 +110,7 @@ public class FragHome extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_home, container, false);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.h_rView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.h_rView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
@@ -127,6 +129,7 @@ public class FragHome extends Fragment {
         homeDday = (TextView) view.findViewById(R.id.h_birthDdayTxt);
 
         getDBdata();
+        loadgrowLog();
         tvName.setText(mBabyname);
         try {
             Bitmap bm = BitmapFactory.decodeFile(imgpath);
@@ -174,20 +177,15 @@ public class FragHome extends Fragment {
                         recodeDate = (TextView)view.findViewById(R.id.h_recodeDateTxt);
                         recodeDday = (TextView)view.findViewById(R.id.h_recodeDdayTxt);
 
-                        kg = kgAdd.getText().toString()+"kg";
-                        cm =cmAdd.getText().toString()+"cm";
-                        head =girthAdd.getText().toString()+"cm";
-                        fever = feverAdd.getText().toString()+"°C";
-                        nowDday =sFormat.format(now);
+                        kg=kgAdd.getText().toString();
+                        cm=cmAdd.getText().toString();
+                        head=girthAdd.getText().toString();
+                        fever=feverAdd.getText().toString();
 
-
-                        MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
 
                         caldate caldate=new caldate(BYear,BMonth,BDay);
-                        String date="D + "+caldate.result;
-                        CardItem growData=new CardItem(kg, cm, head, fever, recodeDateNow, date);
-                        growDataList.add(growData);
-                        recyclerView.setAdapter(adapter);
+
+                        growInsert(kg, cm, head, fever, recodeDateNow,caldate.result);
 
                     }
                 });
@@ -210,6 +208,65 @@ public class FragHome extends Fragment {
 
         return view;
     }
+
+    public void putLocalDB(){
+        ContentValues values = new ContentValues();
+
+
+        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+        //db.insert("baby", null, values);
+
+
+//        String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
+//        db.execSQL(sqlUpdate) ;
+//        sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id="+mLoginId+"" ;
+//        db.execSQL(sqlUpdate) ;
+
+    }
+
+    private void loadgrowLog(){
+
+        String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
+
+        Cursor c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            String k,sqlcm,h,f,r,d;
+             k = c.getString(2);
+             sqlcm = c.getString(3);
+             h = c.getString(4);
+             f = c.getString(5);
+             r=c.getString(6);
+             d=c.getString(7);
+            growInsert(k, sqlcm, h, f, r,d);
+        }
+    }
+
+
+    // 페이지 recycle 넣기
+    private void growInsert(String kg,String cm,String head,String fever,String recodeDateNow
+    ,String date){
+        ContentValues values = new ContentValues();
+
+
+
+        Log.d("growInsert","name="+mBabyname+",   parents"+mId);
+
+
+        kg = kg+"kg";
+        cm =cm+"cm";
+        head =head+"cm";
+        fever = fever+"°C";
+        String thisdate="D + "+date;
+
+        MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
+        CardItem growData=new CardItem(kg, cm, head, fever, recodeDateNow, thisdate);
+
+        growDataList.add(growData);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+
 
     // 사진작업 터치시 갤러리 사진 선택
     @Override
@@ -255,8 +312,6 @@ public class FragHome extends Fragment {
 
     }
 
-
-
     // FB 에 사진 저장
     public void savePhotoFB(){
 
@@ -286,10 +341,6 @@ public class FragHome extends Fragment {
             }
         });
     }
-
-
-
-
 
 
     // DB 연결
