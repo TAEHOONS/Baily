@@ -57,7 +57,8 @@ public class caldate {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return result;
+        Log.d("datetest", "getProDay:  result="+result.substring(1));
+        return result.substring(1);
 
     }
 }

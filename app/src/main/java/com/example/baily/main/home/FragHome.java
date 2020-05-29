@@ -60,6 +60,7 @@ public class FragHome extends Fragment {
     String dbName = "user.db";
     int dbVersion = 3,BYear,BMonth,BDay;;
 
+    private ArrayList<CardItem> growList= new ArrayList<>();
     private DBlink helper;
     private SQLiteDatabase db;
     // mId= 현재 사용 id, baby, 사진경로
@@ -170,14 +171,18 @@ public class FragHome extends Fragment {
                         kg = kgAdd.getText().toString()+"kg";
                         cm =cmAdd.getText().toString()+"cm";
                         head =girthAdd.getText().toString()+"cm";
-                        nowDday =sFormat.format(now);
 
-                        List<CardItem> growDataList= new ArrayList<>();
-                        MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
+
+
 
                         caldate caldate=new caldate(BYear,BMonth,BDay);
                         String date="D + "+caldate.result;
-                        adapter.addItem(position,new CardItem(kg, cm, head, recodeDateNow, date));
+
+                        CardItem itemdata=new CardItem(kg, cm, head, recodeDateNow, date);
+
+                        growList.add(itemdata);
+                        MyRecyclerAdapter adapter = new MyRecyclerAdapter(growList);
+
                         recyclerView.setAdapter(adapter);
 
                     }

@@ -14,12 +14,17 @@ import java.util.List;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder>{
     private final List<CardItem> mDataList;
+
     public MyRecyclerAdapter(List<CardItem> dataList){
         mDataList=dataList;
     }
+
+
     public interface MyRecyclerViewClickListener{
         void onItemClicked(int position);
     }
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,11 +47,14 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     public int getItemCount() {
         return mDataList.size();
     }
+
     public void addItem(int position, CardItem item){
         mDataList.add(position, item);
         notifyItemInserted(position);
         notifyItemChanged(position,mDataList.size());
     }
+
+    // card item의 id와 연결
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView kgInfor;
         TextView cmInfor;
