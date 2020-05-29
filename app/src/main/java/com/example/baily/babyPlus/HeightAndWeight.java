@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -18,7 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.baily.NumberTextWatcher;
 import com.example.baily.R;
+
+import java.util.Locale;
 
 public class HeightAndWeight extends Dialog {
 
@@ -36,6 +40,16 @@ public class HeightAndWeight extends Dialog {
         mCompleBtn=(Button)findViewById(R.id.haw_inputBtn);
         mHeightET = (EditText)findViewById(R.id.haw_heightET);
         mWeightET = (EditText)findViewById(R.id.haw_weightET);
+
+        // 입력 문자에 . 찍기
+        Locale locale = new Locale("es", "AR"); // For example Argentina
+        int numDecs = 2; // Let's use 2 decimals
+        // 찍을 edit 설정
+        TextWatcher tw = new NumberTextWatcher(mHeightET, locale, numDecs);
+        mHeightET.addTextChangedListener(tw);
+        tw = new NumberTextWatcher(mWeightET, locale, numDecs);
+        mWeightET.addTextChangedListener(tw);
+
 
         mCompleBtn.setOnClickListener(new View.OnClickListener() {
             @Override

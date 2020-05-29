@@ -3,12 +3,13 @@ package com.example.baily.main.home;
 public class CardItem {
 
 
-    private String kg,cm,head,recodeDateNow,nowDday;
+    private String kg,cm,head,fever,recodeDateNow,nowDday;
 
-    public CardItem(String kg, String cm, String head, String recodeDateNow, String nowDday) {
+    public CardItem(String kg, String cm, String head, String fever, String recodeDateNow, String nowDday) {
         this.kg=kg;
         this.cm=cm;
         this.head=head;
+        this.fever=fever;
         this.recodeDateNow=recodeDateNow;
         this.nowDday=nowDday;
     }
@@ -24,6 +25,10 @@ public class CardItem {
 
     public String getHead() {
         return head;
+    }
+
+    public String getfever() {
+        return fever;
     }
 
     public String getNowDday() {
@@ -44,6 +49,10 @@ public class CardItem {
 
     public void setKg(String kg) {
         this.kg = kg;
+    }
+
+    public void setfever(String fever) {
+        this.fever = fever;
     }
 
     public void setNowDday(String nowDday) {

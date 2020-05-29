@@ -12,6 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".main.diary.AddEvent"
+            android:theme="@style/Animation.AppCompat.DropDownUp" />
+        <activity android:name=".main.diary.ShowEventInfo" />
+        <activity android:name=".main.diary.SearchEvent" />
         <activity android:name=".main.setting"></activity>
         <activity android:name=".babyPlus.BirthdayPicker" />
         <activity android:name=".log.FindPwPage3" />
@@ -28,8 +33,11 @@
         <activity android:name=".main.standard.FragStandard" />
         <activity android:name=".main.growth.FragGrowth" />
         <activity android:name=".main.home.FragHome" />
-        <activity android:name=".main.FragRecode" />
-        <activity android:name=".main.FragDiary" />
+        <activity android:name=".main.recode.FragRecode" />
+        <activity android:name=".main.recode.FragRecodeSelect" />
+        <activity android:name=".main.diary.FragDiary" />
+        <activity android:name=".main.diary.FragDiaryDate" />
+        <activity android:name=".main.diary.FragDiaryAlbum" />
         <activity android:name=".log.RegisterPage" />
         <activity android:name=".log.MainActivity">
             <intent-filter>

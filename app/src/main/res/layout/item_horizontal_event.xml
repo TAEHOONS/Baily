@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="105dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:minWidth="100dp"
+        android:layout_height="90dp"
+        android:background="#649f93">
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center_horizontal"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/item_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/item_name"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:text="2017-16-46"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_name"
+            android:gravity="center_horizontal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

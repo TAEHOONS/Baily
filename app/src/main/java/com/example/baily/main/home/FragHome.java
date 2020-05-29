@@ -60,6 +60,7 @@ public class FragHome extends Fragment {
     String dbName = "user.db";
     int dbVersion = 3,BYear,BMonth,BDay;;
 
+    private ArrayList<CardItem> growList= new ArrayList<>();
     private DBlink helper;
     private SQLiteDatabase db;
     // mId= 현재 사용 id, baby, 사진경로
@@ -71,13 +72,14 @@ public class FragHome extends Fragment {
     private CircleImageView imageview;
     private TextView tvName;
     ImageView writeBtn, menuBtn, profileImg;
+    private List<CardItem> growDataList= new ArrayList<>();
     //기록한 몸무게, 키, 머리둘레 표시 텍스트
-    TextView kgInfor, cmInfor, girthInfo;
+    TextView kgInfor, cmInfor, girthInfo,feverInfo;
     //기록한 날짜와 D-day표시 텍스트
     TextView recodeDate, recodeDday,homeDday;
-    String recodeDateNow,kg,cm,head,nowDday;
+    String recodeDateNow,kg,cm,head,fever,nowDday;
     //기록할때 몸무게, 키, 머리둘레 입력하는 에디트텍스트
-    EditText kgAdd,cmAdd,girthAdd;
+    EditText kgAdd,cmAdd,girthAdd,feverAdd;
     //기록버튼 눌렀을 때 dialog로 기록하는 거 띄움
     View dialogView;
     //프로필변경관련
@@ -108,12 +110,16 @@ public class FragHome extends Fragment {
         view = inflater.inflate(R.layout.frag_home, container, false);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.h_rView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
 
         kgInfor = (TextView)view.findViewById(R.id.h_kgInfoTxt);
         cmInfor = (TextView)view.findViewById(R.id.h_cmInfoTxt);
         girthInfo = (TextView)view.findViewById(R.id.h_girthInfoTxt);
+        feverInfo = (TextView)view.findViewById(R.id.h_feverInfoTxt);
         writeBtn = (ImageView)view.findViewById(R.id.h_writeBtn);
         menuBtn = (ImageView) view.findViewById(R.id.h_bSelectBtn);
         imageview = (CircleImageView) view.findViewById(R.id.h_profileImg);
@@ -164,20 +170,23 @@ public class FragHome extends Fragment {
                         kgAdd = (EditText)dialogView.findViewById(R.id.h_kgAddEdt);
                         cmAdd = (EditText)dialogView.findViewById(R.id.h_cmAddEdt);
                         girthAdd = (EditText)dialogView.findViewById(R.id.h_girthAddEdt);
+                        feverAdd = (EditText)dialogView.findViewById(R.id.h_feverAddEdt);
                         recodeDate = (TextView)view.findViewById(R.id.h_recodeDateTxt);
                         recodeDday = (TextView)view.findViewById(R.id.h_recodeDdayTxt);
 
                         kg = kgAdd.getText().toString()+"kg";
                         cm =cmAdd.getText().toString()+"cm";
                         head =girthAdd.getText().toString()+"cm";
+                        fever = feverAdd.getText().toString()+"°C";
                         nowDday =sFormat.format(now);
 
-                        List<CardItem> growDataList= new ArrayList<>();
+
                         MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
 
                         caldate caldate=new caldate(BYear,BMonth,BDay);
                         String date="D + "+caldate.result;
-                        adapter.addItem(position,new CardItem(kg, cm, head, recodeDateNow, date));
+                        CardItem growData=new CardItem(kg, cm, head, fever, recodeDateNow, date);
+                        growDataList.add(growData);
                         recyclerView.setAdapter(adapter);
 
                     }

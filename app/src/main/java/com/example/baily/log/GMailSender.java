@@ -27,11 +27,15 @@ public class GMailSender extends javax.mail.Authenticator {
         this.password = password;
         emailCode = createEmailCode();
         Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", mailhost);
-        props.put("mail.smtp.auth","true");
-        props.put("mail.smtp.port", "587");                 // mail 포트 465, 587
-        props.put("mail.smtp.starttls","true");
+        props.setProperty("mail.transport.protocol", "smtp");
+        props.setProperty("mail.host", mailhost);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.quitwait", "false");
 
         //구글에서 지원하는 smtp 정보를 받아와 MimeMessage 객체에 전달해준다.
         session = Session.getDefaultInstance(props, this);
@@ -39,41 +43,37 @@ public class GMailSender extends javax.mail.Authenticator {
 
     public String getEmailCode() {
         return emailCode;
-    }
+    } //생성된 이메일 인증코드 반환
 
-   // 생성된 이메일
-    //인증코드 반환
-
-    private String createEmailCode() {
-        //이메일 인증코드 생성
-                String[] str = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private String createEmailCode() { //이메일 인증코드 생성
+        String[] str = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+                "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         String newCode = new String();
+
         for (int x = 0; x < 8; x++) {
             int random = (int) (Math.random() * str.length);
             newCode += str[random];
         }
+
         return newCode;
     }
 
     protected PasswordAuthentication getPasswordAuthentication() {
-        //해당 메서드에서 사용자의 계정 (id & password) 을 받아 인증받으며 인증 실패시 기본값으로 반환됨.
+        //해당 메서드에서 사용자의 계정(id & password)을 받아 인증받으며 인증 실패시 기본값으로 반환됨.
         return new PasswordAuthentication(user, password);
     }
 
     public synchronized void sendMail(String subject, String body, String recipients) throws Exception {
         MimeMessage message = new MimeMessage(session);
-        DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
-        //본문 내용을 byte단위로 쪼개어 전달
-    message.setSender(new InternetAddress(user));
-        //본인 이메일 설정
-    message.setSubject(subject);
-        //해당 이메일의 본문 설정
+        DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain")); //본문 내용을 byte단위로 쪼개어 전달
+        message.setSender(new InternetAddress(user));  //본인 이메일 설정
+        message.setSubject(subject); //해당 이메일의 본문 설정
         message.setDataHandler(handler);
         if (recipients.indexOf(',') > 0)
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
-        else message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
-        Transport.send(message);
-       // 메시지 전달
+        else
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+        Transport.send(message); //메시지 전달
     }
 
     public class ByteArrayDataSource implements DataSource {
@@ -96,8 +96,10 @@ public class GMailSender extends javax.mail.Authenticator {
         }
 
         public String getContentType() {
-            if (type == null) return "application/octet-stream";
-            else return type;
+            if (type == null)
+                return "application/octet-stream";
+            else
+                return type;
         }
 
         public InputStream getInputStream() throws IOException {

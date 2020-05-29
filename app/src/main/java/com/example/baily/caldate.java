@@ -57,6 +57,10 @@ public class caldate {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(result.contains("-"))
+        return result.substring(1);
+       else
         return result;
 
     }

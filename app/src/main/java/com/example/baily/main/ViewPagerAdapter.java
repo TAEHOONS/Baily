@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.baily.main.diary.FragDiary;
 import com.example.baily.main.growth.FragGrowth;
 import com.example.baily.main.home.FragHome;
+import com.example.baily.main.recode.FragRecode;
 import com.example.baily.main.standard.FragStandard;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {

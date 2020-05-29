@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".main.diary.FragDiaryDate">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar">>
+
+                <TextView
+                    android:id="@+id/ymdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="90dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/customcalendar_view"
+                android:layout_width="fill_parent"
+                android:layout_height="500dp"
+                android:paddingLeft="10dp"
+
+                android:paddingRight="10dp"
+                app:compactCalendarBackgroundColor="#ffffff"
+                app:compactCalendarCurrentDayIndicatorStyle="no_fill_large_indicator"
+                app:compactCalendarCurrentDayTextColor="#d24646"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="#b4d6ec"
+                app:compactCalendarCurrentSelectedDayIndicatorStyle="no_fill_large_indicator"
+                app:compactCalendarEventIndicatorStyle="small_indicator"
+                app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="false"
+                app:compactCalendarTargetHeight="500dp"
+                app:compactCalendarTextColor="#000000"
+                app:compactCalendarTextSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/horizontal_event_layout"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/horizontal_event_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

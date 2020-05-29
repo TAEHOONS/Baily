@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.baily.NumberTextWatcher;
 import com.example.baily.R;
 
 import java.io.FileOutputStream;
@@ -54,6 +56,12 @@ public class SecondPage extends AppCompatActivity {
         mBirthTV = (TextView) findViewById(R.id.sp_berthTV);
         mSexRG = (RadioGroup) findViewById(R.id.sp_sexRG);
         imageview = (CircleImageView) findViewById(R.id.sp_profileImg);
+
+
+        Locale locale = new Locale("es", "AR"); // For example Argentina
+        int numDecs = 2; // Let's use 2 decimals
+        TextWatcher tw = new NumberTextWatcher(mHeadlin, locale, numDecs);
+        mHeadlin.addTextChangedListener(tw);
 
         activity = this;
         Date curTime = Calendar.getInstance().getTime();
@@ -113,7 +121,6 @@ public class SecondPage extends AppCompatActivity {
 
         String headlinNull=mHeadlin.getText().toString();
         headlinNull = headlinNull.trim();
-
 
         if (headlinNull.getBytes().length <= 0)
             intent.putExtra("headline", "0");

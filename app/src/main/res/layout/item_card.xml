@@ -98,6 +98,19 @@
                 android:layout_weight="1"
                 android:id="@+id/h_girthInfoTxt"
                 android:text="머리둘레"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_temperature2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:id="@+id/h_feverInfoTxt"
+                android:text="체온"/>
         </LinearLayout>
 
     </LinearLayout>
