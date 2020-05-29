@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,6 +71,7 @@ public class FragHome extends Fragment {
     private CircleImageView imageview;
     private TextView tvName;
     ImageView writeBtn, menuBtn, profileImg;
+    private List<CardItem> growDataList= new ArrayList<>();
     //기록한 몸무게, 키, 머리둘레 표시 텍스트
     TextView kgInfor, cmInfor, girthInfo;
     //기록한 날짜와 D-day표시 텍스트
@@ -80,15 +83,10 @@ public class FragHome extends Fragment {
     View dialogView;
     //프로필변경관련
     private final int GET_GALLERY_IMAGE = 150;
-    Context context;
+
     Date now = new Date();
     SimpleDateFormat sFormat;
-    private int position;
-    //기록 키값,,,하려고 했으나..
-    int id;
-
-    //리사이클러뷰 어댑터
-    MyRecyclerAdapter adapter;
+    private int position=0;
 
     public static Fragment newInstance() {
         FragHome fragHome = new FragHome();
@@ -113,6 +111,7 @@ public class FragHome extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
 
@@ -178,20 +177,13 @@ public class FragHome extends Fragment {
                         nowDday =sFormat.format(now);
 
 
-
-                        List<CardItem> growDataList= new ArrayList<>();
                         MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
-                        recyclerView.setAdapter(adapter);
 
                         caldate caldate=new caldate(BYear,BMonth,BDay);
                         String date="D + "+caldate.result;
-
-                        CardItem cardItem = new CardItem(id,kg, cm, head, recodeDateNow, date);
-                        growDataList.add(cardItem);
-                        //position++;
-                        //adapter.notifyItemInserted(position);
-                        adapter.notifyDataSetChanged();
-
+                        CardItem growData=new CardItem(kg, cm, head, recodeDateNow, date);
+                        growDataList.add(growData);
+                        recyclerView.setAdapter(adapter);
 
                     }
                 });
