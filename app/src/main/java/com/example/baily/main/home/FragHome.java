@@ -89,26 +89,22 @@ public class FragHome extends Fragment {
     private int position=0;
 
     public static Fragment newInstance() {
-        Log.d("Fraghome", "newInstance: start");
         FragHome fragHome = new FragHome();
         return fragHome;
     }
 
     @Override
     public void onAttach(Context context) {
-        Log.d("Fraghome", "newInstance: start");
         super.onAttach(context);
 
         if (context instanceof Activity) {
             activity = (Activity) context;
         }
-        Log.d("Fraghome", "onAttach: end");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("Fraghome", "onCreateView: start");
         view = inflater.inflate(R.layout.frag_home, container, false);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.h_rView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
@@ -205,15 +201,12 @@ public class FragHome extends Fragment {
                 startActivityForResult(intent, GET_GALLERY_IMAGE);
             }
         });
-
-        Log.d("Fraghome", "onCreateView: end");
         return view;
     }
 
     // 사진작업 터치시 갤러리 사진 선택
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Fraghome", "onActivityResult: start");
         // 갤러리 접속 사진 가져오기
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -225,14 +218,12 @@ public class FragHome extends Fragment {
 
         setPhotoNextScreen();
         savePhotoFB();
-        Log.d("Fraghome", "onActivityResult: end");
     }
 
 
 
     // 사진 divice 에 저장
     public void setPhotoNextScreen() {
-        Log.d("Fraghome", "setPhotoNextScreen: start");
         Log.d("저장", "저장 시작");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
@@ -253,8 +244,6 @@ public class FragHome extends Fragment {
             fos.close();
 
         } catch (Exception e) { }
-
-        Log.d("Fraghome", "setPhotoNextScreen: end");
     }
 
 
@@ -296,56 +285,38 @@ public class FragHome extends Fragment {
 
     // DB 연결
     private void usingDB(ViewGroup container) {
-        Log.d("Fraghome", "usingDB: start");
         helper = new DBlink(container.getContext(), dbName, null, dbVersion);
         db = helper.getWritableDatabase();
-        Log.d("Fraghome", "usingDB: end");
     }
 
     // 현재값 받기
     private void getDBdata() {
-        Log.d("Fraghome", "getDBdata: start");
-
         String sql = "select * from thisusing where _id=1"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
 
         // 기본 데이터
         while (cursor.moveToNext()) {
-            Log.d("Fraghome", "getDBdata: thisusing start");
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
-            Log.d("Fraghome", "getDBdata: thisusing end");
         }
-        Log.d("Fraghome", "getDBdata: thisusing end2");
         // 현재 사용 아기데이터
         sql = "select * from baby where name='" + mBabyname + "'"; // 검색용
         cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
-            Log.d("Fraghome", "getDBdata: baby Start");
             BYear = cursor.getInt(3);
             BMonth = cursor.getInt(4);
             BDay = cursor.getInt(5);
             imgpath = cursor.getString(10);
-
-            Log.d("Fraghome", "getDBdata: baby end1");
         }
-        Log.d("Fraghome", "getDBdata: baby end2");
-
-        Log.d("Fraghome", "getDBdata: caldate1 "+BYear+", "+BMonth+", "+BDay);
         caldate caldate=new caldate(BYear,BMonth,BDay);
-        Log.d("Fraghome", "getDBdata: caldate2");
         int calint=Integer.valueOf(caldate.result);
-        Log.d("Fraghome", "getDBdata: caldate3");
         homeDday.setText("D + "+caldate.result+", "+(calint/30)+" 개월 "+(calint%30)+"일");
-        Log.d("Fraghome", "getDBdata: caldate4");
-        Log.d("Fraghome", "getDBdata: end");
 
     }
 
     // 팝업 메뉴 생성 함수
     public void MakeMenuData(PopupMenu popup) {
-        Log.d("Fraghome", "MakeMenuData: start");
         menu = popup.getMenu();
         String sql = "select * from baby where parents='"+mId+"'"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
