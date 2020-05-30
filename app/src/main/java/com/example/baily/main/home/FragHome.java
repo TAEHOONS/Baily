@@ -59,28 +59,29 @@ import static android.app.Activity.RESULT_OK;
 public class FragHome extends Fragment {
 
     String dbName = "user.db";
-    int dbVersion = 3,BYear,BMonth,BDay;;
+    int dbVersion = 3, BYear, BMonth, BDay;
+    ;
 
-    private ArrayList<CardItem> growList= new ArrayList<>();
+    private ArrayList<CardItem> growList = new ArrayList<>();
     private DBlink helper;
     private SQLiteDatabase db;
     // mId= 현재 사용 id, baby, 사진경로
     private String mId, mBabyname, imgpath;
-    private int addItem=0;
+    private int addItem = 0;
     private Activity activity;
     private View view;
     Menu menu;
     private CircleImageView imageview;
     private TextView tvName;
     ImageView writeBtn, menuBtn, profileImg;
-    private List<CardItem> growDataList= new ArrayList<>();
+    private List<CardItem> growDataList = new ArrayList<>();
     //기록한 몸무게, 키, 머리둘레 표시 텍스트
-    TextView kgInfor, cmInfor, girthInfo,feverInfo;
+    TextView kgInfor, cmInfor, girthInfo, feverInfo;
     //기록한 날짜와 D-day표시 텍스트
-    TextView recodeDate, recodeDday,homeDday;
-    String recodeDateNow,kg,cm,head,fever,nowDday;
+    TextView recodeDate, recodeDday, homeDday;
+    String recodeDateNow, kg, cm, head, fever, nowDday;
     //기록할때 몸무게, 키, 머리둘레 입력하는 에디트텍스트
-    EditText kgAdd,cmAdd,girthAdd,feverAdd;
+    EditText kgAdd, cmAdd, girthAdd, feverAdd;
     //기록버튼 눌렀을 때 dialog로 기록하는 거 띄움
     View dialogView;
     //프로필변경관련
@@ -89,7 +90,7 @@ public class FragHome extends Fragment {
 
     Date now = new Date();
     SimpleDateFormat sFormat;
-    private int position=0;
+    private int position = 0;
 
     public static Fragment newInstance() {
         FragHome fragHome = new FragHome();
@@ -118,11 +119,11 @@ public class FragHome extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
 
-        kgInfor = (TextView)view.findViewById(R.id.h_kgInfoTxt);
-        cmInfor = (TextView)view.findViewById(R.id.h_cmInfoTxt);
-        girthInfo = (TextView)view.findViewById(R.id.h_girthInfoTxt);
-        feverInfo = (TextView)view.findViewById(R.id.h_feverInfoTxt);
-        writeBtn = (ImageView)view.findViewById(R.id.h_writeBtn);
+        kgInfor = (TextView) view.findViewById(R.id.h_kgInfoTxt);
+        cmInfor = (TextView) view.findViewById(R.id.h_cmInfoTxt);
+        girthInfo = (TextView) view.findViewById(R.id.h_girthInfoTxt);
+        feverInfo = (TextView) view.findViewById(R.id.h_feverInfoTxt);
+        writeBtn = (ImageView) view.findViewById(R.id.h_writeBtn);
         menuBtn = (ImageView) view.findViewById(R.id.h_bSelectBtn);
         imageview = (CircleImageView) view.findViewById(R.id.h_profileImg);
         tvName = (TextView) view.findViewById(R.id.h_bNameTxt);
@@ -158,9 +159,9 @@ public class FragHome extends Fragment {
         });
 
         //기록버튼 눌렀을 때
-        writeBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                dialogView = (View) View.inflate(activity, R.layout.write_dialog1,null);
+        writeBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialogView = (View) View.inflate(activity, R.layout.write_dialog1, null);
                 AlertDialog.Builder dlg = new AlertDialog.Builder(activity);
 
                 dlg.setTitle("새 기록 작성");
@@ -169,27 +170,27 @@ public class FragHome extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
-                        recodeDateNow =sFormat.format(now);//오늘 날짜
-                        kgAdd = (EditText)dialogView.findViewById(R.id.h_kgAddEdt);
-                        cmAdd = (EditText)dialogView.findViewById(R.id.h_cmAddEdt);
-                        girthAdd = (EditText)dialogView.findViewById(R.id.h_girthAddEdt);
-                        feverAdd = (EditText)dialogView.findViewById(R.id.h_feverAddEdt);
-                        recodeDate = (TextView)view.findViewById(R.id.h_recodeDateTxt);
-                        recodeDday = (TextView)view.findViewById(R.id.h_recodeDdayTxt);
+                        recodeDateNow = sFormat.format(now);//오늘 날짜
+                        kgAdd = (EditText) dialogView.findViewById(R.id.h_kgAddEdt);
+                        cmAdd = (EditText) dialogView.findViewById(R.id.h_cmAddEdt);
+                        girthAdd = (EditText) dialogView.findViewById(R.id.h_girthAddEdt);
+                        feverAdd = (EditText) dialogView.findViewById(R.id.h_feverAddEdt);
+                        recodeDate = (TextView) view.findViewById(R.id.h_recodeDateTxt);
+                        recodeDday = (TextView) view.findViewById(R.id.h_recodeDdayTxt);
 
-                        kg=kgAdd.getText().toString();
-                        cm=cmAdd.getText().toString();
-                        head=girthAdd.getText().toString();
-                        fever=feverAdd.getText().toString();
+                        kg = kgAdd.getText().toString();
+                        cm = cmAdd.getText().toString();
+                        head = girthAdd.getText().toString();
+                        fever = feverAdd.getText().toString();
 
 
-                        caldate caldate=new caldate(BYear,BMonth,BDay);
+                        caldate caldate = new caldate(BYear, BMonth, BDay);
 
-                        growInsert(kg, cm, head, fever, recodeDateNow,caldate.result);
+                        growJudge(kg, cm, head, fever, recodeDateNow, caldate.result);
 
                     }
                 });
-                dlg.setNegativeButton("취소",null);
+                dlg.setNegativeButton("취소", null);
                 dlg.show();
             }
 
@@ -209,7 +210,7 @@ public class FragHome extends Fragment {
         return view;
     }
 
-    public void putLocalDB(){
+    public void putLocalDB() {
         ContentValues values = new ContentValues();
 
 
@@ -224,48 +225,107 @@ public class FragHome extends Fragment {
 
     }
 
-    private void loadgrowLog(){
+    // 저장된 growlog DB 에 있는걸 불러와서 recycle에 넣기
+    private void loadgrowLog() {
 
         String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
 
         Cursor c = db.rawQuery(sql, null);
         while (c.moveToNext()) {
-            String k,sqlcm,h,f,r,d;
-             k = c.getString(2);
-             sqlcm = c.getString(3);
-             h = c.getString(4);
-             f = c.getString(5);
-             r=c.getString(6);
-             d=c.getString(7);
-            growInsert(k, sqlcm, h, f, r,d);
+            String k, sqlcm, h, f, r, d;
+            k = c.getString(2);
+            sqlcm = c.getString(3);
+            h = c.getString(4);
+            f = c.getString(5);
+            r = c.getString(6);
+            d = c.getString(7);
+            growInsert(k, sqlcm, h, f, r, d);
         }
     }
 
-
-    // 페이지 recycle 넣기
-    private void growInsert(String kg,String cm,String head,String fever,String recodeDateNow
-    ,String date){
+    // grow에 적용시키기 전에 저장할지 업데이트 할지 판단하는 함수
+    private void growJudge(String kg, String cm, String head, String fever, String recodeDateNow
+            , String date) {
         ContentValues values = new ContentValues();
 
+        String sql = "select * from growlog where date='"+recodeDateNow+"' AND name='"+mBabyname+"' "; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        String getDBdate = null;
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            getDBdate = cursor.getString(6);
+
+        }
 
 
-        Log.d("growInsert","name="+mBabyname+",   parents"+mId);
+        // if 오늘 날짜와 DB 내부 날짜와 일치하는게 있으면 if-update 실행
+        if (recodeDateNow.equals(getDBdate)) {
+            String growdate = "UPDATE growlog " +
+                    "SET weight='" + kg + "' ," +
+                    "tall='" + cm + "', " +
+                    "headline='" + head + "' ," +
+                    "fever='" + fever + "'" +
+                    "WHERE date='"+recodeDateNow+"' AND name='"+mBabyname+"'";
+            db.execSQL(growdate);
+
+            // db 에 저장및 업데이트 후 recycle 에 입력값-변경하기
+            growUpdate(kg,cm,head,fever,recodeDateNow,date);
+
+        } else {
+            // db 에 오늘 날짜게 없으니 저장하기 위한 else-insert 실행
+            values.put("name", mBabyname);
+            values.put("weight", kg);
+            values.put("tall", cm);
+            values.put("headline", head);
+            values.put("fever", fever);
+            values.put("date", recodeDateNow);
+            values.put("caldate", date);
+            values.put("parents", mId);
+            // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+            db.insert("growlog", null, values);
+
+            // db 에 저장 후 recycle 에 입력값-추가하기
+            growInsert(kg,cm,head,fever,recodeDateNow,date);
+        }
 
 
-        kg = kg+"kg";
-        cm =cm+"cm";
-        head =head+"cm";
-        fever = fever+"°C";
-        String thisdate="D + "+date;
+    }
+
+    // recycle 기존에 있는 맨윗값 바꾸기
+    private void growUpdate(String kg, String cm, String head, String fever, String recodeDateNow
+            , String date) {
+        kg = kg + "kg";
+        cm = cm + "cm";
+        head = head + "cm";
+        fever = fever + "°C";
+        String thisdate = "D + " + date;
+
+        // 현재 업데이트는 입력에만 달림
+        MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
+        CardItem growData = new CardItem(kg, cm, head, fever, recodeDateNow, thisdate);
+
+        growDataList.set(growDataList.size()-1,growData);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    // 페이지 recycle 넣기
+    private void growInsert(String kg, String cm, String head, String fever, String recodeDateNow
+            , String date) {
+
+        kg = kg + "kg";
+        cm = cm + "cm";
+        head = head + "cm";
+        fever = fever + "°C";
+        String thisdate = "D + " + date;
 
         MyRecyclerAdapter adapter = new MyRecyclerAdapter(growDataList);
-        CardItem growData=new CardItem(kg, cm, head, fever, recodeDateNow, thisdate);
+        CardItem growData = new CardItem(kg, cm, head, fever, recodeDateNow, thisdate);
 
         growDataList.add(growData);
         recyclerView.setAdapter(adapter);
     }
-
-
 
 
     // 사진작업 터치시 갤러리 사진 선택
@@ -283,7 +343,6 @@ public class FragHome extends Fragment {
         setPhotoNextScreen();
         savePhotoFB();
     }
-
 
 
     // 사진 divice 에 저장
@@ -307,18 +366,19 @@ public class FragHome extends Fragment {
             fos.flush();
             fos.close();
 
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
 
     }
 
     // FB 에 사진 저장
-    public void savePhotoFB(){
+    public void savePhotoFB() {
 
         // 사진 db 저장
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference mountainsRef = storageRef.child("Baily/"+mId+"/"+mBabyname+ ".jpg");
+        StorageReference mountainsRef = storageRef.child("Baily/" + mId + "/" + mBabyname + ".jpg");
 
         imageview.setDrawingCacheEnabled(true);
         imageview.buildDrawingCache();
@@ -376,60 +436,61 @@ public class FragHome extends Fragment {
             Log.d("Home", "db받기 path = " + imgpath);
         }
 
-        caldate caldate=new caldate(BYear,BMonth,BDay);
+        caldate caldate = new caldate(BYear, BMonth, BDay);
 
-        int calint=Integer.valueOf(caldate.result);
-        homeDday.setText("D + "+caldate.result+", "+(calint/30)+" 개월 "+(calint%30)+"일");
+        int calint = Integer.valueOf(caldate.result);
+        homeDday.setText("D + " + caldate.result + ", " + (calint / 30) + " 개월 " + (calint % 30) + "일");
 
     }
 
     // 팝업 메뉴 생성 함수
     public void MakeMenuData(PopupMenu popup) {
         menu = popup.getMenu();
-        String sql = "select * from baby where parents='"+mId+"'"; // 검색용
+        String sql = "select * from baby where parents='" + mId + "'"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
 
-        int maxbaby=0;
+        int maxbaby = 0;
         // 기본 데이터
         while (cursor.moveToNext()) {
             menu.add(0, maxbaby, 0, cursor.getString(1));
             maxbaby++;
-            Log.d("Home", "maxbaby = "+maxbaby+"   아기이름 = "+cursor.getString(1));
+            Log.d("Home", "maxbaby = " + maxbaby + "   아기이름 = " + cursor.getString(1));
         }
-        addItem=maxbaby;
-        Log.d("Home", "maxbaby = "+maxbaby+"   addItem = "+addItem);
-        if(addItem<=2)
+        addItem = maxbaby;
+        Log.d("Home", "maxbaby = " + maxbaby + "   addItem = " + addItem);
+        if (addItem <= 2)
             menu.add(0, maxbaby, 0, "+ 아기 추가하기");
 
     }
 
-    // 메뉴 터치 이벤트
+    // 팝업 메뉴 터치 이벤트
     public void MenuClick(MenuItem item) {
         Toast.makeText(getActivity(), "메뉴 터치 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        Log.d("Home", "item.getItemId() = "+item.getItemId()+"  additem = "+addItem );
+        Log.d("Home", "item.getItemId() = " + item.getItemId() + "  additem = " + addItem);
         if (item.getItemId() == addItem) {
             // + 버튼시
             Intent intent = new Intent(getContext(), FirstPage.class);
             startActivity(intent);
-        }
-        else if(item.getTitle().toString().equals(mBabyname)) {
+        } else if (item.getTitle().toString().equals(mBabyname)) {
             // 자기 터치
             Log.d("Home", "지금 데이터와 같음");
-            Log.d("Home", "item.getTitle() = "+item.getTitle());
-            Log.d("Home", "mBabyname = "+mBabyname);
-        }
-        else{
+            Log.d("Home", "item.getTitle() = " + item.getTitle());
+            Log.d("Home", "mBabyname = " + mBabyname);
+        } else {
             Log.d("Home", "아기 변경");
             // 지금 thisusing에 baby를 다른 baby 로 변경
-            String userId = "UPDATE thisusing SET baby='"+item.getTitle().toString()+"' WHERE _id=1";
-            db.execSQL(userId) ;
-
+            String userId = "UPDATE thisusing SET baby='" + item.getTitle().toString() + "' WHERE _id=1";
+            db.execSQL(userId);
+            userId = "UPDATE user SET lastbaby='" + item.getTitle().toString() + "' WHERE id='"+mId+"'";
+            db.execSQL(userId);
             // 새로 고침
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
 
-            ((MainPage)getActivity()).getDay();
+            ((MainPage) getActivity()).getDay();
 
+
+            growDataList.clear();
 
         }
 
