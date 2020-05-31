@@ -126,6 +126,7 @@ public class ChildFragHead  extends Fragment {
         set2.setColor(Color.RED);
         set2.setCircleColor(Color.RED);
 
+
         XAxis xAxis = headCart.getXAxis(); // x 축 설정
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스

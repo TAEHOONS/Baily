@@ -186,6 +186,7 @@ public class FragHome extends Fragment {
 
                         caldate caldate = new caldate(BYear, BMonth, BDay);
 
+
                         growJudge(kg, cm, head, fever, recodeDateNow, caldate.result);
 
                     }

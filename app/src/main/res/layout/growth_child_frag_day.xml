@@ -19,7 +19,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_before"
-                    android:id="@+id/beforeBtn"/>
+                    android:id="@+id/beforeBtn"
+                    android:onClick="onClick"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -32,7 +33,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_after"
-                    android:id="@+id/afterBtn"/>
+                    android:id="@+id/afterBtn"
+                    android:onClick="onClick"/>
             </LinearLayout>
             //차트
             <ScrollView

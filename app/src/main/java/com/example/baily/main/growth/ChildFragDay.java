@@ -2,11 +2,13 @@ package com.example.baily.main.growth;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ChildFragDay extends Fragment {
+public class ChildFragDay extends Fragment{
     private View view;
     private LineChart growDayKgCart, growDayCmCart, growDayHeadCart, growDayFeverCart;
     TextView avgKgTxt, avgCmTxt, avgHeadTxt, avgFeverTxt, dayDateTxt;
@@ -38,11 +40,11 @@ public class ChildFragDay extends Fragment {
     float headSum = 0;
     float feverSum = 0;
     ImageView beforeBtn,afterBtn;
-    String dayStartDate, dayEndDate;
+    String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat;
-
+    SimpleDateFormat sFormat,simpleDate;
+    int dStart, dEnd;
 
     public static ChildFragDay newInstance(){
         ChildFragDay childFragDay = new ChildFragDay();
@@ -65,69 +67,98 @@ public class ChildFragDay extends Fragment {
         beforeBtn = (ImageView)view.findViewById(R.id.beforeBtn);
         afterBtn = (ImageView)view.findViewById(R.id.afterBtn);
 
+        //차트 구간설정을 위한
+        simpleDate = new SimpleDateFormat("dd");
+
         sFormat = new SimpleDateFormat("MM월 dd일");
+        today =sFormat.format(date); //오늘날짜
         cal = Calendar.getInstance();
         plusCal = Calendar.getInstance();
 
+
         cal.setTime(date);
+        cal.add(Calendar.DATE, -6);
         dayStartDate =sFormat.format(cal.getTime());
         plusCal.setTime(date);
-        plusCal.add(Calendar.DATE, +7);
+        //plusCal.add(Calendar.DATE, +7);
         dayEndDate = sFormat.format(plusCal.getTime());
         dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+
+        dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
+        dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+
 
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE, -7);
+                cal.add(Calendar.DATE, -6);
                 dayStartDate =sFormat.format(cal.getTime());
 
-                plusCal.add(Calendar.DATE, -7);
+                plusCal.add(Calendar.DATE, -6);
                 dayEndDate = sFormat.format(plusCal.getTime());
                 dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+
+                dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
+                dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
             }
         });
         afterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE, +7);
-                dayStartDate =sFormat.format(cal.getTime());
+                //2000.00.00~마지막 날짜, 마지막날짜가 오늘날짜이면 더이상 넘어갈수 없게
+                if(today.equals(dayEndDate)){
+                    Toast.makeText(getActivity(), "오늘이후 기록이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    cal.add(Calendar.DATE, +6);
+                    dayStartDate =sFormat.format(cal.getTime());
 
-                plusCal.add(Calendar.DATE, +7);
-                dayEndDate = sFormat.format(plusCal.getTime());
-                dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+                    plusCal.add(Calendar.DATE, +6);
+                    dayEndDate = sFormat.format(plusCal.getTime());
+                    dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+
+                    dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
+                    dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
+                }
             }
         });
 
+        //차트에 들어가는 값
         ArrayList<Entry> kgValues = new ArrayList<>();
         ArrayList<Entry> cmValues = new ArrayList<>();
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
-        for (int i = 1; i < 8; i++) {
+
+        for (int i = dStart; i <= dEnd; i++) {
             float val = (float) (Math.random() * 10);
             kgSum = kgSum + val;
             kgValues.add(new Entry(i, val));
             avgWeight = kgSum/i;
         }
-        for (int i = 1; i < 8; i++) {
+
+        for (int i = dStart; i <= dEnd; i++) {
             float val = (float) (Math.random() * 10);
             cmSum = cmSum + val;
             cmValues.add(new Entry(i, val));
             avgHeight = cmSum/i;
         }
-        for (int i = 1; i < 8; i++) {
+        for (int i = dStart; i <= dEnd; i++) {
             float val = (float) (Math.random() * 10);
             headSum = headSum + val;
             headValues.add(new Entry(i, val));
             avgHead = headSum/i;
         }
-        for (int i = 1; i < 8; i++) {
+        for (int i = dStart; i <= dEnd; i++) {
             float val = (float) 36.5;
             feverSum = feverSum + val;
             feverValues.add(new Entry(i, val));
             avgFever = feverSum/i;
         }
+
         LineDataSet dayKg,dayCm,dayHead,dayFever;
+
         dayKg = new LineDataSet(kgValues, "몸무게");
         dayCm = new LineDataSet(cmValues, "신장");
         dayHead = new LineDataSet(headValues, "머리둘레");
@@ -215,7 +246,7 @@ public class ChildFragDay extends Fragment {
 
         //체온 차트 속성
         XAxis feverXAxis = growDayFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
+        feverXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         feverXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis feverYAxisLeft = growDayFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
@@ -232,6 +263,5 @@ public class ChildFragDay extends Fragment {
 
         return view;
     }
-
 
 }
