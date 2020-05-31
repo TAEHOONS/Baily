@@ -72,14 +72,14 @@ public class FragHome extends Fragment {
     private View view;
     Menu menu;
     private CircleImageView imageview;
-    private TextView tvName;
+    private TextView tvName,tvbabyKgCmTxt;
     ImageView writeBtn, menuBtn, profileImg;
     private List<CardItem> growDataList = new ArrayList<>();
     //기록한 몸무게, 키, 머리둘레 표시 텍스트
     TextView kgInfor, cmInfor, girthInfo, feverInfo;
     //기록한 날짜와 D-day표시 텍스트
     TextView recodeDate, recodeDday, homeDday;
-    String recodeDateNow, kg, cm, head, fever, nowDday;
+    String recodeDateNow, kg, cm, head, fever, Bheight,Bweight;
     //기록할때 몸무게, 키, 머리둘레 입력하는 에디트텍스트
     EditText kgAdd, cmAdd, girthAdd, feverAdd;
     //기록버튼 눌렀을 때 dialog로 기록하는 거 띄움
@@ -127,6 +127,7 @@ public class FragHome extends Fragment {
         menuBtn = (ImageView) view.findViewById(R.id.h_bSelectBtn);
         imageview = (CircleImageView) view.findViewById(R.id.h_profileImg);
         tvName = (TextView) view.findViewById(R.id.h_bNameTxt);
+        tvbabyKgCmTxt = (TextView) view.findViewById(R.id.h_babyKgCmTxt);
         homeDday = (TextView) view.findViewById(R.id.h_birthDdayTxt);
 
         getDBdata();
@@ -210,20 +211,6 @@ public class FragHome extends Fragment {
         return view;
     }
 
-    public void putLocalDB() {
-        ContentValues values = new ContentValues();
-
-
-        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
-        //db.insert("baby", null, values);
-
-
-//        String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
-//        db.execSQL(sqlUpdate) ;
-//        sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id="+mLoginId+"" ;
-//        db.execSQL(sqlUpdate) ;
-
-    }
 
     // 저장된 growlog DB 에 있는걸 불러와서 recycle에 넣기
     private void loadgrowLog() {
@@ -244,8 +231,7 @@ public class FragHome extends Fragment {
     }
 
     // grow에 적용시키기 전에 저장할지 업데이트 할지 판단하는 함수
-    private void growJudge(String kg, String cm, String head, String fever, String recodeDateNow
-            , String date) {
+    private void growJudge(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
         ContentValues values = new ContentValues();
 
         String sql = "select * from growlog where date='"+recodeDateNow+"' AND name='"+mBabyname+"' "; // 검색용
@@ -293,8 +279,10 @@ public class FragHome extends Fragment {
     }
 
     // recycle 기존에 있는 맨윗값 바꾸기
-    private void growUpdate(String kg, String cm, String head, String fever, String recodeDateNow
-            , String date) {
+    private void growUpdate(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
+        Bheight=cm;
+        Bweight=kg;
+
         kg = kg + "kg";
         cm = cm + "cm";
         head = head + "cm";
@@ -308,11 +296,14 @@ public class FragHome extends Fragment {
         growDataList.set(growDataList.size()-1,growData);
         recyclerView.setAdapter(adapter);
 
+        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
     }
 
-    // 페이지 recycle 넣기
-    private void growInsert(String kg, String cm, String head, String fever, String recodeDateNow
-            , String date) {
+    // recycle 넣기
+    private void growInsert(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
+
+        Bheight=cm;
+        Bweight=kg;
 
         kg = kg + "kg";
         cm = cm + "cm";
@@ -325,6 +316,8 @@ public class FragHome extends Fragment {
 
         growDataList.add(growData);
         recyclerView.setAdapter(adapter);
+
+        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
     }
 
 
@@ -412,7 +405,7 @@ public class FragHome extends Fragment {
 
     // 현재값 받기
     private void getDBdata() {
-
+        growDataList.clear();
 
         String sql = "select * from thisusing where _id=1"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
@@ -431,6 +424,8 @@ public class FragHome extends Fragment {
             BYear = cursor.getInt(3);
             BMonth = cursor.getInt(4);
             BDay = cursor.getInt(5);
+            Bheight = cursor.getString(7);
+            Bweight = cursor.getString(8);
             imgpath = cursor.getString(10);
 
             Log.d("Home", "db받기 path = " + imgpath);
@@ -440,7 +435,7 @@ public class FragHome extends Fragment {
 
         int calint = Integer.valueOf(caldate.result);
         homeDday.setText("D + " + caldate.result + ", " + (calint / 30) + " 개월 " + (calint % 30) + "일");
-
+        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
     }
 
     // 팝업 메뉴 생성 함수
