@@ -33,6 +33,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         holder.kgInfor.setText(item.getKg());
         holder.cmInfor.setText(item.getCm());
         holder.girthInfo.setText(item.getHead());
+        holder.feverInfo.setText(item.getfever());
         holder.recodeDate.setText(item.getRecodeDateNow());
         holder.recodeDday.setText(item.getNowDday());
 
@@ -51,6 +52,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         TextView kgInfor;
         TextView cmInfor;
         TextView girthInfo;
+        TextView feverInfo;
         TextView recodeDate;
         TextView recodeDday;
 
@@ -59,6 +61,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             kgInfor = (TextView)itemView.findViewById(R.id.h_kgInfoTxt);
             cmInfor = (TextView)itemView.findViewById(R.id.h_cmInfoTxt);
             girthInfo = (TextView)itemView.findViewById(R.id.h_girthInfoTxt);
+            feverInfo = (TextView)itemView.findViewById(R.id.h_feverInfoTxt);
             recodeDate = (TextView)itemView.findViewById(R.id.h_recodeDateTxt);
             recodeDday = (TextView)itemView.findViewById(R.id.h_recodeDdayTxt);
 

@@ -29,42 +29,26 @@
                 app:layout_constraintHorizontal_bias="0.042"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/ms_TV_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Baily 설정"
+                android:fontFamily="@font/godo"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/ms_TV_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Baily 설정"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        android:gravity="center"
-        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,6 +68,7 @@
                 android:layout_marginStart="52dp"
                 android:layout_marginLeft="52dp"
                 android:text="계정"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +84,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="5"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -114,7 +99,8 @@
                 android:layout_marginEnd="36dp"
                 android:layout_marginRight="36dp"
                 android:text="홍길동"
-                android:textColor="#000000"
+                android:fontFamily="@font/godo"
+                android:textColor="#161B5B"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,6 +113,7 @@
                 android:layout_marginStart="52dp"
                 android:layout_marginLeft="52dp"
                 android:text="사용자 이름"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -143,7 +130,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="8 "
         android:gravity="center"
         android:orientation="vertical">
 
@@ -158,6 +145,7 @@
                 android:layout_marginStart="52dp"
                 android:layout_marginLeft="52dp"
                 android:text="이메일"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -174,8 +162,9 @@
                 android:layout_marginEnd="36dp"
                 android:layout_marginRight="36dp"
                 android:text="dkanrjsk123@naver.com"
+                android:fontFamily="@font/godo"
+                android:textColor="#161B5B"
                 android:textSize="18sp"
-                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -203,6 +192,7 @@
                 android:layout_marginStart="52dp"
                 android:layout_marginLeft="52dp"
                 android:text="아이디"
+                android:fontFamily="@font/godo"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -219,7 +209,8 @@
                 android:layout_marginEnd="36dp"
                 android:layout_marginRight="36dp"
                 android:text="dkanrjsk123"
-                android:textColor="#000000"
+                android:fontFamily="@font/godo"
+                android:textColor="#161B5B"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -234,15 +225,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="45"
-        android:gravity="center"
-        android:orientation="vertical"></LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="10"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -252,29 +235,259 @@
 
             <Button
                 android:id="@+id/ms_Btn_LogoutBtn"
-                android:layout_width="113dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="32dp"
+                android:layout_width="89dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
                 android:text="로그아웃"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.489"
+                app:layout_constraintHorizontal_bias="0.27"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
             <Button
                 android:id="@+id/ms_Btn_delete"
-                android:layout_width="118dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="89dp"
+                android:layout_height="28dp"
                 android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
                 android:text="계정삭제"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.767"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ms_Btn_LogoutBtn"
-                app:layout_constraintVertical_bias="0.48" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ms_TV_Babytitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="아기 정보 수정 및 삭제"
+            android:layout_gravity="center"
+            android:fontFamily="@font/godo"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="40"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ms_profileImg"
+                android:layout_width="182dp"
+                android:layout_height="162dp"
+                android:src="@drawable/ic_baby"
+                app:civ_border_color="#FFCCCCCC"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.503" />
+
+
+            <TextView
+                android:id="@+id/ms_TV_BabyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/godo"
+                android:text="이름(별명)"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.562"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/ms_BabyNameEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:ems="10"
+                android:fontFamily="@font/godo"
+                android:gravity="right"
+                android:hint="홍당무"
+                android:inputType="textPersonName"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.956"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ms_TV_BabyGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/godo"
+                android:text="성별"
+                android:textColor="#000000"
+                android:textSize="18sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toEndOf="@+id/ms_profileImg"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/ms_sexRG"
+                android:layout_width="142dp"
+                android:layout_height="34dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/bora2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <RadioButton
+                    android:id="@+id/ms_RBboy"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="남자" />
+
+                <RadioButton
+                    android:id="@+id/ms_RBgirl"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="여자" />
+
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/ms_TV_BabyBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/godo"
+                android:text="출생일"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.52"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/ms_BirthEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:fontFamily="@font/godo"
+                android:hint="                          2020.1.1"
+                android:inputType="textPersonName"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15.3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/ms_Btn_BabyRevise"
+                android:layout_width="89dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:text="수정"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.27"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.37" />
+
+            <Button
+                android:id="@+id/ms_Btn_Babydelete"
+                android:layout_width="89dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:text="삭제"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.767"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
