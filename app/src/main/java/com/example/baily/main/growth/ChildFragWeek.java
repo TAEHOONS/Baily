@@ -64,6 +64,7 @@ public class ChildFragWeek extends Fragment {
         weekBeforeBtn = (ImageView)view.findViewById(R.id.weekBeforeBtn);
         weekAfterBtn = (ImageView)view.findViewById(R.id.weekAfterBtn);
 
+        //차트구간을 위해 , N주차
         wSimple = new SimpleDateFormat("W");
         sFormat = new SimpleDateFormat("yy년 MM월");
         wToday =sFormat.format(date); //이번달

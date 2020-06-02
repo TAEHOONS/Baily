@@ -79,15 +79,10 @@ public class ChildFragDay extends Fragment{
         cal.setTime(date);
         cal.add(Calendar.DATE, -6);
         dayStartDate =sFormat.format(cal.getTime());
+
         plusCal.setTime(date);
-        //plusCal.add(Calendar.DATE, +7);
         dayEndDate = sFormat.format(plusCal.getTime());
         dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
-
-        dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
-        dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
-
-
 
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +93,6 @@ public class ChildFragDay extends Fragment{
                 plusCal.add(Calendar.DATE, -6);
                 dayEndDate = sFormat.format(plusCal.getTime());
                 dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
-
-                dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
-                dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
 
             }
         });
@@ -118,9 +110,6 @@ public class ChildFragDay extends Fragment{
                     plusCal.add(Calendar.DATE, +6);
                     dayEndDate = sFormat.format(plusCal.getTime());
                     dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
-
-                    dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
-                    dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
                 }
             }
         });
@@ -131,7 +120,11 @@ public class ChildFragDay extends Fragment{
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
 
-        for (int i = dStart; i <= dEnd; i++) {
+
+        dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
+        dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+        for (int i = 1; i <= 7; i++) {
             float val = (float) (Math.random() * 10);
             kgSum = kgSum + val;
             kgValues.add(new Entry(i, val));
