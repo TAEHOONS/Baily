@@ -3,6 +3,7 @@ package com.example.baily.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +21,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.baily.DBlink;
+import com.example.baily.babyPlus.FirstPage;
+import com.example.baily.babyPlus.SecondPage;
+import com.example.baily.babyPlus.ThirdPage;
 import com.example.baily.log.MainActivity;
 import com.example.baily.R;
 import com.example.baily.main.home.FragHome;
@@ -175,30 +179,31 @@ public class setting extends AppCompatActivity {
     }
     // 아기 삭제
     private void DeleteBaby(){
-
         String deletejob;
+
         // 현재 아기 지우고 새로 셋팅
         // 현재 아기 외 찾기
         String sql = "select * from baby where not name='"+mBabyname+"'"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
+            Log.d("DeleteBaby", "while start: "+newbaby);
             newbaby = cursor.getString(1);
-            // 현재 아기 외의것 thisusing에 넣기
-            Log.d("DeleteBaby", "newbaby: "+newbaby);
-            if (newbaby != null) {
-                deletejob = "UPDATE thisusing  SET baby='" + newbaby + "' WHERE id='" + mId + "'";
-                db.execSQL(deletejob);
-                deletejob = "UPDATE user SET lastbaby='" + newbaby + "' WHERE id='" + mId + "'";
-                db.execSQL(deletejob);
-
-            }else {
-                String Revisejob = "UPDATE thisusing SET baby='" + null + "'WHERE id='" + mId + "'";
-                db.execSQL(Revisejob);
-                Revisejob = "UPDATE user SET lastbaby='" + null + "' WHERE id='" + mId + "'";
-                db.execSQL(Revisejob);
-            }
+            Log.d("DeleteBaby", "while end: "+newbaby);
         }
+        // 현재 아기 외의것 thisusing에 넣기
+        Log.d("DeleteBaby", "newbaby: "+newbaby);
+        if (newbaby != null) {
+            deletejob = "UPDATE thisusing  SET baby='" + newbaby + "' WHERE id='" + mId + "'";
+            db.execSQL(deletejob);
+            deletejob = "UPDATE user SET lastbaby='" + newbaby + "' WHERE id='" + mId + "'";
+            db.execSQL(deletejob);
 
+        }else {
+            String Revisejob = "UPDATE thisusing SET baby=null WHERE id='" + mId + "'";
+            db.execSQL(Revisejob);
+            Revisejob = "UPDATE user SET lastbaby=null WHERE id='" + mId + "'";
+            db.execSQL(Revisejob);
+        }
 
 
         // 아기 테이블에서 지우기
@@ -209,7 +214,10 @@ public class setting extends AppCompatActivity {
         deletejob = "DELETE FROM growlog where name='"+mBabyname+"'";
         db.execSQL(deletejob);
 
-
+        if(newbaby==null){
+            Intent intent = new Intent(setting.this, FirstPage.class);
+            startActivity(intent);
+        }
 
 
     }

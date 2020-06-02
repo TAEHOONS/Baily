@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.example.baily.caldate;
+import com.example.baily.main.home.FragHome;
 import com.google.android.material.tabs.TabLayout;
 import com.google.protobuf.Value;
 
@@ -98,7 +100,34 @@ public class MainPage extends AppCompatActivity {
         DayText.setText("D + "+caldate.result);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ImageView setBtn = (ImageView) findViewById(R.id.mft_setBtn);
+        DayText = (TextView) findViewById(R.id.mft_dDayTxt);
+        getDay();
+        setBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), setting.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        usingDB();
 
 
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
 }

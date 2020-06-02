@@ -295,6 +295,9 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         //컬럼 이름은 DBlink.java 참조
         values.put("id", userId);
         values.put("pw", userPw);
+        values.put("name", "부모님");
+        values.put("email", "xorehdtk@naver.com");
+
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
 
