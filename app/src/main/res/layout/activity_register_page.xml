@@ -207,6 +207,7 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="20"
@@ -250,7 +251,7 @@
             <Button
                 android:id="@+id/reg_numsendBtn"
                 android:layout_width="99dp"
-                android:layout_height="37dp"
+                android:layout_height="30dp"
                 android:layout_marginBottom="18dp"
                 android:background="@drawable/bora"
                 android:fontFamily="@font/godo"
@@ -260,7 +261,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/emailText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/lb_email"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/lb_email" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
