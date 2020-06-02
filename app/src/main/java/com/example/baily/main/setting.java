@@ -11,8 +11,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.baily.DBlink;
+import com.example.baily.babyPlus.BirthdayPicker;
 import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.babyPlus.SecondPage;
 import com.example.baily.babyPlus.ThirdPage;
@@ -42,11 +45,11 @@ public class setting extends AppCompatActivity {
     RadioGroup mSexRG;
     Button mLogout,mDelete,mBRevise,mBabyDelete;
     ImageView s_close;
-    TextView NameTV,EmailTV,IdTV;
+    TextView NameTV,EmailTV,IdTV,BirthDayTV;
     EditText BabyNameEdit;
     private CircleImageView imageview;
 
-    private int BYear,BMonth,BDay;
+    private int BYear,BMonth,BDay,NewBYear,NewBMonth,NewBDay;
     private String imgpath,BGender,newbaby=null;
 
     @Override
@@ -57,6 +60,7 @@ public class setting extends AppCompatActivity {
         NameTV=(TextView)findViewById(R.id.ms_TV_username);
         EmailTV=(TextView)findViewById(R.id.ms_TV_Email);
         IdTV=(TextView)findViewById(R.id.ms_TV_id);
+        BirthDayTV=(TextView)findViewById(R.id.ms_BabyBirthTV);
         mLogout =(Button)findViewById(R.id.ms_Btn_LogoutBtn);
         mDelete = (Button)findViewById(R.id.ms_Btn_delete);
         mBRevise = (Button)findViewById(R.id.ms_Btn_BabyRevise);
@@ -103,7 +107,12 @@ public class setting extends AppCompatActivity {
                 finish();
             }
         });
-
+        BirthDayTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BerthPickerScreen();
+            }
+        });
 
     }
     // 로그아웃
@@ -163,7 +172,10 @@ public class setting extends AppCompatActivity {
         Log.d("Revise", "sex: "+sex);
 
         String Revisejob = "UPDATE baby  SET name='"+NewBabyName+"'," +
-                "sex ='"+sex+"'" +
+                "sex ='"+sex+"'," +
+                "ybirth ='"+NewBYear+"'," +
+                "mbirth ='"+NewBMonth+"'," +
+                "dbirthy='"+NewBDay+"'" +
                 "where name='"+mBabyname+"'";
         db.execSQL(Revisejob);
 
@@ -222,6 +234,36 @@ public class setting extends AppCompatActivity {
 
     }
 
+    // 아기 생일 팝업창
+    private void BerthPickerScreen() {
+
+
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        int width = dm.widthPixels; //디바이스 화면 너비
+        int height = dm.heightPixels; //디바이스 화면 높이
+
+
+        BirthdayPicker cde = new BirthdayPicker(this);
+        WindowManager.LayoutParams wm = cde.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+        wm.copyFrom(cde.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+        wm.width = (width / 3) * 2;  //화면 너비의 절반
+        wm.height = (height / 3) * 2;  //화면 높이의 절반
+
+
+        cde.setDialogListener(new BirthdayPicker.CustomDialogListener() {
+            @Override
+            public void onPositiveClicked(int year, int month, int day) {
+                BirthDayTV.setText(year + "년 " + month + "월 " + day + "일");
+                NewBYear = year;
+                NewBMonth = month;
+                NewBDay = day;
+            }
+        });
+
+        cde.show();
+
+    }
+
     private void getDBdata() {
 
 
@@ -263,6 +305,12 @@ public class setting extends AppCompatActivity {
             mSexRG.check(R.id.ms_RBboy);
         else
             mSexRG.check(R.id.ms_RBgirl);
+
+        NewBYear = BYear;
+        NewBMonth = BMonth;
+        NewBDay = BDay;
+
+        BirthDayTV.setText(BYear + "년 " + BMonth + "월 " + BDay + "일");
         NameTV.setText(mUserName);
         EmailTV.setText(mEmail);
         IdTV.setText(mId);;
