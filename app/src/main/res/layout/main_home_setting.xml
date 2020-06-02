@@ -284,7 +284,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/ms_TV_title"
+            android:id="@+id/ms_TV_Babytitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -320,10 +320,9 @@
             android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/tp_profileImg"
+                android:id="@+id/ms_profileImg"
                 android:layout_width="182dp"
                 android:layout_height="162dp"
-                android:onClick="mOnClick"
                 android:src="@drawable/ic_baby"
                 app:civ_border_color="#FFCCCCCC"
                 app:civ_border_width="1dp"
@@ -334,7 +333,7 @@
 
 
             <TextView
-                android:id="@+id/ms_TV_title"
+                android:id="@+id/ms_TV_BabyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -350,7 +349,7 @@
 
 
             <EditText
-                android:id="@+id/fip_emailEdt"
+                android:id="@+id/ms_BabyNameEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -358,16 +357,16 @@
                 android:layout_marginRight="4dp"
                 android:ems="10"
                 android:fontFamily="@font/godo"
-                android:hint="                                  홍당무"
+                android:gravity="right"
+                android:hint="홍당무"
                 android:inputType="textPersonName"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.956"
-                app:layout_constraintStart_toEndOf="@+id/ms_TV_title"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/ms_TV_title"
+                android:id="@+id/ms_TV_BabyGender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -379,11 +378,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.04"
-                app:layout_constraintStart_toEndOf="@+id/tp_profileImg"
+                app:layout_constraintStart_toEndOf="@+id/ms_profileImg"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RadioGroup
-                android:id="@+id/sp_sexRG"
+                android:id="@+id/ms_sexRG"
                 android:layout_width="142dp"
                 android:layout_height="34dp"
                 android:layout_marginEnd="5dp"
@@ -399,13 +398,13 @@
 
 
                 <RadioButton
-                    android:id="@+id/sp_RBboy"
+                    android:id="@+id/ms_RBboy"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:text="남자" />
 
                 <RadioButton
-                    android:id="@+id/sp_RBgirl"
+                    android:id="@+id/ms_RBgirl"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:text="여자" />
@@ -414,7 +413,7 @@
             </RadioGroup>
 
             <TextView
-                android:id="@+id/ms_TV_title"
+                android:id="@+id/ms_TV_BabyBirth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -429,7 +428,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/fip_emailEdt"
+                android:id="@+id/ms_BirthEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -461,7 +460,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/ms_Btn_LogoutBtn"
+                android:id="@+id/ms_Btn_BabyRevise"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="12dp"
@@ -477,7 +476,7 @@
                 app:layout_constraintVertical_bias="0.37" />
 
             <Button
-                android:id="@+id/ms_Btn_delete"
+                android:id="@+id/ms_Btn_Babydelete"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
                 android:background="@drawable/bora"
