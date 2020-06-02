@@ -100,7 +100,8 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         usingDB();
         Get_Internet(this);
 
-        InsertData("200112", "1111");
+        //로컬디비에 넣는거
+        InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
         //다이얼로그
         ad = new AlertDialog.Builder(RegisterPage.this);
         ad.setIcon(R.mipmap.ic_launcher);
@@ -287,7 +288,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
 
     //데이터 넣는법
-    private void InsertData(String userId, String userPw) {
+    private void InsertData(String userId, String userPw,String userName) {
         //선언
         ContentValues values = new ContentValues();
         //values에 테이블의 column에 넣을값 x 넣기
@@ -295,7 +296,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         //컬럼 이름은 DBlink.java 참조
         values.put("id", userId);
         values.put("pw", userPw);
-        values.put("name", "부모님");
+        values.put("name", userName);
         values.put("email", "xorehdtk@naver.com");
 
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
