@@ -78,31 +78,39 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/rt_tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/godo"
-            android:text="07:00 pm"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-        </TextView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/rt_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/godo"
-            android:text="6월 2일"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/rt_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/godo"
+                android:text="07:00 pm"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rt_date"></TextView>
+
+            <TextView
+                android:id="@+id/rt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/godo"
+                android:text="6월 2일"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.081" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 
@@ -118,7 +126,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="20"
         android:background="#84AECD"
         android:gravity="center"
         android:orientation="vertical">
@@ -128,17 +136,8 @@
             android:layout_height="match_parent">
 
 
-            <ImageView
-                android:layout_width="411dp"
-                android:layout_height="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.223"
-                app:srcCompat="@drawable/recordbar" />
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -154,43 +153,86 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.031" />
 
+            <EditText
+                android:id="@+id/rt_emailEdt"
+                android:layout_width="162dp"
+                android:layout_height="29dp"
+                android:background="null"
+                android:ems="10"
+                android:fontFamily="@font/godo"
+                android:hint="이유식을 입력해주세요"
+                android:inputType="textPersonName"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.995"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.026" />
+
             <TextView
-                android:id="@+id/rt_TV_temperature"
+                android:id="@+id/rt_TV_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/whitebutton"
                 android:fontFamily="@font/godo"
-                android:text="36.5℃"
+                android:text="콧물"
                 android:textColor="#000000"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.016"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.375" />
+                app:layout_constraintVertical_bias="0.686" />
 
-            <ImageView
-                android:layout_width="411dp"
-                android:layout_height="14dp"
+            <TextView
+                android:id="@+id/rt_TV_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whitebutton"
+                android:fontFamily="@font/godo"
+                android:text="  +  "
+                android:textColor="#000000"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.427"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.566"
-                app:srcCompat="@drawable/recordbar" />
+                app:layout_constraintVertical_bias="0.686" />
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="18dp"
+            <TextView
+                android:id="@+id/rt_TV_box1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whitebutton"
+                android:fontFamily="@font/godo"
+                android:text="기침"
+                android:textColor="#000000"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.154"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.575"
-                app:srcCompat="@drawable/ic_lens_24px" />
+                app:layout_constraintVertical_bias="0.686" />
+
+            <TextView
+                android:id="@+id/rt_TV_box2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whitebutton"
+                android:fontFamily="@font/godo"
+                android:text="설사"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.29"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.686" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -217,87 +259,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <TextView
-                android:id="@+id/rt_TV_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/whitebutton"
                 android:fontFamily="@font/godo"
-                android:text="콧물"
+                android:text="먹은 량"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.043"
+                app:layout_constraintHorizontal_bias="0.018"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.133" />
+                app:layout_constraintVertical_bias="0.031" />
 
-            <TextView
-                android:id="@+id/rt_TV_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/whitebutton"
-                android:fontFamily="@font/godo"
-                android:text="  +  "
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.478"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.133" />
-
-            <TextView
-                android:id="@+id/rt_TV_box1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/whitebutton"
-                android:fontFamily="@font/godo"
-                android:text="기침"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.192"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.133" />
-
-            <TextView
-                android:id="@+id/rt_TV_box2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/whitebutton"
-                android:fontFamily="@font/godo"
-                android:text="설사"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.339"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.133" />
-
-            <EditText
-                android:id="@+id/rt_emailEdt"
-                android:layout_width="343dp"
-                android:layout_height="48dp"
-                android:background="null"
-                android:ems="10"
-                android:fontFamily="@font/godo"
-                android:hint="이곳을 터치하여 메모를 입력해주세요"
-                android:inputType="textPersonName"
-                android:textSize="17sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.235"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.614" />
 
             <ImageView
                 android:layout_width="411dp"
@@ -308,7 +283,19 @@
                 app:layout_constraintStart_toStartOf="parent"
 
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
+                app:layout_constraintVertical_bias="0.223"
+                app:srcCompat="@drawable/recordbar" />
+
+            <ImageView
+                android:layout_width="411dp"
+                android:layout_height="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.699"
                 app:srcCompat="@drawable/recordbar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
