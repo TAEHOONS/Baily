@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -14,6 +14,8 @@
         android:layout_marginTop="110dp"
         android:gravity="center_horizontal"
         android:text="아기의 생년 월일을 입력하세요"
+        android:textColor="#000000"
+        android:fontFamily="@font/godo"
         android:textSize="15dp" />
 
     <LinearLayout
@@ -80,8 +82,9 @@
             android:id="@+id/bp_inputBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:background="@drawable/bora"
             android:text="확인"
+            android:fontFamily="@font/godo"
             />
     </LinearLayout>
 
