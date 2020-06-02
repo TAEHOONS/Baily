@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".FindIdPage2">
+    tools:context=".log.FindIdPage2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bora2"
+                android:onClick="mOnClick"
                 android:text="확인"
                 android:fontFamily="@font/godo"
                 android:textSize="20dp"
