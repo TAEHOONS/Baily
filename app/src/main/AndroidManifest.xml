@@ -12,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".main.recode.RecordTemperature"></activity>
+        <activity android:name=".main.recode.RecordBabyfood" />
         <activity
             android:name=".main.diary.AddEvent"
             android:theme="@style/Animation.AppCompat.DropDownUp" />
         <activity android:name=".main.diary.ShowEventInfo" />
         <activity android:name=".main.diary.SearchEvent" />
-        <activity android:name=".main.setting"></activity>
+        <activity android:name=".main.setting" />
         <activity android:name=".babyPlus.BirthdayPicker" />
         <activity android:name=".log.FindPwPage3" />
         <activity android:name=".log.FindPwPage2" />
@@ -25,11 +27,9 @@
         <activity android:name=".log.FindIdPage2" />
         <activity android:name=".log.FindIdPage" />
         <activity android:name=".babyPlus.ThirdPage" />
-        <activity android:name=".babyPlus.SecondPage">
-
-        </activity>
+        <activity android:name=".babyPlus.SecondPage" />
         <activity android:name=".babyPlus.FirstPage" />
-        <activity android:name=".main.MainPage"></activity>
+        <activity android:name=".main.MainPage" />
         <activity android:name=".main.standard.FragStandard" />
         <activity android:name=".main.growth.FragGrowth" />
         <activity android:name=".main.home.FragHome" />
