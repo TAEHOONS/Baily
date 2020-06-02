@@ -64,7 +64,6 @@
                 android:layout_marginBottom="7dp"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:hint="아이디를 입력해주세요"
                 android:inputType="textPersonName"
@@ -88,7 +87,8 @@
                 android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.888" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
