@@ -14,7 +14,7 @@ import javax.mail.SendFailedException;
 public class SendMail extends AppCompatActivity {
     String user = "bailyyy2020@gmail.com"; // 보내는 계정의 id
     String password = "qpdlffl5!";// 보내는 계정의 pw
-    String radomNum = "";//난수 생성하여 담아지는 변수
+    String randomNum = "";//난수 생성하여 담아지는 변수
 
 
     public void sendSecurityCode(Context context, String sendTo) {
@@ -37,7 +37,7 @@ public class SendMail extends AppCompatActivity {
         Random rand = new Random();
         String numStr = ""; //난수가 저장될 변수
 
-        for(int i=0;i<len;i++) {
+        for (int i = 0; i < len; i++) {
 
             //0~9 까지 난수 생성
             String ran = Integer.toString(rand.nextInt(10));
@@ -49,9 +49,13 @@ public class SendMail extends AppCompatActivity {
         return numStr;
     }
 
-    public String RandomNum()
-    {
-        radomNum = numberGen(6);
-        return radomNum;
+
+    private String RandomNum() {
+        randomNum = numberGen(6);
+        return randomNum;
+    }
+
+    public String getRandomNum() {
+        return randomNum;
     }
 }
