@@ -36,17 +36,26 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     private String userPasswordCk;
     private String userEmail;
 
+    String SendRandomCode;
+
     // FirebaseFirestore fdb = FirebaseFirestore.getInstance();
+    Boolean emailFlag = false;
+    Boolean idFlag = false;
+    Boolean pwFlag = false;
     EditText reg_textEdt;
     EditText reg_repwdEdt;
     EditText reg_pwdEdt;
     EditText reg_nameEdt;
     EditText reg_emailEdt;
+    Button reg_emailCkBtn; // 이메일 인증번호확인버튼
     Button reg_confirBtn;// OK버튼
+
 
     //여기에 추가적으로 인증번호
     Button reg_numsendBtn = null;
     EditText emailText = null;
+    //다이얼로그
+    AlertDialog.Builder ad;
 
     String randomNum; // 이메일로 보내진 인증번호
     TextView time_counter; //시간을 보여주는 TextView
@@ -55,7 +64,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     CountDownTimer countDownTimer;
     final int MILLISINFUTURE = 180 * 1000; //총 시간 (300초 = 5분)
     final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
-
+    int count=0; //count_method에 쓰이는변수
     String dbName = "user.db", mgetId = "";
     String mgetPassword, mgetRePassword, mgetIdCk;  // 최종확인할때 쓰는버튼
     int dbVersion = 3;
@@ -81,20 +90,24 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         emailText = (EditText) findViewById(R.id.emailText);
         reg_emailEdt = (EditText) findViewById(R.id.reg_emailnumEdt);
 
-        //lb_id=(TextView)findViewById(R.id.lb_id);
 
         reg_nameEdt = (EditText) findViewById(R.id.reg_nameEdt);
         reg_textEdt = (EditText) findViewById(R.id.reg_idEdt);
         reg_pwdEdt = (EditText) findViewById(R.id.reg_pwdEdt);
         reg_repwdEdt = (EditText) findViewById(R.id.reg_repwdEdt);
+        reg_emailCkBtn = (Button) findViewById(R.id.reg_emailCheckBtn);
         reg_confirBtn = (Button) findViewById(R.id.reg_confirmBtn);
         usingDB();
         Get_Internet(this);
 
         InsertData("200112", "1111");
+        //다이얼로그
+        ad = new AlertDialog.Builder(RegisterPage.this);
+        ad.setIcon(R.mipmap.ic_launcher);
     }
 
-    public void countDownTimer() { //카운트 다운 메소드
+    public void countDownTimer() {
+        //카운트 다운 메소드
 
         //줄어드는 시간을 나타내는 TextView
         time_counter = (TextView) findViewById(R.id.emailAuth_time_counter);
@@ -139,104 +152,113 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.reg_confirmBtn: //OK 버튼을 눌렀을 시
-                //인증번호를 입력하지 않은 경우 > null 값 처리
-                String emailAuth_num = emailAuth_number.getText().toString();
-                if (emailAuth_num.getBytes().length <= 0) {
 
-                    Toast.makeText(this, " 인증번호를 입력하세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    String user_answer = emailAuth_number.getText().toString();
-                    if (user_answer.equals(randomNum)) {
-                        Toast.makeText(this, "이메일 인증 성공", Toast.LENGTH_SHORT).show();
-                        countDownTimer.cancel();//성공 시 타이머 중지
-                    } else {
+    private boolean IdCk() {
+        //아이디 check --아이디가 빈칸일경우
+        if (mgetIdCk.equals("")) {
 
-                        Toast.makeText(this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
-                    }
+            ad.setTitle("ID 재확인 요망");
+            ad.setMessage("아이디는 빈 칸일 수 없습니다.");
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
+            });
 
-                break;
+            ad.show();
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-            case R.id.reg_numsendBtn:
-                SendMail mailServer = new SendMail();
-                mailServer.sendSecurityCode(getApplicationContext(), emailText.getText().toString());
-                countDownTimer();
-                break;
+    private boolean PwCk() {
+        if (mgetPassword.equals(mgetRePassword)) {
+            return true;
+        } else {
+
+            ad.setTitle("비민번호 재확인 요망");
+            ad.setMessage("비밀번호를 재확인 해주세요.");
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            ad.show();
+            return false;
+        }
+
+    }
+
+    private boolean EmailCk(boolean emailFlag) {
+        //이메일 인증번호 check
+        if (emailFlag ==false) {
+
+            ad.setTitle("이메일 재확인 요망");
+            ad.setMessage("이메일 인증번호가 틀립니다");
+
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            ad.show();
+            return false;
+        } else {
 
         }
+        return true;
     }
 
 
     //최종 회원가입 버튼 입력 처리
     public void m_regRegClick(View v) {
-        //디비에 들어가는 버튼
-        reg_confirBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                putFireStore(reg_textEdt.getText().toString());
 
-
-                //여기 있던자리
-
-            }
-        });
         switch (v.getId()) {
             case R.id.reg_confirmBtn: {
                 mgetPassword = reg_pwdEdt.getText().toString();
                 mgetRePassword = reg_repwdEdt.getText().toString();
                 mgetIdCk = reg_textEdt.getText().toString();
 
-
-                //아이디 check --아이디가 빈칸일경우
-                if (mgetIdCk.equals("")) {
-                    AlertDialog.Builder ad = new AlertDialog.Builder(RegisterPage.this);
-                    ad.setIcon(R.mipmap.ic_launcher);
-                    ad.setTitle("ID 재확인 요망");
-                    ad.setMessage("아이디는 빈 칸일 수 없습니다.");
-
-                    ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    ad.show();
-                }
+                if (IdCk()) {
+                    Toast.makeText(this, "id 성공", Toast.LENGTH_SHORT).show();
 
 
-                //비밀번호 check
-                if (mgetPassword.equals(mgetRePassword)) {
-                    break;
                 } else {
-                    AlertDialog.Builder ad = new AlertDialog.Builder(RegisterPage.this);
-                    ad.setIcon(R.mipmap.ic_launcher);
-                    ad.setTitle("비밀번호 재확인 요망");
-                    ad.setMessage("비밀번호가 틀립니다");
+                    Toast.makeText(this, "id 실패", Toast.LENGTH_SHORT).show();
 
-                    ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    ad.show();
+                }
+                if (PwCk()) {
+                    Toast.makeText(this, "pw 성공", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(this, "pw ㅅㄹ패", Toast.LENGTH_SHORT).show();
+
+                }
+                if (EmailCk(emailFlag)) {
+                    Toast.makeText(this, "모두성공", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(this, "em 실페", Toast.LENGTH_SHORT).show();
+
                 }
 
-
             }
 
-            case R.id.reg_numsendBtn: {
-                Log.d("email", "email start");
-                SendMail mailServer = new SendMail();
-                mailServer.sendSecurityCode(getApplicationContext(), "tjdqlsdl5456@naver.com");
-                Log.d("email", "email end");
-                break;
-            }
         }
+        //디비에 들어가는 버튼
+        reg_confirBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                putFireStore(reg_textEdt.getText().toString());
+
+            }
+        });
     }
 
     // 아이디 중복체크 버튼 입력처리
@@ -302,6 +324,41 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
+    }
+
+    //이메일 부분
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.reg_emailCheckBtn: //OK 버튼을 눌렀을 시
+                //인증번호를 입력하지 않은 경우 > null 값 처리
+                String emailAuth_num = reg_emailEdt.getText().toString();
+                if (emailAuth_num.getBytes().length <= 0) {
+                    Toast.makeText(this, "이메일 인증번호 입력", Toast.LENGTH_SHORT).show();
+                } else {
+                    String user_answer = reg_emailEdt.getText().toString();
+                    if (user_answer.equals(SendRandomCode)) {
+                        Toast.makeText(this, "이메일 인증 성공", Toast.LENGTH_SHORT).show();
+                        emailFlag = true;
+                        countDownTimer.cancel();//성공 시 타이머 중지
+                    } else {
+                        Toast.makeText(this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
+                        emailFlag = false;
+                    }
+                }
+
+                break;
+
+            case R.id.reg_numsendBtn:
+                SendMail mailServer = new SendMail();
+                mailServer.sendSecurityCode(getApplicationContext(), emailText.getText().toString());
+                countDownTimer();
+                SendRandomCode = mailServer.getRandomNum();
+                Log.d("email", "reg_numsendBtn: SendRandomCode=" + SendRandomCode);
+                Log.d("email", "email end");
+                break;
+
+        }
     }
 
 
