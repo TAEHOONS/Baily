@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="140"
-    tools:context=".RegisterPage">
+    tools:context=".log.RegisterPage">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,6 @@
                 android:background="@drawable/edittext"
                 android:ems="10"
                 android:gravity="center"
-                android:fontFamily="@font/godo"
                 android:hint="이름을 입력해주세요"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -104,7 +103,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:hint="아이디를 입력해주세요"
                 android:inputType="textPersonName"
@@ -121,8 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="20"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:gravity="center">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -136,7 +133,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:hint="비밀번호를 입력해주세요"
                 android:inputType="textPassword"
@@ -197,7 +193,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:hint="비밀번호를 확인해주세요"
                 android:inputType="textPassword"
@@ -238,20 +233,34 @@
                 app:layout_constraintVertical_bias="0.228" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
-                android:hint="G-Mail만 가능합니다"
+                android:hint="이메일을 입력해주세요"
                 android:inputType="textEmailAddress"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.777" />
+
+            <Button
+                android:id="@+id/reg_numsendBtn"
+                android:layout_width="99dp"
+                android:layout_height="37dp"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/bora"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="인증번호 발송"
+                app:layout_constraintBottom_toTopOf="@+id/emailText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lb_email"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -290,7 +299,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext"
                 android:ems="10"
-                android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:hint="인증번호 입력"
                 android:inputType="textPersonName"
@@ -299,21 +307,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.406" />
+            <TextView
+                android:id="@+id/emailAuth_time_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:00"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reg_emailnumEdt"
+                app:layout_constraintTop_toBottomOf="@+id/ib_mailConfirm" />
 
             <Button
-                android:id="@+id/reg_numsendBtn"
-                android:layout_width="99dp"
-                android:layout_height="37dp"
-                android:background="@drawable/bora"
-                android:gravity="center"
-                android:onClick="m_regRegClick"
-                android:text="인증번호 발송"
-                android:fontFamily="@font/godo"
+                android:id="@+id/reg_emailCheckBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="onClick"
+                android:text="Button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.866" />
+                app:layout_constraintTop_toBottomOf="@+id/reg_emailnumEdt" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

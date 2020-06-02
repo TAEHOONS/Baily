@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -122,6 +124,27 @@ public class ChildFragKg extends Fragment {
         set1.setCircleColor(Color.BLUE);
         set2.setColor(Color.RED);
         set2.setCircleColor(Color.RED);
+
+
+        XAxis xAxis = kgCart.getXAxis(); // x 축 설정
+        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
+        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
+        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
+
+        YAxis yAxisLeft = kgCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setDrawGridLines(false);
+        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
+        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
+
+        YAxis yAxisRight = kgCart.getAxisRight(); //Y축의 오른쪽면 설정
+
+        kgCart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
+        kgCart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
+
         // set data
         kgCart.setData(data1);
         kgCart.setData(data2);

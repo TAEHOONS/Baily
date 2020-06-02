@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -99,25 +103,25 @@ public class ChildFragDay extends Fragment {
         ArrayList<Entry> cmValues = new ArrayList<>();
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 8; i++) {
             float val = (float) (Math.random() * 10);
             kgSum = kgSum + val;
             kgValues.add(new Entry(i, val));
             avgWeight = kgSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 8; i++) {
             float val = (float) (Math.random() * 10);
             cmSum = cmSum + val;
             cmValues.add(new Entry(i, val));
             avgHeight = cmSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 8; i++) {
             float val = (float) (Math.random() * 10);
             headSum = headSum + val;
             headValues.add(new Entry(i, val));
             avgHead = headSum/i;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 8; i++) {
             float val = (float) 36.5;
             feverSum = feverSum + val;
             feverValues.add(new Entry(i, val));
@@ -160,18 +164,71 @@ public class ChildFragDay extends Fragment {
         dayFever.setColor(Color.GREEN);
         dayFever.setCircleColor(Color.GREEN);
 
+        //몸무게 차트 속성
+        XAxis kgXAxis = growDayKgCart.getXAxis(); // x 축 설정
+        kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        kgXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis kgYAxisLeft = growDayKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        kgYAxisLeft.setDrawLabels(false);
+        kgYAxisLeft.setDrawAxisLine(false);
+        kgYAxisLeft.setDrawGridLines(false);
+        YAxis kgYAxisRight = growDayKgCart.getAxisRight(); //Y축의 오른쪽면 설정
+        kgYAxisRight.setLabelCount(4, true);
+
         // set data
+        growDayKgCart.setDescription(null);
         growDayKgCart.setData(dayKgData);
         avgKgTxt.setText(avgWeight+" kg");
 
+        //신장 차트 속성
+        XAxis cmXAxis = growDayCmCart.getXAxis(); // x 축 설정
+        cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        cmXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis cmYAxisLeft = growDayCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        cmYAxisLeft.setDrawLabels(false);
+        cmYAxisLeft.setDrawAxisLine(false);
+        cmYAxisLeft.setDrawGridLines(false);
+        YAxis cmYAxisRight = growDayCmCart.getAxisRight(); //Y축의 오른쪽면 설정
+        cmYAxisRight.setLabelCount(4, true);
+
+        growDayCmCart.setDescription(null);
         growDayCmCart.setData(dayCmData);
         avgCmTxt.setText(avgHeight+" cm");
 
+        //머리둘레 차트 속성
+        XAxis headXAxis = growDayHeadCart.getXAxis(); // x 축 설정
+        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis headYAxisLeft = growDayHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        headYAxisLeft.setDrawLabels(false);
+        headYAxisLeft.setDrawAxisLine(false);
+        headYAxisLeft.setDrawGridLines(false);
+        YAxis headYAxisRight = growDayHeadCart.getAxisRight(); //Y축의 오른쪽면 설정
+        headYAxisRight.setLabelCount(4, true);
+
+        growDayHeadCart.setDescription(null);
         growDayHeadCart.setData(dayHeadData);
         avgHeadTxt.setText(avgHead+" cm");
 
+        //체온 차트 속성
+        XAxis feverXAxis = growDayFeverCart.getXAxis(); // x 축 설정
+        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
+        feverXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis feverYAxisLeft = growDayFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        feverYAxisLeft.setDrawLabels(false);
+        feverYAxisLeft.setDrawAxisLine(false);
+        feverYAxisLeft.setDrawGridLines(false);
+        YAxis feverYAxisRight = growDayFeverCart.getAxisRight(); //Y축의 오른쪽면 설정
+        feverYAxisRight.setLabelCount(4, true);
+
+
+        growDayFeverCart.setDescription(null);
         growDayFeverCart.setData(dayFeverData);
-        avgFeverTxt.setText(avgFever+" 도");
+        avgFeverTxt.setText(avgFever+" °C");
 
         return view;
     }

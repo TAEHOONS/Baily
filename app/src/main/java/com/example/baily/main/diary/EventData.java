@@ -41,7 +41,7 @@ public class EventData {
         return name;
     }
 
-    public String getId() { return id; }
+    public int getId() { return id; }
 
     @Override
     public String toString() {
