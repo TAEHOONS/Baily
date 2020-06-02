@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:weightSum="10"
     android:orientation="vertical"
-    tools:context=".FindPwPage2">
+    tools:context=".log.FindPwPage2">
 
     <LinearLayout
         android:layout_width="match_parent"

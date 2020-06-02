@@ -2,8 +2,10 @@ package com.example.baily.log;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,25 +14,38 @@ import com.example.baily.R;
 public class FindPwPage2 extends AppCompatActivity {
 
     Button fpp_emailBtn;
+    EditText fpp_emailEdt;
+    String SendRandomCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_pw_page2);
 
-        fpp_emailBtn = (Button)findViewById(R.id.fpp_emailBtn);
+        fpp_emailBtn = findViewById(R.id.fpp_emailBtn);
+        fpp_emailEdt = findViewById(R.id.fpp_emailEdt);
+
+
 
     }
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.fpp_emailBtn:
-                FindEmailCkScreen();
+                SendMail mailServer = new SendMail();
+                mailServer.sendSecurityCode(getApplicationContext(), fpp_emailEdt.getText().toString());
+                SendRandomCode = mailServer.getRandomNum();
+
+
+                Log.d("email", "reg_numsendBtn: SendRandomCode=" + SendRandomCode);
+
+                Log.d("email", "email end");
+
+                Intent intent = new Intent(this,FindPwPage3.class);
+                intent.putExtra("code",SendRandomCode);
+
+                startActivity(intent);
+
         }
     }
 
-    // 화면이동 -> FindPwPage2 이메일_확인Btn->이메일 인증번호 확인페이지
-    private void FindEmailCkScreen() {
-        Intent intent = new Intent(FindPwPage2.this, FindPwPage3.class);
-        startActivity(intent);
-    }
 }
