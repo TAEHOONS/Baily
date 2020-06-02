@@ -253,6 +253,7 @@
                 android:id="@+id/ms_Btn_delete"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bora"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
@@ -261,7 +262,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.767"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -319,19 +321,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/tp_profileImg"
-                android:layout_width="182dp"
-                android:layout_height="162dp"
+                android:layout_width="141dp"
+                android:layout_height="118dp"
                 android:onClick="mOnClick"
                 android:src="@drawable/ic_baby"
                 app:civ_border_color="#FFCCCCCC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.025"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.503" />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/ms_TV_title"
@@ -343,28 +346,11 @@
                 android:text="이름(별명)"
                 android:textColor="#000000"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ms_TV_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.562"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <EditText
-                android:id="@+id/fip_emailEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:ems="10"
-                android:fontFamily="@font/godo"
-                android:hint="                                  홍당무"
-                android:inputType="textPersonName"
-                android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.956"
-                app:layout_constraintStart_toEndOf="@+id/ms_TV_title"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/ms_TV_title"
@@ -378,23 +364,58 @@
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintHorizontal_bias="0.085"
                 app:layout_constraintStart_toEndOf="@+id/tp_profileImg"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ms_TV_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/godo"
+                android:text="출생일"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.46"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ms_TV_title"
+                app:layout_constraintVertical_bias="0.998" />
+
+            <EditText
+                android:id="@+id/fip_emailEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:ems="10"
+                android:fontFamily="@font/godo"
+                android:hint="                                홍당무"
+                android:inputType="textPersonName"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/sp_sexRG"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.956"
+                app:layout_constraintStart_toEndOf="@+id/ms_TV_title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <RadioGroup
                 android:id="@+id/sp_sexRG"
                 android:layout_width="142dp"
                 android:layout_height="34dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="1dp"
                 android:background="@drawable/bora2"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/ms_TV_title"
                 app:layout_constraintTop_toTopOf="parent">
 
 
@@ -413,27 +434,11 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/ms_TV_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/godo"
-                android:text="출생일"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.52"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <EditText
                 android:id="@+id/fip_emailEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_marginBottom="16dp"
                 android:ems="10"
                 android:fontFamily="@font/godo"
@@ -441,7 +446,11 @@
                 android:inputType="textPersonName"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.956"
+                app:layout_constraintStart_toEndOf="@+id/ms_TV_title"
+                app:layout_constraintTop_toBottomOf="@+id/sp_sexRG"
+                app:layout_constraintVertical_bias="1.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -480,6 +489,7 @@
                 android:id="@+id/ms_Btn_delete"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bora"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
@@ -488,7 +498,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.767"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.37" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
