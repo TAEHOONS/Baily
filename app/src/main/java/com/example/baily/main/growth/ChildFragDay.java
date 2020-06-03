@@ -1,11 +1,16 @@
 package com.example.baily.main.growth;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Binder;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputBinding;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.R;
@@ -30,23 +36,26 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ChildFragDay extends Fragment{
+public class ChildFragDay extends Fragment {
     private View view;
+    private Activity activity;
     private LineChart growDayKgCart, growDayCmCart, growDayHeadCart, growDayFeverCart;
     TextView avgKgTxt, avgCmTxt, avgHeadTxt, avgFeverTxt, dayDateTxt;
-    float avgWeight,avgHeight,avgHead,avgFever;
+    Boolean btnCk;
+    Boolean abBtn;
+    float avgWeight, avgHeight, avgHead, avgFever;
     float kgSum = 0;
     float cmSum = 0;
     float headSum = 0;
     float feverSum = 0;
-    ImageView beforeBtn,afterBtn;
+    ImageView beforeBtn, afterBtn;
     String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat,simpleDate;
-    int dStart, dEnd;
+    SimpleDateFormat sFormat, simpleDate;
+    int dStart, dEnd, dBeStart,dBeEnd,dAfStart,dAfEnd;
 
-    public static ChildFragDay newInstance(){
+    public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
         return childFragDay;
     }
@@ -54,7 +63,7 @@ public class ChildFragDay extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.growth_child_frag_day,container,false);
+        view = inflater.inflate(R.layout.growth_child_frag_day, container, false);
         growDayKgCart = view.findViewById(R.id.growthDayKgLineCart);
         growDayCmCart = view.findViewById(R.id.growthDayCmLineCart);
         growDayHeadCart = view.findViewById(R.id.growthDayHeadLineCart);
@@ -64,52 +73,73 @@ public class ChildFragDay extends Fragment{
         avgHeadTxt = view.findViewById(R.id.avgHeadTxt);
         avgFeverTxt = view.findViewById(R.id.avgFeverTxt);
         dayDateTxt = view.findViewById(R.id.dayDateTxt);
-        beforeBtn = (ImageView)view.findViewById(R.id.beforeBtn);
-        afterBtn = (ImageView)view.findViewById(R.id.afterBtn);
+        beforeBtn = (ImageView) view.findViewById(R.id.beforeBtn);
+        afterBtn = (ImageView) view.findViewById(R.id.afterBtn);
 
         //차트 구간설정을 위한
         simpleDate = new SimpleDateFormat("dd");
 
         sFormat = new SimpleDateFormat("MM월 dd일");
-        today =sFormat.format(date); //오늘날짜
+        today = sFormat.format(date); //오늘날짜
+
         cal = Calendar.getInstance();
         plusCal = Calendar.getInstance();
 
-
         cal.setTime(date);
-        cal.add(Calendar.DATE, -6);
-        dayStartDate =sFormat.format(cal.getTime());
+        //cal.add(Calendar.DATE, -6);
+        dayStartDate = sFormat.format(cal.getTime());
 
         plusCal.setTime(date);
+        plusCal.add(Calendar.DATE, +6);
         dayEndDate = sFormat.format(plusCal.getTime());
-        dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+        dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
 
+        btnCk = false;
+        abBtn = false;
+
+        dStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+        dEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+        //이전버튼 눌렀을 때
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 cal.add(Calendar.DATE, -6);
-                dayStartDate =sFormat.format(cal.getTime());
+                dayStartDate = sFormat.format(cal.getTime());
 
                 plusCal.add(Calendar.DATE, -6);
                 dayEndDate = sFormat.format(plusCal.getTime());
-                dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+                dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
+
+                dBeStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+                dBeEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+                btnCk = true;
+                abBtn = false;
 
             }
         });
+        //이후버튼 눌렀을 때
         afterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //2000.00.00~마지막 날짜, 마지막날짜가 오늘날짜이면 더이상 넘어갈수 없게
-                if(today.equals(dayEndDate)){
+                if (today.equals(dayEndDate)) {
                     Toast.makeText(getActivity(), "오늘이후 기록이 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     cal.add(Calendar.DATE, +6);
-                    dayStartDate =sFormat.format(cal.getTime());
+                    dayStartDate = sFormat.format(cal.getTime());
 
                     plusCal.add(Calendar.DATE, +6);
                     dayEndDate = sFormat.format(plusCal.getTime());
-                    dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+                    dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
+
+                    dAfStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+                    dAfEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+                    btnCk = true;
+                    abBtn = true;
                 }
             }
         });
@@ -120,37 +150,97 @@ public class ChildFragDay extends Fragment{
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
 
+        if(btnCk==true){
+            if(abBtn==true){
 
-        dStart =Integer.parseInt(simpleDate.format(cal.getTime()));
-        dEnd =Integer.parseInt(simpleDate.format(plusCal.getTime()));
 
-        for (int i = 1; i <= 7; i++) {
-            float val = (float) (Math.random() * 10);
-            kgSum = kgSum + val;
-            kgValues.add(new Entry(i, val));
-            avgWeight = kgSum/i;
+                for (int i = dAfStart; i <= dAfEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    kgSum = kgSum + val;
+                    kgValues.add(new Entry(i, val));
+                    avgWeight = kgSum / i;
+                }
+
+                for (int i = dAfStart; i <= dAfEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    cmSum = cmSum + val;
+                    cmValues.add(new Entry(i, val));
+                    avgHeight = cmSum / i;
+                }
+                for (int i = dAfStart; i <= dAfEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    headSum = headSum + val;
+                    headValues.add(new Entry(i, val));
+                    avgHead = headSum / i;
+                }
+                for (int i = dAfStart; i <= dAfEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    float sVal = (float) 36.5;
+                    feverSum = feverSum + sVal;
+                    feverValues.add(new Entry(i, sVal));
+                    avgFever = feverSum / i;
+                }
+
+            }else{
+
+                for (int i = dBeStart; i <= dBeEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    kgSum = kgSum + val;
+                    kgValues.add(new Entry(i, val));
+                    avgWeight = kgSum / i;
+                }
+
+                for (int i = dBeStart; i <= dBeEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    cmSum = cmSum + val;
+                    cmValues.add(new Entry(i, val));
+                    avgHeight = cmSum / i;
+                }
+                for (int i = dBeStart; i <= dBeEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    headSum = headSum + val;
+                    headValues.add(new Entry(i, val));
+                    avgHead = headSum / i;
+                }
+                for (int i = dBeStart; i <= dBeEnd; i++) {
+                    float val = (float) (Math.random() * 10);
+                    float sVal = (float) 36.5;
+                    feverSum = feverSum + sVal;
+                    feverValues.add(new Entry(i, sVal));
+                    avgFever = feverSum / i;
+                }
+            }
+        }else{
+
+            for (int i = dStart; i <= dEnd; i++) {
+                float val = (float) (Math.random() * 10);
+                kgSum = kgSum + val;
+                kgValues.add(new Entry(i, val));
+                avgWeight = kgSum / i;
+            }
+
+            for (int i = dStart; i <= dEnd; i++) {
+                float val = (float) (Math.random() * 10);
+                cmSum = cmSum + val;
+                cmValues.add(new Entry(i, val));
+                avgHeight = cmSum / i;
+            }
+            for (int i = dStart; i <= dEnd; i++) {
+                float val = (float) (Math.random() * 10);
+                headSum = headSum + val;
+                headValues.add(new Entry(i, val));
+                avgHead = headSum / i;
+            }
+            for (int i = dStart; i <= dEnd; i++) {
+                float val = (float) (Math.random() * 10);
+                float sVal = (float) 36.5;
+                feverSum = feverSum + sVal;
+                feverValues.add(new Entry(i, sVal));
+                avgFever = feverSum / i;
+            }
         }
 
-        for (int i = dStart; i <= dEnd; i++) {
-            float val = (float) (Math.random() * 10);
-            cmSum = cmSum + val;
-            cmValues.add(new Entry(i, val));
-            avgHeight = cmSum/i;
-        }
-        for (int i = dStart; i <= dEnd; i++) {
-            float val = (float) (Math.random() * 10);
-            headSum = headSum + val;
-            headValues.add(new Entry(i, val));
-            avgHead = headSum/i;
-        }
-        for (int i = dStart; i <= dEnd; i++) {
-            float val = (float) 36.5;
-            feverSum = feverSum + val;
-            feverValues.add(new Entry(i, val));
-            avgFever = feverSum/i;
-        }
-
-        LineDataSet dayKg,dayCm,dayHead,dayFever;
+        LineDataSet dayKg, dayCm, dayHead, dayFever;
 
         dayKg = new LineDataSet(kgValues, "몸무게");
         dayCm = new LineDataSet(cmValues, "신장");
@@ -203,7 +293,7 @@ public class ChildFragDay extends Fragment{
         // set data
         growDayKgCart.setDescription(null);
         growDayKgCart.setData(dayKgData);
-        avgKgTxt.setText(avgWeight+" kg");
+        avgKgTxt.setText(avgWeight + " kg");
 
         //신장 차트 속성
         XAxis cmXAxis = growDayCmCart.getXAxis(); // x 축 설정
@@ -219,7 +309,7 @@ public class ChildFragDay extends Fragment{
 
         growDayCmCart.setDescription(null);
         growDayCmCart.setData(dayCmData);
-        avgCmTxt.setText(avgHeight+" cm");
+        avgCmTxt.setText(avgHeight + " cm");
 
         //머리둘레 차트 속성
         XAxis headXAxis = growDayHeadCart.getXAxis(); // x 축 설정
@@ -235,7 +325,7 @@ public class ChildFragDay extends Fragment{
 
         growDayHeadCart.setDescription(null);
         growDayHeadCart.setData(dayHeadData);
-        avgHeadTxt.setText(avgHead+" cm");
+        avgHeadTxt.setText(avgHead + " cm");
 
         //체온 차트 속성
         XAxis feverXAxis = growDayFeverCart.getXAxis(); // x 축 설정
@@ -252,7 +342,7 @@ public class ChildFragDay extends Fragment{
 
         growDayFeverCart.setDescription(null);
         growDayFeverCart.setData(dayFeverData);
-        avgFeverTxt.setText(avgFever+" °C");
+        avgFeverTxt.setText(avgFever + " °C");
 
         return view;
     }
