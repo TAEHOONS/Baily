@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".log.FindIdPage3"></activity>
+        <activity android:name=".PopupSet"></activity>
+        <activity android:name=".log.FindIdPage3" />
         <activity
             android:name=".main.diary.AddEvent"
             android:theme="@style/Animation.AppCompat.DropDownUp" />
@@ -26,7 +27,7 @@
         <activity android:name=".log.FindIdPage2" />
         <activity android:name=".log.FindIdPage" />
         <activity android:name=".babyPlus.ThirdPage" />
-        <activity android:name=".babyPlus.SecondPage"></activity>
+        <activity android:name=".babyPlus.SecondPage" />
         <activity android:name=".babyPlus.FirstPage" />
         <activity android:name=".main.MainPage" />
         <activity android:name=".main.standard.FragStandard" />

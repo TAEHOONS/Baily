@@ -23,8 +23,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.baily.DBlink;
+import com.example.baily.PopupSet;
 import com.example.baily.babyPlus.BirthdayPicker;
 import com.example.baily.babyPlus.FirstPage;
+import com.example.baily.babyPlus.HeightAndWeight;
 import com.example.baily.babyPlus.SecondPage;
 import com.example.baily.babyPlus.ThirdPage;
 import com.example.baily.log.MainActivity;
@@ -40,35 +42,35 @@ public class setting extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    private String mId, mBabyname,mUserName,mEmail;
+    private String mId, mBabyname, mUserName, mEmail;
 
     RadioGroup mSexRG;
-    Button mLogout,mDelete,mBRevise,mBabyDelete;
+    Button mLogout, mDelete, mBRevise, mBabyDelete;
     ImageView s_close;
-    TextView NameTV,EmailTV,IdTV,BirthDayTV;
+    TextView NameTV, EmailTV, IdTV, BirthDayTV;
     EditText BabyNameEdit;
     private CircleImageView imageview;
 
-    private int BYear,BMonth,BDay,NewBYear,NewBMonth,NewBDay;
-    private String imgpath,BGender,newbaby=null;
+    private int BYear, BMonth, BDay, NewBYear, NewBMonth, NewBDay,mPopint;
+    private String imgpath, BGender, newbaby = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_home_setting);
 
-        NameTV=(TextView)findViewById(R.id.ms_TV_username);
-        EmailTV=(TextView)findViewById(R.id.ms_TV_Email);
-        IdTV=(TextView)findViewById(R.id.ms_TV_id);
-        BirthDayTV=(TextView)findViewById(R.id.ms_BabyBirthTV);
-        mLogout =(Button)findViewById(R.id.ms_Btn_LogoutBtn);
-        mDelete = (Button)findViewById(R.id.ms_Btn_delete);
-        mBRevise = (Button)findViewById(R.id.ms_Btn_BabyRevise);
-        mBabyDelete = (Button)findViewById(R.id.ms_Btn_Babydelete);
+        NameTV = (TextView) findViewById(R.id.ms_TV_username);
+        EmailTV = (TextView) findViewById(R.id.ms_TV_Email);
+        IdTV = (TextView) findViewById(R.id.ms_TV_id);
+        BirthDayTV = (TextView) findViewById(R.id.ms_BabyBirthTV);
+        mLogout = (Button) findViewById(R.id.ms_Btn_LogoutBtn);
+        mDelete = (Button) findViewById(R.id.ms_Btn_delete);
+        mBRevise = (Button) findViewById(R.id.ms_Btn_BabyRevise);
+        mBabyDelete = (Button) findViewById(R.id.ms_Btn_Babydelete);
         mSexRG = (RadioGroup) findViewById(R.id.ms_sexRG);
-        s_close = (ImageView)findViewById(R.id.ms_img_closeBtn);
-        imageview = (CircleImageView)findViewById(R.id.ms_profileImg);
-        BabyNameEdit=(EditText)findViewById(R.id.ms_BabyNameEdt);
+        s_close = (ImageView) findViewById(R.id.ms_img_closeBtn);
+        imageview = (CircleImageView) findViewById(R.id.ms_profileImg);
+        BabyNameEdit = (EditText) findViewById(R.id.ms_BabyNameEdt);
 
 
         usingDB();
@@ -89,22 +91,19 @@ public class setting extends AppCompatActivity {
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeleteId();
-                finish();
+                PopupCall(1);
             }
         });
         mBRevise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReviseBaby();
-                finish();
+                PopupCall(2);
             }
         });
         mBabyDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeleteBaby();
-                finish();
+                PopupCall(3);
             }
         });
         BirthDayTV.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +114,9 @@ public class setting extends AppCompatActivity {
         });
 
     }
+
     // 로그아웃
-    private void thisLogout(){
+    private void thisLogout() {
         Log.d("setting", "delete 끝");
         String deleteThig = "DELETE FROM thisusing ";
         db.execSQL(deleteThig);
@@ -133,106 +133,161 @@ public class setting extends AppCompatActivity {
 
     }
 
-    private void DeleteId(){
-        // 지금 로그인 지우기
-        String deleteThig = "DELETE FROM thisusing ";
-        db.execSQL(deleteThig);
-        // 아이디 데이터들 지우기
-        deleteThig = "DELETE FROM baby ";
-        db.execSQL(deleteThig);
-        // 아이디 삭제
-        deleteThig = "DELETE FROM user ";
-        db.execSQL(deleteThig);
+    // 계정 삭제
+    private void DeleteId(Boolean set) {
+        if (set) {
+            // 지금 로그인 지우기
+            String deleteThig = "DELETE FROM thisusing ";
+            db.execSQL(deleteThig);
+            // 아이디 데이터들 지우기
+            deleteThig = "DELETE FROM baby ";
+            db.execSQL(deleteThig);
+            // 아이디 삭제
+            deleteThig = "DELETE FROM user ";
+            db.execSQL(deleteThig);
+            deleteThig = "DELETE FROM growlog ";
+            db.execSQL(deleteThig);
 
-        ActivityCompat.finishAffinity(this);
-        ContentValues values = new ContentValues();
-        values.put("_id", 1);
-        db.insert("thisusing", null, values);
-
-
-        Intent intent = new Intent(setting.this, MainActivity.class);
-        startActivity(intent);
-
-    }
-    // 아기 수정
-    private void  ReviseBaby(){
-       String NewBabyName,sex;
-
-        // 아기 이름 받기
-        NewBabyName=BabyNameEdit.getText().toString();
-        NewBabyName = NewBabyName.trim();
-        if (NewBabyName.getBytes().length <= 0)
-            NewBabyName=mBabyname;
-
-        // 아기 성별 받기
-        int id = mSexRG.getCheckedRadioButtonId();
-        RadioButton rb = (RadioButton) findViewById(id);
-        sex=rb.getText().toString();
-        Log.d("Revise", "name: "+NewBabyName);
-        Log.d("Revise", "sex: "+sex);
-
-        String Revisejob = "UPDATE baby  SET name='"+NewBabyName+"'," +
-                "sex ='"+sex+"'," +
-                "ybirth ='"+NewBYear+"'," +
-                "mbirth ='"+NewBMonth+"'," +
-                "dbirthy='"+NewBDay+"'" +
-                "where name='"+mBabyname+"'";
-        db.execSQL(Revisejob);
-
-        Revisejob = "UPDATE thisusing SET baby='" + NewBabyName + "'WHERE id='" + mId + "'";
-        db.execSQL(Revisejob);
-        Revisejob = "UPDATE user SET lastbaby='" + NewBabyName + "' WHERE id='" + mId + "'";
-        db.execSQL(Revisejob);
-        Revisejob = "UPDATE growlog SET name='" + NewBabyName + "' WHERE name='" + mBabyname + "'";
-        db.execSQL(Revisejob);
+            ActivityCompat.finishAffinity(this);
+            ContentValues values = new ContentValues();
+            values.put("_id", 1);
+            db.insert("thisusing", null, values);
 
 
-
-    }
-    // 아기 삭제
-    private void DeleteBaby(){
-        String deletejob;
-
-        // 현재 아기 지우고 새로 셋팅
-        // 현재 아기 외 찾기
-        String sql = "select * from baby where not name='"+mBabyname+"'"; // 검색용
-        Cursor cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext()) {
-            Log.d("DeleteBaby", "while start: "+newbaby);
-            newbaby = cursor.getString(1);
-            Log.d("DeleteBaby", "while end: "+newbaby);
-        }
-        // 현재 아기 외의것 thisusing에 넣기
-        Log.d("DeleteBaby", "newbaby: "+newbaby);
-        if (newbaby != null) {
-            deletejob = "UPDATE thisusing  SET baby='" + newbaby + "' WHERE id='" + mId + "'";
-            db.execSQL(deletejob);
-            deletejob = "UPDATE user SET lastbaby='" + newbaby + "' WHERE id='" + mId + "'";
-            db.execSQL(deletejob);
-
-        }else {
-            String Revisejob = "UPDATE thisusing SET baby=null WHERE id='" + mId + "'";
-            db.execSQL(Revisejob);
-            Revisejob = "UPDATE user SET lastbaby=null WHERE id='" + mId + "'";
-            db.execSQL(Revisejob);
-        }
-
-
-        // 아기 테이블에서 지우기
-        deletejob = "DELETE FROM baby where name='"+mBabyname+"'";
-        db.execSQL(deletejob);
-
-        // 현재 아기 growlog 지우기
-        deletejob = "DELETE FROM growlog where name='"+mBabyname+"'";
-        db.execSQL(deletejob);
-
-        if(newbaby==null){
-            Intent intent = new Intent(setting.this, FirstPage.class);
+            Intent intent = new Intent(setting.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    // 아기 수정
+    private void ReviseBaby(Boolean set) {
+        String NewBabyName, sex;
+        if (set) {
+            // 아기 이름 받기
+            NewBabyName = BabyNameEdit.getText().toString();
+            NewBabyName = NewBabyName.trim();
+            if (NewBabyName.getBytes().length <= 0)
+                NewBabyName = mBabyname;
+
+            // 아기 성별 받기
+            int id = mSexRG.getCheckedRadioButtonId();
+            RadioButton rb = (RadioButton) findViewById(id);
+            sex = rb.getText().toString();
+            Log.d("Revise", "name: " + NewBabyName);
+            Log.d("Revise", "sex: " + sex);
+
+            String Revisejob = "UPDATE baby  SET name='" + NewBabyName + "'," +
+                    "sex ='" + sex + "'," +
+                    "ybirth ='" + NewBYear + "'," +
+                    "mbirth ='" + NewBMonth + "'," +
+                    "dbirthy='" + NewBDay + "'" +
+                    "where name='" + mBabyname + "'";
+            db.execSQL(Revisejob);
+
+            if(BYear!=NewBYear||BMonth!=NewBMonth||BDay!=NewBDay) {
+                Log.d("ReviseBaby", " 년 월 일 중 하나라도 다름");
+                String delGrow = "DELETE FROM growlog where name='" + mBabyname + "'";
+                db.execSQL(delGrow);
+            }
+
+
+            Revisejob = "UPDATE thisusing SET baby='" + NewBabyName + "'WHERE id='" + mId + "'";
+            db.execSQL(Revisejob);
+            Revisejob = "UPDATE user SET lastbaby='" + NewBabyName + "' WHERE id='" + mId + "'";
+            db.execSQL(Revisejob);
+            Revisejob = "UPDATE growlog SET name='" + NewBabyName + "' WHERE name='" + mBabyname + "'";
+            db.execSQL(Revisejob);
+
+        }
+
+    }
+
+    // 아기 삭제
+    private void DeleteBaby(Boolean set) {
+        if (set) {
+            String deletejob;
+
+            // 현재 아기 지우고 새로 셋팅
+            // 현재 아기 외 찾기
+            String sql = "select * from baby where not name='" + mBabyname + "'"; // 검색용
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                Log.d("DeleteBaby", "while start: " + newbaby);
+                newbaby = cursor.getString(1);
+                Log.d("DeleteBaby", "while end: " + newbaby);
+            }
+            // 현재 아기 외의것 thisusing에 넣기
+            Log.d("DeleteBaby", "newbaby: " + newbaby);
+            if (newbaby != null) {
+                deletejob = "UPDATE thisusing  SET baby='" + newbaby + "' WHERE id='" + mId + "'";
+                db.execSQL(deletejob);
+                deletejob = "UPDATE user SET lastbaby='" + newbaby + "' WHERE id='" + mId + "'";
+                db.execSQL(deletejob);
+
+            } else {
+                String Revisejob = "UPDATE thisusing SET baby=null WHERE id='" + mId + "'";
+                db.execSQL(Revisejob);
+                Revisejob = "UPDATE user SET lastbaby=null WHERE id='" + mId + "'";
+                db.execSQL(Revisejob);
+            }
+
+
+            // 아기 테이블에서 지우기
+            deletejob = "DELETE FROM baby where name='" + mBabyname + "'";
+            db.execSQL(deletejob);
+
+            // 현재 아기 growlog 지우기
+            deletejob = "DELETE FROM growlog where name='" + mBabyname + "'";
+            db.execSQL(deletejob);
+
+            if (newbaby == null) {
+
+                Intent intent = new Intent(setting.this, FirstPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
+        }
+
+    }
+
+    // 수정 삭제 팝업창
+    private void PopupCall(int popupText) {
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        int width = dm.widthPixels; //디바이스 화면 너비
+        int height = dm.heightPixels; //디바이스 화면 높이
+        mPopint=popupText;
+
+        PopupSet cd = new PopupSet(this);
+        WindowManager.LayoutParams wm = cd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+        wm.copyFrom(cd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+        wm.width = (width / 3) * 2;  //화면 너비의 2/3
+        wm.height = (height / 2) * 1;  //화면 높이의2/3
+
+        cd.setDialogListener(new PopupSet.CustomDialogListener() {
+            @Override
+            public void onPositiveClicked(Boolean exit) {
+               switch (mPopint){
+                   case 1: DeleteId(exit);
+                       break;
+                   case 2:ReviseBaby(exit);
+                       break;
+                   case 3:DeleteBaby(exit);
+                       break;
+               }
+
+                if (exit)
+                    finish();
+            }
+
+        }, popupText);
+
+        cd.show();
 
 
     }
+
 
     // 아기 생일 팝업창
     private void BerthPickerScreen() {
@@ -301,7 +356,7 @@ public class setting extends AppCompatActivity {
             imageview.setImageBitmap(bm);
         } catch (Exception e) {
         }
-        if(BGender.equals("남자"))
+        if (BGender.equals("남자"))
             mSexRG.check(R.id.ms_RBboy);
         else
             mSexRG.check(R.id.ms_RBgirl);
@@ -313,12 +368,13 @@ public class setting extends AppCompatActivity {
         BirthDayTV.setText(BYear + "년 " + BMonth + "월 " + BDay + "일");
         NameTV.setText(mUserName);
         EmailTV.setText(mEmail);
-        IdTV.setText(mId);;
+        IdTV.setText(mId);
+        ;
         BabyNameEdit.setHint(mBabyname);
 
     }
 
-    private void usingDB(){
+    private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
     }

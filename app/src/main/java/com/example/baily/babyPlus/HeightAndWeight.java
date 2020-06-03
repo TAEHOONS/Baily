@@ -69,7 +69,7 @@ public class HeightAndWeight extends Dialog {
 
     }
     //인터페이스 설정
-    interface CustomDialogListener{
+    public interface CustomDialogListener{
         void onPositiveClicked(String hei, String wei);
     }
 
