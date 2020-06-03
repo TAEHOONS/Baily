@@ -100,7 +100,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         usingDB();
         Get_Internet(this);
 
-        //로컬디비에 넣는거
+        //로컬디비에 넣는거 //0603 여기수정중
         InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
         //다이얼로그
         ad = new AlertDialog.Builder(RegisterPage.this);
