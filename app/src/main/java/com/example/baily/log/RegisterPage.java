@@ -68,7 +68,8 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     //여기에 추가적으로 인증번호
     Button reg_numsendBtn = null;
     EditText emailText = null;
-
+    //다이얼로그
+    AlertDialog.Builder ad;
 
     String randomNum; // 이메일로 보내진 인증번호
     TextView time_counter; //시간을 보여주는 TextView
@@ -116,10 +117,11 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
 
 
-        //로컬디비에 넣는거
+        //로컬디비에 넣는거 //0603 여기수정중
         InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
         //다이얼로그
-
+        ad = new AlertDialog.Builder(RegisterPage.this);
+        ad.setIcon(R.mipmap.ic_launcher);
     }
 
     public void countDownTimer() {
@@ -159,17 +161,124 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //비밀번호 중복 체크
+    private void ChkPwd(String userPassword, String userPasswordCk) {
+        if (reg_repwdEdt.equals(reg_pwdEdt)) {
+
+        } else {
+            reg_repwdEdt.setTextColor(Color.parseColor("RED"));
+        }
+    }
 
 
+    private boolean IdCk() {
+        //아이디 check --아이디가 빈칸일경우
+        if (mgetIdCk.equals("")) {
 
-/*
-    //최종 회원가입 버튼 입력 처리
-    public void m_regRegClick(View v) {
-        putFireStore(reg_textEdt.getText().toString());
-        //디비에 들어가는 버튼
+            ad.setTitle("ID 재확인 요망");
+            ad.setMessage("아이디는 빈 칸일 수 없습니다.");
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            ad.show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean PwCk() {
+        if (mgetPassword.equals(mgetRePassword)) {
+            return true;
+        } else {
+
+            ad.setTitle("비민번호 재확인 요망");
+            ad.setMessage("비밀번호를 재확인 해주세요.");
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            ad.show();
+            return false;
+        }
 
     }
-*/
+
+    private boolean EmailCk(boolean emailFlag) {
+        //이메일 인증번호 check
+        if (emailFlag ==false) {
+
+            ad.setTitle("이메일 재확인 요망");
+            ad.setMessage("이메일 인증번호가 틀립니다");
+
+            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            ad.show();
+            return false;
+        } else {
+
+        }
+        return true;
+    }
+
+
+    //최종 회원가입 버튼 입력 처리
+    public void m_regRegClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.reg_confirmBtn: {
+                mgetPassword = reg_pwdEdt.getText().toString();
+                mgetRePassword = reg_repwdEdt.getText().toString();
+                mgetIdCk = reg_textEdt.getText().toString();
+
+                if (IdCk()) {
+                    Toast.makeText(this, "id 성공", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    Toast.makeText(this, "id 실패", Toast.LENGTH_SHORT).show();
+
+                }
+                if (PwCk()) {
+                    Toast.makeText(this, "pw 성공", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(this, "pw ㅅㄹ패", Toast.LENGTH_SHORT).show();
+
+                }
+                if (EmailCk(emailFlag)) {
+                    Toast.makeText(this, "모두성공", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(this, "em 실페", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+        }
+        //디비에 들어가는 버튼
+        reg_confirBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                putFireStore(reg_textEdt.getText().toString());
+
+            }
+        });
+    }
+
     // 아이디 중복체크 버튼 입력처리
     public void m_regIdChkClick(View v) {
         switch (v.getId()) {
