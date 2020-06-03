@@ -115,6 +115,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         Get_Internet(this);
 
 
+
         //로컬디비에 넣는거
         InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
         //다이얼로그
