@@ -44,7 +44,7 @@ public class ChildFragHead  extends Fragment {
 
 
         //남아 표준 그래프(머리둘레) 배열 값 삽입
-        float[] standardHeadBoy = new float[25];
+        float[] standardHeadBoy = new float[73];
         standardHeadBoy[0] = (float)34.46;
         standardHeadBoy[1] = (float)37.28;
         standardHeadBoy[2] = (float)39.00;
@@ -70,9 +70,59 @@ public class ChildFragHead  extends Fragment {
         standardHeadBoy[22] = (float)47.98;
         standardHeadBoy[23] = (float)48.12;
         standardHeadBoy[24] = (float)48.25;
+        standardHeadBoy[25] = (float)48.36;
+        standardHeadBoy[26] = (float)48.48;
+        standardHeadBoy[27] = (float)48.59;
+        standardHeadBoy[28] = (float)48.71;
+        standardHeadBoy[29] = (float)48.82;
+        //30개월
+        standardHeadBoy[30] = (float)48.86;
+        standardHeadBoy[31] = (float)48.94;
+        standardHeadBoy[32] = (float)49.09;
+        standardHeadBoy[33] = (float)49.24;
+        standardHeadBoy[34] = (float)49.39;
+        standardHeadBoy[35] = (float)49.53;
+        standardHeadBoy[36] = (float)49.68;
+        standardHeadBoy[37] = (float)49.83;
+        standardHeadBoy[38] = (float)49.96;
+        standardHeadBoy[39] = (float)50.02;
+        standardHeadBoy[40] = (float)50.08;
+        standardHeadBoy[41] = (float)50.15;
+        standardHeadBoy[42] = (float)50.21;
+        standardHeadBoy[43] = (float)50.27;
+        standardHeadBoy[44] = (float)50.32;
+        standardHeadBoy[45] = (float)50.38;
+        standardHeadBoy[46] = (float)50.43;
+        standardHeadBoy[47] = (float)50.49;
+        standardHeadBoy[48] = (float)50.54;
+        standardHeadBoy[49] = (float)50.59;
+        standardHeadBoy[50] = (float)50.64;
+        standardHeadBoy[51] = (float)50.68;
+        standardHeadBoy[52] = (float)50.73;
+        standardHeadBoy[53] = (float)50.78;
+        standardHeadBoy[54] = (float)50.83;
+        standardHeadBoy[55] = (float)50.88;
+        standardHeadBoy[56] = (float)50.92;
+        standardHeadBoy[57] = (float)50.97;
+        standardHeadBoy[58] = (float)51.02;
+        standardHeadBoy[59] = (float)51.06;
+        //60개월
+        standardHeadBoy[60] = (float)51.11;
+        standardHeadBoy[61] = (float)51.16;
+        standardHeadBoy[62] = (float)51.21;
+        standardHeadBoy[63] = (float)51.26;
+        standardHeadBoy[64] = (float)51.30;
+        standardHeadBoy[65] = (float)51.35;
+        standardHeadBoy[66] = (float)51.40;
+        standardHeadBoy[67] = (float)51.45;
+        standardHeadBoy[68] = (float)51.49;
+        standardHeadBoy[69] = (float)51.54;
+        standardHeadBoy[70] = (float)51.59;
+        standardHeadBoy[71] = (float)51.63;
+        standardHeadBoy[72] = (float)51.68;
 
         //여아 표준 그래프(머리둘레) 배열 값 삽입
-        float[] standardHeadGirl = new float[25];
+        float[] standardHeadGirl = new float[73];
         standardHeadGirl[0] = (float)33.88;
         standardHeadGirl[1] = (float)36.55;
         standardHeadGirl[2] = (float)38.25;
@@ -98,12 +148,64 @@ public class ChildFragHead  extends Fragment {
         standardHeadGirl[22] = (float)46.89;
         standardHeadGirl[23] = (float)47.04;
         standardHeadGirl[24] = (float)47.18;
+        standardHeadGirl[25] = (float)47.31;
+        standardHeadGirl[26] = (float)47.43;
+        standardHeadGirl[27] = (float)47.56;
+        standardHeadGirl[28] = (float)47.68;
+        standardHeadGirl[29] = (float)47.81;
+        //30개월
+        standardHeadGirl[30] = (float)47.93;
+        standardHeadGirl[31] = (float)48.08;
+        standardHeadGirl[32] = (float)48.24;
+        standardHeadGirl[33] = (float)48.39;
+        standardHeadGirl[34] = (float)48.54;
+        standardHeadGirl[35] = (float)48.70;
+        standardHeadGirl[36] = (float)48.85;
+        standardHeadGirl[37] = (float)48.92;
+        standardHeadGirl[38] = (float)48.99;
+        standardHeadGirl[39] = (float)49.05;
+        standardHeadGirl[40] = (float)49.12;
+        standardHeadGirl[41] = (float)49.19;
+        standardHeadGirl[42] = (float)49.26;
+        standardHeadGirl[43] = (float)49.32;
+        standardHeadGirl[44] = (float)49.38;
+        standardHeadGirl[45] = (float)49.44;
+        standardHeadGirl[46] = (float)49.49;
+        standardHeadGirl[47] = (float)49.55;
+        standardHeadGirl[48] = (float)49.61;
+        standardHeadGirl[49] = (float)49.67;
+        standardHeadGirl[50] = (float)49.72;
+        standardHeadGirl[51] = (float)49.78;
+        standardHeadGirl[52] = (float)49.83;
+        standardHeadGirl[53] = (float)49.89;
+        standardHeadGirl[54] = (float)49.94;
+        standardHeadGirl[55] = (float)49.99;
+        standardHeadGirl[56] = (float)50.05;
+        standardHeadGirl[57] = (float)50.09;
+        standardHeadGirl[58] = (float)50.14;
+        standardHeadGirl[59] = (float)50.19;
+        //60개월
+        standardHeadGirl[60] = (float)50.24;
+        standardHeadGirl[61] = (float)50.29;
+        standardHeadGirl[62] = (float)50.34;
+        standardHeadGirl[63] = (float)50.39;
+        standardHeadGirl[64] = (float)50.45;
+        standardHeadGirl[65] = (float)50.50;
+        standardHeadGirl[66] = (float)50.55;
+        standardHeadGirl[67] = (float)50.60;
+        standardHeadGirl[68] = (float)50.65;
+        standardHeadGirl[69] = (float)50.71;
+        standardHeadGirl[70] = (float)50.76;
+        standardHeadGirl[71] = (float)50.81;
+        standardHeadGirl[72] = (float)50.86;
+
+
 
         //그래프에 값 넣기
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 73; i++) {
             valuesBoy.add(new Entry(i,standardHeadBoy[i]));
         }
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 73; i++) {
             valuesGirl.add(new Entry(i,standardHeadGirl[i]));
         }
         LineDataSet set1;

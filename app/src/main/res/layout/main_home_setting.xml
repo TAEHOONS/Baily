@@ -253,6 +253,7 @@
                 android:id="@+id/ms_Btn_delete"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bora"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
@@ -261,7 +262,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.767"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -319,21 +321,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ms_profileImg"
-                android:layout_width="182dp"
-                android:layout_height="162dp"
+                android:layout_width="141dp"
+                android:layout_height="118dp"
+                android:onClick="mOnClick"
                 android:src="@drawable/ic_baby"
                 app:civ_border_color="#FFCCCCCC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.025"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.503" />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/ms_TV_BabyName"
+                android:id="@+id/ms_TV_BabyNametitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -342,31 +346,14 @@
                 android:text="이름(별명)"
                 android:textColor="#000000"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/ms_TV_BabyBirthtitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.562"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <EditText
-                android:id="@+id/ms_BabyNameEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:ems="10"
-                android:fontFamily="@font/godo"
-                android:gravity="right"
-                android:hint="홍당무"
-                android:inputType="textPersonName"
-                android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.956"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/ms_TV_BabyGender"
+                android:id="@+id/ms_TV_BabySextitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -374,26 +361,58 @@
                 android:text="성별"
                 android:textColor="#000000"
                 android:textSize="18sp"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.04"
-                app:layout_constraintStart_toEndOf="@+id/ms_profileImg"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.46"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.521" />
+
+            <TextView
+                android:id="@+id/ms_TV_BabyBirthtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/godo"
+                android:text="출생일"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.46"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.858" />
+
+            <EditText
+                android:id="@+id/ms_BabyNameEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:ems="10"
+                android:fontFamily="@font/godo"
+                android:hint="                                홍당무"
+                android:inputType="textPersonName"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/ms_sexRG"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.956"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <RadioGroup
                 android:id="@+id/ms_sexRG"
                 android:layout_width="142dp"
                 android:layout_height="34dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="1dp"
                 android:background="@drawable/bora2"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintTop_toTopOf="parent">
 
 
@@ -413,34 +432,17 @@
             </RadioGroup>
 
             <TextView
-                android:id="@+id/ms_TV_BabyBirth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/godo"
-                android:text="출생일"
-                android:textColor="#000000"
-                android:textSize="18sp"
+                android:id="@+id/ms_BabyBirthTV"
+                android:layout_width="156dp"
+                android:layout_height="26dp"
+                android:gravity="left"
+                android:text="2020년 01월 01일"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.52"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/ms_BirthEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="16dp"
-                android:ems="10"
-                android:fontFamily="@font/godo"
-                android:hint="                          2020.1.1"
-                android:inputType="textPersonName"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/ms_TV_BabyBirthtitle"
+                app:layout_constraintTop_toBottomOf="@+id/ms_sexRG" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -479,6 +481,7 @@
                 android:id="@+id/ms_Btn_Babydelete"
                 android:layout_width="89dp"
                 android:layout_height="28dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bora"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
@@ -487,7 +490,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.767"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.37" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

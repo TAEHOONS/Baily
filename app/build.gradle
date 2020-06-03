@@ -52,18 +52,18 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:29.0.0'
     implementation 'com.android.support:support-v4:29.0.0'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
-    
+
     // 유진 작성 - 겹치는건 주석처리함
-  //  implementation 'androidx.appcompat:appcompat:1.1.0'
-  //  implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-  //  implementation 'com.google.android.material:material:1.2.0-alpha01'
+    //  implementation 'androidx.appcompat:appcompat:1.1.0'
+    //  implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    //  implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation "gun0912.ted:tedpermission:2.1.0"
     //noinspection GradleCompatible
     //noinspection GradleCompatible
     implementation 'com.android.support:cardview-v7:26.1.0'
- //   testImplementation 'junit:junit:4.12'
- //   androidTestImplementation 'androidx.test.ext:junit:1.1.1'
- //   androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //   testImplementation 'junit:junit:4.12'
+    //   androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    //   androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }
