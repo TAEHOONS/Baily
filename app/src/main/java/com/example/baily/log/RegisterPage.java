@@ -115,6 +115,9 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         usingDB();
         Get_Internet(this);
 
+        //공용아이디
+        InsertData("200112", "1111","신태훈");
+
 
 
         //로컬디비에 넣는거 //0603 여기수정중
