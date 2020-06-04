@@ -55,6 +55,13 @@ public class ChildFragDay extends Fragment {
     SimpleDateFormat sFormat, simpleDate;
     int dStart, dEnd, dBeStart,dBeEnd,dAfStart,dAfEnd;
 
+    LineData dayKgData,dayCmData,dayHeadData,dayFeverData;
+
+    //차트에 들어가는 값,, 도저히 모르겠습니당..
+    ArrayList<Entry> kgValues,cmValues,headValues,feverValues;
+
+    ArrayList<ILineDataSet> dayKgDataSets,dayCmDataSets,dayHeadDataSets,dayFeverDataSets;
+
     public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
         return childFragDay;
@@ -100,6 +107,11 @@ public class ChildFragDay extends Fragment {
         dStart = Integer.parseInt(simpleDate.format(cal.getTime()));
         dEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
 
+        kgValues = new ArrayList<>();
+        cmValues = new ArrayList<>();
+        headValues = new ArrayList<>();
+        feverValues = new ArrayList<>();
+
         //이전버튼 눌렀을 때
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,12 +156,92 @@ public class ChildFragDay extends Fragment {
             }
         });
 
-        //차트에 들어가는 값,, 도저히 모르겠습니당..
-        ArrayList<Entry> kgValues = new ArrayList<>();
-        ArrayList<Entry> cmValues = new ArrayList<>();
-        ArrayList<Entry> headValues = new ArrayList<>();
-        ArrayList<Entry> feverValues = new ArrayList<>();
 
+
+        // 값 셋팅하기
+        SetGraphData();
+
+        // 그래프 평균값 글자넣기
+        avgKgTxt.setText(avgWeight + " kg");
+        avgCmTxt.setText(avgHeight + " cm");
+        avgHeadTxt.setText(avgHead + " cm");
+        avgFeverTxt.setText(avgFever + " °C");
+
+        LineDataSet dayKg, dayCm, dayHead, dayFever;
+
+        dayKg = new LineDataSet(kgValues, "몸무게");
+        dayCm = new LineDataSet(cmValues, "신장");
+        dayHead = new LineDataSet(headValues, "머리둘레");
+        dayFever = new LineDataSet(feverValues, "체온");
+
+        // 기초 라인들 만들기
+        dayKgDataSets = new ArrayList<>();
+        dayCmDataSets = new ArrayList<>();
+        dayHeadDataSets = new ArrayList<>();
+        dayFeverDataSets = new ArrayList<>();
+
+            // day"++"DataSets에 linedata 받은거 추가하기
+        dayKgDataSets.add(dayKg);
+        dayCmDataSets.add(dayCm);
+        dayHeadDataSets.add(dayHead);
+        dayFeverDataSets.add(dayFever);
+
+             // 실질적 라인인 day"++"Data에 새로 값넣기
+        dayKgData = new LineData(dayKgDataSets);
+        dayCmData = new LineData(dayCmDataSets);
+        dayHeadData = new LineData(dayHeadDataSets);
+        dayFeverData = new LineData(dayFeverDataSets);
+
+
+        // 그래프 색 넣기
+        GraphLineColor(dayKg,Color.BLACK);
+        GraphLineColor(dayCm,Color.RED);
+        GraphLineColor(dayHead,Color.BLUE);
+        GraphLineColor(dayFever,Color.GREEN);
+
+
+        //몸무게 차트 속성
+        setGraph(growDayKgCart,dayKgData);
+
+        //신장 차트 속성
+        setGraph(growDayCmCart,dayCmData);
+
+        //머리둘레 차트 속성
+        setGraph(growDayHeadCart,dayHeadData);
+
+        //체온 차트 속성
+        setGraph(growDayFeverCart,dayFeverData);
+
+        return view;
+    }
+
+
+    // 그래프에 데이터 적용 셋팅
+    private void setGraph(LineChart growDayCart,LineData dayData){
+        XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
+        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        headYAxisLeft.setDrawLabels(false);
+        headYAxisLeft.setDrawAxisLine(false);
+        headYAxisLeft.setDrawGridLines(false);
+        YAxis headYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
+        headYAxisRight.setLabelCount(4, true);
+
+        growDayCart.setDescription(null);
+        growDayCart.setData(dayData);
+
+    }
+
+    // 그래프 컬러 적용
+    private void GraphLineColor(LineDataSet line,int color){
+        line.setColor(color);
+        line.setCircleColor(color);
+    }
+
+    // 그래프 데이터 넣기용
+    private void SetGraphData(){
         if(btnCk==true){
             if(abBtn==true){
 
@@ -239,112 +331,7 @@ public class ChildFragDay extends Fragment {
                 avgFever = feverSum / i;
             }
         }
-
-        LineDataSet dayKg, dayCm, dayHead, dayFever;
-
-        dayKg = new LineDataSet(kgValues, "몸무게");
-        dayCm = new LineDataSet(cmValues, "신장");
-        dayHead = new LineDataSet(headValues, "머리둘레");
-        dayFever = new LineDataSet(feverValues, "체온");
-
-
-        ArrayList<ILineDataSet> dayKgDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayCmDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayHeadDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayFeverDataSets = new ArrayList<>();
-
-        dayKgDataSets.add(dayKg); // add the data sets
-        dayCmDataSets.add(dayCm);
-        dayHeadDataSets.add(dayHead);
-        dayFeverDataSets.add(dayFever);
-
-        // create a data object with the data sets
-        LineData dayKgData = new LineData(dayKgDataSets);
-        LineData dayCmData = new LineData(dayCmDataSets);
-        LineData dayHeadData = new LineData(dayHeadDataSets);
-        LineData dayFeverData = new LineData(dayFeverDataSets);
-
-
-        // black lines and points
-        dayKg.setColor(Color.BLACK);
-        dayKg.setCircleColor(Color.BLACK);
-
-        dayCm.setColor(Color.RED);
-        dayCm.setCircleColor(Color.RED);
-
-        dayHead.setColor(Color.BLUE);
-        dayHead.setCircleColor(Color.BLUE);
-
-        dayFever.setColor(Color.GREEN);
-        dayFever.setCircleColor(Color.GREEN);
-
-        //몸무게 차트 속성
-        XAxis kgXAxis = growDayKgCart.getXAxis(); // x 축 설정
-        kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        kgXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis kgYAxisLeft = growDayKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        kgYAxisLeft.setDrawLabels(false);
-        kgYAxisLeft.setDrawAxisLine(false);
-        kgYAxisLeft.setDrawGridLines(false);
-        YAxis kgYAxisRight = growDayKgCart.getAxisRight(); //Y축의 오른쪽면 설정
-        kgYAxisRight.setLabelCount(4, true);
-
-        // set data
-        growDayKgCart.setDescription(null);
-        growDayKgCart.setData(dayKgData);
-        avgKgTxt.setText(avgWeight + " kg");
-
-        //신장 차트 속성
-        XAxis cmXAxis = growDayCmCart.getXAxis(); // x 축 설정
-        cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        cmXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis cmYAxisLeft = growDayCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        cmYAxisLeft.setDrawLabels(false);
-        cmYAxisLeft.setDrawAxisLine(false);
-        cmYAxisLeft.setDrawGridLines(false);
-        YAxis cmYAxisRight = growDayCmCart.getAxisRight(); //Y축의 오른쪽면 설정
-        cmYAxisRight.setLabelCount(4, true);
-
-        growDayCmCart.setDescription(null);
-        growDayCmCart.setData(dayCmData);
-        avgCmTxt.setText(avgHeight + " cm");
-
-        //머리둘레 차트 속성
-        XAxis headXAxis = growDayHeadCart.getXAxis(); // x 축 설정
-        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis headYAxisLeft = growDayHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        headYAxisLeft.setDrawLabels(false);
-        headYAxisLeft.setDrawAxisLine(false);
-        headYAxisLeft.setDrawGridLines(false);
-        YAxis headYAxisRight = growDayHeadCart.getAxisRight(); //Y축의 오른쪽면 설정
-        headYAxisRight.setLabelCount(4, true);
-
-        growDayHeadCart.setDescription(null);
-        growDayHeadCart.setData(dayHeadData);
-        avgHeadTxt.setText(avgHead + " cm");
-
-        //체온 차트 속성
-        XAxis feverXAxis = growDayFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        feverXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis feverYAxisLeft = growDayFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        feverYAxisLeft.setDrawLabels(false);
-        feverYAxisLeft.setDrawAxisLine(false);
-        feverYAxisLeft.setDrawGridLines(false);
-        YAxis feverYAxisRight = growDayFeverCart.getAxisRight(); //Y축의 오른쪽면 설정
-        feverYAxisRight.setLabelCount(4, true);
-
-
-        growDayFeverCart.setDescription(null);
-        growDayFeverCart.setData(dayFeverData);
-        avgFeverTxt.setText(avgFever + " °C");
-
-        return view;
     }
+
 
 }
