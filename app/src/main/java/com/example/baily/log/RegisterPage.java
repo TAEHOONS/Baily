@@ -4,6 +4,7 @@ package com.example.baily.log;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -26,9 +27,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
+import com.example.baily.babyPlus.FirstPage;
+import com.example.baily.babyPlus.SecondPage;
+import com.example.baily.caldate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 
 public class RegisterPage extends AppCompatActivity implements View.OnClickListener {
     private String userID;
@@ -50,6 +58,12 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     Button reg_emailCkBtn; // 이메일 인증번호확인버튼
     Button reg_confirBtn;// OK버튼
 
+    //회원가입버튼 눌렀을 때 dialog 띄움
+    View r_dialog;
+    TextView checkTxt;
+    //인증번호확인과 중복아이디 체크를 했는지 확인하기 위한
+    Boolean numClick=false;
+    Boolean sameCk = false;
 
     //여기에 추가적으로 인증번호
     Button reg_numsendBtn = null;
@@ -66,7 +80,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
     int count=0; //count_method에 쓰이는변수
     String dbName = "user.db", mgetId = "";
-    String mgetPassword, mgetRePassword, mgetIdCk;  // 최종확인할때 쓰는버튼
+    String mgetPassword, mgetRePassword, mgetIdCk,mgetNameCk,mgetEmailCk,mgetEmailNumCk;  // 최종확인할때 쓰는버튼
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
@@ -90,6 +104,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         emailText = (EditText) findViewById(R.id.emailText);
         reg_emailEdt = (EditText) findViewById(R.id.reg_emailnumEdt);
 
+        checkTxt = (TextView)findViewById(R.id.checkTxt);
 
         reg_nameEdt = (EditText) findViewById(R.id.reg_nameEdt);
         reg_textEdt = (EditText) findViewById(R.id.reg_idEdt);
@@ -99,6 +114,11 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         reg_confirBtn = (Button) findViewById(R.id.reg_confirmBtn);
         usingDB();
         Get_Internet(this);
+
+        //공용아이디
+        InsertData("200112", "1111","신태훈");
+
+
 
         //로컬디비에 넣는거 //0603 여기수정중
         InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
@@ -318,8 +338,10 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
         if (sqlId.equals(insertId)) {//중복 있을경우
             reg_textEdt.setTextColor(Color.parseColor("RED"));
+            sameCk = false;
         } else { //중복 없을경우
             reg_textEdt.setTextColor(Color.parseColor("GREEN"));
+            sameCk = true;
         }
     }
 
@@ -335,19 +357,23 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reg_emailCheckBtn: //OK 버튼을 눌렀을 시
+
                 //인증번호를 입력하지 않은 경우 > null 값 처리
                 String emailAuth_num = reg_emailEdt.getText().toString();
                 if (emailAuth_num.getBytes().length <= 0) {
                     Toast.makeText(this, "이메일 인증번호 입력", Toast.LENGTH_SHORT).show();
+                    numClick = false;
                 } else {
                     String user_answer = reg_emailEdt.getText().toString();
                     if (user_answer.equals(SendRandomCode)) {
                         Toast.makeText(this, "이메일 인증 성공", Toast.LENGTH_SHORT).show();
                         emailFlag = true;
+                        numClick = true;
                         countDownTimer.cancel();//성공 시 타이머 중지
                     } else {
                         Toast.makeText(this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
                         emailFlag = false;
+                        numClick = false;
                     }
                 }
 
@@ -360,6 +386,97 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                 SendRandomCode = mailServer.getRandomNum();
                 Log.d("email", "reg_numsendBtn: SendRandomCode=" + SendRandomCode);
                 Log.d("email", "email end");
+                break;
+
+            case R.id.reg_confirmBtn:
+                AlertDialog.Builder dlg = new AlertDialog.Builder(RegisterPage.this);
+                mgetPassword = reg_pwdEdt.getText().toString();
+                mgetRePassword = reg_repwdEdt.getText().toString();
+                mgetIdCk = reg_textEdt.getText().toString();
+                mgetNameCk = reg_nameEdt.getText().toString();
+                mgetEmailCk = emailText.getText().toString();
+                mgetEmailNumCk = reg_emailEdt.getText().toString();
+
+                //모든 칸이 빈칸일 경우
+                if (mgetNameCk.equals("")&&mgetIdCk.equals("")&&mgetPassword.equals("")&&mgetRePassword.equals("")&&mgetEmailCk.equals("")&&mgetEmailNumCk.equals("")){
+                    dlg.setTitle("정보 재확인 요망");
+                    dlg.setMessage("정보를 입력해주세요");
+                    dlg.setPositiveButton("확인", null);
+                    dlg.show();
+                }
+                //한개라도 빈칸이거나 정보가 일치하지않을 경우
+                else {
+
+                    //dlg.setTitle("정보 재확인 요망");
+                    if(mgetNameCk.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("이름을 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(mgetIdCk.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("아이디를 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(mgetPassword.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("비밀번호를 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(mgetRePassword.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("비밀번호 확인란에 비밀번호를 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(!mgetRePassword.equals(mgetPassword)){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("비밀번호가 일치하지 않습니다.");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(mgetEmailCk.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("이메일을 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(mgetEmailNumCk.equals("")){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("이메일 인증번호를 입력해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(numClick==false){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("이메일 인증번호 확인을 완료해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else if(sameCk == false){
+                        dlg.setTitle("정보 재확인 요망");
+                        dlg.setMessage("중복된 아이디가 있는지 체크해주세요");
+                        dlg.setPositiveButton("확인", null);
+                        dlg.show();
+                    }
+                    else{
+                        putFireStore(reg_textEdt.getText().toString());
+                        dlg.setTitle("회원가입 완료");
+                        dlg.setMessage(mgetNameCk+"님 환영합니다.");
+                        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(RegisterPage.this, MainActivity.class);
+                                finish();
+                            }
+                        });
+                        dlg.show();
+                    }
+
+                }
                 break;
 
         }

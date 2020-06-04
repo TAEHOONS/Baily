@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.baily.FindPwPage4;
 import com.example.baily.R;
 
 public class FindPwPage3 extends AppCompatActivity {
@@ -55,11 +56,14 @@ public class FindPwPage3 extends AppCompatActivity {
                         ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Intent intent2 = new Intent(FindPwPage3.this,FindPwPage4.class);
+                                startActivity(intent2);
                                 dialog.dismiss();
+
                             }
                         });
-                       // finish();
                         ad.show();
+
                     } else {
                         Toast.makeText(this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
                     }

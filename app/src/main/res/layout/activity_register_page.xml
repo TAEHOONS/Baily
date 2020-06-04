@@ -364,7 +364,7 @@
                 android:layout_height="37dp"
                 android:background="@drawable/bora"
                 android:gravity="center"
-                android:onClick="m_regRegClick"
+                android:onClick="onClick"
                 android:text="회원가입"
                 android:textSize="15dp"
                 android:fontFamily="@font/godo"

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PopupSet"></activity>
+        <activity android:name=".FindPwPage4"></activity>
+        <activity android:name=".PopupSet" />
         <activity android:name=".log.FindIdPage3" />
         <activity
             android:name=".main.diary.AddEvent"

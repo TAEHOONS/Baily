@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,10 +37,11 @@ public class ChildFragWeek extends Fragment {
     float wHeadSum = 0;
     float wFeverSum = 0;
     ImageView weekBeforeBtn,weekAfterBtn;
-    String weekStartDate, weekEndDate;
-    Calendar wCal, wPlusCal;
+    String weekStartDate, weekEndDate, wToday;
+    Calendar wCal, wStartCal,wEndCal;
     Date date = new Date();
-    SimpleDateFormat sFormat;
+    SimpleDateFormat sFormat,wSimple;
+    int wStart,wEnd;
 
     public static ChildFragWeek newInstance(){
         ChildFragWeek childFragWeek = new ChildFragWeek();
@@ -62,18 +64,15 @@ public class ChildFragWeek extends Fragment {
         weekBeforeBtn = (ImageView)view.findViewById(R.id.weekBeforeBtn);
         weekAfterBtn = (ImageView)view.findViewById(R.id.weekAfterBtn);
 
+        //차트구간을 위해 , N주차
+        wSimple = new SimpleDateFormat("W");
         sFormat = new SimpleDateFormat("yy년 MM월");
+        wToday =sFormat.format(date); //이번달
         wCal = Calendar.getInstance();
-        wPlusCal = Calendar.getInstance();
 
         wCal.setTime(date);
         weekStartDate =sFormat.format(wCal.getTime());
         weekDateTxt.setText(weekStartDate);
-        /*
-        wPlusCal.setTime(date);
-        wPlusCal.add(Calendar.MONTH, +1);
-        weekEndDate = sFormat.format(wPlusCal.getTime());
-        */
 
         weekBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,52 +80,49 @@ public class ChildFragWeek extends Fragment {
                 wCal.add(Calendar.MONTH, -1);
                 weekStartDate =sFormat.format(wCal.getTime());
                 weekDateTxt.setText(weekStartDate);
-                /*
-                wPlusCal.add(Calendar.MONTH, -1);
-                weekEndDate = sFormat.format(wPlusCal.getTime());
-                weekDateTxt.setText(weekStartDate+" ~ "+weekEndDate);
-                */
             }
         });
         weekAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wCal.add(Calendar.MONTH, +1);
-                weekStartDate =sFormat.format(wCal.getTime());
-                weekDateTxt.setText(weekStartDate);
-
-
-                /*
-                wPlusCal.add(Calendar.MONTH, +1);
-                weekEndDate = sFormat.format(wPlusCal.getTime());
-                weekDateTxt.setText(weekStartDate+" ~ "+weekEndDate);
-                */
+                if(wToday.equals(weekStartDate)){
+                    Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    wCal.add(Calendar.MONTH, +1);
+                    weekStartDate =sFormat.format(wCal.getTime());
+                    weekDateTxt.setText(weekStartDate);
+                }
             }
         });
+
+        wCal.getMaximum(Calendar.DAY_OF_MONTH); //현재 달의 마지막날
+        wEnd = Integer.parseInt(wSimple.format(wCal.getTime()));//마지막 날의 주차를 int형으로 구함
 
         ArrayList<Entry> kgValues = new ArrayList<>();
         ArrayList<Entry> cmValues = new ArrayList<>();
         ArrayList<Entry> headValues = new ArrayList<>();
         ArrayList<Entry> feverValues = new ArrayList<>();
-        for (int i = 1; i < 5; i++) {
+
+        for (int i = 1; i <= wEnd; i++) {
             float val = (float) (Math.random() * 10);
             wKgSum = wKgSum + val;
             kgValues.add(new Entry(i, val));
             weekAvgWeight = wKgSum/i;
         }
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= wEnd; i++) {
             float val = (float) (Math.random() * 10);
             wCmSum = wCmSum + val;
             cmValues.add(new Entry(i, val));
             weekAvgHeight = wCmSum/i;
         }
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= wEnd; i++) {
             float val = (float) (Math.random() * 10);
             wHeadSum = wHeadSum + val;
             headValues.add(new Entry(i, val));
             weekAvgHead = wHeadSum/i;
         }
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= wEnd; i++) {
             float val = (float) 36.5;
             wFeverSum = wFeverSum + val;
             feverValues.add(new Entry(i, val));
@@ -173,7 +169,7 @@ public class ChildFragWeek extends Fragment {
         //몸무게 차트 속성
         XAxis kgXAxis = growWeekKgCart.getXAxis(); // x 축 설정
         kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        kgXAxis.setLabelCount(4, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        kgXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis kgYAxisLeft = growWeekKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
         kgYAxisLeft.setDrawLabels(false);
@@ -190,7 +186,7 @@ public class ChildFragWeek extends Fragment {
         //신장 차트 속성
         XAxis cmXAxis = growWeekCmCart.getXAxis(); // x 축 설정
         cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        cmXAxis.setLabelCount(4, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        cmXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis cmYAxisLeft = growWeekCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
         cmYAxisLeft.setDrawLabels(false);
@@ -207,7 +203,7 @@ public class ChildFragWeek extends Fragment {
         //머리둘레 차트 속성
         XAxis headXAxis = growWeekHeadCart.getXAxis(); // x 축 설정
         headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        headXAxis.setLabelCount(4, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        headXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis headYAxisLeft = growWeekHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
         headYAxisLeft.setDrawLabels(false);
@@ -223,8 +219,8 @@ public class ChildFragWeek extends Fragment {
 
         //체온 차트 속성
         XAxis feverXAxis = growWeekFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
-        feverXAxis.setLabelCount(4, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        feverXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        feverXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis feverYAxisLeft = growWeekFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
         feverYAxisLeft.setDrawLabels(false);

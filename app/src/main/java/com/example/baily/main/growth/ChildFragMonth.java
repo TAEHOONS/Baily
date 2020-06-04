@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,10 +37,10 @@ public class ChildFragMonth extends Fragment {
     float mHeadSum = 0;
     float mFeverSum = 0;
     ImageView monthBeforeBtn,monthAfterBtn;
-    String monthStartDate, monthEndDate;
+    String monthStartDate, monthEndDate,mToday;
     Calendar mCal, mPlusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat;
+    SimpleDateFormat sFormat, mSimple;
 
     public static ChildFragMonth newInstance(){
         ChildFragMonth childFragMonth = new ChildFragMonth();
@@ -62,19 +63,16 @@ public class ChildFragMonth extends Fragment {
         monthBeforeBtn = (ImageView)view.findViewById(R.id.monthBeforeBtn);
         monthAfterBtn = (ImageView)view.findViewById(R.id.monthAfterBtn);
 
+        mSimple = new SimpleDateFormat("MM");
+
         sFormat = new SimpleDateFormat("yyyy년");
+        mToday =sFormat.format(date); //이번년도
         mCal = Calendar.getInstance();
         mPlusCal = Calendar.getInstance();
 
         mCal.setTime(date);
         monthStartDate =sFormat.format(mCal.getTime());
         monthDateTxt.setText(monthStartDate);
-        /*
-        mPlusCal.setTime(date);
-        mPlusCal.add(Calendar.DATE, +7);
-        monthEndDate = sFormat.format(mPlusCal.getTime());
-        monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
-         */
 
         monthBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,24 +80,20 @@ public class ChildFragMonth extends Fragment {
                 mCal.add(Calendar.YEAR, -1);
                 monthStartDate =sFormat.format(mCal.getTime());
                 monthDateTxt.setText(monthStartDate);
-                /*
-                mPlusCal.add(Calendar.YEAR, -1);
-                monthEndDate = sFormat.format(mPlusCal.getTime());
-                monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
-                 */
+
             }
         });
         monthAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCal.add(Calendar.YEAR, +1);
-                monthStartDate =sFormat.format(mCal.getTime());
-                monthDateTxt.setText(monthStartDate);
-                /*
-                mPlusCal.add(Calendar.YEAR, +1);
-                monthEndDate = sFormat.format(mPlusCal.getTime());
-                monthDateTxt.setText(monthStartDate+" ~ "+monthEndDate);
-                 */
+                if(mToday.equals(monthStartDate)){
+                    Toast.makeText(getActivity(), "다음 년도 기록이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    mCal.add(Calendar.YEAR, +1);
+                    monthStartDate =sFormat.format(mCal.getTime());
+                    monthDateTxt.setText(monthStartDate);
+                }
             }
         });
 
@@ -221,7 +215,7 @@ public class ChildFragMonth extends Fragment {
 
         //체온 차트 속성
         XAxis feverXAxis = growMonthFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
+        feverXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         feverXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis feverYAxisLeft = growMonthFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
