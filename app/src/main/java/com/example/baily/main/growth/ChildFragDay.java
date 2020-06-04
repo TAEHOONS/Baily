@@ -43,11 +43,8 @@ public class ChildFragDay extends Fragment {
     TextView avgKgTxt, avgCmTxt, avgHeadTxt, avgFeverTxt, dayDateTxt;
     Boolean btnCk;
     Boolean abBtn;
-    float avgWeight, avgHeight, avgHead, avgFever;
-    float kgSum = 0;
-    float cmSum = 0;
-    float headSum = 0;
-    float feverSum = 0;
+    float avgWeight, avgHeight, avgHead, avgFever,kgSum = 0,cmSum = 0,headSum = 0,feverSum = 0;
+
     ImageView beforeBtn, afterBtn;
     String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
@@ -244,94 +241,41 @@ public class ChildFragDay extends Fragment {
     private void SetGraphData(){
         if(btnCk==true){
             if(abBtn==true){
-
-
-                for (int i = dAfStart; i <= dAfEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    kgSum = kgSum + val;
-                    kgValues.add(new Entry(i, val));
-                    avgWeight = kgSum / i;
-                }
-
-                for (int i = dAfStart; i <= dAfEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    cmSum = cmSum + val;
-                    cmValues.add(new Entry(i, val));
-                    avgHeight = cmSum / i;
-                }
-                for (int i = dAfStart; i <= dAfEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    headSum = headSum + val;
-                    headValues.add(new Entry(i, val));
-                    avgHead = headSum / i;
-                }
-                for (int i = dAfStart; i <= dAfEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    float sVal = (float) 36.5;
-                    feverSum = feverSum + sVal;
-                    feverValues.add(new Entry(i, sVal));
-                    avgFever = feverSum / i;
-                }
+                avgWeight=dataStack(dAfStart,dAfEnd,kgSum,kgValues,avgWeight);
+                avgHeight=dataStack(dAfStart,dAfEnd,cmSum,cmValues,avgHeight);
+                avgHead=dataStack(dAfStart,dAfEnd,headSum,headValues,avgHead);
+                avgFever=dataStack(dAfStart,dAfEnd,feverSum,feverValues,avgFever);
+                // 이전 코드 보존용
+//                  for (int i = dAfStart; i <= dAfEnd; i++) {
+//                      float val = (float) (Math.random() * 10);
+//                      float sVal = (float) 36.5;
+//                      feverSum = feverSum + sVal;
+//                      feverValues.add(new Entry(i, sVal));
+//                      avgFever = feverSum / i;
+//                  }
 
             }else{
-
-                for (int i = dBeStart; i <= dBeEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    kgSum = kgSum + val;
-                    kgValues.add(new Entry(i, val));
-                    avgWeight = kgSum / i;
-                }
-
-                for (int i = dBeStart; i <= dBeEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    cmSum = cmSum + val;
-                    cmValues.add(new Entry(i, val));
-                    avgHeight = cmSum / i;
-                }
-                for (int i = dBeStart; i <= dBeEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    headSum = headSum + val;
-                    headValues.add(new Entry(i, val));
-                    avgHead = headSum / i;
-                }
-                for (int i = dBeStart; i <= dBeEnd; i++) {
-                    float val = (float) (Math.random() * 10);
-                    float sVal = (float) 36.5;
-                    feverSum = feverSum + sVal;
-                    feverValues.add(new Entry(i, sVal));
-                    avgFever = feverSum / i;
-                }
+                avgWeight=dataStack(dBeStart,dBeEnd,kgSum,kgValues,avgWeight);
+                avgHeight=dataStack(dBeStart,dBeEnd,cmSum,cmValues,avgHeight);
+                avgHead=dataStack(dBeStart,dBeEnd,headSum,headValues,avgHead);
+                avgFever=dataStack(dBeStart,dBeEnd,feverSum,feverValues,avgFever);
             }
         }else{
-
-            for (int i = dStart; i <= dEnd; i++) {
-                float val = (float) (Math.random() * 10);
-                kgSum = kgSum + val;
-                kgValues.add(new Entry(i, val));
-                avgWeight = kgSum / i;
-            }
-
-            for (int i = dStart; i <= dEnd; i++) {
-                float val = (float) (Math.random() * 10);
-                cmSum = cmSum + val;
-                cmValues.add(new Entry(i, val));
-                avgHeight = cmSum / i;
-            }
-            for (int i = dStart; i <= dEnd; i++) {
-                float val = (float) (Math.random() * 10);
-                headSum = headSum + val;
-                headValues.add(new Entry(i, val));
-                avgHead = headSum / i;
-            }
-            for (int i = dStart; i <= dEnd; i++) {
-                float val = (float) (Math.random() * 10);
-                float sVal = (float) 36.5;
-                feverSum = feverSum + sVal;
-                feverValues.add(new Entry(i, sVal));
-                avgFever = feverSum / i;
-            }
+            avgWeight=dataStack(dStart,dEnd,kgSum,kgValues,avgWeight);
+            avgHeight=dataStack(dStart,dEnd,cmSum,cmValues,avgHeight);
+            avgHead=dataStack(dStart,dEnd,headSum,headValues,avgHead);
+            avgFever=dataStack(dStart,dEnd,feverSum,feverValues,avgFever);
         }
     }
 
+    private float dataStack(int start,int end,float sum,ArrayList<Entry> values,float avg){
+        for (int i = start; i <= end; i++) {
+            float val = (float) (Math.random() * 10);
+            sum = sum + val;
+            values.add(new Entry(i, val));
+            avg = sum / i;
+        }
+        return avg;
+    }
 
 }
