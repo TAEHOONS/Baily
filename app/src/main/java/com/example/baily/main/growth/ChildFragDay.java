@@ -144,7 +144,7 @@ public class ChildFragDay extends Fragment {
             }
         });
 
-        //차트에 들어가는 값
+        //차트에 들어가는 값,, 도저히 모르겠습니당..
         ArrayList<Entry> kgValues = new ArrayList<>();
         ArrayList<Entry> cmValues = new ArrayList<>();
         ArrayList<Entry> headValues = new ArrayList<>();
