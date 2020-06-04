@@ -286,7 +286,6 @@
                 android:id="@+id/rt_emailEdt"
                 android:layout_width="343dp"
                 android:layout_height="48dp"
-                android:background="null"
                 android:ems="10"
                 android:fontFamily="@font/godo"
                 android:hint="이곳을 터치하여 메모를 입력해주세요"

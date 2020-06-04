@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="분유"
+                android:text="이유식"
                 android:textColor="#000000"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -93,40 +93,62 @@
                 android:inputType="textPersonName"
                 android:text="시작 시간" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
-
-            <EditText
-                android:id="@+id/pwm_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="끝난 시간" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/pwm_sum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="비교값" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#84AECD"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/bbf_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/godo"
+            android:text="이유식 종류"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp">
+
+            <LinearLayout
+                android:id="@+id/bbf_hori"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bbf_tag_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/recode_info_item" />
+
+                <Button
+                    android:id="@+id/bbf_add"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/whitebutton"
+                    android:fontFamily="@font/godo"
+                    android:text="  +  "
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+
+
+
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -228,16 +250,16 @@
 
 
         <ImageView
-                android:layout_width="411dp"
-                android:layout_height="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="411dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37"
+            app:srcCompat="@drawable/recordbar" />
 
         <EditText
             android:id="@+id/pwm_memo"

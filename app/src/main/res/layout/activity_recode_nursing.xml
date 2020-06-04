@@ -5,27 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EAEEFA"
-    android:orientation="vertical"
-    android:weightSum="140">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_height="50dp"
         android:gravity="center"
         android:background="#84AECD"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="88dp">
 
             <TextView
                 android:id="@+id/rt_TV_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="분유"
+                android:text="모유수유"
                 android:textColor="#000000"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +40,7 @@
                 app:layout_constraintHorizontal_bias="0.042"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintVertical_bias="0.578"
                 app:srcCompat="@drawable/ic_close" />
 
             <ImageView
@@ -138,8 +136,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_height="247dp"
         android:background="#84AECD"
         android:gravity="center"
         android:orientation="vertical">
@@ -147,29 +144,98 @@
         <TextView
             android:id="@+id/pwm_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:fontFamily="@font/godo"
-            android:text="먹은 양"
+            android:text="얼마 동안"
             android:textColor="#000000"
             android:textSize="20sp" />
 
         <ImageView
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="14dp"
 
             app:srcCompat="@drawable/recordbar" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/left_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/godo"
+                android:text="왼쪽 가슴"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/jum" />
+
+            <TextView
+                android:id="@+id/left_val2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/godo"
+                android:text="오른쪽 가슴"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/left_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/godo"
+                android:text="0ml"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/right_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/godo"
+                android:text="0ml"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/left_val"
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/godo"
-            android:text="0ml"
-            android:textColor="#000000"
-            android:textSize="25sp" />
+            android:text="왼쪽" />
 
         <SeekBar
             android:id="@+id/nurs_left_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:max="1000" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오른쪽" />
+
+        <SeekBar
+            android:id="@+id/nurs_right_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -228,16 +294,16 @@
 
 
         <ImageView
-                android:layout_width="411dp"
-                android:layout_height="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="411dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37"
+            app:srcCompat="@drawable/recordbar" />
 
         <EditText
             android:id="@+id/pwm_memo"

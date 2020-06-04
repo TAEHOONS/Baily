@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="분유"
+                android:text="입원"
                 android:textColor="#000000"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -93,36 +93,7 @@
                 android:inputType="textPersonName"
                 android:text="시작 시간" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
-
-            <EditText
-                android:id="@+id/pwm_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="끝난 시간" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/pwm_sum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="비교값" />
 
     </LinearLayout>
 
@@ -149,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
-            android:text="먹은 양"
+            android:text="병원 유형"
             android:textColor="#000000"
             android:textSize="20sp" />
 
@@ -159,21 +130,24 @@
 
             app:srcCompat="@drawable/recordbar" />
 
-        <TextView
-            android:id="@+id/left_val"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/godo"
-            android:text="0ml"
-            android:textColor="#000000"
-            android:textSize="25sp" />
-
-        <SeekBar
-            android:id="@+id/nurs_left_bar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:max="1000" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="검진" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="질환" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -188,64 +162,90 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="30"
         android:background="#84AECD"
         android:gravity="center"
         android:orientation="vertical">
 
 
-        <HorizontalScrollView
+        <ImageView
+            android:id="@+id/imageView6"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="0dp">
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
 
-            <LinearLayout
-                android:id="@+id/pwm_hori"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37"
+            app:srcCompat="@drawable/recordbar" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pwm_tag_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/recode_info_item" />
-
-                <Button
-                    android:id="@+id/rt_TV_plus"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/whitebutton"
-                    android:fontFamily="@font/godo"
-                    android:text="  +  "
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
-
+        <EditText
+            android:id="@+id/pwm_memo3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/godo"
+            android:hint="병원이름"
+            android:inputType="textPersonName"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.235"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.614" />
 
         <ImageView
-                android:layout_width="411dp"
-                android:layout_height="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37"
+            app:srcCompat="@drawable/recordbar" />
+
+        <EditText
+            android:id="@+id/pwm_memo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/godo"
+            android:hint="의사"
+            android:inputType="textPersonName"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.235"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.614" />
+
+        <ImageView
+            android:layout_width="411dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37"
+            app:srcCompat="@drawable/recordbar" />
 
         <EditText
             android:id="@+id/pwm_memo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/godo"
-            android:hint="이곳을 터치하여 메모를 입력해주세요"
+            android:hint="검진내용"
             android:inputType="textPersonName"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
