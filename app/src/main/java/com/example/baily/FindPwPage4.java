@@ -58,7 +58,7 @@ public class FindPwPage4 extends AppCompatActivity {
                     }
                 });
                 ad.show();
-                }else{
+                }else{//로그인페이지로보내기
                 Intent intent = new Intent(FindPwPage4.this, MainActivity.class);
                 startActivity(intent);
                 }
