@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.R;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,13 +31,13 @@ public class FragRecode extends Fragment {
     RecodeAdapter recodeAdapter;
     RecyclerView recyclerView;
     private String sel;
-
+    String sumT;
+    Thread thread = null;
     AppCompatImageButton handle, nurs, bbfood, sleep, pwmilk, bowel, dosage, tem, bath, health, play;
     TextView day, nursT, bowerT, sleepT;
     SimpleDateFormat dateSet = new SimpleDateFormat("yyyyMMdd HH:mm");
     String date = dateSet.format(new Date());
 
-    long end = System.currentTimeMillis();
     String dateInit = null;
     private List<String> list;
     private RecodeSearchAdapter adapter;      // 리스트뷰에 연결할 아답터
@@ -54,7 +53,13 @@ public class FragRecode extends Fragment {
 
         return sdfNow.format(date);
     }
-
+    private static class TIME_MAXIMUM{
+        public static final int SEC = 60;
+        public static final int MIN = 60;
+        public static final int HOUR = 24;
+        public static final int DAY = 30;
+        public static final int MONTH = 12;
+    }
     public static FragRecode newInstance(){
         FragRecode fragRecode = new FragRecode();
         return fragRecode;
@@ -117,22 +122,38 @@ public class FragRecode extends Fragment {
                 recodeAdapter.addItem(new RecodeData(getNowTime(),"수유"));
                 recyclerView.setAdapter(recodeAdapter);
 
-                String dateInit = dateSet.format(new Date());
-                final long start = System.currentTimeMillis();
-
-                Thread thread = new Thread(new Runnable() {
+               final long  start = System.currentTimeMillis();
+                    if (thread != null) {
+                        thread.interrupt();
+                        thread = null;
+                    }
+               thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        while(flag) {
+                        while(flag) {final long end = System.currentTimeMillis();
                             try {
-                                long end = System.currentTimeMillis();
-
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
 
+                                    long sum = (end - start) /1000;
+                                        if (sum < TIME_MAXIMUM.SEC) {
+                                            sumT = sum + "초 전";
+                                        } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+                                            sumT = sum + "분 전";
+                                        } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+                                            sumT = (sum) + "시간 전";
+                                        } else if ((sum /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+                                            sumT = (sum) + "일 전";
+                                        } else if ((sum /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+                                            sumT = (sum) + "달 전";
+                                        } else {
+                                            sumT = (sum) + "년 전";
+                                        }
+                                        nursT.setText(sumT);
                                     }
                                 });
+
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
@@ -141,8 +162,6 @@ public class FragRecode extends Fragment {
                     }
                 });
                 thread.start();
-
-
             }
         });
 
@@ -155,14 +174,55 @@ public class FragRecode extends Fragment {
 
                 recodeAdapter.addItem(new RecodeData(getNowTime(),"이유식"));
                 recyclerView.setAdapter(recodeAdapter);
+
             }
         });
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                recodeAdapter.addItem(new RecodeData(getNowTime(),"낮잠"));
+                recodeAdapter.addItem(new RecodeData(getNowTime(),"수면"));
                 recyclerView.setAdapter(recodeAdapter);
+                final long start = System.currentTimeMillis();
+                if (thread != null) {
+                    thread.interrupt();
+                    thread = null;
+                }
+                thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(flag) {final long  end = System.currentTimeMillis();
+                            try {
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long sum = (end - start) /1000;
+                                        if (sum < TIME_MAXIMUM.SEC) {
+                                            sumT = sum + "초 전";
+                                        } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+                                            sumT = sum + "분 전";
+                                        } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+                                            sumT = (sum) + "시간 전";
+                                        } else if ((sum /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+                                            sumT = (sum) + "일 전";
+                                        } else if ((sum /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+                                            sumT = (sum) + "달 전";
+                                        } else {
+                                            sumT = (sum) + "년 전";
+                                        }
+                                        sleepT.setText(sumT);
+                                    }
+                                });
+
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                thread.start();
             }
         });
         pwmilk.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +239,46 @@ public class FragRecode extends Fragment {
 
                 recodeAdapter.addItem(new RecodeData(getNowTime(),"배변"));
                 recyclerView.setAdapter(recodeAdapter);
+                final long start = System.currentTimeMillis();
+                if (thread != null) {
+                    thread.interrupt();
+                    thread = null;
+                }
+                thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(flag) {final long end = System.currentTimeMillis();
+                            try {
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long sum = (end - start) /1000;
+                                        if (sum < TIME_MAXIMUM.SEC) {
+                                            sumT = sum + "초 전";
+                                        } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+                                            sumT = sum + "분 전";
+                                        } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+                                            sumT = (sum) + "시간 전";
+                                        } else if ((sum /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+                                            sumT = (sum) + "일 전";
+                                        } else if ((sum /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+                                            sumT = (sum) + "달 전";
+                                        } else {
+                                            sumT = (sum) + "년 전";
+                                        }
+                                        bowerT.setText(sumT);
+                                    }
+                                });
+
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                thread.start();
             }
         });
         dosage.setOnClickListener(new View.OnClickListener() {

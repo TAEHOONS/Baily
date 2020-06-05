@@ -1,16 +1,24 @@
 package com.example.baily.main.growth;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Binder;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputBinding;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.R;
@@ -30,21 +38,28 @@ import java.util.Date;
 
 public class ChildFragDay extends Fragment {
     private View view;
+    private Activity activity;
     private LineChart growDayKgCart, growDayCmCart, growDayHeadCart, growDayFeverCart;
     TextView avgKgTxt, avgCmTxt, avgHeadTxt, avgFeverTxt, dayDateTxt;
-    float avgWeight,avgHeight,avgHead,avgFever;
-    float kgSum = 0;
-    float cmSum = 0;
-    float headSum = 0;
-    float feverSum = 0;
-    ImageView beforeBtn,afterBtn;
-    String dayStartDate, dayEndDate;
+    Boolean btnCk;
+    Boolean abBtn;
+    float avgWeight, avgHeight, avgHead, avgFever,kgSum = 0,cmSum = 0,headSum = 0,feverSum = 0;
+
+    ImageView beforeBtn, afterBtn;
+    String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat;
+    SimpleDateFormat sFormat, simpleDate;
+    int dStart, dEnd, dBeStart,dBeEnd,dAfStart,dAfEnd;
 
+    LineData dayKgData,dayCmData,dayHeadData,dayFeverData;
 
-    public static ChildFragDay newInstance(){
+    //차트에 들어가는 값,, 도저히 모르겠습니당..
+    ArrayList<Entry> kgValues,cmValues,headValues,feverValues;
+
+    ArrayList<ILineDataSet> dayKgDataSets,dayCmDataSets,dayHeadDataSets,dayFeverDataSets;
+
+    public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
         return childFragDay;
     }
@@ -52,7 +67,7 @@ public class ChildFragDay extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.growth_child_frag_day,container,false);
+        view = inflater.inflate(R.layout.growth_child_frag_day, container, false);
         growDayKgCart = view.findViewById(R.id.growthDayKgLineCart);
         growDayCmCart = view.findViewById(R.id.growthDayCmLineCart);
         growDayHeadCart = view.findViewById(R.id.growthDayHeadLineCart);
@@ -62,176 +77,205 @@ public class ChildFragDay extends Fragment {
         avgHeadTxt = view.findViewById(R.id.avgHeadTxt);
         avgFeverTxt = view.findViewById(R.id.avgFeverTxt);
         dayDateTxt = view.findViewById(R.id.dayDateTxt);
-        beforeBtn = (ImageView)view.findViewById(R.id.beforeBtn);
-        afterBtn = (ImageView)view.findViewById(R.id.afterBtn);
+        beforeBtn = (ImageView) view.findViewById(R.id.beforeBtn);
+        afterBtn = (ImageView) view.findViewById(R.id.afterBtn);
+
+        //차트 구간설정을 위한
+        simpleDate = new SimpleDateFormat("dd");
 
         sFormat = new SimpleDateFormat("MM월 dd일");
+        today = sFormat.format(date); //오늘날짜
+
         cal = Calendar.getInstance();
         plusCal = Calendar.getInstance();
 
         cal.setTime(date);
-        dayStartDate =sFormat.format(cal.getTime());
-        plusCal.setTime(date);
-        plusCal.add(Calendar.DATE, +7);
-        dayEndDate = sFormat.format(plusCal.getTime());
-        dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+        //cal.add(Calendar.DATE, -6);
+        dayStartDate = sFormat.format(cal.getTime());
 
+        plusCal.setTime(date);
+        plusCal.add(Calendar.DATE, +6);
+        dayEndDate = sFormat.format(plusCal.getTime());
+        dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
+
+        btnCk = false;
+        abBtn = false;
+
+        dStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+        dEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+        kgValues = new ArrayList<>();
+        cmValues = new ArrayList<>();
+        headValues = new ArrayList<>();
+        feverValues = new ArrayList<>();
+
+        //이전버튼 눌렀을 때
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE, -7);
-                dayStartDate =sFormat.format(cal.getTime());
 
-                plusCal.add(Calendar.DATE, -7);
+                cal.add(Calendar.DATE, -6);
+                dayStartDate = sFormat.format(cal.getTime());
+
+                plusCal.add(Calendar.DATE, -6);
                 dayEndDate = sFormat.format(plusCal.getTime());
-                dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+                dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
+
+                dBeStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+                dBeEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+                btnCk = true;
+                abBtn = false;
+
             }
         });
+        //이후버튼 눌렀을 때
         afterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE, +7);
-                dayStartDate =sFormat.format(cal.getTime());
+                //2000.00.00~마지막 날짜, 마지막날짜가 오늘날짜이면 더이상 넘어갈수 없게
+                if (today.equals(dayEndDate)) {
+                    Toast.makeText(getActivity(), "오늘이후 기록이 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    cal.add(Calendar.DATE, +6);
+                    dayStartDate = sFormat.format(cal.getTime());
 
-                plusCal.add(Calendar.DATE, +7);
-                dayEndDate = sFormat.format(plusCal.getTime());
-                dayDateTxt.setText(dayStartDate+" ~ "+dayEndDate);
+                    plusCal.add(Calendar.DATE, +6);
+                    dayEndDate = sFormat.format(plusCal.getTime());
+                    dayDateTxt.setText(dayStartDate + " ~ " + dayEndDate);
+
+                    dAfStart = Integer.parseInt(simpleDate.format(cal.getTime()));
+                    dAfEnd = Integer.parseInt(simpleDate.format(plusCal.getTime()));
+
+                    btnCk = true;
+                    abBtn = true;
+                }
             }
         });
 
-        ArrayList<Entry> kgValues = new ArrayList<>();
-        ArrayList<Entry> cmValues = new ArrayList<>();
-        ArrayList<Entry> headValues = new ArrayList<>();
-        ArrayList<Entry> feverValues = new ArrayList<>();
-        for (int i = 1; i < 8; i++) {
-            float val = (float) (Math.random() * 10);
-            kgSum = kgSum + val;
-            kgValues.add(new Entry(i, val));
-            avgWeight = kgSum/i;
-        }
-        for (int i = 1; i < 8; i++) {
-            float val = (float) (Math.random() * 10);
-            cmSum = cmSum + val;
-            cmValues.add(new Entry(i, val));
-            avgHeight = cmSum/i;
-        }
-        for (int i = 1; i < 8; i++) {
-            float val = (float) (Math.random() * 10);
-            headSum = headSum + val;
-            headValues.add(new Entry(i, val));
-            avgHead = headSum/i;
-        }
-        for (int i = 1; i < 8; i++) {
-            float val = (float) 36.5;
-            feverSum = feverSum + val;
-            feverValues.add(new Entry(i, val));
-            avgFever = feverSum/i;
-        }
-        LineDataSet dayKg,dayCm,dayHead,dayFever;
+
+
+        // 값 셋팅하기
+        SetGraphData();
+
+        // 그래프 평균값 글자넣기
+        avgKgTxt.setText(avgWeight + " kg");
+        avgCmTxt.setText(avgHeight + " cm");
+        avgHeadTxt.setText(avgHead + " cm");
+        avgFeverTxt.setText(avgFever + " °C");
+
+        LineDataSet dayKg, dayCm, dayHead, dayFever;
+
         dayKg = new LineDataSet(kgValues, "몸무게");
         dayCm = new LineDataSet(cmValues, "신장");
         dayHead = new LineDataSet(headValues, "머리둘레");
         dayFever = new LineDataSet(feverValues, "체온");
 
+        // 기초 라인들 만들기
+        dayKgDataSets = new ArrayList<>();
+        dayCmDataSets = new ArrayList<>();
+        dayHeadDataSets = new ArrayList<>();
+        dayFeverDataSets = new ArrayList<>();
 
-        ArrayList<ILineDataSet> dayKgDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayCmDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayHeadDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayFeverDataSets = new ArrayList<>();
-
-        dayKgDataSets.add(dayKg); // add the data sets
+            // day"++"DataSets에 linedata 받은거 추가하기
+        dayKgDataSets.add(dayKg);
         dayCmDataSets.add(dayCm);
         dayHeadDataSets.add(dayHead);
         dayFeverDataSets.add(dayFever);
 
-        // create a data object with the data sets
-        LineData dayKgData = new LineData(dayKgDataSets);
-        LineData dayCmData = new LineData(dayCmDataSets);
-        LineData dayHeadData = new LineData(dayHeadDataSets);
-        LineData dayFeverData = new LineData(dayFeverDataSets);
+             // 실질적 라인인 day"++"Data에 새로 값넣기
+        dayKgData = new LineData(dayKgDataSets);
+        dayCmData = new LineData(dayCmDataSets);
+        dayHeadData = new LineData(dayHeadDataSets);
+        dayFeverData = new LineData(dayFeverDataSets);
 
 
-        // black lines and points
-        dayKg.setColor(Color.BLACK);
-        dayKg.setCircleColor(Color.BLACK);
+        // 그래프 색 넣기
+        GraphLineColor(dayKg,Color.BLACK);
+        GraphLineColor(dayCm,Color.RED);
+        GraphLineColor(dayHead,Color.BLUE);
+        GraphLineColor(dayFever,Color.GREEN);
 
-        dayCm.setColor(Color.RED);
-        dayCm.setCircleColor(Color.RED);
-
-        dayHead.setColor(Color.BLUE);
-        dayHead.setCircleColor(Color.BLUE);
-
-        dayFever.setColor(Color.GREEN);
-        dayFever.setCircleColor(Color.GREEN);
 
         //몸무게 차트 속성
-        XAxis kgXAxis = growDayKgCart.getXAxis(); // x 축 설정
-        kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        kgXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis kgYAxisLeft = growDayKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        kgYAxisLeft.setDrawLabels(false);
-        kgYAxisLeft.setDrawAxisLine(false);
-        kgYAxisLeft.setDrawGridLines(false);
-        YAxis kgYAxisRight = growDayKgCart.getAxisRight(); //Y축의 오른쪽면 설정
-        kgYAxisRight.setLabelCount(4, true);
-
-        // set data
-        growDayKgCart.setDescription(null);
-        growDayKgCart.setData(dayKgData);
-        avgKgTxt.setText(avgWeight+" kg");
+        setGraph(growDayKgCart,dayKgData);
 
         //신장 차트 속성
-        XAxis cmXAxis = growDayCmCart.getXAxis(); // x 축 설정
-        cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        cmXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis cmYAxisLeft = growDayCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        cmYAxisLeft.setDrawLabels(false);
-        cmYAxisLeft.setDrawAxisLine(false);
-        cmYAxisLeft.setDrawGridLines(false);
-        YAxis cmYAxisRight = growDayCmCart.getAxisRight(); //Y축의 오른쪽면 설정
-        cmYAxisRight.setLabelCount(4, true);
-
-        growDayCmCart.setDescription(null);
-        growDayCmCart.setData(dayCmData);
-        avgCmTxt.setText(avgHeight+" cm");
+        setGraph(growDayCmCart,dayCmData);
 
         //머리둘레 차트 속성
-        XAxis headXAxis = growDayHeadCart.getXAxis(); // x 축 설정
-        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis headYAxisLeft = growDayHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        headYAxisLeft.setDrawLabels(false);
-        headYAxisLeft.setDrawAxisLine(false);
-        headYAxisLeft.setDrawGridLines(false);
-        YAxis headYAxisRight = growDayHeadCart.getAxisRight(); //Y축의 오른쪽면 설정
-        headYAxisRight.setLabelCount(4, true);
-
-        growDayHeadCart.setDescription(null);
-        growDayHeadCart.setData(dayHeadData);
-        avgHeadTxt.setText(avgHead+" cm");
+        setGraph(growDayHeadCart,dayHeadData);
 
         //체온 차트 속성
-        XAxis feverXAxis = growDayFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.BOTTOM); //x 축 표시에 대한 위치 설정
-        feverXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis feverYAxisLeft = growDayFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        feverYAxisLeft.setDrawLabels(false);
-        feverYAxisLeft.setDrawAxisLine(false);
-        feverYAxisLeft.setDrawGridLines(false);
-        YAxis feverYAxisRight = growDayFeverCart.getAxisRight(); //Y축의 오른쪽면 설정
-        feverYAxisRight.setLabelCount(4, true);
-
-
-        growDayFeverCart.setDescription(null);
-        growDayFeverCart.setData(dayFeverData);
-        avgFeverTxt.setText(avgFever+" °C");
+        setGraph(growDayFeverCart,dayFeverData);
 
         return view;
     }
 
+
+    // 그래프에 데이터 적용 셋팅
+    private void setGraph(LineChart growDayCart,LineData dayData){
+        XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
+        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        headYAxisLeft.setDrawLabels(false);
+        headYAxisLeft.setDrawAxisLine(false);
+        headYAxisLeft.setDrawGridLines(false);
+        YAxis headYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
+        headYAxisRight.setLabelCount(4, true);
+
+        growDayCart.setDescription(null);
+        growDayCart.setData(dayData);
+
+    }
+
+    // 그래프 컬러 적용
+    private void GraphLineColor(LineDataSet line,int color){
+        line.setColor(color);
+        line.setCircleColor(color);
+    }
+
+    // 그래프 데이터 넣기용
+    private void SetGraphData(){
+        if(btnCk==true){
+            if(abBtn==true){
+                avgWeight=dataStack(dAfStart,dAfEnd,kgSum,kgValues,avgWeight);
+                avgHeight=dataStack(dAfStart,dAfEnd,cmSum,cmValues,avgHeight);
+                avgHead=dataStack(dAfStart,dAfEnd,headSum,headValues,avgHead);
+                avgFever=dataStack(dAfStart,dAfEnd,feverSum,feverValues,avgFever);
+                // 이전 코드 보존용
+//                  for (int i = dAfStart; i <= dAfEnd; i++) {
+//                      float val = (float) (Math.random() * 10);
+//                      float sVal = (float) 36.5;
+//                      feverSum = feverSum + sVal;
+//                      feverValues.add(new Entry(i, sVal));
+//                      avgFever = feverSum / i;
+//                  }
+
+            }else{
+                avgWeight=dataStack(dBeStart,dBeEnd,kgSum,kgValues,avgWeight);
+                avgHeight=dataStack(dBeStart,dBeEnd,cmSum,cmValues,avgHeight);
+                avgHead=dataStack(dBeStart,dBeEnd,headSum,headValues,avgHead);
+                avgFever=dataStack(dBeStart,dBeEnd,feverSum,feverValues,avgFever);
+            }
+        }else{
+            avgWeight=dataStack(dStart,dEnd,kgSum,kgValues,avgWeight);
+            avgHeight=dataStack(dStart,dEnd,cmSum,cmValues,avgHeight);
+            avgHead=dataStack(dStart,dEnd,headSum,headValues,avgHead);
+            avgFever=dataStack(dStart,dEnd,feverSum,feverValues,avgFever);
+        }
+    }
+
+    private float dataStack(int start,int end,float sum,ArrayList<Entry> values,float avg){
+        for (int i = start; i <= end; i++) {
+            float val = (float) (Math.random() * 10);
+            sum = sum + val;
+            values.add(new Entry(i, val));
+            avg = sum / i;
+        }
+        return avg;
+    }
 
 }

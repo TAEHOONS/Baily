@@ -10,14 +10,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
+import com.example.baily.babyPlus.HeightAndWeight;
 import com.example.baily.caldate;
 import com.example.baily.main.home.FragHome;
 import com.google.android.material.tabs.TabLayout;
@@ -39,17 +42,17 @@ public class MainPage extends AppCompatActivity {
     String mId = "", mBabyname = "", mBirthd = "";
     TextView DayText;
     private FragmentPagerAdapter fragmentPagerAdapter;
+    private BackPressClose backPressClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
         ViewPager viewPager = findViewById(R.id.viewPager);
         fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         usingDB();
 
-
+        backPressClose=new BackPressClose(this);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -65,6 +68,7 @@ public class MainPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     // DB 연결
@@ -130,4 +134,8 @@ public class MainPage extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void onBackPressed() {
+        backPressClose.onBackPressed();
+    }
 }

@@ -18,7 +18,7 @@ import com.example.baily.R;
  */
 public class FragRecodeSelect extends Fragment {
 View v;
-    AppCompatImageButton  snurs, sbbfood, ssleep, spwmilk, sbowel, sdosage, stem, sbath, shealth, splay;
+    AppCompatImageButton snurs, sbbfood, ssleep, spwmilk, sbowel, sdosage, stem, sbath, shealth, splay;
    AppCompatButton sall;
     public FragRecodeSelect() {
         // Required empty public constructor

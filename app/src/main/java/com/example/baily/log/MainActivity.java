@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.example.baily.babyPlus.FirstPage;
+import com.example.baily.main.BackPressClose;
 import com.example.baily.main.MainPage;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase db;
 
     EditText mETid, mETpw;
-    Button mBloin,mBfid,mBfpw;
+    Button mBloin, mBfid, mBfpw;
     TextView mTVeid, mTVepw;
 
+    private BackPressClose backPressClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 .permitDiskWrites()
                 .permitNetwork().build());
 
-
+        backPressClose = new BackPressClose(this);
         mETid = (EditText) findViewById(R.id.lp_id);
         mETpw = (EditText) findViewById(R.id.lp_pwd);
         mBloin = (Button) findViewById(R.id.lp_logBtn);
@@ -57,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
         mBfid = (Button) findViewById(R.id.lp_findid);
         mBfpw = (Button) findViewById(R.id.lp_findpw);
         usingDB();
-
-
-
 
 
         AutoLogin();
@@ -194,13 +193,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d("사용 아이디", "아기 있나 보기" + thisbaby);
         }
 
-        String userId = "UPDATE thisusing SET id='"+Loginid+"' WHERE _id=1";
-        db.execSQL(userId) ;
+        String userId = "UPDATE thisusing SET id='" + Loginid + "' WHERE _id=1";
+        db.execSQL(userId);
 
         if (thisbaby != null) {
             Log.d("사용 아이디", "메인페이지 가기");
             Intent intent = new Intent(this, MainPage.class);
             startActivity(intent);
+            finish();
         } else {
             Log.d("사용 아이디", "아기 생산 가기");
             Intent intent = new Intent(this, FirstPage.class);
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("사용 아이디", "AutoLogin");
         String sql = "select * from thisusing where _id=1"; // 검생용
         Cursor cursor = db.rawQuery(sql, null);
-        String login=null;
+        String login = null;
 
         while (cursor.moveToNext()) {
             login = cursor.getString(1);
@@ -267,5 +267,8 @@ public class MainActivity extends AppCompatActivity {
         db = helper.getWritableDatabase();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        backPressClose.onBackPressed();
+    }
 }

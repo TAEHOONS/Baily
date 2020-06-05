@@ -1,6 +1,7 @@
 package com.example.baily.main.recode;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,12 +90,11 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
 
     //뷰홀더
     //뷰홀더 객체는 뷰를 담아두는 역할을 하면서 동시에 뷰에 표시될 데이터를 설정하는 역할을 맡을 수 있습니다.
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         TextView textView2;
         ImageView imageView;
         TextView textView3;
-
         OnItemClickListener listenr; //클릭이벤트처리관련 변수
 
         public ViewHolder(@NonNull final View itemView) { //뷰홀더는 각각의 아이템을 위한 뷰를 담고있다.
@@ -104,6 +104,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
             textView2 = itemView.findViewById(R.id.rec_value);
             imageView = itemView.findViewById(R.id.rec_info);
             textView3 = itemView.findViewById(R.id.rec_dal);
+
             //아이템 클릭이벤트처리
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,7 +113,57 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                     if(listenr != null ){
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
-
+                    final String val = textView2.getText().toString();
+             if(val.equals("분유")){
+                 Intent intent = new Intent(context, RecodePwmilk.class);
+                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 context.startActivity(intent);
+            }
+                    if(val.equals("수유")){
+                        Intent intent = new Intent(context,RecodeNursing.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("이유식")){
+                        Intent intent = new Intent(context,RecodeBbfood.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("수면")){
+                        Intent intent = new Intent(context,RecodeSleep.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("배변")){
+                        Intent intent = new Intent(context, RecodeBowel.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("투약")){
+                        Intent intent = new Intent(context,RecodeDosage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("온도체크")){
+                        Intent intent = new Intent(context,RecodeTemp.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("목욕")){
+                        Intent intent = new Intent(context, RecodeBath.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("입원")){
+                        Intent intent = new Intent(context, RecodeHealth.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    if(val.equals("놀이")){
+                        Intent intent = new Intent(context, RecodePlay.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
                 }
             });
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

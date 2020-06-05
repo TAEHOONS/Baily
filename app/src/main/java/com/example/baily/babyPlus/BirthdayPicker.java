@@ -82,7 +82,7 @@ public class BirthdayPicker extends Dialog {
 
     }
 
-    interface CustomDialogListener {
+    public interface CustomDialogListener {
         void onPositiveClicked(int year, int wei, int day);
     }
 
