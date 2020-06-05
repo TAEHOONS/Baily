@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:gravity="center"
         android:background="#84AECD"
+        android:gravity="center"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,11 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:gravity="center"
         android:background="#EAEEFA"
-        android:orientation="vertical">
-    </LinearLayout>
-
+        android:gravity="center"
+        android:orientation="vertical"></LinearLayout>
 
 
     <LinearLayout
@@ -257,8 +255,7 @@
         android:layout_weight="3"
         android:background="#EAEEFA"
         android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -323,7 +320,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.28"
                 app:srcCompat="@drawable/ic_chevron_right_24px" />
-
 
 
             <TextView
@@ -473,8 +469,7 @@
         android:layout_weight="3"
         android:background="#EAEEFA"
         android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -500,18 +495,33 @@
                     android:id="@+id/pwm_tag_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:listitem="@layout/recode_info_item" />
 
-                <Button
-                    android:id="@+id/rt_TV_plus"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/whitebutton"
-                    android:fontFamily="@font/godo"
-                    android:text="  +  "
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/rt_TV_plus"
+                        android:layout_width="38dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/whitebutton"
+                        android:fontFamily="@font/godo"
+                        android:text="+"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -524,7 +534,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.37"
             app:srcCompat="@drawable/recordbar" />
@@ -536,6 +545,7 @@
             android:ems="10"
             android:fontFamily="@font/godo"
             android:hint="이곳을 터치하여 메모를 입력해주세요"
+            android:background="@null"
             android:inputType="textPersonName"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -553,8 +563,7 @@
         android:layout_weight="3"
         android:background="#EAEEFA"
         android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -576,7 +585,6 @@
             app:srcCompat="@drawable/camera1" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>
