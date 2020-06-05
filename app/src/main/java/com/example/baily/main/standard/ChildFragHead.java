@@ -40,6 +40,7 @@ public class ChildFragHead  extends Fragment {
 
         ArrayList<Entry> valuesBoy = new ArrayList<>();
         ArrayList<Entry> valuesGirl = new ArrayList<>();
+        ArrayList<Entry> valuesBaby = new ArrayList<>();
 
 
 
@@ -199,6 +200,13 @@ public class ChildFragHead  extends Fragment {
         standardHeadGirl[71] = (float)50.81;
         standardHeadGirl[72] = (float)50.86;
 
+        // 내 아이 임시 머리둘레 데이터
+        float[] standardHeadBaby = new float[73];
+        standardHeadBaby[0] = (float)40.88;
+        standardHeadBaby[1] = (float)42.55;
+        standardHeadBaby[2] = (float)44.25;
+        standardHeadBaby[3] = (float)47.53;
+
 
 
         //그래프에 값 넣기
@@ -208,25 +216,35 @@ public class ChildFragHead  extends Fragment {
         for (int i = 0; i < 73; i++) {
             valuesGirl.add(new Entry(i,standardHeadGirl[i]));
         }
+        //내애기값넣기
+        for (int i = 0; i < 4; i++) {
+            valuesBaby.add(new Entry(i,standardHeadBaby[i]));
+        }
         LineDataSet set1;
         LineDataSet set2;
+        LineDataSet set3; // 내애기
 
         set1 = new LineDataSet(valuesBoy, "남아 머리둘레");
         set2 = new LineDataSet(valuesGirl, "여아 머리둘레");
+        set3 = new LineDataSet(valuesBaby,"내 아이 머리둘레");
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the data sets
         dataSets.add(set2);
+        dataSets.add(set3);
 
         // create a data object with the data sets
         LineData data1 = new LineData(dataSets);
         LineData data2 = new LineData(dataSets);
+        LineData data3 = new LineData(dataSets);//내애기
 
         // black lines and points
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.BLUE);
         set2.setColor(Color.RED);
         set2.setCircleColor(Color.RED);
+        set3.setColor(Color.BLACK);
+        set3.setCircleColor(Color.BLACK);
 
 
         XAxis xAxis = headCart.getXAxis(); // x 축 설정
@@ -252,6 +270,7 @@ public class ChildFragHead  extends Fragment {
         // set data
         headCart.setData(data1);
         headCart.setData(data2);
+        headCart.setData(data3);
 
 
         return view;
