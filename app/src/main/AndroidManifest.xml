@@ -12,7 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.recode.RecordSleep"></activity>
+        <activity android:name=".main.recode.RecordNappy"></activity>
+        <activity android:name=".main.recode.recordDrymilk" />
+        <activity android:name=".main.recode.RecordMilk" />
+        <activity android:name=".main.recode.RecordMedicine" />
+        <activity android:name=".main.recode.RecordBath" />
+        <activity android:name=".main.recode.RecordHospital" />
+        <activity android:name=".main.recode.RecordPlay" />
+        <activity android:name=".main.recode.RecordSleep" />
         <activity
             android:name=".main.diary.AddEvent"
             android:theme="@style/Animation.AppCompat.DropDownUp" />
@@ -26,7 +33,7 @@
         <activity android:name=".log.FindIdPage2" />
         <activity android:name=".log.FindIdPage" />
         <activity android:name=".babyPlus.ThirdPage" />
-        <activity android:name=".babyPlus.SecondPage"></activity>
+        <activity android:name=".babyPlus.SecondPage" />
         <activity android:name=".babyPlus.FirstPage" />
         <activity android:name=".main.MainPage" />
         <activity android:name=".main.standard.FragStandard" />
