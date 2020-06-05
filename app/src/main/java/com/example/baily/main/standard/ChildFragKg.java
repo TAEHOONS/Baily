@@ -39,6 +39,7 @@ public class ChildFragKg extends Fragment {
 
         ArrayList<Entry> valuesBoy = new ArrayList<>();
         ArrayList<Entry> valuesGirl = new ArrayList<>();
+        ArrayList<Entry> valuesBaby = new ArrayList<>();//내애기
 
 
 
@@ -200,6 +201,13 @@ public class ChildFragKg extends Fragment {
         standardKgGirl[71] = (float)20.66;
         standardKgGirl[72] = (float)20.89;
 
+        // 내애기 몸무게 임시데이터
+        float[] standardKgBaby = new float[73];
+        standardKgBaby[0] = (float)7.35;
+        standardKgBaby[1] = (float)8.47;
+        standardKgBaby[2] = (float)9.57;
+        standardKgBaby[3] = (float)11.38;
+
 
 
         //그래프에 값 넣기
@@ -209,25 +217,37 @@ public class ChildFragKg extends Fragment {
         for (int i = 0; i < 73; i++) {
             valuesGirl.add(new Entry(i,standardKgGirl[i]));
         }
+        //내 애기 그래프값넣기
+        for (int i = 0; i < 4; i++) {
+            valuesBaby.add(new Entry(i,standardKgBaby[i]));
+        }
+
+
         LineDataSet set1;
         LineDataSet set2;
+        LineDataSet set3; //내애기
 
         set1 = new LineDataSet(valuesBoy, "남아 몸무게");
         set2 = new LineDataSet(valuesGirl, "여아 몸무게");
+        set3 = new LineDataSet(valuesBaby,"내 아이 몸무게");
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the data sets
         dataSets.add(set2);
+        dataSets.add(set3);//내 아기
 
         // create a data object with the data sets
         LineData data1 = new LineData(dataSets);
         LineData data2 = new LineData(dataSets);
+        LineData data3 = new LineData(dataSets);//내아기
 
         // black lines and points
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.BLUE);
         set2.setColor(Color.RED);
         set2.setCircleColor(Color.RED);
+        set3.setColor(Color.BLACK);
+        set3.setCircleColor(Color.BLACK);
 
 
         XAxis xAxis = kgCart.getXAxis(); // x 축 설정
@@ -252,6 +272,7 @@ public class ChildFragKg extends Fragment {
         // set data
         kgCart.setData(data1);
         kgCart.setData(data2);
+        kgCart.setData(data3); //내아기
 
         return view;
     }
