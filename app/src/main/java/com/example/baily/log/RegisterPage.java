@@ -237,51 +237,6 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //최종 회원가입 버튼 입력 처리
-    public void m_regRegClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.reg_confirmBtn: {
-                mgetPassword = reg_pwdEdt.getText().toString();
-                mgetRePassword = reg_repwdEdt.getText().toString();
-                mgetIdCk = reg_textEdt.getText().toString();
-
-                if (IdCk()) {
-                    Toast.makeText(this, "id 성공", Toast.LENGTH_SHORT).show();
-
-
-                } else {
-                    Toast.makeText(this, "id 실패", Toast.LENGTH_SHORT).show();
-
-                }
-                if (PwCk()) {
-                    Toast.makeText(this, "pw 성공", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(this, "pw ㅅㄹ패", Toast.LENGTH_SHORT).show();
-
-                }
-                if (EmailCk(emailFlag)) {
-                    Toast.makeText(this, "모두성공", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(this, "em 실페", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-
-        }
-        //디비에 들어가는 버튼
-        reg_confirBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                putFireStore(reg_textEdt.getText().toString());
-
-            }
-        });
-    }
-
     // 아이디 중복체크 버튼 입력처리
     public void m_regIdChkClick(View v) {
         switch (v.getId()) {

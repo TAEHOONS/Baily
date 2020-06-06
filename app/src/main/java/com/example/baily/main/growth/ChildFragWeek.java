@@ -2,6 +2,7 @@ package com.example.baily.main.growth;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,19 +32,22 @@ public class ChildFragWeek extends Fragment {
     private View view;
     private LineChart growWeekKgCart, growWeekCmCart, growWeekHeadCart, growWeekFeverCart;
     TextView weekAvgKgTxt, weekAvgCmTxt, weekAvgHeadTxt, weekAvgFeverTxt, weekDateTxt;
-    float weekAvgWeight,weekAvgHeight,weekAvgHead,weekAvgFever;
-    float wKgSum = 0;
-    float wCmSum = 0;
-    float wHeadSum = 0;
-    float wFeverSum = 0;
-    ImageView weekBeforeBtn,weekAfterBtn;
-    String weekStartDate, weekEndDate, wToday;
-    Calendar wCal, wStartCal,wEndCal;
-    Date date = new Date();
-    SimpleDateFormat sFormat,wSimple;
-    int wStart,wEnd;
+    float weekAvgWeight, weekAvgHeight, weekAvgHead, weekAvgFever, wKgSum = 0, wCmSum = 0, wHeadSum = 0, wFeverSum = 0;
+    Boolean btnCk;//버튼을 눌렀는가 체크
+    Boolean abBtn;//이전버튼, 이후버튼 구분하기위한 체크
 
-    public static ChildFragWeek newInstance(){
+    ImageView weekBeforeBtn, weekAfterBtn;
+    String weekStartDate, wToday;
+    Calendar wCal;
+    Date date = new Date();
+    SimpleDateFormat sFormat, wSimple;
+    int maxWeek,bMaxWeek,aMaxWeek;//마지막주
+
+    LineData wKgData, wCmData, wHeadData, wFeverData;
+    ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
+    ArrayList<ILineDataSet> wKgDataSets, wCmDataSets, wHeadDataSets, wFeverDataSets;
+
+    public static ChildFragWeek newInstance() {
         ChildFragWeek childFragWeek = new ChildFragWeek();
         return childFragWeek;
     }
@@ -51,7 +55,7 @@ public class ChildFragWeek extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.growth_child_frag_week,container,false);
+        view = inflater.inflate(R.layout.growth_child_frag_week, container, false);
         growWeekKgCart = view.findViewById(R.id.growthWeekKgLineCart);
         growWeekCmCart = view.findViewById(R.id.growthWeekCmLineCart);
         growWeekHeadCart = view.findViewById(R.id.growthWeekHeadLineCart);
@@ -61,178 +65,207 @@ public class ChildFragWeek extends Fragment {
         weekAvgHeadTxt = view.findViewById(R.id.weekAvgHeadTxt);
         weekAvgFeverTxt = view.findViewById(R.id.weekAvgFeverTxt);
         weekDateTxt = view.findViewById(R.id.weekDateTxt);
-        weekBeforeBtn = (ImageView)view.findViewById(R.id.weekBeforeBtn);
-        weekAfterBtn = (ImageView)view.findViewById(R.id.weekAfterBtn);
+        weekBeforeBtn = (ImageView) view.findViewById(R.id.weekBeforeBtn);
+        weekAfterBtn = (ImageView) view.findViewById(R.id.weekAfterBtn);
 
         //차트구간을 위해 , N주차
         wSimple = new SimpleDateFormat("W");
         sFormat = new SimpleDateFormat("yy년 MM월");
-        wToday =sFormat.format(date); //이번달
-        wCal = Calendar.getInstance();
+        wToday = sFormat.format(date); //이번달
 
+        wCal = Calendar.getInstance();
         wCal.setTime(date);
-        weekStartDate =sFormat.format(wCal.getTime());
+        weekStartDate = sFormat.format(wCal.getTime());
         weekDateTxt.setText(weekStartDate);
 
+        btnCk = false;
+        abBtn = false;
+
+        //해당 달의 마지막 주
+        maxWeek = wCal.getActualMaximum(Calendar.WEEK_OF_MONTH);
+
+        kgValues = new ArrayList<>();
+        cmValues = new ArrayList<>();
+        headValues = new ArrayList<>();
+        feverValues = new ArrayList<>();
+
+        //이전 버튼 눌렀을 때
         weekBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 wCal.add(Calendar.MONTH, -1);
-                weekStartDate =sFormat.format(wCal.getTime());
+                weekStartDate = sFormat.format(wCal.getTime());
                 weekDateTxt.setText(weekStartDate);
+
+                bMaxWeek = wCal.getActualMaximum(Calendar.WEEK_OF_MONTH); //현재 달의 마지막날
+                Log.d("이전 달의 마지막날", "이번달의 마지막 주는?==============" + bMaxWeek);
+
+                btnCk = true;
+                abBtn = false;
+
+                valuesClear(); //데이터 값 초기화
+                SetGraphData(); //데이터 넣기
+                chartChange();//차트 변경
+
             }
         });
+        //이후 버튼 눌렀을 때
         weekAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(wToday.equals(weekStartDate)){
+                //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
+                if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     wCal.add(Calendar.MONTH, +1);
-                    weekStartDate =sFormat.format(wCal.getTime());
+                    weekStartDate = sFormat.format(wCal.getTime());
                     weekDateTxt.setText(weekStartDate);
+                    aMaxWeek = wCal.getActualMaximum(Calendar.WEEK_OF_MONTH); //현재 달의 마지막날
+                    Log.d("이후 달의 마지막날", "이번달의 마지막 주는?==============" + aMaxWeek);
+
+                    btnCk = true;
+                    abBtn = true;
+
+                    valuesClear(); //데이터 값 초기화
+                    SetGraphData(); //데이터 넣기
+                    chartChange();//차트 변경
                 }
             }
         });
 
-        wCal.getMaximum(Calendar.DAY_OF_MONTH); //현재 달의 마지막날
-        wEnd = Integer.parseInt(wSimple.format(wCal.getTime()));//마지막 날의 주차를 int형으로 구함
+        // 값 셋팅하기
+        SetGraphData();
 
-        ArrayList<Entry> kgValues = new ArrayList<>();
-        ArrayList<Entry> cmValues = new ArrayList<>();
-        ArrayList<Entry> headValues = new ArrayList<>();
-        ArrayList<Entry> feverValues = new ArrayList<>();
+        // 그래프 평균값 글자넣기
+        weekAvgKgTxt.setText(weekAvgWeight + " kg");
+        weekAvgCmTxt.setText(weekAvgHeight + " cm");
+        weekAvgHeadTxt.setText(weekAvgHead + " cm");
+        weekAvgFeverTxt.setText(weekAvgFever + " °C");
 
-        for (int i = 1; i <= wEnd; i++) {
-            float val = (float) (Math.random() * 10);
-            wKgSum = wKgSum + val;
-            kgValues.add(new Entry(i, val));
-            weekAvgWeight = wKgSum/i;
-        }
-        for (int i = 1; i <= wEnd; i++) {
-            float val = (float) (Math.random() * 10);
-            wCmSum = wCmSum + val;
-            cmValues.add(new Entry(i, val));
-            weekAvgHeight = wCmSum/i;
-        }
-        for (int i = 1; i <= wEnd; i++) {
-            float val = (float) (Math.random() * 10);
-            wHeadSum = wHeadSum + val;
-            headValues.add(new Entry(i, val));
-            weekAvgHead = wHeadSum/i;
-        }
-        for (int i = 1; i <= wEnd; i++) {
-            float val = (float) 36.5;
-            wFeverSum = wFeverSum + val;
-            feverValues.add(new Entry(i, val));
-            weekAvgFever = wFeverSum/i;
-        }
-        LineDataSet dayKg,dayCm,dayHead,dayFever;
-        dayKg = new LineDataSet(kgValues, "몸무게");
-        dayCm = new LineDataSet(cmValues, "신장");
-        dayHead = new LineDataSet(headValues, "머리둘레");
-        dayFever = new LineDataSet(feverValues, "체온");
+        LineDataSet wKg, wCm, wHead, wFever;
+
+        wKg = new LineDataSet(kgValues, "몸무게");
+        wCm = new LineDataSet(cmValues, "신장");
+        wHead = new LineDataSet(headValues, "머리둘레");
+        wFever = new LineDataSet(feverValues, "체온");
+
+        // 기초 라인들 만들기
+        wKgDataSets = new ArrayList<>();
+        wCmDataSets = new ArrayList<>();
+        wHeadDataSets = new ArrayList<>();
+        wFeverDataSets = new ArrayList<>();
+
+        // day"++"DataSets에 linedata 받은거 추가하기
+        wKgDataSets.add(wKg);
+        wCmDataSets.add(wCm);
+        wHeadDataSets.add(wHead);
+        wFeverDataSets.add(wFever);
+
+        // 실질적 라인인 day"++"Data에 새로 값넣기
+        wKgData = new LineData(wKgDataSets);
+        wCmData = new LineData(wCmDataSets);
+        wHeadData = new LineData(wHeadDataSets);
+        wFeverData = new LineData(wFeverDataSets);
 
 
-        ArrayList<ILineDataSet> dayKgDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayCmDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayHeadDataSets = new ArrayList<>();
-        ArrayList<ILineDataSet> dayFeverDataSets = new ArrayList<>();
-
-        dayKgDataSets.add(dayKg); // add the data sets
-        dayCmDataSets.add(dayCm);
-        dayHeadDataSets.add(dayHead);
-        dayFeverDataSets.add(dayFever);
-
-        // create a data object with the data sets
-        LineData dayKgData = new LineData(dayKgDataSets);
-        LineData dayCmData = new LineData(dayCmDataSets);
-        LineData dayHeadData = new LineData(dayHeadDataSets);
-        LineData dayFeverData = new LineData(dayFeverDataSets);
-
-
-        // black lines and points
-        dayKg.setColor(Color.BLACK);
-        dayKg.setCircleColor(Color.BLACK);
-
-        dayCm.setColor(Color.RED);
-        dayCm.setCircleColor(Color.RED);
-
-        dayHead.setColor(Color.BLUE);
-        dayHead.setCircleColor(Color.BLUE);
-
-        dayFever.setColor(Color.GREEN);
-        dayFever.setCircleColor(Color.GREEN);
+        // 그래프 색 넣기
+        GraphLineColor(wKg,Color.BLACK);
+        GraphLineColor(wCm,Color.RED);
+        GraphLineColor(wHead,Color.BLUE);
+        GraphLineColor(wFever,Color.GREEN);
 
 
         //몸무게 차트 속성
-        XAxis kgXAxis = growWeekKgCart.getXAxis(); // x 축 설정
-        kgXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        kgXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis kgYAxisLeft = growWeekKgCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        kgYAxisLeft.setDrawLabels(false);
-        kgYAxisLeft.setDrawAxisLine(false);
-        kgYAxisLeft.setDrawGridLines(false);
-        YAxis kgYAxisRight = growWeekKgCart.getAxisRight(); //Y축의 오른쪽면 설정
-        kgYAxisRight.setLabelCount(4, true);
-
-        // set data
-        growWeekKgCart.setDescription(null);
-        growWeekKgCart.setData(dayKgData);
-        weekAvgKgTxt.setText(weekAvgWeight+" kg");
+        setGraph(growWeekKgCart,wKgData);
 
         //신장 차트 속성
-        XAxis cmXAxis = growWeekCmCart.getXAxis(); // x 축 설정
-        cmXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        cmXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis cmYAxisLeft = growWeekCmCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        cmYAxisLeft.setDrawLabels(false);
-        cmYAxisLeft.setDrawAxisLine(false);
-        cmYAxisLeft.setDrawGridLines(false);
-        YAxis cmYAxisRight = growWeekCmCart.getAxisRight(); //Y축의 오른쪽면 설정
-        cmYAxisRight.setLabelCount(4, true);
-
-        growWeekCmCart.setDescription(null);
-        growWeekCmCart.setData(dayCmData);
-        weekAvgCmTxt.setText(weekAvgHeight+" cm");
-
+        setGraph(growWeekCmCart,wCmData);
 
         //머리둘레 차트 속성
-        XAxis headXAxis = growWeekHeadCart.getXAxis(); // x 축 설정
-        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        headXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        YAxis headYAxisLeft = growWeekHeadCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        headYAxisLeft.setDrawLabels(false);
-        headYAxisLeft.setDrawAxisLine(false);
-        headYAxisLeft.setDrawGridLines(false);
-        YAxis headYAxisRight = growWeekHeadCart.getAxisRight(); //Y축의 오른쪽면 설정
-        headYAxisRight.setLabelCount(4, true);
-
-        growWeekHeadCart.setDescription(null);
-        growWeekHeadCart.setData(dayHeadData);
-        weekAvgHeadTxt.setText(weekAvgHead+" cm");
-
+        setGraph(growWeekHeadCart,wHeadData);
 
         //체온 차트 속성
-        XAxis feverXAxis = growWeekFeverCart.getXAxis(); // x 축 설정
-        feverXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        feverXAxis.setLabelCount(wEnd, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        setGraph(growWeekFeverCart,wFeverData);
 
-        YAxis feverYAxisLeft = growWeekFeverCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        feverYAxisLeft.setDrawLabels(false);
-        feverYAxisLeft.setDrawAxisLine(false);
-        feverYAxisLeft.setDrawGridLines(false);
-        YAxis feverYAxisRight = growWeekFeverCart.getAxisRight(); //Y축의 오른쪽면 설정
-        feverYAxisRight.setLabelCount(4, true);
-
-
-        growWeekFeverCart.setDescription(null);
-        growWeekFeverCart.setData(dayFeverData);
-        weekAvgFeverTxt.setText(weekAvgFever+" °C");
         return view;
     }
+
+    public void valuesClear(){
+        kgValues.clear();
+        cmValues.clear();
+        headValues.clear();
+        feverValues.clear();
+    }
+
+    public void chartChange(){
+        growWeekKgCart.notifyDataSetChanged();
+        growWeekKgCart.invalidate();
+
+        growWeekCmCart.notifyDataSetChanged();
+        growWeekCmCart.invalidate();
+
+        growWeekHeadCart.notifyDataSetChanged();
+        growWeekHeadCart.invalidate();
+
+        growWeekFeverCart.notifyDataSetChanged();
+        growWeekFeverCart.invalidate();
+    }
+
+    // 그래프에 데이터 적용 셋팅
+    private void setGraph(LineChart growWeekCart, LineData dayData) {
+        XAxis wXAxis = growWeekCart.getXAxis(); // x 축 설정
+        wXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        wXAxis.setLabelCount(maxWeek, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        YAxis wYAxisLeft = growWeekCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        wYAxisLeft.setDrawLabels(false);
+        wYAxisLeft.setDrawAxisLine(false);
+        wYAxisLeft.setDrawGridLines(false);
+        YAxis wYAxisRight = growWeekCart.getAxisRight(); //Y축의 오른쪽면 설정
+        wYAxisRight.setLabelCount(4, true);
+
+        growWeekCart.setDescription(null);
+        growWeekCart.setData(dayData);
+
+    }
+
+    // 그래프 컬러 적용
+    private void GraphLineColor(LineDataSet line, int color) {
+        line.setColor(color);
+        line.setCircleColor(color);
+    }
+
+    // 그래프 데이터 넣기용
+    private void SetGraphData() {
+        if (btnCk == true) {
+            if (abBtn == true) {
+                weekAvgWeight = dataStack(aMaxWeek, wKgSum, kgValues, weekAvgWeight);
+                weekAvgHeight = dataStack(aMaxWeek, wCmSum, cmValues, weekAvgHeight);
+                weekAvgHead = dataStack(aMaxWeek, wHeadSum, headValues, weekAvgHead);
+                weekAvgFever = dataStack(aMaxWeek, wFeverSum, feverValues, weekAvgFever);
+
+            } else {
+                weekAvgWeight = dataStack(bMaxWeek, wKgSum, kgValues, weekAvgWeight);
+                weekAvgHeight = dataStack(bMaxWeek, wCmSum, cmValues, weekAvgHeight);
+                weekAvgHead = dataStack(bMaxWeek, wHeadSum, headValues, weekAvgHead);
+                weekAvgFever = dataStack(bMaxWeek, wFeverSum, feverValues, weekAvgFever);
+            }
+        } else {
+            weekAvgWeight = dataStack(maxWeek, wKgSum, kgValues, weekAvgWeight);
+            weekAvgHeight = dataStack(maxWeek, wCmSum, cmValues, weekAvgHeight);
+            weekAvgHead = dataStack(maxWeek, wHeadSum, headValues, weekAvgHead);
+            weekAvgFever = dataStack(maxWeek, wFeverSum, feverValues, weekAvgFever);
+        }
+    }
+
+    private float dataStack(int maxWeek, float sum, ArrayList<Entry> values, float avg) {
+        for (int i = 1; i <= maxWeek; i++) {
+            float val = (float) (Math.random() * 10);
+            sum = sum + val;
+            values.add(new Entry(i, val));
+            avg = sum / i;
+        }
+        return avg;
+    }
+
 }

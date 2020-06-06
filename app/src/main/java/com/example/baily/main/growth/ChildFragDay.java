@@ -215,16 +215,16 @@ public class ChildFragDay extends Fragment {
 
     // 그래프에 데이터 적용 셋팅
     private void setGraph(LineChart growDayCart,LineData dayData){
-        XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
-        headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        XAxis dXAxis = growDayCart.getXAxis(); // x 축 설정
+        dXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        dXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
-        YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        headYAxisLeft.setDrawLabels(false);
-        headYAxisLeft.setDrawAxisLine(false);
-        headYAxisLeft.setDrawGridLines(false);
-        YAxis headYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
-        headYAxisRight.setLabelCount(4, true);
+        YAxis dYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        dYAxisLeft.setDrawLabels(false);
+        dYAxisLeft.setDrawAxisLine(false);
+        dYAxisLeft.setDrawGridLines(false);
+        YAxis dYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
+        dYAxisRight.setLabelCount(4, true);
 
         growDayCart.setDescription(null);
         growDayCart.setData(dayData);
