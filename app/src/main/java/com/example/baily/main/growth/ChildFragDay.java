@@ -53,17 +53,16 @@ public class ChildFragDay extends Fragment {
     String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat, simpleDate;
+    SimpleDateFormat sFormat, simpleDate,readChartD;
 
     int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd;
     String dayStart, dayEnd;
-    String[] xlineset;
 
     LineData dayKgData, dayCmData, dayHeadData, dayFeverData;
 
     //차트에 들어가는 값,, 도저히 모르겠습니당..
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
-
+    ArrayList<String> XariDay;
     ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets;
 
     public static ChildFragDay newInstance() {
@@ -89,12 +88,13 @@ public class ChildFragDay extends Fragment {
 
         //차트 구간설정을 위한
         simpleDate = new SimpleDateFormat("dd");
-
+        readChartD = new SimpleDateFormat("dd");
         sFormat = new SimpleDateFormat("MM월 dd일");
         today = sFormat.format(date); //오늘날짜
 
         cal = Calendar.getInstance();
         plusCal = Calendar.getInstance();
+
 
         cal.setTime(date);
         cal.add(Calendar.DATE, -6);
@@ -128,38 +128,9 @@ public class ChildFragDay extends Fragment {
         avgHeadTxt.setText(avgHead + " cm");
         avgFeverTxt.setText(avgFever + " °C");
 
-        LineDataSet dayKg, dayCm, dayHead, dayFever;
 
-        dayKg = new LineDataSet(kgValues, "몸무게");
-        dayCm = new LineDataSet(cmValues, "신장");
-        dayHead = new LineDataSet(headValues, "머리둘레");
-        dayFever = new LineDataSet(feverValues, "체온");
-
-        // 기초 라인들 만들기
-        dayKgDataSets = new ArrayList<>();
-        dayCmDataSets = new ArrayList<>();
-        dayHeadDataSets = new ArrayList<>();
-        dayFeverDataSets = new ArrayList<>();
-
-        // day"++"DataSets에 linedata 받은거 추가하기
-        dayKgDataSets.add(dayKg);
-        dayCmDataSets.add(dayCm);
-        dayHeadDataSets.add(dayHead);
-        dayFeverDataSets.add(dayFever);
-
-        // 실질적 라인인 day"++"Data에 새로 값넣기
-        dayKgData = new LineData(dayKgDataSets);
-        dayCmData = new LineData(dayCmDataSets);
-        dayHeadData = new LineData(dayHeadDataSets);
-        dayFeverData = new LineData(dayFeverDataSets);
-
-
-        // 그래프 색 넣기
-        GraphLineColor(dayKg, Color.BLACK);
-        GraphLineColor(dayCm, Color.RED);
-        GraphLineColor(dayHead, Color.BLUE);
-        GraphLineColor(dayFever, Color.GREEN);
-
+        //  중간 업데이트
+        MidDataSet();
 
         //몸무게 차트 속성
         setGraph(growDayKgCart, dayKgData);
@@ -193,8 +164,21 @@ public class ChildFragDay extends Fragment {
 
                 btnCk = true;
                 abBtn = false;
-                growDayKgCart.notifyDataSetChanged();
-                growDayKgCart.invalidate();
+                SetGraphData();
+                //  중간 업데이트
+                MidDataSet();
+
+                // 차트 속성
+                setGraph(growDayKgCart, dayKgData);
+                setGraph(growDayCmCart, dayCmData);
+                setGraph(growDayHeadCart, dayHeadData);
+                setGraph(growDayFeverCart, dayFeverData);
+
+                // 바뀐 차트 적용
+                ChartChange(growDayKgCart);
+                ChartChange(growDayCmCart);
+                ChartChange(growDayHeadCart);
+                ChartChange(growDayFeverCart);
             }
         });
         //이후버튼 눌렀을 때
@@ -222,11 +206,23 @@ public class ChildFragDay extends Fragment {
                     btnCk = true;
                     abBtn = true;
 
-                    kgValues.clear();
-                    SetGraphData();
 
-                    growDayKgCart.notifyDataSetChanged();
-                    growDayKgCart.invalidate();
+
+                    SetGraphData();
+                    //  중간 업데이트
+                    MidDataSet();
+
+                    // 차트 속성
+                    setGraph(growDayKgCart, dayKgData);
+                    setGraph(growDayCmCart, dayCmData);
+                    setGraph(growDayHeadCart, dayHeadData);
+                    setGraph(growDayFeverCart, dayFeverData);
+
+                    // 바뀐 차트 적용
+                    ChartChange(growDayKgCart);
+                    ChartChange(growDayCmCart);
+                    ChartChange(growDayHeadCart);
+                    ChartChange(growDayFeverCart);
 
                 }
             }
@@ -235,24 +231,66 @@ public class ChildFragDay extends Fragment {
         return view;
     }
 
+    private void MidDataSet(){
+
+        LineDataSet dayKg, dayCm, dayHead, dayFever;
+
+        dayKg = new LineDataSet(kgValues, "몸무게");
+        dayCm = new LineDataSet(cmValues, "신장");
+        dayHead = new LineDataSet(headValues, "머리둘레");
+        dayFever = new LineDataSet(feverValues, "체온");
+
+        // 기초 라인들 만들기
+        dayKgDataSets = new ArrayList<>();
+        dayCmDataSets = new ArrayList<>();
+        dayHeadDataSets = new ArrayList<>();
+        dayFeverDataSets = new ArrayList<>();
+
+        // day"++"DataSets에 linedata 받은거 추가하기
+        dayKgDataSets.add(dayKg);
+        dayCmDataSets.add(dayCm);
+        dayHeadDataSets.add(dayHead);
+        dayFeverDataSets.add(dayFever);
+
+        // 실질적 라인인 day"++"Data에 새로 값넣기
+        dayKgData = new LineData(dayKgDataSets);
+        dayCmData = new LineData(dayCmDataSets);
+        dayHeadData = new LineData(dayHeadDataSets);
+        dayFeverData = new LineData(dayFeverDataSets);
+
+
+        // 그래프 색 넣기
+        GraphLineColor(dayKg, Color.BLACK);
+        GraphLineColor(dayCm, Color.RED);
+        GraphLineColor(dayHead, Color.BLUE);
+        GraphLineColor(dayFever, Color.GREEN);
+    }
+
 
     // 그래프에 데이터 적용 셋팅
     private void setGraph(LineChart growDayCart, LineData dayData) {
+
+
         XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
         headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-
         headXAxis.setDrawGridLines(false);
-        headXAxis.setValueFormatter(new IndexAxisValueFormatter(getDate()));
+       // 차트 x 에 라벨 넣기
+        headXAxis.setValueFormatter(new IndexAxisValueFormatter(XariDay));
 
         YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        headYAxisLeft.setDrawLabels(false);
+
+        headYAxisLeft.setDrawLabels(false);     // 왼쪽에 표현되는 글자나 선 들 지우기
         headYAxisLeft.setDrawAxisLine(false);
         headYAxisLeft.setDrawGridLines(false);
+
+
         YAxis headYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
+
         headYAxisRight.setLabelCount(4, true);
 
+
+      //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
 
         growDayCart.setDescription(null);
         growDayCart.setData(dayData);
@@ -267,7 +305,18 @@ public class ChildFragDay extends Fragment {
 
     // 그래프 데이터 넣기용
     private void SetGraphData() {
+        // 그래프 평균값 글자넣기
+        avgKgTxt.setText(avgWeight + " kg");
+        avgCmTxt.setText(avgHeight + " cm");
+        avgHeadTxt.setText(avgHead + " cm");
+        avgFeverTxt.setText(avgFever + " °C");
 
+        kgValues.clear();
+        cmValues.clear();
+        headValues.clear();
+        feverValues.clear();
+
+        XariDay=getDate();
         if (btnCk == true) {
             if (abBtn == true) {
                 avgWeight = dataStack(dAfStart, dAfEnd, kgSum, kgValues, avgWeight);
@@ -310,35 +359,33 @@ public class ChildFragDay extends Fragment {
         return avg;
     }
 
-
+    // chart X좌표 글자 넣기
     public ArrayList<String> getDate() {
-
+        String read;
         ArrayList<String> label = new ArrayList<>();
 
-       label.add("하이");
-        Calendar c;
-        SimpleDateFormat xformat;
-        xformat=sFormat;
-        c = cal;
+        read=sFormat.format((cal.getTime()));
+        Log.d("readdate", "read: " + read);
+        label.add(read.substring(4,7));
+        for(int i=0;i<=5; i++){
+            cal.add(Calendar.DATE,+1);
+            read=sFormat.format((cal.getTime()));
+            Log.d("readdate", "read: " + read);
+            label.add(read.substring(4,7));
 
-        String setX;
-
-        for (int i = 0; i <= 6; i++) {
-            if (i == 0)
-                c.add(Calendar.DATE, 0);
-            else
-                c.add(Calendar.DATE, 1);
-            setX = xformat.format(c.getTime());
-            setX=setX.substring(4,7);
-
-            Log.d("stackTest", "setX: ="+setX);
-            label.add(setX);
         }
 
-        c.clear();
+
+        cal.add(Calendar.DATE,-6);
         //for (int i = 0; i <=6; i++)
         //    label.add(yourList.get(i).getDateValue());
         return label;
+    }
+
+    // 차트 변경 적용
+    private void ChartChange(LineChart chart){
+        chart.notifyDataSetChanged();
+        chart.invalidate();
     }
 
 }
