@@ -123,10 +123,10 @@ public class ChildFragDay extends Fragment {
         SetGraphData();
 
         // 그래프 평균값 글자넣기
-        avgKgTxt.setText(avgWeight + " kg");
-        avgCmTxt.setText(avgHeight + " cm");
-        avgHeadTxt.setText(avgHead + " cm");
-        avgFeverTxt.setText(avgFever + " °C");
+        avgKgTxt.setText(String.format("%.2f",avgWeight) + " kg");
+        avgCmTxt.setText(String.format("%.2f",avgHeight) + " cm");
+        avgHeadTxt.setText(String.format("%.2f",avgHead) + " cm");
+        avgFeverTxt.setText(String.format("%.2f",avgFever) + " °C");
 
 
         //  중간 업데이트
@@ -274,14 +274,16 @@ public class ChildFragDay extends Fragment {
         XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
         headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        headXAxis.setDrawGridLines(false);
-       // 차트 x 에 라벨 넣기
+        //headXAxis.setDrawAxisLine(false);
+        //headXAxis.setDrawGridLines(false);
+
+        // 차트 x 에 라벨 넣기
         headXAxis.setValueFormatter(new IndexAxisValueFormatter(XariDay));
 
         YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
 
         headYAxisLeft.setDrawLabels(false);     // 왼쪽에 표현되는 글자나 선 들 지우기
-        headYAxisLeft.setDrawAxisLine(false);
+        //headYAxisLeft.setDrawAxisLine(false);
         headYAxisLeft.setDrawGridLines(false);
 
 
@@ -306,10 +308,10 @@ public class ChildFragDay extends Fragment {
     // 그래프 데이터 넣기용
     private void SetGraphData() {
         // 그래프 평균값 글자넣기
-        avgKgTxt.setText(avgWeight + " kg");
-        avgCmTxt.setText(avgHeight + " cm");
-        avgHeadTxt.setText(avgHead + " cm");
-        avgFeverTxt.setText(avgFever + " °C");
+        avgKgTxt.setText(String.format("%.2f",avgWeight) + " kg");
+        avgCmTxt.setText(String.format("%.2f",avgHeight) + " cm");
+        avgHeadTxt.setText(String.format("%.2f",avgHead) + " cm");
+        avgFeverTxt.setText(String.format("%.2f",avgFever) + " °C");
 
         kgValues.clear();
         cmValues.clear();
