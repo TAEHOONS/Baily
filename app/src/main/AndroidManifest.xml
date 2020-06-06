@@ -12,9 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindPwPage4"></activity>
-        <activity android:name=".PopupSet" />
-        <activity android:name=".log.FindIdPage3" />
         <activity
             android:name=".main.diary.AddEvent"
             android:theme="@style/Animation.AppCompat.DropDownUp" />
@@ -36,6 +33,7 @@
         <activity android:name=".main.home.FragHome" />
         <activity android:name=".main.recode.FragRecode" />
         <activity android:name=".main.recode.FragRecodeSelect" />
+        <activity android:name=".main.recode.RecodePwmilk" />
         <activity android:name=".main.recode.RecodePlay"></activity>
         <activity android:name=".main.recode.RecodeHealth" />
         <activity android:name=".main.recode.RecodeBath" />
@@ -45,7 +43,6 @@
         <activity android:name=".main.recode.RecodeSleep" />
         <activity android:name=".main.recode.RecodeBbfood" />
         <activity android:name=".main.recode.RecodeNursing" />
-        <activity android:name=".main.recode.RecodePwmilk" />
         <activity android:name=".main.diary.FragDiary" />
         <activity android:name=".main.diary.FragDiaryDate" />
         <activity android:name=".main.diary.FragDiaryAlbum" />

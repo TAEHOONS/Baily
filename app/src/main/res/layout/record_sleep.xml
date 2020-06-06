@@ -7,7 +7,7 @@
     android:background="#EAEEFA"
     android:orientation="vertical"
     android:weightSum="140"
-    tools:context=".RecordSleep">>
+    tools:context=".main.recode.RecordSleep">
 
     <LinearLayout
         android:layout_width="match_parent"
