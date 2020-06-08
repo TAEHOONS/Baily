@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.baily.DBlink;
@@ -22,6 +24,12 @@ import com.example.baily.R;
 import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.main.BackPressClose;
 import com.example.baily.main.MainPage;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
     EditText mETid, mETpw;
     Button mBloin, mBfid, mBfpw;
     TextView mTVeid, mTVepw;
+
+    //파이어베이스 연동
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
+
 
     private BackPressClose backPressClose;
 
@@ -61,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
         usingDB();
 
 
-        AutoLogin();
+        //파이어베이스연동
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Baliy");
+
+        //AutoLogin();
 
         // 터치 입력 처리 //findID,findPW
         mBfid.setOnTouchListener(new View.OnTouchListener() {
@@ -103,10 +121,14 @@ public class MainActivity extends AppCompatActivity {
                 editId = mETid.getText().toString();
                 mTVeid.setText("");
                 mTVepw.setText("");
-                if (editId.equals(null) || editId.equals(""))
+                if (editId.equals(null) || editId.equals("")){
                     mTVeid.setText("아이디를 입력해 주시길 바랍니다");
-                else
+                    Toast.makeText(this, "아이디를 입력해 주시길 바랍니다", Toast.LENGTH_SHORT).show();
+                }else{
+                    loaddb(mETid.getText().toString());
                     checkLogin(editId);
+                }
+
                 break;
             }
             case R.id.lp_logJoin: {
@@ -117,6 +139,34 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+    //파이어베이스에서 데이터 로드
+    public void loaddb(String id) {
+
+        Log.d("들어가기", "DB 들어가기");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d("접속", "DB 접속");
+
+
+        DocumentReference docRef = db.collection("member").document(id);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("검색1", "DocumentSnapshot data: " + document.getData());
+                        Log.d("검색2", "DocumentSnapshot data: " + document.getData());
+                        Log.d("검색3", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("검색", "No such document");
+                    }
+                } else {
+                    Log.d("출력", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 
@@ -137,14 +187,22 @@ public class MainActivity extends AppCompatActivity {
         mTVepw.setText("");
 
         // 아이디 False 비번 False
-        if (!editId.equals(sqlId))
-            mTVeid.setText("아이디가 없습니다");
+        if (!editId.equals(sqlId)) {
+            mTVeid.setText("아이디가 없습니다.");
+            Toast.makeText(this, "아이디가 없습니다.", Toast.LENGTH_SHORT).show();
+        }
             // 아이디 OK 비번 Null
-        else if (editId.equals(sqlId) && editPw.equals(null) || editPw.equals(""))
-            mTVepw.setText("비밀번호를 입력해 주시길 바랍니다");
+        else if (editId.equals(sqlId) && editPw.equals(null) || editPw.equals("")){
+            mTVepw.setText("비밀번호를 입력해 주시길 바랍니다.");
+            Toast.makeText(this, "비밀번호를 입력해 주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+        }
+
             // 아이디 OK 비번 False
-        else if (editId.equals(sqlId) && !editPw.equals(sqlPw))
-            mTVepw.setText("비밀번호가 틀렸습니다");
+        else if (editId.equals(sqlId) && !editPw.equals(sqlPw)){
+            mTVepw.setText("비밀번호가 틀렸습니다.");
+            Toast.makeText(this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+        }
+
             // 아이디 OK 비번 OK
         else if (editId.equals(sqlId) && editPw.equals(sqlPw))
             DBcopy(sqlId);
@@ -226,20 +284,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // 자동 로그인
-    private void AutoLogin() {
-        Log.d("사용 아이디", "AutoLogin");
-        String sql = "select * from thisusing where _id=1"; // 검생용
-        Cursor cursor = db.rawQuery(sql, null);
-        String login = null;
-
-        while (cursor.moveToNext()) {
-            login = cursor.getString(1);
-            Log.d("사용 아이디", "아이디 확인" + login);
-        }
-        if (login != null)
-            DBcopy(login);
-    }
+//    // 자동 로그인
+//    private void AutoLogin() {
+//        Log.d("사용 아이디", "AutoLogin");
+//        String sql = "select * from thisusing where _id=1"; // 검생용
+//        Cursor cursor = db.rawQuery(sql, null);
+//        String login = null;
+//
+//        while (cursor.moveToNext()) {
+//            login = cursor.getString(1);
+//            Log.d("사용 아이디", "아이디 확인" + login);
+//        }
+//        if (login != null)
+//            DBcopy(login);
+//    }
 
     private void getUserdata(String id) {
         Log.d("사용 아이디", "getUserdata");

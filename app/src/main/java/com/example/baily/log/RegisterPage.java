@@ -116,12 +116,9 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         Get_Internet(this);
 
         //공용아이디
-        InsertData("200112", "1111","신태훈");
+       // InsertData("200112", "1111","신태훈");
 
 
-
-        //로컬디비에 넣는거 //0603 여기수정중
-        InsertData(reg_textEdt.toString(), reg_pwdEdt.toString(),reg_nameEdt.toString());
         //다이얼로그
         ad = new AlertDialog.Builder(RegisterPage.this);
         ad.setIcon(R.mipmap.ic_launcher);
@@ -253,17 +250,17 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                Toast.makeText(context, "와이파이", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "와이파이", Toast.LENGTH_SHORT).show();
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                Toast.makeText(context, "데이터 연결", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "데이터 연결", Toast.LENGTH_SHORT).show();
             }
         }
-        Toast.makeText(context, "인터넷 연결을 확인해주십시오", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "인터넷 연결을 확인해주십시오", Toast.LENGTH_SHORT).show();
     }
 
 
     //데이터 넣는법
-    private void InsertData(String userId, String userPw,String userName) {
+    private void InsertData(String userId, String userPw,String userName,String userEmail) {
         //선언
         ContentValues values = new ContentValues();
         //values에 테이블의 column에 넣을값 x 넣기
@@ -272,7 +269,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         values.put("id", userId);
         values.put("pw", userPw);
         values.put("name", userName);
-        values.put("email", "xorehdtk@naver.com");
+        values.put("email", userEmail);
 
         // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
         db.insert("user", null, values);
@@ -421,6 +418,11 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                         putFireStore(reg_textEdt.getText().toString());
                         dlg.setTitle("회원가입 완료");
                         dlg.setMessage(mgetNameCk+"님 환영합니다.");
+
+                        //로컬디비에 넣는거 //0608 여기수정중
+                        InsertData(reg_textEdt.getText().toString(), reg_pwdEdt.getText().toString(),reg_nameEdt.getText().toString(),emailText.getText().toString());
+                        Log.d("로컬디비", "onCreate: "+reg_textEdt);
+
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -457,7 +459,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
     public void putFireStore(String id) {
         FirebaseFirestore fdb = FirebaseFirestore.getInstance();
-        member member = new member(reg_nameEdt.getText().toString(), reg_pwdEdt.getText().toString(), reg_emailEdt.getText().toString());
+        member member = new member(reg_nameEdt.getText().toString(), reg_pwdEdt.getText().toString(), emailText.getText().toString());
 
 
 // Add a new document with a generated ID
