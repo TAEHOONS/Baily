@@ -2,18 +2,22 @@ package com.example.baily.main.diary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.R;
+import com.example.baily.caldate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +40,6 @@ public class FragDiaryAlbum extends Fragment {
     SimpleDateFormat sFormat;
     private List<DiaryItem> diaryDataList = new ArrayList<>();
     TextView testTxt;
-
     public static FragDiaryAlbum newInstance() {
         FragDiaryAlbum fragDiaryAlbum = new FragDiaryAlbum();
         return fragDiaryAlbum;
