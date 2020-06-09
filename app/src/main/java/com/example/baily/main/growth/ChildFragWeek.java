@@ -42,8 +42,8 @@ public class ChildFragWeek extends Fragment {
     Calendar wCal;
     Date date = new Date();
     SimpleDateFormat sFormat, wSimple, readChartD;
-    //마지막일, 한 주의 데이터 평균값을 구하기 위해 해당 달의 마지막 날짜를 알아야함
-    int maxDay,bMaxDay,aMaxDay;
+    int maxDay,bMaxDay,aMaxDay;//마지막일
+    String weekEnd;
 
     LineData wKgData, wCmData, wHeadData, wFeverData;
 
@@ -229,7 +229,7 @@ public class ChildFragWeek extends Fragment {
         XAxis wXAxis = growWeekCart.getXAxis(); // x 축 설정
         wXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         wXAxis.setLabelCount(5, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        wXAxis.setDrawAxisLine(false);
+        //wXAxis.setDrawAxisLine(false);
         // 차트 x 에 라벨 넣기
         wXAxis.setValueFormatter(new IndexAxisValueFormatter(XarWeek));
 
