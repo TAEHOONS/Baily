@@ -61,7 +61,7 @@ public class SearchEvent extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == FragDiaryDate.SHOW_EVENT_INFO){
             if(resultCode == RESULT_OK){
-                ((FragDiaryDate) FragDiaryDate.thisContext).updateEvent(data.getExtras());
+               // ((FragDiaryDate) FragDiaryDate.thisContext).updateEvent(data.getExtras());
                 EditText editText = findViewById(R.id.edit_search);
                 showSearchResult(editText.getText().toString());
             }

@@ -317,6 +317,7 @@ public class ChildFragDay extends Fragment {
     private void GraphLineColor(LineDataSet line, int color) {
         line.setColor(color);
         line.setCircleColor(color);
+
     }
 
     // 그래프 데이터 넣기용

@@ -60,8 +60,8 @@ public class FragDiaryDate extends Fragment {
     private DBlink helper;
     private SQLiteDatabase db;
     String dbName = "user.db", mId, mBabyname;
-    int dbVersion = 3;
-
+    int dbVersion = 3, requestCode = 0;
+    ViewGroup container;
     private Cursor cursor;
     Context contx;
     View v;
@@ -73,10 +73,11 @@ public class FragDiaryDate extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("Eventsetting", "onCreateView Start");
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.frag_diary_date, container, false);
         setHasOptionsMenu(true);
-
+        this.container=container;
 
         contx = container.getContext();
         // Constructing
@@ -120,23 +121,72 @@ public class FragDiaryDate extends Fragment {
         usingDB(container);
 
 
-        cursor = db.rawQuery("SELECT *FROM events where name='"+mBabyname+"'AND parents='"+mId+"'", null);
+        cursor = db.rawQuery("SELECT *FROM events where name='" + mBabyname + "'AND parents='" + mId + "'", null);
         int dblength = 0;
         while (cursor.moveToNext()) {
 
             int id = cursor.getInt(0);
-
             String name = cursor.getString(2);
             String date = cursor.getString(3);
             String memo = cursor.getString(4);
-
-            Log.d("DiaryTable", "시작 db 돌리기 name = "+name+"   , date = "+date+"   ,  memo = "+memo);
 
             try {
                 Date addDate = simpleDateFormat.parse(date);
 
                 Bundle bundle = new Bundle();
 
+                bundle.putString("eventName", name);
+                bundle.putString("eventDate", date);
+                bundle.putString("eventMemo", memo);
+
+                bundle.putInt("eventId", id);
+
+
+                Event event = new Event(Color.RED, addDate.getTime(), bundle);
+                compactCalendarView.addEvent(event);
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            dblength++;
+        }
+        Log.d("dblength", String.valueOf(dblength));
+
+        showRecyclerEvents(compactCalendarView.getFirstDayOfCurrentMonth());
+
+        // createEvent();
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Eventsetting", "onResume Start");
+        ymdate.setText(simpleMonthFormat.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+
+
+        usingDB(container);
+        compactCalendarView = (CompactCalendarView) v.findViewById(R.id.customcalendar_view);
+        compactCalendarView.setLocale(TimeZone.getDefault(), Locale.KOREA);
+        compactCalendarView.setFirstDayOfWeek(1);
+        compactCalendarView.setUseThreeLetterAbbreviation(true);
+        compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);
+        cursor = db.rawQuery("SELECT *FROM events where name='" + mBabyname + "'AND parents='" + mId + "'", null);
+        int dblength = 0;
+        while (cursor.moveToNext()) {
+
+            int id = cursor.getInt(0);
+            String name = cursor.getString(2);
+            String date = cursor.getString(3);
+            String memo = cursor.getString(4);
+
+            try {
+                Date addDate = simpleDateFormat.parse(date);
+
+                Bundle bundle = new Bundle();
                 bundle.putString("eventName", name);
                 bundle.putString("eventDate", date);
                 bundle.putString("eventMemo", memo);
@@ -154,18 +204,9 @@ public class FragDiaryDate extends Fragment {
             dblength++;
         }
         Log.d("dblength", String.valueOf(dblength));
-
         showRecyclerEvents(compactCalendarView.getFirstDayOfCurrentMonth());
 
-       // createEvent();
 
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ymdate.setText(simpleMonthFormat.format(compactCalendarView.getFirstDayOfCurrentMonth()));
     }
 
     // 이거 불러오면 밑에거 실행함
@@ -175,13 +216,13 @@ public class FragDiaryDate extends Fragment {
 
         createEvent();
 
-        if (requestCode == SHOW_EVENT_INFO) {
-            if (resultCode == RESULT_OK) {
-                updateEvent(data.getExtras());
-            } else if (resultCode == RESULT_REMOVE_EVENT) {
-                deleteEvent(data.getExtras());
-            }
-        }
+//        if (requestCode == SHOW_EVENT_INFO) {
+//            if (resultCode == RESULT_OK) {
+//                updateEvent(data.getExtras());
+//            } else if (resultCode == RESULT_REMOVE_EVENT) {
+//                deleteEvent(data.getExtras());
+//            }
+//        }
 
     }
 
@@ -191,6 +232,7 @@ public class FragDiaryDate extends Fragment {
         menuInflater.inflate(R.menu.diarymenu, menu);
 
     }
+
     // 옵션 메뉴 선택시
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -216,13 +258,12 @@ public class FragDiaryDate extends Fragment {
 
     // 달력-캘린더 날짜 색칠하기
     public void createEvent() {
-        Log.d("DiaryTable", "createEvent");
         Bundle bundle = getArguments();
 
         String eventName = bundle.getString("eventName");
         String eventDate = bundle.getString("eventDate");
         String eventMemo = bundle.getString("eventMemo");
-        Log.d("DiaryTable", "Frag가 받음"+eventName + "," + eventDate + "," + eventMemo);
+        Log.d("DiaryTable", "Frag가 받음" + eventName + "," + eventDate + "," + eventMemo);
         int eventId = -1;
 
         try {
@@ -234,7 +275,7 @@ public class FragDiaryDate extends Fragment {
                 eventId = cursor.getInt(0);
 
             bundle.putInt("eventId", 1);
-            Log.d("DiaryTable", "eventID is"+String.valueOf(eventId));
+            Log.d("DiaryTable", "eventID is" + String.valueOf(eventId));
 
             Event newEvent = new Event(Color.RED, newdate.getTime(), bundle);
             compactCalendarView.addEvent(newEvent);
@@ -249,79 +290,21 @@ public class FragDiaryDate extends Fragment {
     }
 
 
-    // 메모에 입력된게 같은거면 교체 용도
-    public void updateEvent(Bundle extras) {
-
-        int eventId = extras.getInt("eventId");
-        String eventName = extras.getString("eventName");
-        String eventDate = extras.getString("eventDate");
-        String eventMemo = extras.getString("eventMemo");
-        String oldDate = extras.getString("oldDate");
-        try {
-            Date newdate = simpleDateFormat.parse(eventDate);
-            Date oldParseDate = simpleDateFormat.parse(oldDate);
-            db.execSQL("UPDATE events SET name = '" + eventName + "', date = '" + eventDate +
-                    "', memo ='" + eventMemo + "' WHERE id ='" + eventId + "';");
-            for (Event event : compactCalendarView.getEvents(oldParseDate)) {
-                Bundle eventData = (Bundle) event.getData();
-                if (eventData.getInt("eventId") == eventId) {
-                    compactCalendarView.removeEvent(event);
-                    extras.putString("eventName", eventName);
-                    extras.putString("eventDate", eventDate);
-                    extras.putString("eventMemo", eventMemo);
-                    Event newEvent = new Event(Color.RED, newdate.getTime(), extras);
-                    compactCalendarView.addEvent(newEvent);
-                    showRecyclerEvents(compactCalendarView.getFirstDayOfCurrentMonth());
-
-                    Log.d("updateEvent", "is Success, id: " + eventId);
-                    break;
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void deleteEvent(Bundle extras) {
-        int eventId = extras.getInt("eventId");
-        String eventDate = extras.getString("eventDate");
-        try {
-            Date newdate = simpleDateFormat.parse(eventDate);
-            db.execSQL("DELETE FROM events WHERE id=" + eventId + " ;");
-            for (Event event : compactCalendarView.getEvents(newdate)) {
-                Bundle eventData = (Bundle) event.getData();
-                if (eventData.getInt("eventId") == eventId) {
-                    compactCalendarView.removeEvent(event);
-                    showRecyclerEvents(compactCalendarView.getFirstDayOfCurrentMonth());
-                    Log.d("delEvent", "is Success, id: " + eventId);
-                    break;
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public void showRecyclerEvents(Date date) {
-        Log.d("DiaryTable", "showRecyclerEvents: start");
+        Log.d("Eventsetting", "showRecyclerEvents Start");
         List<Event> events = compactCalendarView.getEventsForMonth(date);
 
 
         ArrayList<EventData> dataArrayList = new ArrayList<>();
         for (Event event : events) {
-            Log.d("DiaryTable", "for- event : "+event.toString());
             Bundle extras = (Bundle) event.getData();
-
-            Log.d("DiaryTable", "for- event.toString : "+((Bundle) event.getData()).getString("eventName"));
-
+            Log.d("Eventsetting", "Bundle extras = "+extras);
             String sname = ((Bundle) event.getData()).getString("eventName");
             String sdate = ((Bundle) event.getData()).getString("eventDate");
             String smemo = ((Bundle) event.getData()).getString("eventMemo");
-           int sid = extras.getInt("eventId");
+            int sid = extras.getInt("eventId");
 
-            EventData eventData = new EventData(mBabyname,sname, sdate, smemo,mId, sid);
+            EventData eventData = new EventData(mBabyname, sname, sdate, smemo, mId, sid);
             dataArrayList.add(eventData);
         }
         horizontalLayout = (LinearLayout) v.findViewById(R.id.horizontal_event_layout);
@@ -348,10 +331,13 @@ public class FragDiaryDate extends Fragment {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+            requestCode=cursor.getInt(3);
+            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname+ "  현재 코드 = " + requestCode);
         }
 
     }
+
+
 
 }
 

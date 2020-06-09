@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Baliy");
 
-        //AutoLogin();
+        AutoLogin();
 
         // 터치 입력 처리 //findID,findPW
         mBfid.setOnTouchListener(new View.OnTouchListener() {
@@ -223,10 +223,11 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("checkFirst", true);
             editor.commit();
             values.put("_id", 1);
+            values.put("diaryset", 0);
             db.insert("thisusing", null, values);
             Log.d("사용 아이디", "DBcopy: insert 동작");
         } else {
-            String sqlUpdate = "UPDATE thisusing SET id='" + id + "' WHERE _id=1";
+            String sqlUpdate = "UPDATE thisusing SET id='" + id + "',diaryset=0 WHERE _id=1";
             db.execSQL(sqlUpdate);
             Log.d("사용 아이디", "DBcopy: update 동작");
         }
@@ -284,20 +285,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    // 자동 로그인
-//    private void AutoLogin() {
-//        Log.d("사용 아이디", "AutoLogin");
-//        String sql = "select * from thisusing where _id=1"; // 검생용
-//        Cursor cursor = db.rawQuery(sql, null);
-//        String login = null;
-//
-//        while (cursor.moveToNext()) {
-//            login = cursor.getString(1);
-//            Log.d("사용 아이디", "아이디 확인" + login);
-//        }
-//        if (login != null)
-//            DBcopy(login);
-//    }
+    // 자동 로그인
+    private void AutoLogin() {
+        Log.d("사용 아이디", "AutoLogin");
+        String sql = "select * from thisusing where _id=1"; // 검생용
+        Cursor cursor = db.rawQuery(sql, null);
+        String login = null;
+
+        while (cursor.moveToNext()) {
+            login = cursor.getString(1);
+            Log.d("사용 아이디", "아이디 확인" + login);
+        }
+        if (login != null)
+            DBcopy(login);
+    }
 
     private void getUserdata(String id) {
         Log.d("사용 아이디", "getUserdata");

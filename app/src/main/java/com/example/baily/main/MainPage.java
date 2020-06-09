@@ -121,18 +121,18 @@ public class MainPage extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        usingDB();
-
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager.setAdapter(fragmentPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-    }
+//    @Override
+//    protected void onResumeFragments() {
+//        super.onResumeFragments();
+//        ViewPager viewPager = findViewById(R.id.viewPager);
+//        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        usingDB();
+//
+//
+//        TabLayout tabLayout = findViewById(R.id.tab_layout);
+//        viewPager.setAdapter(fragmentPagerAdapter);
+//        tabLayout.setupWithViewPager(viewPager);
+//    }
 
     @Override
     public void onBackPressed() {

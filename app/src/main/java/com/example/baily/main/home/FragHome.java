@@ -215,6 +215,22 @@ public class FragHome extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Eventsetting", "Home-onResume Start");
+
+        getDBdata();
+        loadgrowLog();
+        tvName.setText(mBabyname);
+        try {
+            Bitmap bm = BitmapFactory.decodeFile(imgpath);
+            imageview.setImageBitmap(bm);
+        } catch (Exception e) {
+        }
+
+    }
+
     // 저장된 growlog DB 에 있는걸 불러와서 recycle에 넣기
     private void loadgrowLog() {
 
@@ -235,6 +251,7 @@ public class FragHome extends Fragment {
 
     // grow에 적용시키기 전에 저장할지 업데이트 할지 판단하는 함수
     private void growJudge(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
+        Log.d("Eventsetting", "Home-growUpdate Start date = "+recodeDateNow);
         ContentValues values = new ContentValues();
 
         String sql = "select * from growlog where date='"+recodeDateNow+"' AND name='"+mBabyname+"' "; // 검색용
@@ -283,6 +300,7 @@ public class FragHome extends Fragment {
 
     // recycle 기존에 있는 맨윗값 바꾸기
     private void growUpdate(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
+        Log.d("Eventsetting", "Home-growUpdate Start date = "+recodeDateNow);
         Bheight=cm;
         Bweight=kg;
 
@@ -304,7 +322,7 @@ public class FragHome extends Fragment {
 
     // recycle 넣기
     private void growInsert(String kg, String cm, String head, String fever, String recodeDateNow, String date) {
-
+        Log.d("Eventsetting", "Home-growInsert Start date = "+recodeDateNow);
         Bheight=cm;
         Bweight=kg;
 
