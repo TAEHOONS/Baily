@@ -275,7 +275,7 @@ public class ChildFragDay extends Fragment {
         headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
         headXAxis.setDrawGridLines(false);
-       // 차트 x 에 라벨 넣기
+        // 차트 x 에 라벨 넣기
         headXAxis.setValueFormatter(new IndexAxisValueFormatter(XariDay));
 
         YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
@@ -290,7 +290,7 @@ public class ChildFragDay extends Fragment {
         headYAxisRight.setLabelCount(4, true);
 
 
-      //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
+        //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
 
         growDayCart.setDescription(null);
         growDayCart.setData(dayData);
@@ -363,6 +363,7 @@ public class ChildFragDay extends Fragment {
     public ArrayList<String> getDate() {
         String read;
         ArrayList<String> label = new ArrayList<>();
+
 
         read=sFormat.format((cal.getTime()));
         Log.d("readdate", "read: " + read);

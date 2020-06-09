@@ -193,7 +193,9 @@ public class FragHome extends Fragment {
                     }
                 });
                 dlg.setNegativeButton("취소", null);
+                dlg.setCancelable(false);
                 dlg.show();
+
             }
 
         });

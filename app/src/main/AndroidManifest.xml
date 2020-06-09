@@ -46,6 +46,7 @@
         <activity android:name=".main.diary.FragDiary" />
         <activity android:name=".main.diary.FragDiaryDate" />
         <activity android:name=".main.diary.FragDiaryAlbum" />
+        <activity android:name=".main.diary.WriteDiary" />
         <activity android:name=".log.RegisterPage" />
         <activity android:name=".log.MainActivity">
             <intent-filter>
