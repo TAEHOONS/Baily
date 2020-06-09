@@ -2,6 +2,8 @@ package com.example.baily.main.growth;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Bundle;
@@ -22,7 +24,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
+import com.example.baily.caldate;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -41,6 +45,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ChildFragDay extends Fragment {
+
+    private DBlink helper;
+    private SQLiteDatabase db;
     private View view;
     private Activity activity;
     private LineChart growDayKgCart, growDayCmCart, growDayHeadCart, growDayFeverCart;
@@ -53,10 +60,11 @@ public class ChildFragDay extends Fragment {
     String dayStartDate, dayEndDate, today;
     Calendar cal, plusCal;
     Date date = new Date();
-    SimpleDateFormat sFormat, simpleDate,readChartD;
+    SimpleDateFormat sFormat, simpleDate, readChartD;
 
-    int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd;
-    String dayStart, dayEnd;
+    int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd, dbVersion = 3;
+    String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
+    String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
 
     LineData dayKgData, dayCmData, dayHeadData, dayFeverData;
 
@@ -88,13 +96,19 @@ public class ChildFragDay extends Fragment {
 
         //차트 구간설정을 위한
         simpleDate = new SimpleDateFormat("dd");
-        readChartD = new SimpleDateFormat("dd");
+        readChartD = new SimpleDateFormat("yyyy년 MM월 dd일");
         sFormat = new SimpleDateFormat("MM월 dd일");
         today = sFormat.format(date); //오늘날짜
 
         cal = Calendar.getInstance();
         plusCal = Calendar.getInstance();
+        usingDB(container);
 
+        SearchDay = new String[7];
+        mArrKg = new String[7];
+        mArrCm = new String[7];
+        mArrHead = new String[7];
+        mArrFever = new String[7];
 
         cal.setTime(date);
         cal.add(Calendar.DATE, -6);
@@ -207,7 +221,6 @@ public class ChildFragDay extends Fragment {
                     abBtn = true;
 
 
-
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
@@ -231,7 +244,7 @@ public class ChildFragDay extends Fragment {
         return view;
     }
 
-    private void MidDataSet(){
+    private void MidDataSet() {
 
         LineDataSet dayKg, dayCm, dayHead, dayFever;
 
@@ -275,7 +288,7 @@ public class ChildFragDay extends Fragment {
         headXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         headXAxis.setLabelCount(7, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
         headXAxis.setDrawGridLines(false);
-       // 차트 x 에 라벨 넣기
+        // 차트 x 에 라벨 넣기
         headXAxis.setValueFormatter(new IndexAxisValueFormatter(XariDay));
 
         YAxis headYAxisLeft = growDayCart.getAxisLeft(); //Y축의 왼쪽면 설정
@@ -290,7 +303,7 @@ public class ChildFragDay extends Fragment {
         headYAxisRight.setLabelCount(4, true);
 
 
-      //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
+        //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
 
         growDayCart.setDescription(null);
         growDayCart.setData(dayData);
@@ -316,13 +329,13 @@ public class ChildFragDay extends Fragment {
         headValues.clear();
         feverValues.clear();
 
-        XariDay=getDate();
+        XariDay = getDate();
         if (btnCk == true) {
             if (abBtn == true) {
-                avgWeight = dataStack(dAfStart, dAfEnd, kgSum, kgValues, avgWeight);
-                avgHeight = dataStack(dAfStart, dAfEnd, cmSum, cmValues, avgHeight);
-                avgHead = dataStack(dAfStart, dAfEnd, headSum, headValues, avgHead);
-                avgFever = dataStack(dAfStart, dAfEnd, feverSum, feverValues, avgFever);
+                avgWeight = dataStack(dAfStart, mArrKg, kgSum, kgValues, avgWeight);
+                avgHeight = dataStack(dAfStart, mArrCm, cmSum, cmValues, avgHeight);
+                avgHead = dataStack(dAfStart, mArrHead, headSum, headValues, avgHead);
+                avgFever = dataStack(dAfStart, mArrFever, feverSum, feverValues, avgFever);
                 // 이전 코드 보존용
 //                  for (int i = dAfStart; i <= dAfEnd; i++) {
 //                      float val = (float) (Math.random() * 10);
@@ -333,29 +346,63 @@ public class ChildFragDay extends Fragment {
 //                  }
 
             } else {
-                avgWeight = dataStack(dBeStart, dBeEnd, kgSum, kgValues, avgWeight);
-                avgHeight = dataStack(dBeStart, dBeEnd, cmSum, cmValues, avgHeight);
-                avgHead = dataStack(dBeStart, dBeEnd, headSum, headValues, avgHead);
-                avgFever = dataStack(dBeStart, dBeEnd, feverSum, feverValues, avgFever);
+                avgWeight = dataStack(dBeStart, mArrKg, kgSum, kgValues, avgWeight);
+                avgHeight = dataStack(dBeStart, mArrCm, cmSum, cmValues, avgHeight);
+                avgHead = dataStack(dBeStart, mArrHead, headSum, headValues, avgHead);
+                avgFever = dataStack(dBeStart, mArrFever, feverSum, feverValues, avgFever);
             }
         } else {
-            avgWeight = dataStack(dStart, dEnd, kgSum, kgValues, avgWeight);
-            avgHeight = dataStack(dStart, dEnd, cmSum, cmValues, avgHeight);
-            avgHead = dataStack(dStart, dEnd, headSum, headValues, avgHead);
-            avgFever = dataStack(dStart, dEnd, feverSum, feverValues, avgFever);
+            avgWeight = dataStack(dStart, mArrKg, kgSum, kgValues, avgWeight);
+            avgHeight = dataStack(dStart, mArrCm, cmSum, cmValues, avgHeight);
+            avgHead = dataStack(dStart, mArrHead, headSum, headValues, avgHead);
+            avgFever = dataStack(dStart, mArrFever, feverSum, feverValues, avgFever);
         }
     }
 
-    private float dataStack(int start, int end, float sum, ArrayList<Entry> values, float avg) {
+    private float dataStack(int start, String[] end, float sum, ArrayList<Entry> values, float avg) {
         //Log.d("stackTest", "start: " + start + "   , end =" + end);
         // Log.d("stackTest", "dayStart: " + dayStart + "   , dayEnd =" + dayEnd);
-
+        /*
         for (int i = 0; i <= 6; i++) {
-            float val = (float) (Math.random() * 10);
-            sum = sum + val;
-            values.add(new Entry(i, val));
-            avg = sum / i;
+            Log.d("FloatVal", "Float.parseFloat(end" + i + "): " + Float.parseFloat(end[i].trim()));
         }
+        */
+        float val;
+//        for (int i = 0; i <= 6; i++) {
+//            float val = (float) (Math.random() * 10);
+//            sum = sum + val;
+//            values.add(new Entry(i, Float.parseFloat(end[i].trim())));
+//            avg = sum / i;
+//        }
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(0, val));
+        avg = sum / 4;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(1, val));
+        avg = sum / 4;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(3, val));
+        avg = sum / 4;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(4, val));
+        avg = sum / 4;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(5, val));
+        avg = sum / 4;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(6, 0));
+        avg = sum / 4;
         return avg;
     }
 
@@ -364,28 +411,80 @@ public class ChildFragDay extends Fragment {
         String read;
         ArrayList<String> label = new ArrayList<>();
 
-        read=sFormat.format((cal.getTime()));
+        read = sFormat.format((cal.getTime()));
+        SearchDay[0] = readChartD.format((cal.getTime()));
         Log.d("readdate", "read: " + read);
-        label.add(read.substring(4,7));
-        for(int i=0;i<=5; i++){
-            cal.add(Calendar.DATE,+1);
-            read=sFormat.format((cal.getTime()));
+        label.add(read.substring(4, 7));
+        for (int i = 0; i <= 5; i++) {
+            cal.add(Calendar.DATE, +1);
+            read = sFormat.format((cal.getTime()));
+            SearchDay[i + 1] = readChartD.format((cal.getTime()));
             Log.d("readdate", "read: " + read);
-            label.add(read.substring(4,7));
+            label.add(read.substring(4, 7));
 
         }
+        cal.add(Calendar.DATE, -6);
 
+//        getDBdata();
 
-        cal.add(Calendar.DATE,-6);
         //for (int i = 0; i <=6; i++)
         //    label.add(yourList.get(i).getDateValue());
         return label;
     }
 
     // 차트 변경 적용
-    private void ChartChange(LineChart chart){
+    private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
 
+    // DB 연결
+    private void usingDB(ViewGroup container) {
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
+
+    // 현재값 받기
+    private void getDBdata() {
+        Log.d("searchDay", "start ");
+        // 현재 사용 아기데이터
+        for (int i = 0; i <= 6; i++) {
+            String sql = "select * from growlog where name='" + mBabyname + "'AND date='" + SearchDay[i] + "'"; // 검색용
+            Cursor c = db.rawQuery(sql, null);
+            while (c.moveToNext()) {
+                //SearchDay[i] = c.getString(3);
+                mArrKg[i] = c.getString(2);
+                mArrCm[i] = c.getString(3);
+                mArrHead[i] = c.getString(4);
+                mArrFever[i] = c.getString(5);
+                Log.d("searchDay", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
+                        + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
+            }
+        }
+        // 입력 안된 null 들은 0 으로 변환
+        for (int i = 0; i <= 6; i++) {
+            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
+                mArrKg[i] = "0";
+            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
+                mArrCm[i] = "0";
+            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
+                mArrHead[i] = "0";
+            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
+                mArrFever[i] = "0";
+        }
+    }
+
+
 }
+

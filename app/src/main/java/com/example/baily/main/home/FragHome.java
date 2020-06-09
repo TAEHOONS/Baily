@@ -60,7 +60,7 @@ public class FragHome extends Fragment {
 
     String dbName = "user.db";
     int dbVersion = 3, BYear, BMonth, BDay;
-    ;
+
 
     private ArrayList<CardItem> growList = new ArrayList<>();
     private DBlink helper;

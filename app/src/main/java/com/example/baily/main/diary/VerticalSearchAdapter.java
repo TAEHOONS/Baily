@@ -35,7 +35,7 @@ public class VerticalSearchAdapter extends RecyclerView.Adapter<VerticalSearchVi
     public void onBindViewHolder(@NonNull VerticalSearchViewHolder holder, int position) {
         final EventData data = eventDataArrayList.get(position);
 
-        holder.name.setText(data.getName());
+        holder.name.setText(data.getTitle());
 
         String[] dateParse = data.getDate().split("-");
         String yearForm = dateParse[0]+"년";
@@ -48,7 +48,7 @@ public class VerticalSearchAdapter extends RecyclerView.Adapter<VerticalSearchVi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ShowEventInfo.class);
-                intent.putExtra("eventName",data.getName());
+                intent.putExtra("eventName",data.getTitle());
                 intent.putExtra("eventDate",data.getDate());
                 intent.putExtra("eventMemo",data.getMemo());
                 intent.putExtra("eventId",data.getId());

@@ -35,6 +35,10 @@ public class DBlink extends SQLiteOpenHelper{
                 "name text,weight text,tall text,headline text,fever text" +
                 ",date text,caldate text,parents text);";
         db.execSQL(sql);
+        sql = "CREATE TABLE events " +
+                "( id INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                "name TEXT,title text, date TEXT, memo TEXT,parents text);";
+        db.execSQL(sql);
     }
 
     @Override

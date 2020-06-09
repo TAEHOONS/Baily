@@ -26,6 +26,7 @@ public class ShowEventInfo extends Activity {
         setContentView(R.layout.activity_show_event_info);
 
         Bundle extras = getIntent().getExtras();
+
         final String name = extras.getString("eventName");
         final String date = extras.getString("eventDate");
         final String memo = extras.getString("eventMemo");
