@@ -113,6 +113,8 @@ public class ShowEventInfo extends Activity {
                                 delIntent.putExtra("eventId", eventId);
                                 delIntent.putExtra("eventDate", date);
                                 setResult(RESULT_REMOVE_EVENT, delIntent);
+                                String deletejob = "DELETE FROM events WHERE id ='" + eventId + "'";
+                                db.execSQL(deletejob);
                                 finish();
                             }
                         })
@@ -123,8 +125,7 @@ public class ShowEventInfo extends Activity {
                             }
                         });
                 delConfirm.show();
-                String deletejob = "DELETE FROM events WHERE id ='" + eventId + "'";
-                db.execSQL(deletejob);
+
             }
         });
 

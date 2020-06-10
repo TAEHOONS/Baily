@@ -91,14 +91,15 @@ public class FragDiaryAlbum extends Fragment {
 
         return view;
     }
-    /*
-    private void diaryInsert(String recodeDay,String diaryContents,int diaryImg) {
 
-        DiaryRecyclerAdapter adapter = new DiaryRecyclerAdapter(diaryDataList);
-        DiaryItem diaryData = new DiaryItem(recodeDate,diaryAdd,addImg);
-
-        diaryDataList.add(diaryData);
-        diaryRecyclerView.setAdapter(adapter);
-
-    }*/
+    // RistView 로 만들 예정이었던거 같음
+//    private void diaryInsert() {
+//
+//        DiaryRecyclerAdapter adapter = new DiaryRecyclerAdapter(diaryDataList);
+//        DiaryItem diaryData = new DiaryItem("날짜","하이",0);
+//
+//        diaryDataList.add(diaryData);
+//        diaryRecyclerView.setAdapter(adapter);
+//
+//    }
 }
