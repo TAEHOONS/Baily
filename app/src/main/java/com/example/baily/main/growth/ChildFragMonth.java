@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.google.common.base.Ascii.FF;
+
 public class ChildFragMonth extends Fragment {
     private View view;
     private LineChart growMonthKgCart, growMonthCmCart, growMonthHeadCart, growMonthFeverCart;
@@ -168,6 +170,8 @@ public class ChildFragMonth extends Fragment {
                 }
             }
         });
+
+
         return view;
     }
 
@@ -198,9 +202,10 @@ public class ChildFragMonth extends Fragment {
         mHeadData = new LineData(mHeadDataSets);
         mFeverData = new LineData(mFeverDataSets);
 
-
+        mKg.setDrawValues(false);//데이터 값 없애기
+        mKg.setDrawCircles(false);//포인트 원 없애기
         // 그래프 색 넣기
-        GraphLineColor(mKg, Color.BLACK);
+        GraphLineColor(mKg, Color.argb(FF,00,00,00));
         GraphLineColor(mCm, Color.RED);
         GraphLineColor(mHead, Color.BLUE);
         GraphLineColor(mFever, Color.GREEN);
@@ -208,6 +213,7 @@ public class ChildFragMonth extends Fragment {
 
     // 그래프에 데이터 적용 셋팅
     private void setGraph(LineChart growMonthCart, LineData monthData) {
+
 
         XAxis wXAxis = growMonthCart.getXAxis(); // x 축 설정
         wXAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정

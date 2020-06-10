@@ -22,14 +22,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="날짜별" />
+                android:text="달력" />
 
             <Button
                 android:id="@+id/diary_album"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="앨범" />
+                android:text="일기" />
         </LinearLayout>
 
         <FrameLayout

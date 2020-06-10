@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFCFC">
 
     //가이드라인(비율)
 
@@ -28,7 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFEEDDEE"
+            android:background="@drawable/round"
             android:orientation="horizontal"
             android:padding="4dp">
 
@@ -65,14 +66,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/d_TitleEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Diary  Title" />
 
             <EditText
                 android:id="@+id/d_WriteEdt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="아랑러ㅏ알아ㅏ알어랑러아랑러ㅏㅇ러ㅏㅇ\n라인러ㅏㅇ린러ㅏ니러ㅣㅇ\ndsf\n" />
+                android:layout_height="match_parent"
+                android:hint="일기 작성부분!!!!!!!!!!!!!!!!!"
+                android:textColorLink="#FFA9A9"/>
 
         </LinearLayout>
 

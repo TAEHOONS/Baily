@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,9 +53,12 @@ public class FragDiaryAlbum extends Fragment {
     String recodeDate, diaryAdd;
     int addImg;
     //일기날짜, 내용, 사진
-    TextView diaryDate, diaryContents;
-    ImageView diaryPicture;
-
+    TextView diaryDate, diaryContents, diaryTitle, diaryDateTxt;
+    ImageView diaryPicture, beforeMonthBtn, afterMonthBtn;
+    //일기 날짜
+    String DiaryDate, selectMonth;
+    SimpleDateFormat dFormat;
+    Calendar dCal;
 
     Date now = new Date();
     SimpleDateFormat sFormat;
@@ -87,17 +92,60 @@ public class FragDiaryAlbum extends Fragment {
 
         usingDB(container);
 
-        FloatingActionButton addDiary = view.findViewById(R.id.addDiary);
+        FloatingActionButton addDiary = view.findViewById(R.id.addDiary);//일기 추가 버튼
+        beforeMonthBtn = (ImageView) view.findViewById(R.id.beforeDiaryBtn);//이전달로 넘어가는 버튼
+        afterMonthBtn = (ImageView) view.findViewById(R.id.afterDiaryBtn); //다음달로 넘어가는 버튼
+        diaryDateTxt = (TextView) view.findViewById(R.id.d_changeDate); //00년00월
+        diaryTitle = (TextView) view.findViewById(R.id.diaryTitleTxt);//일기 제목
         diaryDate = (TextView) view.findViewById(R.id.diaryDate);//일기쓴 날짜 텍스트뷰
         diaryContents = (TextView) view.findViewById(R.id.diaryContents);//일기내용 텍스트뷰
         diaryPicture = (ImageView) view.findViewById(R.id.diaryPicture);//일기첨부 사진
-        testTxt = view.findViewById(R.id.testTxt);
-        //다이어리 추가 버튼 눌렀을 때
+
+        dFormat = new SimpleDateFormat("yy년 MM월");
+        sFormat = new SimpleDateFormat("yyyy-MM");
+
+        dCal = Calendar.getInstance();
+        dCal.setTime(now);
+        DiaryDate = dFormat.format(dCal.getTime());
+        diaryDateTxt.setText(DiaryDate);
+        selectMonth = sFormat.format(dCal.getTime());
+        Log.d("비교하기위한        날짜", "  날짜 = " + selectMonth);
+
         OwnData();
+
+
+        //날짜 이전버튼 눌렀을때
+        beforeMonthBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dCal.add(Calendar.MONTH, -1);
+                DiaryDate = dFormat.format(dCal.getTime());
+                diaryDateTxt.setText(DiaryDate);
+                selectMonth = sFormat.format(dCal.getTime());
+                Log.d("비교하기위한        날짜", " 이전  버튼 눌렀을 때  selectMonth = " + selectMonth);
+
+                OwnData();
+            }
+        });
+        afterMonthBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dCal.add(Calendar.MONTH, +1);
+                DiaryDate = dFormat.format(dCal.getTime());
+                diaryDateTxt.setText(DiaryDate);
+                selectMonth = sFormat.format(dCal.getTime());
+                Log.d("비교하기위한        날짜", "  이후  버튼 눌렀을 때  selectMonth = " + selectMonth);
+
+                OwnData();
+            }
+        });
+
+
+        //다이어리 추가 버튼 눌렀을 때
         addDiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity,WriteDiary.class);
+                Intent intent = new Intent(activity, WriteDiary.class);
                 startActivity(intent);
 
             }
@@ -110,30 +158,29 @@ public class FragDiaryAlbum extends Fragment {
             //recodeDate = bundle.getString("RecodeDate");
             diaryAdd = bundle.getString("DiaryAdd");
             // addImg = bundle.getInt("AddImg");
-
-            testTxt.setText(diaryAdd);
         }
 
         return view;
     }
 
 
-
     // RistView 로 만들 예정이었던거 같음
-    private void diaryInsert(String Data,String memo) {
+    private void diaryInsert(String title, String Data, String memo) {
 
         DiaryRecyclerAdapter adapter = new DiaryRecyclerAdapter(diaryDataList);
-        DiaryItem diaryData = new DiaryItem(Data,memo);
+        DiaryItem diaryData = new DiaryItem(title, Data, memo);
 
         diaryDataList.add(diaryData);
         diaryRecyclerView.setAdapter(adapter);
-
     }
 
     // 기존 데이터 on
-    private void OwnData(){
+    private void OwnData() {
 
-        Cursor c = db.rawQuery("SELECT *FROM events where name='" + mBabyname + "'AND parents='" + mId + "'", null);
+        diaryDataList.clear();
+
+        String sql="SELECT *FROM events where name='" + mBabyname + "'AND parents='" + mId + "'AND date LIKE'%"+selectMonth+"%'";
+        Cursor c = db.rawQuery(sql, null);
 
         while (c.moveToNext()) {
 
@@ -142,7 +189,7 @@ public class FragDiaryAlbum extends Fragment {
             String date = c.getString(3);
             String memo = c.getString(4);
 
-            diaryInsert(date,memo);
+            diaryInsert(name, date, memo);
         }
     }
 
@@ -159,8 +206,8 @@ public class FragDiaryAlbum extends Fragment {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            requestCode=cursor.getInt(3);
-            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname+ "  현재 코드 = " + requestCode);
+            requestCode = cursor.getInt(3);
+            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname + "  현재 코드 = " + requestCode);
         }
 
     }

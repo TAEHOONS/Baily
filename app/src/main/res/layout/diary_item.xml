@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#FFEEDDEE"
+            android:background="@drawable/round"
             android:padding="4dp">
 
             <ImageView
@@ -32,8 +32,8 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:id="@+id/diaryDate"
-                android:text="일기 작성한 날"
+                android:id="@+id/diaryTitleTxt"
+                android:text="일기 제목"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000" />
 
@@ -43,10 +43,15 @@
                 android:gravity="right"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_delete"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:id="@+id/diaryDate"
+                    android:text="일기 작성한 날"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
             </LinearLayout>
         </LinearLayout>
 
@@ -59,6 +64,8 @@
                 android:id="@+id/diaryContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:text="아랑러ㅏ알아ㅏ알어랑러아랑러ㅏㅇ러ㅏㅇ\n라인러ㅏㅇ린러ㅏ니러ㅣㅇ\ndsf\n"/>
             <ImageView
                 android:id="@+id/diaryPicture"

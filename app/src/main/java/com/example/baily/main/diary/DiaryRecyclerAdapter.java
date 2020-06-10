@@ -33,6 +33,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DiaryItem item = mDataList.get(position);
+        holder.diaryTitle.setText(item.getDiaryTitle());
         holder.diaryDate.setText(item.getRecodeDay());
         holder.diaryContents.setText(item.getDiaryContents());
         //holder.diaryPicture.setImageResource(item.getDiaryImg());
@@ -50,12 +51,14 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         notifyItemChanged(position,mDataList.size());
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView diaryTitle;
         TextView diaryDate;
         TextView diaryContents;
        // ImageView diaryPicture;
 
         public ViewHolder(View itemView){
             super(itemView);
+            diaryTitle = (TextView)itemView.findViewById(R.id.diaryTitleTxt);
             diaryDate = (TextView)itemView.findViewById(R.id.diaryDate);
             diaryContents = (TextView)itemView.findViewById(R.id.diaryContents);
           //  diaryPicture = (ImageView) itemView.findViewById(R.id.diaryPicture);

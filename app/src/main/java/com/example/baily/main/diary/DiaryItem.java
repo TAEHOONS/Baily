@@ -3,16 +3,20 @@ package com.example.baily.main.diary;
 import android.widget.ImageView;
 
 public class DiaryItem {
-    private String recodeDay,diaryContents;
+    private String diaryTitle,recodeDay,diaryContents;
     private int diaryImg;
 
-    public DiaryItem(String recodeDay,String diaryContents) {
+    public DiaryItem(String diaryTitle, String recodeDay,String diaryContents) {
+        this.diaryTitle = diaryTitle;
         this.recodeDay = recodeDay;
         this.diaryContents = diaryContents;
         this.diaryImg = diaryImg;
 
     }
 
+    public String getDiaryTitle() {
+        return diaryTitle;
+    }
 
     public String getRecodeDay() {
         return recodeDay;
@@ -24,6 +28,10 @@ public class DiaryItem {
 
     public int getDiaryImg() {
         return diaryImg;
+    }
+
+    public void setDiaryTitle(String recodeDay) {
+        this.diaryTitle = diaryTitle;
     }
 
     public void setRecodeDay(String recodeDay) {

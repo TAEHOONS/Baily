@@ -42,7 +42,7 @@ public class ChildFragWeek extends Fragment {
     Calendar wCal;
     Date date = new Date();
     SimpleDateFormat sFormat, wSimple, readChartD;
-    int maxDay,bMaxDay,aMaxDay;//마지막일
+    int maxDay, bMaxDay, aMaxDay;//마지막일
     String weekEnd;
 
     LineData wKgData, wCmData, wHeadData, wFeverData;
@@ -97,10 +97,10 @@ public class ChildFragWeek extends Fragment {
         SetGraphData();
 
         // 그래프 평균값 글자넣기
-        weekAvgKgTxt.setText(String.format("%.2f",weekAvgWeight) + " kg");
-        weekAvgCmTxt.setText(String.format("%.2f",weekAvgHeight) + " cm");
-        weekAvgHeadTxt.setText(String.format("%.2f",weekAvgHead) + " cm");
-        weekAvgFeverTxt.setText(String.format("%.2f",weekAvgFever) + " °C");
+        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
+        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
+        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
+        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
 
         //  중간 업데이트
         MidDataSet();
@@ -188,7 +188,7 @@ public class ChildFragWeek extends Fragment {
         return view;
     }
 
-    private void MidDataSet(){
+    private void MidDataSet() {
 
         LineDataSet wKg, wCm, wHead, wFever;
 
@@ -257,17 +257,17 @@ public class ChildFragWeek extends Fragment {
     // 그래프 데이터 넣기용
     private void SetGraphData() {
         // 그래프 평균값 글자넣기
-        weekAvgKgTxt.setText(String.format("%.2f",weekAvgWeight) + " kg");
-        weekAvgCmTxt.setText(String.format("%.2f",weekAvgHeight) + " cm");
-        weekAvgHeadTxt.setText(String.format("%.2f",weekAvgHead) + " cm");
-        weekAvgFeverTxt.setText(String.format("%.2f",weekAvgFever) + " °C");
+        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
+        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
+        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
+        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
 
         kgValues.clear();
         cmValues.clear();
         headValues.clear();
         feverValues.clear();
 
-        XarWeek=getDate();
+        XarWeek = getDate();
         weekAvgWeight = dataStack(wKgSum, kgValues, weekAvgWeight);
         weekAvgHeight = dataStack(wCmSum, cmValues, weekAvgHeight);
         weekAvgHead = dataStack(wHeadSum, headValues, weekAvgHead);
@@ -289,15 +289,15 @@ public class ChildFragWeek extends Fragment {
     public ArrayList<String> getDate() {
         String read;
         ArrayList<String> label = new ArrayList<>();
-        for(int i=0;i<=5; i++){
-            label.add(i+"주");
+        for (int i = 0; i <= 5; i++) {
+            label.add(i + "주");
         }
         return label;
     }
 
 
     // 차트 변경 적용
-    private void ChartChange(LineChart chart){
+    private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
         chart.invalidate();
     }

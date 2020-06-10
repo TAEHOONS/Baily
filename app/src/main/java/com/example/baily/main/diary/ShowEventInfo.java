@@ -105,7 +105,7 @@ public class ShowEventInfo extends Activity {
             public void onClick(View v) {
                 AlertDialog.Builder delConfirm = new AlertDialog.Builder(ShowEventInfo.this)
                         .setTitle("check delete Event")
-                        .setMessage("Are you sure you want to delete?")
+                        .setMessage("이벤트를 삭제하시겠습니까?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

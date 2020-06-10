@@ -207,6 +207,18 @@ public class ChildFragKg extends Fragment {
         standardKgBaby[1] = (float)8.47;
         standardKgBaby[2] = (float)9.57;
         standardKgBaby[3] = (float)11.38;
+        standardKgBaby[4] = (float)12.56;
+        standardKgBaby[5] = (float)13.78;
+        standardKgBaby[6] = (float)15.86;
+        standardKgBaby[7] = (float)17.44;
+        standardKgBaby[8] = (float)19.88;
+        standardKgBaby[9] = (float)20.98;
+        standardKgBaby[10] = (float)23.66;
+        standardKgBaby[11] = (float)25.76;
+        standardKgBaby[12] = (float)27.55;
+        standardKgBaby[13] = (float)28.08;
+        standardKgBaby[14] = (float)30.33;
+        standardKgBaby[15] = (float)33.98;
 
 
 
@@ -218,7 +230,7 @@ public class ChildFragKg extends Fragment {
             valuesGirl.add(new Entry(i,standardKgGirl[i]));
         }
         //내 애기 그래프값넣기
-        for (int i = 0; i < 4; i++) {
+        for (int i = 9; i < 16; i++) {
             valuesBaby.add(new Entry(i,standardKgBaby[i]));
         }
 
@@ -243,9 +255,11 @@ public class ChildFragKg extends Fragment {
 
         // black lines and points
         set1.setColor(Color.BLUE);
-        set1.setCircleColor(Color.BLUE);
+        set1.setDrawCircles(false);//포인트 점(원)없애기
+        set1.setDrawValues(false);//데이터 값 텍스트 없애기
         set2.setColor(Color.RED);
-        set2.setCircleColor(Color.RED);
+        set2.setDrawCircles(false);//포인트 점(원)없애기
+        set2.setDrawValues(false);//데이터 값 텍스트 없애기
         set3.setColor(Color.BLACK);
         set3.setCircleColor(Color.BLACK);
 
@@ -254,18 +268,19 @@ public class ChildFragKg extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        xAxis.setDrawGridLines(false);
         //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
         //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
 
         YAxis yAxisLeft = kgCart.getAxisLeft(); //Y축의 왼쪽면 설정
         yAxisLeft.setDrawLabels(false);
-        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setDrawGridLines(false);
         //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
         //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
 
         YAxis yAxisRight = kgCart.getAxisRight(); //Y축의 오른쪽면 설정
-
+        yAxisRight.setDrawGridLines(false);
         kgCart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
         kgCart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
 
