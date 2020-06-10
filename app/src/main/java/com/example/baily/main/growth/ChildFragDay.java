@@ -66,12 +66,12 @@ public class ChildFragDay extends Fragment {
     String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
     String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
 
-    LineData dayKgData, dayCmData, dayHeadData, dayFeverData;
+    LineData dayKgData, dayCmData, dayHeadData, dayFeverData,AvgLineData;
 
     //차트에 들어가는 값,, 도저히 모르겠습니당..
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
     ArrayList<String> XariDay;
-    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets;
+    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets,AvgDataSets;
 
     public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
@@ -260,11 +260,15 @@ public class ChildFragDay extends Fragment {
         dayHeadDataSets = new ArrayList<>();
         dayFeverDataSets = new ArrayList<>();
 
-        // day"++"DataSets에 linedata 받은거 추가하기
+        // day"++"DataSets에 linedata 받은거 추가하기 + 평균줄 추가
         dayKgDataSets.add(dayKg);
+        dayKgDataSets.add(AvgData(avgWeight));
         dayCmDataSets.add(dayCm);
+        dayCmDataSets.add(AvgData(avgHeight));
         dayHeadDataSets.add(dayHead);
+        dayHeadDataSets.add(AvgData(avgHead));
         dayFeverDataSets.add(dayFever);
+        dayFeverDataSets.add(AvgData(avgFever));
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         dayKgData = new LineData(dayKgDataSets);
@@ -307,10 +311,11 @@ public class ChildFragDay extends Fragment {
 
 
         //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
+      //  SetAvgLine(avgFloat);
 
         growDayCart.setDescription(null);
-        growDayCart.setData(dayData);
 
+        growDayCart.setData(dayData);
     }
 
     // 그래프 컬러 적용
@@ -371,6 +376,7 @@ public class ChildFragDay extends Fragment {
             Log.d("FloatVal", "Float.parseFloat(end" + i + "): " + Float.parseFloat(end[i].trim()));
         }
         */
+        int count=0;
         float val;
 //        for (int i = 0; i <= 6; i++) {
 //            float val = (float) (Math.random() * 10);
@@ -378,35 +384,38 @@ public class ChildFragDay extends Fragment {
 //            values.add(new Entry(i, Float.parseFloat(end[i].trim())));
 //            avg = sum / i;
 //        }
+
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(0, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(1, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(3, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(4, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(5, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(6, 0));
-        avg = sum / 4;
+        count+=1;
+
+        avg=sum/count;
         return avg;
     }
 
@@ -489,5 +498,21 @@ public class ChildFragDay extends Fragment {
         }
     }
 
+    private LineDataSet AvgData(float avgData){
+        LineDataSet avgDataSet;
+        ArrayList<Entry> avgValues=new ArrayList<>();
+
+        for (int i = 0; i <=6; i++) {
+            avgValues.add(new Entry(i,avgData));
+        }
+
+        avgDataSet = new LineDataSet(avgValues,null);
+
+
+        // 그래프 색 넣기
+        GraphLineColor(avgDataSet, Color.argb(0,255,0,0));
+
+        return avgDataSet;
+    }
 
 }
