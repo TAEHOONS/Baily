@@ -35,7 +35,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         DiaryItem item = mDataList.get(position);
         holder.diaryDate.setText(item.getRecodeDay());
         holder.diaryContents.setText(item.getDiaryContents());
-        holder.diaryPicture.setImageResource(item.getDiaryImg());
+        //holder.diaryPicture.setImageResource(item.getDiaryImg());
 
     }
 
@@ -52,13 +52,13 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView diaryDate;
         TextView diaryContents;
-        ImageView diaryPicture;
+       // ImageView diaryPicture;
 
         public ViewHolder(View itemView){
             super(itemView);
             diaryDate = (TextView)itemView.findViewById(R.id.diaryDate);
             diaryContents = (TextView)itemView.findViewById(R.id.diaryContents);
-            diaryPicture = (ImageView) itemView.findViewById(R.id.diaryPicture);
+          //  diaryPicture = (ImageView) itemView.findViewById(R.id.diaryPicture);
 
         }
     }

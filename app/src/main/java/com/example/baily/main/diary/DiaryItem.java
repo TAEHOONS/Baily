@@ -6,7 +6,7 @@ public class DiaryItem {
     private String recodeDay,diaryContents;
     private int diaryImg;
 
-    public DiaryItem(String recodeDay,String diaryContents,int diaryImg) {
+    public DiaryItem(String recodeDay,String diaryContents) {
         this.recodeDay = recodeDay;
         this.diaryContents = diaryContents;
         this.diaryImg = diaryImg;
