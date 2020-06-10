@@ -32,10 +32,10 @@ public class ChildFragMonth extends Fragment {
     private View view;
     private LineChart growMonthKgCart, growMonthCmCart, growMonthHeadCart, growMonthFeverCart;
     TextView monthAvgKgTxt, monthAvgCmTxt, monthAvgHeadTxt, monthAvgFeverTxt, monthDateTxt;
-    float monthAvgWeight,monthAvgHeight,monthAvgHead,monthAvgFever,mKgSum = 0,mCmSum = 0,mHeadSum = 0,mFeverSum = 0;
+    float monthAvgWeight, monthAvgHeight, monthAvgHead, monthAvgFever, mKgSum = 0, mCmSum = 0, mHeadSum = 0, mFeverSum = 0;
 
-    ImageView monthBeforeBtn,monthAfterBtn;//이전 이후 버튼
-    String monthStartDate, monthEndDate,mToday;
+    ImageView monthBeforeBtn, monthAfterBtn;//이전 이후 버튼
+    String monthStartDate, monthEndDate, mToday;
     Calendar mCal;
     Date date = new Date();
     SimpleDateFormat sFormat, mSimple;
@@ -47,7 +47,7 @@ public class ChildFragMonth extends Fragment {
     ArrayList<ILineDataSet> mKgDataSets, mCmDataSets, mHeadDataSets, mFeverDataSets;
 
 
-    public static ChildFragMonth newInstance(){
+    public static ChildFragMonth newInstance() {
         ChildFragMonth childFragMonth = new ChildFragMonth();
         return childFragMonth;
     }
@@ -112,27 +112,30 @@ public class ChildFragMonth extends Fragment {
         monthBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCal.add(Calendar.YEAR, -1);
-                monthStartDate = sFormat.format(mCal.getTime());
-                monthDateTxt.setText(monthStartDate);
+                if (monthStartDate.equals("2015년")) {//아이의 출생년도랑 비교해야함
+                    Toast.makeText(getActivity(), "2015년 이전의 기록은 확인불가합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    mCal.add(Calendar.YEAR, -1);
+                    monthStartDate = sFormat.format(mCal.getTime());
+                    monthDateTxt.setText(monthStartDate);
 
-                SetGraphData();
-                //  중간 업데이트
-                MidDataSet();
+                    SetGraphData();
+                    //  중간 업데이트
+                    MidDataSet();
 
-                //차트 속성
-                setGraph(growMonthKgCart, mKgData);
-                setGraph(growMonthCmCart, mCmData);
-                setGraph(growMonthHeadCart, mHeadData);
-                setGraph(growMonthFeverCart, mFeverData);
+                    //차트 속성
+                    setGraph(growMonthKgCart, mKgData);
+                    setGraph(growMonthCmCart, mCmData);
+                    setGraph(growMonthHeadCart, mHeadData);
+                    setGraph(growMonthFeverCart, mFeverData);
 
 
-                // 바뀐 차트 적용
-                ChartChange(growMonthKgCart);
-                ChartChange(growMonthCmCart);
-                ChartChange(growMonthHeadCart);
-                ChartChange(growMonthFeverCart);
-
+                    // 바뀐 차트 적용
+                    ChartChange(growMonthKgCart);
+                    ChartChange(growMonthCmCart);
+                    ChartChange(growMonthHeadCart);
+                    ChartChange(growMonthFeverCart);
+                }
             }
         });
         //이후버튼 눌렀을 때
@@ -168,7 +171,7 @@ public class ChildFragMonth extends Fragment {
         return view;
     }
 
-    private void MidDataSet(){
+    private void MidDataSet() {
 
         LineDataSet mKg, mCm, mHead, mFever;
 
@@ -240,17 +243,17 @@ public class ChildFragMonth extends Fragment {
     // 그래프 데이터 넣기용
     private void SetGraphData() {
         // 그래프 평균값 글자넣기
-        monthAvgKgTxt.setText(String.format("%.2f",monthAvgWeight) + " kg");
-        monthAvgCmTxt.setText(String.format("%.2f",monthAvgHeight) + " cm");
-        monthAvgHeadTxt.setText(String.format("%.2f",monthAvgHead) + " cm");
-        monthAvgFeverTxt.setText(String.format("%.2f",monthAvgFever) + " °C");
+        monthAvgKgTxt.setText(String.format("%.2f", monthAvgWeight) + " kg");
+        monthAvgCmTxt.setText(String.format("%.2f", monthAvgHeight) + " cm");
+        monthAvgHeadTxt.setText(String.format("%.2f", monthAvgHead) + " cm");
+        monthAvgFeverTxt.setText(String.format("%.2f", monthAvgFever) + " °C");
 
         kgValues.clear();
         cmValues.clear();
         headValues.clear();
         feverValues.clear();
 
-        XarMonth=getDate();
+        XarMonth = getDate();
         monthAvgWeight = dataStack(mKgSum, kgValues, monthAvgWeight);
         monthAvgHeight = dataStack(mCmSum, cmValues, monthAvgHeight);
         monthAvgHead = dataStack(mHeadSum, headValues, monthAvgHead);
@@ -271,15 +274,15 @@ public class ChildFragMonth extends Fragment {
     public ArrayList<String> getDate() {
 
         ArrayList<String> label = new ArrayList<>();
-        for(int i=0;i<=12; i++){
-            label.add(i+"월");
+        for (int i = 0; i <= 12; i++) {
+            label.add(i + "월");
         }
         return label;
     }
 
 
     // 차트 변경 적용
-    private void ChartChange(LineChart chart){
+    private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
         chart.invalidate();
     }

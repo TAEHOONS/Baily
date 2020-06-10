@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.google.common.base.Ascii.FF;
+
 public class ChildFragDay extends Fragment {
     private View view;
     private Activity activity;
@@ -59,11 +61,12 @@ public class ChildFragDay extends Fragment {
     String dayStart, dayEnd;
 
     LineData dayKgData, dayCmData, dayHeadData, dayFeverData;
+    LineData avgKgData, avgCmData, avgHeadData, avgFeverData;
 
     //차트에 들어가는 값,, 도저히 모르겠습니당..
-    ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
+    ArrayList<Entry> kgValues, cmValues, headValues, feverValues, avgKgValues,avgCmValues,avgHeadValues,avgFeverValues;
     ArrayList<String> XariDay;
-    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets;
+    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets,dayAvgKgDataSets,dayAvgCmDataSets,dayAvgHeadDataSets,dayAvgFeverDataSets;
 
     public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
@@ -117,6 +120,11 @@ public class ChildFragDay extends Fragment {
         cmValues = new ArrayList<>();
         headValues = new ArrayList<>();
         feverValues = new ArrayList<>();
+        //평균
+        avgKgValues = new ArrayList<>();
+        avgCmValues = new ArrayList<>();
+        avgHeadValues = new ArrayList<>();
+        avgFeverValues = new ArrayList<>();
 
 
         // 값 셋팅하기
@@ -133,16 +141,16 @@ public class ChildFragDay extends Fragment {
         MidDataSet();
 
         //몸무게 차트 속성
-        setGraph(growDayKgCart, dayKgData);
+        setGraph(growDayKgCart, dayKgData,avgKgData);
 
         //신장 차트 속성
-        setGraph(growDayCmCart, dayCmData);
+        setGraph(growDayCmCart, dayCmData, avgCmData);
 
         //머리둘레 차트 속성
-        setGraph(growDayHeadCart, dayHeadData);
+        setGraph(growDayHeadCart, dayHeadData,avgHeadData);
 
         //체온 차트 속성
-        setGraph(growDayFeverCart, dayFeverData);
+        setGraph(growDayFeverCart, dayFeverData,avgFeverData);
 
         //이전버튼 눌렀을 때
         beforeBtn.setOnClickListener(new View.OnClickListener() {
@@ -169,10 +177,10 @@ public class ChildFragDay extends Fragment {
                 MidDataSet();
 
                 // 차트 속성
-                setGraph(growDayKgCart, dayKgData);
-                setGraph(growDayCmCart, dayCmData);
-                setGraph(growDayHeadCart, dayHeadData);
-                setGraph(growDayFeverCart, dayFeverData);
+                setGraph(growDayKgCart, dayKgData,avgKgData);
+                setGraph(growDayCmCart, dayCmData, avgCmData);
+                setGraph(growDayHeadCart, dayHeadData,avgHeadData);
+                setGraph(growDayFeverCart, dayFeverData,avgFeverData);
 
                 // 바뀐 차트 적용
                 ChartChange(growDayKgCart);
@@ -213,10 +221,10 @@ public class ChildFragDay extends Fragment {
                     MidDataSet();
 
                     // 차트 속성
-                    setGraph(growDayKgCart, dayKgData);
-                    setGraph(growDayCmCart, dayCmData);
-                    setGraph(growDayHeadCart, dayHeadData);
-                    setGraph(growDayFeverCart, dayFeverData);
+                    setGraph(growDayKgCart, dayKgData,avgKgData);
+                    setGraph(growDayCmCart, dayCmData, avgCmData);
+                    setGraph(growDayHeadCart, dayHeadData,avgHeadData);
+                    setGraph(growDayFeverCart, dayFeverData,avgFeverData);
 
                     // 바뀐 차트 적용
                     ChartChange(growDayKgCart);
@@ -233,42 +241,68 @@ public class ChildFragDay extends Fragment {
 
     private void MidDataSet(){
 
-        LineDataSet dayKg, dayCm, dayHead, dayFever;
+        LineDataSet dayKg, dayCm, dayHead, dayFever, avgKg, avgCm, avgHead, avgFever;
 
         dayKg = new LineDataSet(kgValues, "몸무게");
         dayCm = new LineDataSet(cmValues, "신장");
         dayHead = new LineDataSet(headValues, "머리둘레");
         dayFever = new LineDataSet(feverValues, "체온");
+        //평균
+        avgKg = new LineDataSet(avgKgValues, "평균");
+        avgCm = new LineDataSet(avgCmValues, "평균");
+        avgHead = new LineDataSet(avgHeadValues, "평균");
+        avgFever = new LineDataSet(avgFeverValues, "평균");
 
         // 기초 라인들 만들기
         dayKgDataSets = new ArrayList<>();
         dayCmDataSets = new ArrayList<>();
         dayHeadDataSets = new ArrayList<>();
         dayFeverDataSets = new ArrayList<>();
+        //평균
+        dayAvgKgDataSets = new ArrayList<>();
+        dayAvgCmDataSets = new ArrayList<>();
+        dayAvgHeadDataSets = new ArrayList<>();
+        dayAvgFeverDataSets = new ArrayList<>();
+
 
         // day"++"DataSets에 linedata 받은거 추가하기
         dayKgDataSets.add(dayKg);
         dayCmDataSets.add(dayCm);
         dayHeadDataSets.add(dayHead);
         dayFeverDataSets.add(dayFever);
+        //평균
+        dayAvgKgDataSets.add(avgKg);
+        dayAvgCmDataSets.add(avgCm);
+        dayAvgHeadDataSets.add(avgHead);
+        dayAvgFeverDataSets.add(avgFever);
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         dayKgData = new LineData(dayKgDataSets);
         dayCmData = new LineData(dayCmDataSets);
         dayHeadData = new LineData(dayHeadDataSets);
         dayFeverData = new LineData(dayFeverDataSets);
+        //평균
+        avgKgData = new LineData(dayKgDataSets);
+        avgCmData = new LineData(dayCmDataSets);
+        avgHeadData = new LineData(dayHeadDataSets);
+        avgFeverData = new LineData(dayFeverDataSets);
+
 
 
         // 그래프 색 넣기
-        GraphLineColor(dayKg, Color.BLACK);
+        GraphLineColor(dayKg,Color.argb(FF,FF,FF,FF));
         GraphLineColor(dayCm, Color.RED);
         GraphLineColor(dayHead, Color.BLUE);
         GraphLineColor(dayFever, Color.GREEN);
+        GraphLineColor(avgKg, Color.YELLOW);
+        GraphLineColor(avgCm, Color.YELLOW);
+        GraphLineColor(avgHead, Color.YELLOW);
+        GraphLineColor(avgFever, Color.YELLOW);
     }
 
 
     // 그래프에 데이터 적용 셋팅
-    private void setGraph(LineChart growDayCart, LineData dayData) {
+    private void setGraph(LineChart growDayCart, LineData dayData, LineData dayAvgData) {
 
 
         XAxis headXAxis = growDayCart.getXAxis(); // x 축 설정
@@ -296,6 +330,7 @@ public class ChildFragDay extends Fragment {
 
         growDayCart.setDescription(null);
         growDayCart.setData(dayData);
+        growDayCart.setData(dayAvgData);
 
     }
 
@@ -317,14 +352,20 @@ public class ChildFragDay extends Fragment {
         cmValues.clear();
         headValues.clear();
         feverValues.clear();
+        //평균
+        avgKgValues.clear();
+        avgCmValues.clear();
+        avgHeadValues.clear();
+        avgFeverValues.clear();
+
 
         XariDay=getDate();
         if (btnCk == true) {
             if (abBtn == true) {
-                avgWeight = dataStack(dAfStart, dAfEnd, kgSum, kgValues, avgWeight);
-                avgHeight = dataStack(dAfStart, dAfEnd, cmSum, cmValues, avgHeight);
-                avgHead = dataStack(dAfStart, dAfEnd, headSum, headValues, avgHead);
-                avgFever = dataStack(dAfStart, dAfEnd, feverSum, feverValues, avgFever);
+                avgWeight = dataStack(dAfStart, dAfEnd, kgSum, kgValues,avgKgValues, avgWeight);
+                avgHeight = dataStack(dAfStart, dAfEnd, cmSum, cmValues,avgCmValues, avgHeight);
+                avgHead = dataStack(dAfStart, dAfEnd, headSum, headValues,avgHeadValues, avgHead);
+                avgFever = dataStack(dAfStart, dAfEnd, feverSum, feverValues,avgFeverValues, avgFever);
                 // 이전 코드 보존용
 //                  for (int i = dAfStart; i <= dAfEnd; i++) {
 //                      float val = (float) (Math.random() * 10);
@@ -335,20 +376,20 @@ public class ChildFragDay extends Fragment {
 //                  }
 
             } else {
-                avgWeight = dataStack(dBeStart, dBeEnd, kgSum, kgValues, avgWeight);
-                avgHeight = dataStack(dBeStart, dBeEnd, cmSum, cmValues, avgHeight);
-                avgHead = dataStack(dBeStart, dBeEnd, headSum, headValues, avgHead);
-                avgFever = dataStack(dBeStart, dBeEnd, feverSum, feverValues, avgFever);
+                avgWeight = dataStack(dBeStart, dBeEnd, kgSum, kgValues,avgKgValues, avgWeight);
+                avgHeight = dataStack(dBeStart, dBeEnd, cmSum, cmValues, avgCmValues,avgHeight);
+                avgHead = dataStack(dBeStart, dBeEnd, headSum, headValues, avgHeadValues,avgHead);
+                avgFever = dataStack(dBeStart, dBeEnd, feverSum, feverValues, avgFeverValues,avgFever);
             }
         } else {
-            avgWeight = dataStack(dStart, dEnd, kgSum, kgValues, avgWeight);
-            avgHeight = dataStack(dStart, dEnd, cmSum, cmValues, avgHeight);
-            avgHead = dataStack(dStart, dEnd, headSum, headValues, avgHead);
-            avgFever = dataStack(dStart, dEnd, feverSum, feverValues, avgFever);
+            avgWeight = dataStack(dStart, dEnd, kgSum, kgValues, avgKgValues,avgWeight);
+            avgHeight = dataStack(dStart, dEnd, cmSum, cmValues, avgCmValues,avgHeight);
+            avgHead = dataStack(dStart, dEnd, headSum, headValues, avgHeadValues,avgHead);
+            avgFever = dataStack(dStart, dEnd, feverSum, feverValues,avgFeverValues, avgFever);
         }
     }
 
-    private float dataStack(int start, int end, float sum, ArrayList<Entry> values, float avg) {
+    private float dataStack(int start, int end, float sum, ArrayList<Entry> values,ArrayList<Entry> avgValues, float avg) {
         //Log.d("stackTest", "start: " + start + "   , end =" + end);
         // Log.d("stackTest", "dayStart: " + dayStart + "   , dayEnd =" + dayEnd);
 
@@ -357,6 +398,7 @@ public class ChildFragDay extends Fragment {
             sum = sum + val;
             values.add(new Entry(i, val));
             avg = sum / i;
+            avgValues.add(new Entry(i,avg));
         }
         return avg;
     }
