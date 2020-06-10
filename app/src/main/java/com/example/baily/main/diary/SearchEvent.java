@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 
 import java.text.SimpleDateFormat;
@@ -22,10 +24,14 @@ import java.util.Comparator;
 import java.util.Locale;
 
 public class SearchEvent extends Activity {
-    private DBHelper helper;
-    private Cursor cursor;
-    private LinearLayout verticalLayout;
+
+    private DBlink helper;
     private SQLiteDatabase db;
+    String dbName = "user.db", mId, mBabyname;
+    int dbVersion = 3;
+
+
+    private LinearLayout verticalLayout;
     private VerticalSearchAdapter verticalAdapter;
     private RecyclerView verticalView;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
@@ -37,8 +43,7 @@ public class SearchEvent extends Activity {
         setContentView(R.layout.activity_searchevent);
         final EditText searchEdit= (EditText) findViewById(R.id.edit_search);
 
-        helper = new DBHelper(this);
-        db = helper.getWritableDatabase();
+        usingDB();
 
 
         ImageButton searchBtn = (ImageButton) findViewById(R.id.btn_eventSearch);
@@ -56,7 +61,7 @@ public class SearchEvent extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == FragDiaryDate.SHOW_EVENT_INFO){
             if(resultCode == RESULT_OK){
-                ((FragDiaryDate) FragDiaryDate.thisContext).updateEvent(data.getExtras());
+               // ((FragDiaryDate) FragDiaryDate.thisContext).updateEvent(data.getExtras());
                 EditText editText = findViewById(R.id.edit_search);
                 showSearchResult(editText.getText().toString());
             }
@@ -67,12 +72,13 @@ public class SearchEvent extends Activity {
         ArrayList<EventData> dataArrayList = new ArrayList<>();
         String[] searchArr = searchStr.split(" ");
         if(searchStr.equals("")) return;
-        cursor = db.rawQuery("SELECT *FROM events",null);
-        while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String date = cursor.getString(2);
-            String memo = cursor.getString(3);
+        Cursor c = db.rawQuery("SELECT *FROM events ",null);
+        while (c.moveToNext()){
+
+            int id = c.getInt(0);
+            String name = c.getString(2);
+            String date = c.getString(3);
+            String memo = c.getString(4);
             boolean istarget=false;
 
             for(int i=0;i<searchArr.length;i++){
@@ -82,7 +88,7 @@ public class SearchEvent extends Activity {
                 }
             }
             if(istarget){
-                EventData eventData = new EventData(name,date,memo,id);
+                EventData eventData = new EventData(mBabyname,name,date,memo,mId,id);
                 dataArrayList.add(eventData);
                 Log.d("event is ",name);
             }
@@ -108,6 +114,23 @@ public class SearchEvent extends Activity {
             return o1.getDate().compareTo(o2.getDate());
         }
     };
+
+    // DB 연결
+    private void usingDB() {
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
 
 
 }

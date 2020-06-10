@@ -39,7 +39,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalViewHolder
 
 
         holder.date.setText(data.getDate());
-        holder.name.setText(data.getName());
+        holder.name.setText(data.getTitle());
 
 
 
@@ -47,17 +47,17 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalViewHolder
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                Intent intent = new Intent(context, ShowEventInfo.class);
-                intent.putExtra("eventName",data.getName());
+                Intent intent = new Intent(v.getContext(), ShowEventInfo.class);
+                intent.putExtra("eventName",data.getTitle());
                 intent.putExtra("eventDate",data.getDate());
                 intent.putExtra("eventMemo",data.getMemo());
                 intent.putExtra("eventId",data.getId());
 
-                bundle.putString("eventName",data.getName());
+                bundle.putString("eventName",data.getTitle());
                 bundle.putString("eventDate",data.getDate());
                 bundle.putString("eventMemo",data.getMemo());
                 bundle.putInt("eventId",data.getId());
-                ((Activity)context).startActivityForResult(intent, FragDiaryDate.SHOW_EVENT_INFO);
+                ((Activity)v.getContext()).startActivityForResult(intent, FragDiaryDate.SHOW_EVENT_INFO);
             }
         });
     }

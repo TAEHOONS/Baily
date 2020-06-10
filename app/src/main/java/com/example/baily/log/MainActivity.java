@@ -223,10 +223,11 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("checkFirst", true);
             editor.commit();
             values.put("_id", 1);
+            values.put("diaryset", 0);
             db.insert("thisusing", null, values);
             Log.d("사용 아이디", "DBcopy: insert 동작");
         } else {
-            String sqlUpdate = "UPDATE thisusing SET id='" + id + "' WHERE _id=1";
+            String sqlUpdate = "UPDATE thisusing SET id='" + id + "',diaryset=0 WHERE _id=1";
             db.execSQL(sqlUpdate);
             Log.d("사용 아이디", "DBcopy: update 동작");
         }

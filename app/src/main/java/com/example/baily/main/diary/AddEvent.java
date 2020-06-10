@@ -2,11 +2,15 @@ package com.example.baily.main.diary;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,7 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 
 public class AddEvent extends Activity {
@@ -24,14 +30,20 @@ public class AddEvent extends Activity {
     int selectedMonth;
     int selectedDay;
 
-    FragDiaryDate fragDiaryDate;
+    private DBlink helper;
+    private SQLiteDatabase db;
+    String dbName = "user.db", mId, mBabyname;
+    int dbVersion = 3;
+
+
+    Fragment fragDiaryDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_addevent);
-
+        usingDB();
         Intent intent = getIntent();
         strDate = intent.getExtras().getString("selectedDate"); // yyyy-mm-dd
         String[] arrDate =  strDate.split("-");
@@ -78,8 +90,11 @@ public class AddEvent extends Activity {
                 EditText eventMemo = findViewById(R.id.edit_eventMemo);
                 eventIntent.putExtra("eventMemo",eventMemo.getText().toString());
                 bundle.putString("eventMemo",eventMemo.getText().toString());
+                insertData(eventName.getText().toString(),strDate,eventMemo.getText().toString());
 
+                // add 지금 입력한거 플레그-DiaryDate 보내는중
                 fragDiaryDate.setArguments(bundle);
+                Log.d("DiaryTable", "Fragment 에 보냄");
                 setResult(RESULT_OK,eventIntent);
                 finish();
             }
@@ -102,4 +117,40 @@ public class AddEvent extends Activity {
             eventDate.setText(strDate);
         }
     };
+
+    private void insertData(String title,String Date,String Memo){
+        // insert to DB
+        ContentValues values = new ContentValues();
+
+        values.put("name", mBabyname);
+        values.put("title", title);
+        values.put("date", Date);
+        values.put("memo", Memo);
+        values.put("parents", mId);
+
+        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+        Log.d("DiaryTable", "insert");
+        Log.d("DiaryTable", "mId = "+mId+"   , eventName = "+title+"   ,eventDate = "+
+                Date+"   ,eventMemo = "+Memo+"   , mBabyname = "+mBabyname);
+        db.insert("events", null, values);
+    }
+
+
+    // db 적용
+    private void usingDB() {
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
+
 }
