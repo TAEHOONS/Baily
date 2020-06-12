@@ -34,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     String dbName = "user.db";
-    int dbVersion = 3,checkFirst=0;
+    int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
 
@@ -212,27 +212,22 @@ public class MainActivity extends AppCompatActivity {
     // 로그인시 현재 아이디 기록
     private void DBcopy(String id) {
         Log.d("사용 아이디", "DBcopy");
+
         ContentValues values = new ContentValues();
 
-
-
-        String sql = "select * from thisusing where _id=1"; // 검생용
-        Cursor cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext()) {
-            checkFirst = cursor.getInt(0);
-            Log.d("사용 아이디", "thisusing: checkFirst ="+checkFirst);
-        }
-
-
-
         // 최초 실행시 동작
-        if (checkFirst != 1) {
+        SharedPreferences pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE);
+        boolean checkFirst = pref.getBoolean("checkFirst", false);
+        if (checkFirst == false) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("checkFirst", true);
+            editor.commit();
             values.put("_id", 1);
-            //values.put("diaryset", 0);
+            values.put("diaryset", 0);
             db.insert("thisusing", null, values);
             Log.d("사용 아이디", "DBcopy: insert 동작");
         } else {
-            String sqlUpdate = "UPDATE thisusing SET id='" + id + "'WHERE _id=1";
+            String sqlUpdate = "UPDATE thisusing SET id='" + id + "',diaryset=0 WHERE _id=1";
             db.execSQL(sqlUpdate);
             Log.d("사용 아이디", "DBcopy: update 동작");
         }
