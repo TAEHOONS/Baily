@@ -39,8 +39,10 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,12 +68,12 @@ public class ChildFragDay extends Fragment {
     String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
     String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
 
-    LineData dayKgData, dayCmData, dayHeadData, dayFeverData;
+    LineData dayKgData, dayCmData, dayHeadData, dayFeverData, AvgLineData;
 
     //차트에 들어가는 값,, 도저히 모르겠습니당..
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
     ArrayList<String> XariDay;
-    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets;
+    ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets, AvgDataSets;
 
     public static ChildFragDay newInstance() {
         ChildFragDay childFragDay = new ChildFragDay();
@@ -137,10 +139,10 @@ public class ChildFragDay extends Fragment {
         SetGraphData();
 
         // 그래프 평균값 글자넣기
-        avgKgTxt.setText(String.format("%.2f",avgWeight) + " kg");
-        avgCmTxt.setText(String.format("%.2f",avgHeight) + " cm");
-        avgHeadTxt.setText(String.format("%.2f",avgHead) + " cm");
-        avgFeverTxt.setText(String.format("%.2f",avgFever) + " °C");
+        avgKgTxt.setText(String.format("%.2f", avgWeight) + " kg");
+        avgCmTxt.setText(String.format("%.2f", avgHeight) + " cm");
+        avgHeadTxt.setText(String.format("%.2f", avgHead) + " cm");
+        avgFeverTxt.setText(String.format("%.2f", avgFever) + " °C");
 
 
         //  중간 업데이트
@@ -221,7 +223,6 @@ public class ChildFragDay extends Fragment {
                     abBtn = true;
 
 
-
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
@@ -260,11 +261,15 @@ public class ChildFragDay extends Fragment {
         dayHeadDataSets = new ArrayList<>();
         dayFeverDataSets = new ArrayList<>();
 
-        // day"++"DataSets에 linedata 받은거 추가하기
+        // day"++"DataSets에 linedata 받은거 추가하기 + 평균줄 추가
         dayKgDataSets.add(dayKg);
+        dayKgDataSets.add(AvgData(avgWeight));
         dayCmDataSets.add(dayCm);
+        dayCmDataSets.add(AvgData(avgHeight));
         dayHeadDataSets.add(dayHead);
+        dayHeadDataSets.add(AvgData(avgHead));
         dayFeverDataSets.add(dayFever);
+        dayFeverDataSets.add(AvgData(avgFever));
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         dayKgData = new LineData(dayKgDataSets);
@@ -307,10 +312,11 @@ public class ChildFragDay extends Fragment {
 
 
         //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
+        //  SetAvgLine(avgFloat);
 
         growDayCart.setDescription(null);
-        growDayCart.setData(dayData);
 
+        growDayCart.setData(dayData);
     }
 
     // 그래프 컬러 적용
@@ -323,10 +329,10 @@ public class ChildFragDay extends Fragment {
     // 그래프 데이터 넣기용
     private void SetGraphData() {
         // 그래프 평균값 글자넣기
-        avgKgTxt.setText(String.format("%.2f",avgWeight) + " kg");
-        avgCmTxt.setText(String.format("%.2f",avgHeight) + " cm");
-        avgHeadTxt.setText(String.format("%.2f",avgHead) + " cm");
-        avgFeverTxt.setText(String.format("%.2f",avgFever) + " °C");
+        avgKgTxt.setText(String.format("%.2f", avgWeight) + " kg");
+        avgCmTxt.setText(String.format("%.2f", avgHeight) + " cm");
+        avgHeadTxt.setText(String.format("%.2f", avgHead) + " cm");
+        avgFeverTxt.setText(String.format("%.2f", avgFever) + " °C");
 
         kgValues.clear();
         cmValues.clear();
@@ -371,42 +377,42 @@ public class ChildFragDay extends Fragment {
             Log.d("FloatVal", "Float.parseFloat(end" + i + "): " + Float.parseFloat(end[i].trim()));
         }
         */
+        int count = 0;
         float val;
-//        for (int i = 0; i <= 6; i++) {
-//            float val = (float) (Math.random() * 10);
-//            sum = sum + val;
-//            values.add(new Entry(i, Float.parseFloat(end[i].trim())));
-//            avg = sum / i;
-//        }
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(0, val));
-        avg = sum / 4;
+        for (int i = 0; i <= 6; i++) {
+            if (end[i]!=null&&end[i]!="0") {
+                val = Float.parseFloat(end[i].trim());
+                sum = sum + val;
+                values.add(new Entry(i, val));
+                count += 1;
+            }
+        }
+        avg = 0;
 
+        /*
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(1, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(3, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(4, val));
-        avg = sum / 4;
+        count+=1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(5, val));
-        avg = sum / 4;
+        count+=1;
+*/
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(6, 0));
-        avg = sum / 4;
+
+        avg = sum / count;
         return avg;
     }
 
@@ -429,7 +435,7 @@ public class ChildFragDay extends Fragment {
         }
         cal.add(Calendar.DATE, -6);
 
-//        getDBdata();
+        getDBdata();
 
         //for (int i = 0; i <=6; i++)
         //    label.add(yourList.get(i).getDateValue());
@@ -462,6 +468,11 @@ public class ChildFragDay extends Fragment {
     // 현재값 받기
     private void getDBdata() {
         Log.d("searchDay", "start ");
+        Arrays.fill(mArrKg,null);
+        Arrays.fill(mArrCm,null);
+        Arrays.fill(mArrHead,null);
+        Arrays.fill(mArrFever,null);
+
         // 현재 사용 아기데이터
         for (int i = 0; i <= 6; i++) {
             String sql = "select * from growlog where name='" + mBabyname + "'AND date='" + SearchDay[i] + "'"; // 검색용
@@ -477,17 +488,33 @@ public class ChildFragDay extends Fragment {
             }
         }
         // 입력 안된 null 들은 0 으로 변환
-        for (int i = 0; i <= 6; i++) {
-            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
-                mArrKg[i] = "0";
-            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
-                mArrCm[i] = "0";
-            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
-                mArrHead[i] = "0";
-            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
-                mArrFever[i] = "0";
-        }
+//        for (int i = 0; i <= 6; i++) {
+//            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
+//                mArrKg[i] = "0";
+//            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
+//                mArrCm[i] = "0";
+//            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
+//                mArrHead[i] = "0";
+//            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
+//                mArrFever[i] = "0";
+//        }
     }
 
+    private LineDataSet AvgData(float avgData) {
+        LineDataSet avgDataSet;
+        ArrayList<Entry> avgValues = new ArrayList<>();
+
+        for (int i = 0; i <= 6; i++) {
+            avgValues.add(new Entry(i, avgData));
+        }
+
+        avgDataSet = new LineDataSet(avgValues, null);
+
+
+        // 그래프 색 넣기
+        GraphLineColor(avgDataSet, Color.argb(0, 0, 0, 0));
+
+        return avgDataSet;
+    }
 
 }

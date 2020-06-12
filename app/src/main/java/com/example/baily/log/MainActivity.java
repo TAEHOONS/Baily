@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Create a new user with a first and last name
 
 
