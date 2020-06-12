@@ -238,9 +238,11 @@ public class ChildFragTall extends Fragment {
 
         // black lines and points
         set1.setColor(Color.BLUE);
-        set1.setCircleColor(Color.BLUE);
+        set1.setDrawCircles(false);//포인트 점(원)없애기
+        set1.setDrawValues(false);//데이터 값 텍스트 없애기
         set2.setColor(Color.RED);
-        set2.setCircleColor(Color.RED);
+        set2.setDrawCircles(false);//포인트 점(원)없애기
+        set2.setDrawValues(false);//데이터 값 텍스트 없애기
         set3.setColor(Color.BLACK);
         set3.setCircleColor(Color.BLACK);
 

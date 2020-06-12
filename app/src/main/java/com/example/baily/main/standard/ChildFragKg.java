@@ -203,23 +203,22 @@ public class ChildFragKg extends Fragment {
 
         // 내애기 몸무게 임시데이터
         float[] standardKgBaby = new float[73];
-        standardKgBaby[0] = (float)7.35;
-        standardKgBaby[1] = (float)8.47;
-        standardKgBaby[2] = (float)9.57;
-        standardKgBaby[3] = (float)11.38;
-        standardKgBaby[4] = (float)12.56;
-        standardKgBaby[5] = (float)13.78;
-        standardKgBaby[6] = (float)15.86;
-        standardKgBaby[7] = (float)17.44;
-        standardKgBaby[8] = (float)19.88;
-        standardKgBaby[9] = (float)20.98;
-        standardKgBaby[10] = (float)23.66;
-        standardKgBaby[11] = (float)25.76;
-        standardKgBaby[12] = (float)27.55;
-        standardKgBaby[13] = (float)28.08;
-        standardKgBaby[14] = (float)30.33;
-        standardKgBaby[15] = (float)33.98;
-
+        standardKgBaby[0] = (float)3.35;
+        standardKgBaby[1] = (float)4.47;
+        standardKgBaby[2] = (float)5.00;
+        standardKgBaby[3] = (float)6.33;
+        standardKgBaby[4] = (float)7.35;
+        standardKgBaby[5] = (float)7.77;
+        standardKgBaby[6] = (float)8.02;
+        standardKgBaby[7] = (float)8.28;
+        standardKgBaby[8] = (float)8.88;
+        standardKgBaby[9] = (float)9.03;
+        standardKgBaby[10] = (float)10.11;
+        standardKgBaby[11] = (float)10.44;
+        standardKgBaby[12] = (float)10.78;
+        standardKgBaby[13] = (float)12.04;
+        standardKgBaby[14] = (float)12.08;
+        standardKgBaby[15] = (float)12.96;
 
 
         //그래프에 값 넣기
@@ -268,14 +267,13 @@ public class ChildFragKg extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        xAxis.setDrawGridLines(false);
+
         //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
         //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
 
         YAxis yAxisLeft = kgCart.getAxisLeft(); //Y축의 왼쪽면 설정
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(true);
-        yAxisLeft.setDrawGridLines(false);
         //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
         //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
 

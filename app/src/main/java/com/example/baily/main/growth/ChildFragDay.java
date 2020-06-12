@@ -508,7 +508,8 @@ public class ChildFragDay extends Fragment {
 
         avgDataSet = new LineDataSet(avgValues,null);
 
-
+        avgDataSet.setDrawValues(false);//데이터 값 없애기
+        avgDataSet.setDrawCircles(false);//포인트 원 없애기
         // 그래프 색 넣기
         GraphLineColor(avgDataSet, Color.argb(0,255,0,0));
 

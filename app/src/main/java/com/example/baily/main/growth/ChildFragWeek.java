@@ -1,5 +1,7 @@
 package com.example.baily.main.growth;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,6 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ChildFragWeek extends Fragment {
+
+    private DBlink helper;
+    private SQLiteDatabase db;
     private View view;
     private LineChart growWeekKgCart, growWeekCmCart, growWeekHeadCart, growWeekFeverCart;
     TextView weekAvgKgTxt, weekAvgCmTxt, weekAvgHeadTxt, weekAvgFeverTxt, weekDateTxt;
@@ -43,7 +49,10 @@ public class ChildFragWeek extends Fragment {
     Date date = new Date();
     SimpleDateFormat sFormat, wSimple, readChartD;
     int maxDay, bMaxDay, aMaxDay;//마지막일
-    String weekEnd;
+
+    int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd, dbVersion = 3;
+    String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
+    String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
 
     LineData wKgData, wCmData, wHeadData, wFeverData;
 
@@ -78,6 +87,15 @@ public class ChildFragWeek extends Fragment {
         wToday = sFormat.format(date); //이번달
 
         wCal = Calendar.getInstance();
+
+        usingDB(container);
+
+        SearchDay = new String[5];
+        mArrKg = new String[5];
+        mArrCm = new String[5];
+        mArrHead = new String[5];
+        mArrFever = new String[5];
+
         wCal.setTime(date);
         weekStartDate = sFormat.format(wCal.getTime());
         weekDateTxt.setText(weekStartDate);
@@ -205,9 +223,13 @@ public class ChildFragWeek extends Fragment {
 
         // day"++"DataSets에 linedata 받은거 추가하기
         wKgDataSets.add(wKg);
+        wKgDataSets.add(AvgData(weekAvgWeight));
         wCmDataSets.add(wCm);
+        wCmDataSets.add(AvgData(weekAvgHeight));
         wHeadDataSets.add(wHead);
+        wHeadDataSets.add(AvgData(weekAvgHead));
         wFeverDataSets.add(wFever);
+        wFeverDataSets.add(AvgData(weekAvgFever));
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         wKgData = new LineData(wKgDataSets);
@@ -276,12 +298,35 @@ public class ChildFragWeek extends Fragment {
 
 
     private float dataStack(float sum, ArrayList<Entry> values, float avg) {
-        for (int i = 1; i <= 5; i++) {
-            float val = (float) (Math.random() * 10);
-            sum = sum + val;
-            values.add(new Entry(i, val));
-            avg = sum / i;
-        }
+        int count=0;
+        float val;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(0, val));
+        count+=1;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(1, val));
+        count+=1;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(2, val));
+        count+=1;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(3, val));
+        count+=1;
+
+        val = (float) (Math.random() * 10);
+        sum = sum + val;
+        values.add(new Entry(4, val));
+        count+=1;
+
+        avg=sum/count;
         return avg;
     }
 
@@ -289,7 +334,7 @@ public class ChildFragWeek extends Fragment {
     public ArrayList<String> getDate() {
         String read;
         ArrayList<String> label = new ArrayList<>();
-        for (int i = 0; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             label.add(i + "주");
         }
         return label;
@@ -300,5 +345,69 @@ public class ChildFragWeek extends Fragment {
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
         chart.invalidate();
+    }
+    // DB 연결
+    private void usingDB(ViewGroup container) {
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
+
+    // 현재값 받기
+    private void getDBdata() {
+        Log.d("searchDay", "start ");
+        // 현재 사용 아기데이터
+        for (int i = 0; i <= 4; i++) {
+            String sql = "select * from growlog where name='" + mBabyname + "'AND date='" + SearchDay[i] + "'"; // 검색용
+            Cursor c = db.rawQuery(sql, null);
+            while (c.moveToNext()) {
+                //SearchDay[i] = c.getString(3);
+                mArrKg[i] = c.getString(2);
+                mArrCm[i] = c.getString(3);
+                mArrHead[i] = c.getString(4);
+                mArrFever[i] = c.getString(5);
+                Log.d("searchDay", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
+                        + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
+            }
+        }
+        // 입력 안된 null 들은 0 으로 변환
+        for (int i = 0; i <= 4; i++) {
+            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
+                mArrKg[i] = "0";
+            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
+                mArrCm[i] = "0";
+            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
+                mArrHead[i] = "0";
+            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
+                mArrFever[i] = "0";
+        }
+    }
+
+    private LineDataSet AvgData(float avgData){
+        LineDataSet avgDataSet;
+        ArrayList<Entry> avgValues=new ArrayList<>();
+
+        for (int i = 0; i <=4; i++) {
+            avgValues.add(new Entry(i,avgData));
+        }
+
+        avgDataSet = new LineDataSet(avgValues,null);
+
+        avgDataSet.setDrawValues(false);//데이터 값 없애기
+        avgDataSet.setDrawCircles(false);//포인트 원 없애기
+        // 그래프 색 넣기
+        GraphLineColor(avgDataSet, Color.argb(0,255,0,0));
+
+        return avgDataSet;
     }
 }

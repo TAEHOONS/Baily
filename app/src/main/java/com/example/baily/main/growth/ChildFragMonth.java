@@ -202,10 +202,8 @@ public class ChildFragMonth extends Fragment {
         mHeadData = new LineData(mHeadDataSets);
         mFeverData = new LineData(mFeverDataSets);
 
-        mKg.setDrawValues(false);//데이터 값 없애기
-        mKg.setDrawCircles(false);//포인트 원 없애기
         // 그래프 색 넣기
-        GraphLineColor(mKg, Color.argb(FF,00,00,00));
+        GraphLineColor(mKg, Color.BLACK);
         GraphLineColor(mCm, Color.RED);
         GraphLineColor(mHead, Color.BLUE);
         GraphLineColor(mFever, Color.GREEN);
