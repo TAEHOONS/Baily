@@ -21,7 +21,7 @@ public class DBlink extends SQLiteOpenHelper{
         // 로그인 정보
         sql = "create table thisusing" +
                 "(_id integer primary key autoincrement," +
-                "id text,baby text,diaryset Integer);";
+                "id text,baby text);";
         db.execSQL(sql);
         // 아기 정보
         sql = "create table baby" +

@@ -1,7 +1,10 @@
 package com.example.baily.main.standard;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,6 +29,14 @@ public class ChildFragKg extends Fragment {
     private View view;
     private LineChart kgCart;
 
+    String dbName = "user.db";
+    int dbVersion = 3, BYear, BMonth, BDay;
+    // mId= 현재 사용 id, baby
+    private String mId, mBabyname;
+    private DBlink helper;
+    private SQLiteDatabase db;
+    String k;
+
     public static ChildFragKg newInstance(){
         ChildFragKg childFragKg = new ChildFragKg();
         return childFragKg;
@@ -36,6 +48,8 @@ public class ChildFragKg extends Fragment {
         view = inflater.inflate(R.layout.standard_child_frag_kg,container,false);
 
         kgCart = view.findViewById(R.id.kgLineCart);
+
+
 
         ArrayList<Entry> valuesBoy = new ArrayList<>();
         ArrayList<Entry> valuesGirl = new ArrayList<>();
@@ -289,4 +303,25 @@ public class ChildFragKg extends Fragment {
 
         return view;
     }
+    //새로운시도
+    // DB 연결
+    private void usingDB(ViewGroup container) {
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+    }
+    // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
+    private void loadgrowLog() {
+
+        String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
+
+        Cursor c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            String sqlcm, h, f, r, d;
+            k = c.getString(2);
+            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: "+k);
+        }
+        Log.d("k값 쌓이는거", "loadgrowLog 와일 끝: "+k);
+    }
+
 }
