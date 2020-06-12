@@ -25,6 +25,9 @@ public class ChildFragTall extends Fragment {
     private View view;
     private LineChart tallCart;
 
+    ArrayList<Entry> valuesBoy,valuesGirl,valuesBaby;
+    float[] standardTallBoy,standardTallGirl;
+
     public static ChildFragTall newInstance(){
         ChildFragTall childFragTall = new ChildFragTall();
         return childFragTall;
@@ -37,13 +40,92 @@ public class ChildFragTall extends Fragment {
 
         tallCart = view.findViewById(R.id.tallLineCart);
 
-        ArrayList<Entry> valuesBoy = new ArrayList<>();
-        ArrayList<Entry> valuesGirl = new ArrayList<>();
-        ArrayList<Entry> valuesBaby = new ArrayList<>();
+        valuesBoy = new ArrayList<>();
+        valuesGirl = new ArrayList<>();
+        valuesBaby = new ArrayList<>();
 
 
         //남아 표준 그래프(키) 배열 값 삽입
-        float[] standardTallBoy = new float[73];
+        setBoyList();
+
+        //여아 표준 그래프(키) 배열 값 삽입
+        setGirlList();
+
+        // 내 아이 임시 데이터
+        float[] standardTallBaby = new float[73];
+        standardTallBaby[0] = (float)55.55;
+        standardTallBaby[1] = (float)56.69;
+        standardTallBaby[2] = (float)59.07;
+        standardTallBaby[3] = (float)63.80;
+
+        //그래프에 값 넣기
+        for (int i = 0; i < 73; i++) {
+            valuesBoy.add(new Entry(i,standardTallBoy[i]));
+        }
+        for (int i = 0; i < 73; i++) {
+            valuesGirl.add(new Entry(i,standardTallGirl[i]));
+        }
+        for (int i = 0; i < 4; i++) {
+            valuesBaby.add(new Entry(i,standardTallBaby[i]));
+        }
+
+        LineDataSet set1;
+        LineDataSet set2;
+        LineDataSet set3;
+
+        set1 = new LineDataSet(valuesBoy, "남아 신장");
+        set2 = new LineDataSet(valuesGirl, "여아 신장");
+        set3 = new LineDataSet(valuesBaby,"내 아이 신장");
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+        dataSets.add(set2);
+        dataSets.add(set3);
+
+        // create a data object with the data sets
+        LineData data1 = new LineData(dataSets);
+        LineData data2 = new LineData(dataSets);
+        LineData data3 = new LineData(dataSets);
+
+        // black lines and points
+        set1.setColor(Color.BLUE);
+        set1.setDrawCircles(false);//포인트 점(원)없애기
+        set1.setDrawValues(false);//데이터 값 텍스트 없애기
+        set2.setColor(Color.RED);
+        set2.setDrawCircles(false);//포인트 점(원)없애기
+        set2.setDrawValues(false);//데이터 값 텍스트 없애기
+        set3.setColor(Color.BLACK);
+        set3.setCircleColor(Color.BLACK);
+
+
+        XAxis xAxis = tallCart.getXAxis(); // x 축 설정
+        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
+        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
+        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
+
+        YAxis yAxisLeft = tallCart.getAxisLeft(); //Y축의 왼쪽면 설정
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setDrawGridLines(false);
+        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
+        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
+
+        YAxis yAxisRight = tallCart.getAxisRight(); //Y축의 오른쪽면 설정
+
+        tallCart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
+        tallCart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
+
+        // set data
+        tallCart.setData(data1);
+        tallCart.setData(data2);
+        tallCart.setData(data3);
+
+        return view;
+    }
+    private void setBoyList(){
+        standardTallBoy = new float[73];
         standardTallBoy[0] = (float)49.88;
         standardTallBoy[1] = (float)54.47;
         standardTallBoy[2] = (float)58.42;
@@ -120,9 +202,9 @@ public class ChildFragTall extends Fragment {
         standardTallBoy[71] = (float)115.40;
         standardTallBoy[72] = (float)115.92;
 
-
-        //여아 표준 그래프(키) 배열 값 삽입
-        float[] standardTallGirl = new float[73];
+    }
+    private void setGirlList(){
+        standardTallGirl = new float[73];
         standardTallGirl[0] = (float)49.15;
         standardTallGirl[1] = (float)53.69;
         standardTallGirl[2] = (float)57.07;
@@ -199,78 +281,5 @@ public class ChildFragTall extends Fragment {
         standardTallGirl[70] = (float)113.67;
         standardTallGirl[71] = (float)114.20;
         standardTallGirl[72] = (float)114.73;
-
-        // 내 아이 임시 데이터
-        float[] standardTallBaby = new float[73];
-        standardTallBaby[0] = (float)55.55;
-        standardTallBaby[1] = (float)56.69;
-        standardTallBaby[2] = (float)59.07;
-        standardTallBaby[3] = (float)63.80;
-
-        //그래프에 값 넣기
-        for (int i = 0; i < 73; i++) {
-            valuesBoy.add(new Entry(i,standardTallBoy[i]));
-        }
-        for (int i = 0; i < 73; i++) {
-            valuesGirl.add(new Entry(i,standardTallGirl[i]));
-        }
-        for (int i = 0; i < 4; i++) {
-            valuesBaby.add(new Entry(i,standardTallBaby[i]));
-        }
-
-        LineDataSet set1;
-        LineDataSet set2;
-        LineDataSet set3;
-
-        set1 = new LineDataSet(valuesBoy, "남아 신장");
-        set2 = new LineDataSet(valuesGirl, "여아 신장");
-        set3 = new LineDataSet(valuesBaby,"내 아이 신장");
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1); // add the data sets
-        dataSets.add(set2);
-        dataSets.add(set3);
-
-        // create a data object with the data sets
-        LineData data1 = new LineData(dataSets);
-        LineData data2 = new LineData(dataSets);
-        LineData data3 = new LineData(dataSets);
-
-        // black lines and points
-        set1.setColor(Color.BLUE);
-        set1.setDrawCircles(false);//포인트 점(원)없애기
-        set1.setDrawValues(false);//데이터 값 텍스트 없애기
-        set2.setColor(Color.RED);
-        set2.setDrawCircles(false);//포인트 점(원)없애기
-        set2.setDrawValues(false);//데이터 값 텍스트 없애기
-        set3.setColor(Color.BLACK);
-        set3.setCircleColor(Color.BLACK);
-
-
-        XAxis xAxis = tallCart.getXAxis(); // x 축 설정
-        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
-        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
-
-        YAxis yAxisLeft = tallCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        yAxisLeft.setDrawLabels(false);
-        yAxisLeft.setDrawAxisLine(false);
-        yAxisLeft.setDrawGridLines(false);
-        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
-
-        YAxis yAxisRight = tallCart.getAxisRight(); //Y축의 오른쪽면 설정
-
-        tallCart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
-        tallCart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
-
-        // set data
-        tallCart.setData(data1);
-        tallCart.setData(data2);
-        tallCart.setData(data3);
-
-        return view;
     }
 }
