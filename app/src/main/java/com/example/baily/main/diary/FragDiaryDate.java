@@ -60,7 +60,7 @@ public class FragDiaryDate extends Fragment {
     private DBlink helper;
     private SQLiteDatabase db;
     String dbName = "user.db", mId, mBabyname;
-    int dbVersion = 3, requestCode = 0;
+    int dbVersion = 3;
     ViewGroup container;
     private Cursor cursor;
     Context contx;
@@ -331,8 +331,7 @@ public class FragDiaryDate extends Fragment {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            requestCode=cursor.getInt(3);
-            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname+ "  현재 코드 = " + requestCode);
+            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
 
     }
