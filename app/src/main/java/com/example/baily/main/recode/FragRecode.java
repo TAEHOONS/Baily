@@ -407,8 +407,6 @@ public class FragRecode extends Fragment {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            requestCode = cursor.getInt(3);
-            Log.d("DiaryDBset", "db받기 id = " + mId + "  현재 아기 = " + mBabyname + "  현재 코드 = " + requestCode);
         }
 
     }

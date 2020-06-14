@@ -1,5 +1,7 @@
 package com.example.baily.main;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        Log.d("moveScreen", "getItem: VPA");
         switch (position){
             case 0:
                 return FragDiary.newInstance();
