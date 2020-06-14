@@ -24,17 +24,36 @@
                 android:src="@drawable/logo"
                 android:layout_weight="2"/>
             // 상단 중앙 아기의 탄생일부터의 디데이
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="7">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.25"/>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.66"/>
+
                 <TextView
                     android:id="@+id/mft_dDayTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="D-day       "/>
-            </LinearLayout>
+                    android:text="D-day"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                    app:layout_constraintStart_toStartOf="@+id/guideline3"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
             // 오른쪽 상단에 설정 레이아웃으로 이동할수 있는 설정버튼
             <ImageView
                 android:layout_width="0dp"

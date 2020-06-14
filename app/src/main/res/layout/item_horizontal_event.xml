@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="105dp">
+    android:layout_height="105dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_margin="10dp"
+
+    <LinearLayout
         android:layout_width="150dp"
         android:minWidth="100dp"
         android:layout_height="90dp"
-        android:background="#649f93">
-        <TextView
-            android:id="@+id/item_name"
+        android:orientation="vertical"
+        android:background="@drawable/round2"
+        android:padding="8dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:gravity="center_horizontal"
-            tools:ignore="MissingConstraints" />
+            android:gravity="center"
+            android:padding="4dp">
 
-        <TextView
-            android:id="@+id/item_date"
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:id="@+id/item_name"
+                android:text="일기 제목"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/item_name"
-            android:layout_marginTop="8dp"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:text="2017-16-46"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_name"
-            android:gravity="center_horizontal" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:id="@+id/item_date"
+                android:text="일기 작성한 날"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

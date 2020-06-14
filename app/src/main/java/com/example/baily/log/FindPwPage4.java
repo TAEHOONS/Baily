@@ -1,4 +1,4 @@
-package com.example.baily;
+package com.example.baily.log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.baily.log.FindPwPage3;
-import com.example.baily.log.MainActivity;
+import com.example.baily.R;
 
 public class FindPwPage4 extends AppCompatActivity {
 

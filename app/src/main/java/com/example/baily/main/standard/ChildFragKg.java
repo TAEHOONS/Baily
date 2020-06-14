@@ -235,6 +235,7 @@ public class ChildFragKg extends Fragment {
         standardKgBaby[15] = (float)12.96;
 
 
+
         //그래프에 값 넣기
         for (int i = 0; i < 73; i++) {
             valuesBoy.add(new Entry(i,standardKgBoy[i]));

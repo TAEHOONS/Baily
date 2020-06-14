@@ -38,6 +38,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         holder.diaryContents.setText(item.getDiaryContents());
         //holder.diaryPicture.setImageResource(item.getDiaryImg());
 
+
     }
 
 
