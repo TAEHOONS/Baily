@@ -32,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 //20200521
-public class MainPage extends AppCompatActivity {
+public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener{
 
     String dbName = "user.db";
     int dbVersion = 3;
@@ -55,6 +55,26 @@ public class MainPage extends AppCompatActivity {
         backPressClose=new BackPressClose(this);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager.setAdapter(fragmentPagerAdapter);
+        viewPager.setOffscreenPageLimit(0);
+        viewPager.setCurrentItem(2);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         tabLayout.setupWithViewPager(viewPager);
 
         ImageView setBtn = (ImageView) findViewById(R.id.mft_setBtn);
@@ -102,7 +122,9 @@ public class MainPage extends AppCompatActivity {
         }
         caldate caldate=new caldate(BYear,BMonth,BDay);
         DayText.setText("D + "+caldate.result);
+        fragmentPagerAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     protected void onResume() {
@@ -119,23 +141,47 @@ public class MainPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        fragmentPagerAdapter.notifyDataSetChanged();
     }
-
-//    @Override
-//    protected void onResumeFragments() {
-//        super.onResumeFragments();
-//        ViewPager viewPager = findViewById(R.id.viewPager);
-//        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        usingDB();
-//
-//
-//        TabLayout tabLayout = findViewById(R.id.tab_layout);
-//        viewPager.setAdapter(fragmentPagerAdapter);
-//        tabLayout.setupWithViewPager(viewPager);
-//    }
 
     @Override
     public void onBackPressed() {
         backPressClose.onBackPressed();
     }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                refresh();
+                break;
+            case 1:
+                refresh();
+                break;
+            case 2:
+                refresh();
+                break;
+            case 3:
+                refresh();
+                break;
+            case 4:
+                refresh();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+    }
+
+    private void refresh() {
+        fragmentPagerAdapter.notifyDataSetChanged();
+    }
+
+
 }

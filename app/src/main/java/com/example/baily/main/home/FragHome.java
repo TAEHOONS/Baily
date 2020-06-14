@@ -32,6 +32,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -505,14 +506,13 @@ public class FragHome extends Fragment {
             userId = "UPDATE user SET lastbaby='" + item.getTitle().toString() + "' WHERE id='"+mId+"'";
             db.execSQL(userId);
             // 새로 고침
-
+            Fragment frg = getFragmentManager().findFragmentByTag("Recode");
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
 
+
+
             ((MainPage) getActivity()).getDay();
-
-            Log.d("recodeonResume", "onResume-homr: fpagerA");
-
             growDataList.clear();
 
         }

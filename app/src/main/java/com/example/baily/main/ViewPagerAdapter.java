@@ -24,16 +24,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Log.d("moveScreen", "getItem: VPA");
         switch (position){
-            case 0:
-                return FragDiary.newInstance();
-            case 1:
-                return FragRecode.newInstance();
-            case 2:
-                return FragHome.newInstance();
-            case 3:
-                return FragGrowth.newInstance();
-            case 4:
-                return FragStandard.newInstance();
+            case 0:FragDiary fragDiary=new FragDiary();
+                return fragDiary;
+            case 1:FragRecode fragRecode=new FragRecode();
+                return fragRecode;
+            case 2:FragHome fragHome=new FragHome();
+                return fragHome;
+            case 3:FragGrowth fragGrowth=new FragGrowth();
+                return fragGrowth;
+            case 4:FragStandard fragStandard=new FragStandard();
+                return fragStandard;
             default:
                 return null;
         }

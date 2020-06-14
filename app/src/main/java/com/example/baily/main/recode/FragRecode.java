@@ -76,6 +76,18 @@ public class FragRecode extends Fragment {
     };
 
 
+    @Override
+    public void onPrimaryNavigationFragmentChanged(boolean isPrimaryNavigationFragment) {
+        super.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment);
+        if (isPrimaryNavigationFragment) {
+            Log.d("moveScreen", "fragment is shown");
+            // Your fragment is shown
+        } else {
+            Log.d("moveScreen", " fragment is hidden");
+            // Your fragment is hidden
+        }
+    }
+
     private String getNowTime() {
         // 현재시간을 msec 으로 구한다.
         long now = System.currentTimeMillis();
@@ -373,14 +385,17 @@ public class FragRecode extends Fragment {
         });
         loadRecode(false,"");
 
+
+
         return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("recodeonResume", "onResume Start");
 
+        usingDB(container);
+        loadRecode(false,"");
     }
 
 
