@@ -39,6 +39,11 @@ public class DBlink extends SQLiteOpenHelper{
                 "( id INTEGER PRIMARY KEY AUTOINCREMENT , " +
                 "name TEXT,title text, date TEXT, memo TEXT,parents text);";
         db.execSQL(sql);
+        sql = "CREATE TABLE recode " +
+                "( id INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                "name TEXT,date text, time TEXT, title TEXT," +
+                "subt text,contents1 text,contents2 text,parents text);";
+        db.execSQL(sql);
     }
 
     @Override

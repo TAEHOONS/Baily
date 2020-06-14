@@ -23,13 +23,13 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeTemp extends AppCompatActivity {
+public class InfoBath extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
     private SeekBar mSeekBar;
-    private int mSeekBarVal = (int) 36.5;
+    private int mSeekBarVal = 0;
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -44,7 +44,7 @@ public class RecodeTemp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_temp);
+        setContentView(R.layout.activity_recode_bath);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,31 +53,12 @@ public class RecodeTemp extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeTemp.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoBath.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
 
-        mSeekBar=findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
-        eatpwm.setText(String.valueOf(mSeekBarVal)+"℃");
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal)+"℃");
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
@@ -141,7 +122,7 @@ public class RecodeTemp extends AppCompatActivity {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeTemp.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(InfoBath.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
@@ -155,9 +136,6 @@ public class RecodeTemp extends AppCompatActivity {
             }
         });
 
-
-
-
     }
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
@@ -169,7 +147,6 @@ public class RecodeTemp extends AppCompatActivity {
             }
         }
     };
-
     public void Dialog(){
         final EditText editTag = new EditText(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

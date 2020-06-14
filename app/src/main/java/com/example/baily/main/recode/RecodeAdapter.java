@@ -2,6 +2,7 @@ package com.example.baily.main.recode;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,52 +116,52 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                     }
                     final String val = textView2.getText().toString();
              if(val.equals("분유")){
-                 Intent intent = new Intent(context, RecodePwmilk.class);
+                 Intent intent = new Intent(context, InfoPwmilk.class);
                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  context.startActivity(intent);
             }
                     if(val.equals("수유")){
-                        Intent intent = new Intent(context,RecodeNursing.class);
+                        Intent intent = new Intent(context, InfoNursing.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("이유식")){
-                        Intent intent = new Intent(context,RecodeBbfood.class);
+                        Intent intent = new Intent(context, InfoBbfood.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("수면")){
-                        Intent intent = new Intent(context,RecodeSleep.class);
+                        Intent intent = new Intent(context, infoSleep.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("배변")){
-                        Intent intent = new Intent(context, RecodeBowel.class);
+                        Intent intent = new Intent(context, InfoBowel.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("투약")){
-                        Intent intent = new Intent(context,RecodeDosage.class);
+                        Intent intent = new Intent(context, InfoDrug.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("온도체크")){
-                        Intent intent = new Intent(context,RecodeTemp.class);
+                        Intent intent = new Intent(context, InfoTemp.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("목욕")){
-                        Intent intent = new Intent(context, RecodeBath.class);
+                        Intent intent = new Intent(context, InfoBath.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("입원")){
-                        Intent intent = new Intent(context, RecodeHealth.class);
+                        Intent intent = new Intent(context, InfoHospital.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                     if(val.equals("놀이")){
-                        Intent intent = new Intent(context, RecodePlay.class);
+                        Intent intent = new Intent(context, InfoPlay.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
@@ -172,8 +173,42 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
         //setItem 메소드는 SingerItem 객체를 전달받아 뷰홀더 안에 있는 뷰에 데이터를 설정하는 역할을 합니다.
         public void setItem(RecodeData item) {
             textView.setText(item.getTime());
-            textView2.setText(item.getValue());
+            textView2.setText("●"+item.getValue());
+            switch (item.getValue()){
+                case "모유" :
+                    textView2.setTextColor(Color.parseColor("#C55A11"));
+                    break;
+                case "이유식" :
+                    textView2.setTextColor(Color.parseColor("#FFA9A9"));
+                    break;
+                case "잠" :
+                    textView2.setTextColor(Color.parseColor("#5781BF"));
+                    break;
+                case "분유" :
+                    textView2.setTextColor(Color.parseColor("#F4B184"));
+                    break;
+                case "기저귀" :
+                    textView2.setTextColor(Color.parseColor("#BF9000"));
+                    break;
+                case "약" :
+                    textView2.setTextColor(Color.parseColor("#A9D18E"));
+                    break;
+                case "온도" :
+                    textView2.setTextColor(Color.parseColor("#2E75B6"));
+                    break;
+                case "목욕" :
+                    textView2.setTextColor(Color.parseColor("#FFE699"));
+                    break;
+                case "병원" :
+                    textView2.setTextColor(Color.parseColor("#00B050"));
+                    break;
+                case "놀이" :
+                    textView2.setTextColor(Color.parseColor("#F4B183"));
+                    break;
+
+            }
             imageView.setImageResource(R.drawable.right);
+            textView3.setText(item.getDal()+"임");
         }
 
 
