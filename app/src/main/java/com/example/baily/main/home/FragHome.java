@@ -30,15 +30,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.caldate;
 import com.example.baily.main.MainPage;
+import com.example.baily.main.ViewPagerAdapter;
+import com.example.baily.main.recode.FragRecode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,7 +65,7 @@ public class FragHome extends Fragment {
     String dbName = "user.db";
     int dbVersion = 3, BYear, BMonth, BDay;
 
-
+    boolean mMainVisible = true;
     private ArrayList<CardItem> growList = new ArrayList<>();
     private DBlink helper;
     private SQLiteDatabase db;
@@ -115,7 +119,7 @@ public class FragHome extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
-
+        setUserVisibleHint(false);
         recyclerView.setLayoutManager(layoutManager);
         usingDB(container);
 
@@ -228,6 +232,7 @@ public class FragHome extends Fragment {
             imageview.setImageBitmap(bm);
         } catch (Exception e) {
         }
+
 
     }
 
@@ -500,17 +505,20 @@ public class FragHome extends Fragment {
             userId = "UPDATE user SET lastbaby='" + item.getTitle().toString() + "' WHERE id='"+mId+"'";
             db.execSQL(userId);
             // 새로 고침
+
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
 
             ((MainPage) getActivity()).getDay();
 
+            Log.d("recodeonResume", "onResume-homr: fpagerA");
 
             growDataList.clear();
 
         }
 
     }
-
+    
+    
 
 }

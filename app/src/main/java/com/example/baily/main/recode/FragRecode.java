@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -24,13 +25,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class FragRecode extends Fragment {
 
@@ -45,6 +50,7 @@ public class FragRecode extends Fragment {
     RecodeAdapter recodeAdapter;
     RecyclerView recyclerView;
     private String sel;
+    ViewGroup container;
     String sumT;
     Thread thread = null;
     AppCompatImageButton handle, nurs, bbfood, sleep, pwmilk, bowel, dosage, tem, bath, health, play;
@@ -103,7 +109,7 @@ public class FragRecode extends Fragment {
         final boolean flag = true;
 
         final Handler handler = new Handler();
-
+        this.container=container;
         handle = v.findViewById(R.id.handle);
         nurs = v.findViewById(R.id.nursing_btn);
         bbfood = v.findViewById(R.id.babyfood_btn);
@@ -370,6 +376,13 @@ public class FragRecode extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("recodeonResume", "onResume Start");
+
+    }
+
 
     private void updateLabel() {
         String myFormat = "  MM월 dd일";    // 출력형식   2018/11/28
@@ -381,7 +394,6 @@ public class FragRecode extends Fragment {
         Log.d("recodeDate", "Date : " + myCalendar.getTime());
         loadRecode(false,"");
     }
-
 
     // DB 연결
     private void usingDB(ViewGroup container) {
@@ -400,23 +412,6 @@ public class FragRecode extends Fragment {
         }
 
     }
-
-//    private void insertRecode(String title) {
-//        String myFormat = "YYYY년MM월dd일";    // 출력형식   2018/11/28
-//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
-//
-//        ContentValues values = new ContentValues();
-//        values.put("name", mBabyname);
-//        values.put("date", sdf.format(myCalendar.getTime()));
-//        values.put("time", getNowTime());
-//        values.put("title", title);
-//        values.put("parents", mId);
-//
-//        db.insert("recode", null, values);
-//
-//        recodeAdapter.addItem(new RecodeData(getNowTime(), title, ""));
-//        recyclerView.setAdapter(recodeAdapter);
-//    }
 
     private void insertDB(String title) {
         String myFormat = "YYYY년MM월dd일";    // 출력형식   2018/11/28
@@ -452,15 +447,18 @@ public class FragRecode extends Fragment {
         recodeAdapter = new RecodeAdapter(getActivity().getApplicationContext());
         recyclerView.setAdapter(null);
         Log.d("recodeDBget", "loadRecode Start");
+
         String myFormat = "YYYY년MM월dd일";    // 출력형식   2018/11/28
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
         String sqlday = sdf.format(myCalendar.getTime());
         Log.d("recodeDBget", "sqlday =" + sqlday);
         String sql; // true 지정 검색 모드, false는 기본모드
+
+        Log.d("recodeDBget", "mode =" + mode+" , baby = "+mBabyname);
         if (mode == true)
-            sql = "select * from recode where date='" + sqlday + "',title='"+select+"' order by time"; // 검색용
+            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "'AND title='"+select+"' order by time"; // 검색용
         else
-            sql = "select * from recode where date='" + sqlday + "' order by time"; // 검색용
+            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "' order by time"; // 검색용
         Cursor c = db.rawQuery(sql, null);
         // 기본 데이터
         while (c.moveToNext()) {
