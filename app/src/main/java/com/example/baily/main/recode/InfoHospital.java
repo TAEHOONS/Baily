@@ -23,7 +23,7 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeBbfood extends AppCompatActivity {
+public class InfoHospital extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
@@ -44,7 +44,7 @@ public class RecodeBbfood extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_bbfood);
+        setContentView(R.layout.activity_recode_health);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,31 +53,11 @@ public class RecodeBbfood extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeBbfood.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoHospital.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
 
-        mSeekBar=findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
-        eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
@@ -141,7 +121,7 @@ public class RecodeBbfood extends AppCompatActivity {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeBbfood.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(InfoHospital.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 

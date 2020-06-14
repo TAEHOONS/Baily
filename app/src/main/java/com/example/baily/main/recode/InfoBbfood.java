@@ -23,13 +23,13 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodePwmilk extends AppCompatActivity {
+public class InfoBbfood extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
-private SeekBar mSeekBar;
-private int mSeekBarVal = 0;
+    private SeekBar mSeekBar;
+    private int mSeekBarVal = 0;
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -38,15 +38,13 @@ private int mSeekBarVal = 0;
     ArrayList<RecodeInfoItem> mDataList;
     RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
-     EditText startDate, endDate, edmemo;
-     TextView tSum, eatpwm;
-     int strt,endt;
-
-
+    EditText startDate, endDate, edmemo;
+    TextView tSum, eatpwm;
+    int strt,endt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_pwmilk);
+        setContentView(R.layout.activity_recode_bbfood);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -55,7 +53,7 @@ private int mSeekBarVal = 0;
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodePwmilk.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoBbfood.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
@@ -81,15 +79,15 @@ private int mSeekBarVal = 0;
             }
         });
         edmemo=findViewById(R.id.pwm_memo);
-memo= edmemo.getText().toString();
+        memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
 
         Intent intent = getIntent();
-final TextView tat = findViewById(R.id.pwm_tv);
-test=intent.getStringExtra("tag");
-if(test != null){
-    tat.setText(test);
-}
+        final TextView tat = findViewById(R.id.pwm_tv);
+        test=intent.getStringExtra("tag");
+        if(test != null){
+            tat.setText(test);
+        }
 
         mAdapter = new RecodeInfoAdapter( mDataList);
         recyclerView.setAdapter(mAdapter);
@@ -126,7 +124,7 @@ if(test != null){
         adapter.setOnItemClickListener(new RecodeInfoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecodeInfoAdapter.CustomViewHolder holder, View view, int position) {
-               TextView tag =  view.findViewById(R.id.rec_tag);
+                TextView tag =  view.findViewById(R.id.rec_tag);
                 String tv = tag.getText().toString();
                 tat.setText(tv);
             }
@@ -134,7 +132,7 @@ if(test != null){
 
 
 
-       startDate = findViewById(R.id.pwm_start);
+        startDate = findViewById(R.id.pwm_start);
         startDate.setText(pwmStart);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +141,7 @@ if(test != null){
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodePwmilk.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(InfoBbfood.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
@@ -156,40 +154,8 @@ if(test != null){
                 mTimePicker.show();
             }
         });
-        endDate = findViewById(R.id.pwm_end);
-        endDate.setText(pwmEnd);
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodePwmilk.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                        // EditText에 출력할 형식 지정
-                        endDate.setText(" " + selectedHour + " : " + selectedMinute + " " );
-                        endt = (selectedHour*60)+selectedMinute;
-                        tthou=Integer.toString((endt-strt)/60);
-                        ttmin=Integer.toString((endt-strt)%60);
-                        if((endt-strt)>=60){
-                            tSum.setText(tthou+ "시간" + ttmin +"분");
-                        }else {
-                            tSum.setText(ttmin + "분");
-                        }
-                    }
-                }, hour, minute, true); // true의 경우 24시간 형식의 TimePicker 출현
-                mTimePicker.setTitle("완료 시간");
-                mTimePicker.show();
-            }
-        });
-
-
 
     }
-
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -225,7 +191,4 @@ if(test != null){
         builder.show();
     }
 
-
-
 }
-
