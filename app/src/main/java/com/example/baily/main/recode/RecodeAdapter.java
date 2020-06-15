@@ -20,7 +20,16 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     Context context;
     ArrayList<RecodeData> items = new ArrayList<RecodeData>();
     ArrayList<RecodeData> filteredList;
-
+    int INFO_NURSING = 1;
+    int INFO_BBFOOD = 2;
+    int INFO_BOWEL = 3;
+    int INFO_BATH = 4;
+    int INFO_DRUG = 5;
+    int INFO_HOSP = 6;
+    int INFO_PLAY = 7;
+    int INFO_PWMILK = 8;
+    int INFO_SLEEP = 9;
+    int INFO_TEMP = 10;
     //클릭이벤트처리 관련 사용자 정의(이 코드없으면 그냥 리사이클러뷰 구조)//////////////////////////////////////////////////////////////////////////
     OnItemClickListener listener; //참고로 OnItemClickListener는 기존에 있는것과 동일한 이름인데 그냥 같은 이름으로 내가 정의를 했다. (리스트뷰에서는 이게 자동구현되있어서 OnItemClickListener를 구현안하고 호출해서 클릭시 이벤트를 처리할 수 있음)
 
@@ -33,7 +42,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
 
 
 
-    public  RecodeAdapter(Context context){
+    public RecodeAdapter(Context context){
         this.context =  context;
     }
 
@@ -115,55 +124,55 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
-             if(val.equals("분유")){
-                 Intent intent = new Intent(context, InfoPwmilk.class);
-                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                 context.startActivity(intent);
-            }
-                    if(val.equals("수유")){
+                    if(val.equals("●분유")){
+                        Intent intent = new Intent(context, InfoPwmilk.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);                    }
+                    if(val.equals("●모유")){
                         Intent intent = new Intent(context, InfoNursing.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("이유식")){
+                    if(val.equals("●이유식")){
                         Intent intent = new Intent(context, InfoBbfood.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("수면")){
+                    if(val.equals("●잠")){
                         Intent intent = new Intent(context, infoSleep.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("배변")){
+                    if(val.equals("●기저귀")){
                         Intent intent = new Intent(context, InfoBowel.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("투약")){
+                    if(val.equals("●약")){
                         Intent intent = new Intent(context, InfoDrug.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("온도체크")){
+                    if(val.equals("●온도")){
                         Intent intent = new Intent(context, InfoTemp.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("목욕")){
+                    if(val.equals("●목욕")){
                         Intent intent = new Intent(context, InfoBath.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("입원")){
+                    if(val.equals("●병원")){
                         Intent intent = new Intent(context, InfoHospital.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("놀이")){
+                    if(val.equals("●놀이")){
                         Intent intent = new Intent(context, InfoPlay.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
+
                     }
                 }
             });
