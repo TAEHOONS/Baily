@@ -23,7 +23,7 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeBath extends AppCompatActivity {
+public class InfoBowel extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
@@ -44,7 +44,7 @@ public class RecodeBath extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_bath);
+        setContentView(R.layout.activity_recode_bowel);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,11 +53,10 @@ public class RecodeBath extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeBath.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoBowel.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
-
 
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
@@ -122,7 +121,7 @@ public class RecodeBath extends AppCompatActivity {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeBath.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(InfoBowel.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 

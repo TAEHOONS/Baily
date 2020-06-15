@@ -23,7 +23,7 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeNursing extends AppCompatActivity {
+public class infoSleep extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
@@ -39,12 +39,12 @@ public class RecodeNursing extends AppCompatActivity {
     RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
     EditText startDate, endDate, edmemo;
-    TextView tSum, eatleft,eatright;
+    TextView tSum, eatpwm;
     int strt,endt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_nursing);
+        setContentView(R.layout.activity_recode_sleep);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,52 +53,12 @@ public class RecodeNursing extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeNursing.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(infoSleep.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
 
-        mSeekBar=findViewById(R.id.nurs_left_bar);
-        eatleft = findViewById(R.id.left_val);
-        eatleft.setText(String.valueOf(mSeekBarVal)+"ml");
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatleft.setText(String.valueOf(mSeekBarVal)+"ml");
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        mSeekBar=findViewById(R.id.nurs_right_bar);
-        eatright = findViewById(R.id.right_val);
-        eatright.setText(String.valueOf(mSeekBarVal)+"ml");
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatright.setText(String.valueOf(mSeekBarVal)+"ml");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
@@ -162,7 +122,7 @@ public class RecodeNursing extends AppCompatActivity {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeNursing.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(infoSleep.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 

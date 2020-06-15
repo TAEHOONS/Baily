@@ -23,13 +23,13 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeHealth extends AppCompatActivity {
+public class InfoPwmilk extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
-    private SeekBar mSeekBar;
-    private int mSeekBarVal = 0;
+private SeekBar mSeekBar;
+private int mSeekBarVal = 0;
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -38,13 +38,15 @@ public class RecodeHealth extends AppCompatActivity {
     ArrayList<RecodeInfoItem> mDataList;
     RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
-    EditText startDate, endDate, edmemo;
-    TextView tSum, eatpwm;
-    int strt,endt;
+     EditText startDate, endDate, edmemo;
+     TextView tSum, eatpwm;
+     int strt,endt;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_health);
+        setContentView(R.layout.activity_recode_pwmilk);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,21 +55,41 @@ public class RecodeHealth extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeHealth.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoPwmilk.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
 
+        mSeekBar=findViewById(R.id.nurs_left_bar);
+        eatpwm = findViewById(R.id.left_val);
+        eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSeekBarVal = progress;
+                eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         edmemo=findViewById(R.id.pwm_memo);
-        memo= edmemo.getText().toString();
+memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
 
         Intent intent = getIntent();
-        final TextView tat = findViewById(R.id.pwm_tv);
-        test=intent.getStringExtra("tag");
-        if(test != null){
-            tat.setText(test);
-        }
+final TextView tat = findViewById(R.id.pwm_tv);
+test=intent.getStringExtra("tag");
+if(test != null){
+    tat.setText(test);
+}
 
         mAdapter = new RecodeInfoAdapter( mDataList);
         recyclerView.setAdapter(mAdapter);
@@ -104,7 +126,7 @@ public class RecodeHealth extends AppCompatActivity {
         adapter.setOnItemClickListener(new RecodeInfoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecodeInfoAdapter.CustomViewHolder holder, View view, int position) {
-                TextView tag =  view.findViewById(R.id.rec_tag);
+               TextView tag =  view.findViewById(R.id.rec_tag);
                 String tv = tag.getText().toString();
                 tat.setText(tv);
             }
@@ -112,7 +134,7 @@ public class RecodeHealth extends AppCompatActivity {
 
 
 
-        startDate = findViewById(R.id.pwm_start);
+       startDate = findViewById(R.id.pwm_start);
         startDate.setText(pwmStart);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +143,7 @@ public class RecodeHealth extends AppCompatActivity {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeHealth.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(InfoPwmilk.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
@@ -134,8 +156,40 @@ public class RecodeHealth extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
+        endDate = findViewById(R.id.pwm_end);
+        endDate.setText(pwmEnd);
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(InfoPwmilk.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                        // EditText에 출력할 형식 지정
+                        endDate.setText(" " + selectedHour + " : " + selectedMinute + " " );
+                        endt = (selectedHour*60)+selectedMinute;
+                        tthou=Integer.toString((endt-strt)/60);
+                        ttmin=Integer.toString((endt-strt)%60);
+                        if((endt-strt)>=60){
+                            tSum.setText(tthou+ "시간" + ttmin +"분");
+                        }else {
+                            tSum.setText(ttmin + "분");
+                        }
+                    }
+                }, hour, minute, true); // true의 경우 24시간 형식의 TimePicker 출현
+                mTimePicker.setTitle("완료 시간");
+                mTimePicker.show();
+            }
+        });
+
+
 
     }
+
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -171,4 +225,7 @@ public class RecodeHealth extends AppCompatActivity {
         builder.show();
     }
 
+
+
 }
+
