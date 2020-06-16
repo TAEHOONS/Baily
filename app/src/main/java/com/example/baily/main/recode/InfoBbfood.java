@@ -70,25 +70,13 @@ public class InfoBbfood extends AppCompatActivity {
         memo= edmemo.getText().toString();
 
 
-        Intent intent = getIntent();
-        final TextView tat = findViewById(R.id.pwm_tv);
-        test=intent.getStringExtra("tag");
-        if(test != null){
-            tat.setText(test);
-        }
 
         end = findViewById(R.id.rt_img_closeBtn);
-        back = findViewById(R.id.rt_img_checkBtn);
+
 
 
         tSum = findViewById(R.id.pwm_sum);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override

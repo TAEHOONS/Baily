@@ -54,17 +54,12 @@ public class InfoBath extends AppCompatActivity {
 
 
         end = findViewById(R.id.rt_img_closeBtn);
-        back = findViewById(R.id.rt_img_checkBtn);
+
 
 
         tSum = findViewById(R.id.pwm_sum);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override

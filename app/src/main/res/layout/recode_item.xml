@@ -22,7 +22,7 @@
         android:id="@+id/rec_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="8dp"
         android:gravity="center"
         android:text="내용"
         android:textSize="16dp"
@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/rec_value"
         app:layout_constraintEnd_toStartOf="@+id/rec_info"
+        app:layout_constraintHorizontal_bias="0.122"
         app:layout_constraintStart_toEndOf="@+id/rec_value" />
 
     <ImageView
