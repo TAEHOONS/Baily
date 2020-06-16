@@ -28,6 +28,7 @@ import com.example.baily.R;
 import com.example.baily.caldate;
 import com.example.baily.main.home.CardItem;
 import com.example.baily.main.home.MyRecyclerAdapter;
+import com.example.baily.main.recode.RecodeAdapter;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -127,7 +128,9 @@ public class FragDiaryAlbum extends Fragment {
         beforeMonthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                diaryDataList.clear();
+                diaryRecyclerView.setAdapter(null);
+
                 dCal.add(Calendar.MONTH, -1);
                 DiaryDate = dFormat.format(dCal.getTime());
                 diaryDateTxt.setText(DiaryDate);
@@ -140,6 +143,9 @@ public class FragDiaryAlbum extends Fragment {
         afterMonthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                diaryDataList.clear();
+                diaryRecyclerView.setAdapter(null);
+
 
                 dCal.add(Calendar.MONTH, +1);
                 DiaryDate = dFormat.format(dCal.getTime());
@@ -169,6 +175,7 @@ public class FragDiaryAlbum extends Fragment {
                         diaryDataList.clear();
                         searchEdit= (EditText) dialogView.findViewById(R.id.edit_search);//검색어입력
                         searchStr = searchEdit.getText().toString();
+                        Log.d("searchDia", "  get TExt = " + searchStr);
                         showSearchResult(searchStr);
                         diaryDateTxt.setText("검색어 // "+searchStr);
                         beforeMonthBtn.setVisibility(View.GONE);//이전버튼 숨기기
@@ -195,15 +202,6 @@ public class FragDiaryAlbum extends Fragment {
                 OwnData();
             }
         });
-//
-//        Bundle bundle = getArguments();
-//        //번들 안의 텍스트 불러오기
-//
-//        if (bundle != null) {
-//            //recodeDate = bundle.getString("RecodeDate");
-//            diaryAdd = bundle.getString("DiaryAdd");
-//            // addImg = bundle.getInt("AddImg");
-//        }
 
         return view;
     }
@@ -219,6 +217,8 @@ public class FragDiaryAlbum extends Fragment {
     }
 
     private void showSearchResult(String searchStr){
+        diaryDataList.clear();
+        diaryRecyclerView.setAdapter(null);
 
         String[] searchArr = searchStr.split(" ");
         if(searchStr.equals("")) return;
@@ -234,15 +234,19 @@ public class FragDiaryAlbum extends Fragment {
             for(int i=0;i<searchArr.length;i++){
                 if(name.toLowerCase().contains(searchArr[i].toLowerCase())||memo.toLowerCase().contains(searchArr[i].toLowerCase())){
                     istarget = true;
+                    Log.d("searchDia", "  istarget = " + istarget);
                     break;
                 }
             }
             if(istarget){
-                DiaryItem eventData = new DiaryItem(name,date, memo);
-                diaryDataList.add(eventData);
+                Log.d("searchDia", "  Start istarget title="+name+" , memo = "+memo);
+
+                diaryInsert(name,date,memo);
+
                 Log.d("event is ",name);
             }
         }
+        diaryDataList.sort(dateComparator);//날짜순으로 정렬
     }
     //날짜 순으로
     public static Comparator<DiaryItem> dateComparator = new Comparator<DiaryItem>() {
@@ -280,7 +284,7 @@ public class FragDiaryAlbum extends Fragment {
 
             diaryInsert(name, date, memo);
         }
-        //diaryDataList.sort(dateComparator);//날짜순으로 정렬
+        diaryDataList.sort(dateComparator);//날짜순으로 정렬
     }
 
 
