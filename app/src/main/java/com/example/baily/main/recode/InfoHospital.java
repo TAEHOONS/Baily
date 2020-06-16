@@ -23,7 +23,7 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodeHealth extends AppCompatActivity {
+public class InfoHospital extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
@@ -38,8 +38,9 @@ public class RecodeHealth extends AppCompatActivity {
     ArrayList<RecodeInfoItem> mDataList;
     RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
-    EditText startDate, endDate, edmemo;
-    TextView tSum, eatpwm;
+    EditText edmemo;
+    TextView tSum, eatpwm , startDate, endDate;
+
     int strt,endt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class RecodeHealth extends AppCompatActivity {
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodeHealth.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoHospital.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
@@ -113,25 +114,22 @@ public class RecodeHealth extends AppCompatActivity {
 
 
         startDate = findViewById(R.id.pwm_start);
-        startDate.setText(pwmStart);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodeHealth.this, new TimePickerDialog.OnTimeSetListener() {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalender.get(Calendar.MINUTE);
+                TimePickerDialog dialog;
+                dialog = new TimePickerDialog(InfoHospital.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                        // EditText에 출력할 형식 지정
-                        startDate.setText(" " + selectedHour + " : " + selectedMinute + " " );
-                        strt = (selectedHour*60)+selectedMinute;
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        strt = (hourOfDay*60)+minute;
                     }
-                }, hour, minute, true); // true의 경우 24시간 형식의 TimePicker 출현
-                mTimePicker.setTitle("시작 시간");
-                mTimePicker.show();
+                }, hour, minute, false);
+                dialog.setTitle("시작 시간");
+                dialog.show();
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.baily.main.recode;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,16 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     Context context;
     ArrayList<RecodeData> items = new ArrayList<RecodeData>();
     ArrayList<RecodeData> filteredList;
-
+    int INFO_NURSING = 1;
+    int INFO_BBFOOD = 2;
+    int INFO_BOWEL = 3;
+    int INFO_BATH = 4;
+    int INFO_DRUG = 5;
+    int INFO_HOSP = 6;
+    int INFO_PLAY = 7;
+    int INFO_PWMILK = 8;
+    int INFO_SLEEP = 9;
+    int INFO_TEMP = 10;
     //클릭이벤트처리 관련 사용자 정의(이 코드없으면 그냥 리사이클러뷰 구조)//////////////////////////////////////////////////////////////////////////
     OnItemClickListener listener; //참고로 OnItemClickListener는 기존에 있는것과 동일한 이름인데 그냥 같은 이름으로 내가 정의를 했다. (리스트뷰에서는 이게 자동구현되있어서 OnItemClickListener를 구현안하고 호출해서 클릭시 이벤트를 처리할 수 있음)
 
@@ -32,7 +42,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
 
 
 
-    public  RecodeAdapter(Context context){
+    public RecodeAdapter(Context context){
         this.context =  context;
     }
 
@@ -114,55 +124,55 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
-             if(val.equals("분유")){
-                 Intent intent = new Intent(context, RecodePwmilk.class);
-                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                 context.startActivity(intent);
-            }
-                    if(val.equals("수유")){
-                        Intent intent = new Intent(context,RecodeNursing.class);
+                    if(val.equals("●분유")){
+                        Intent intent = new Intent(context, InfoPwmilk.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);                    }
+                    if(val.equals("●모유")){
+                        Intent intent = new Intent(context, InfoNursing.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("이유식")){
-                        Intent intent = new Intent(context,RecodeBbfood.class);
+                    if(val.equals("●이유식")){
+                        Intent intent = new Intent(context, InfoBbfood.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("수면")){
-                        Intent intent = new Intent(context,RecodeSleep.class);
+                    if(val.equals("●잠")){
+                        Intent intent = new Intent(context, infoSleep.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("배변")){
-                        Intent intent = new Intent(context, RecodeBowel.class);
+                    if(val.equals("●기저귀")){
+                        Intent intent = new Intent(context, InfoBowel.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("투약")){
-                        Intent intent = new Intent(context,RecodeDosage.class);
+                    if(val.equals("●약")){
+                        Intent intent = new Intent(context, InfoDrug.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("온도체크")){
-                        Intent intent = new Intent(context,RecodeTemp.class);
+                    if(val.equals("●온도")){
+                        Intent intent = new Intent(context, InfoTemp.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("목욕")){
-                        Intent intent = new Intent(context, RecodeBath.class);
+                    if(val.equals("●목욕")){
+                        Intent intent = new Intent(context, InfoBath.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("입원")){
-                        Intent intent = new Intent(context, RecodeHealth.class);
+                    if(val.equals("●병원")){
+                        Intent intent = new Intent(context, InfoHospital.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
-                    if(val.equals("놀이")){
-                        Intent intent = new Intent(context, RecodePlay.class);
+                    if(val.equals("●놀이")){
+                        Intent intent = new Intent(context, InfoPlay.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
+
                     }
                 }
             });
@@ -172,8 +182,42 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
         //setItem 메소드는 SingerItem 객체를 전달받아 뷰홀더 안에 있는 뷰에 데이터를 설정하는 역할을 합니다.
         public void setItem(RecodeData item) {
             textView.setText(item.getTime());
-            textView2.setText(item.getValue());
+            textView2.setText("●"+item.getValue());
+            switch (item.getValue()){
+                case "모유" :
+                    textView2.setTextColor(Color.parseColor("#C55A11"));
+                    break;
+                case "이유식" :
+                    textView2.setTextColor(Color.parseColor("#FFA9A9"));
+                    break;
+                case "잠" :
+                    textView2.setTextColor(Color.parseColor("#5781BF"));
+                    break;
+                case "분유" :
+                    textView2.setTextColor(Color.parseColor("#F4B184"));
+                    break;
+                case "기저귀" :
+                    textView2.setTextColor(Color.parseColor("#BF9000"));
+                    break;
+                case "약" :
+                    textView2.setTextColor(Color.parseColor("#A9D18E"));
+                    break;
+                case "온도" :
+                    textView2.setTextColor(Color.parseColor("#2E75B6"));
+                    break;
+                case "목욕" :
+                    textView2.setTextColor(Color.parseColor("#FFE699"));
+                    break;
+                case "병원" :
+                    textView2.setTextColor(Color.parseColor("#00B050"));
+                    break;
+                case "놀이" :
+                    textView2.setTextColor(Color.parseColor("#F4B183"));
+                    break;
+
+            }
             imageView.setImageResource(R.drawable.right);
+            textView3.setText(item.getDal()+"임");
         }
 
 

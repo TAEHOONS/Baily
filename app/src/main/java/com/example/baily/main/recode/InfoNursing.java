@@ -23,13 +23,13 @@ import com.example.baily.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RecodePwmilk extends AppCompatActivity {
+public class InfoNursing extends AppCompatActivity {
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
-private SeekBar mSeekBar;
-private int mSeekBarVal = 0;
+    private SeekBar mSeekBar;
+    private int mSeekBarVal = 0;
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -38,15 +38,14 @@ private int mSeekBarVal = 0;
     ArrayList<RecodeInfoItem> mDataList;
     RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
-     EditText startDate, endDate, edmemo;
-     TextView tSum, eatpwm;
-     int strt,endt;
-
-
+    EditText  edmemo;
+    TextView tSum, eatpwm , startDate, endDate,
+    eatleft,eatright;
+    int strt,endt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recode_pwmilk);
+        setContentView(R.layout.activity_recode_nursing);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -55,19 +54,40 @@ private int mSeekBarVal = 0;
         horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
 
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(RecodePwmilk.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(InfoNursing.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
 
         mSeekBar=findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
-        eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
+        eatleft = findViewById(R.id.left_val);
+        eatleft.setText(String.valueOf(mSeekBarVal)+"ml");
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal)+"ml");
+                eatleft.setText(String.valueOf(mSeekBarVal)+"ml");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSeekBar=findViewById(R.id.nurs_right_bar);
+        eatright = findViewById(R.id.right_val);
+        eatright.setText(String.valueOf(mSeekBarVal)+"ml");
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSeekBarVal = progress;
+                eatright.setText(String.valueOf(mSeekBarVal)+"ml");
             }
 
             @Override
@@ -81,15 +101,15 @@ private int mSeekBarVal = 0;
             }
         });
         edmemo=findViewById(R.id.pwm_memo);
-memo= edmemo.getText().toString();
+        memo= edmemo.getText().toString();
         mDataList = new ArrayList<>();
 
         Intent intent = getIntent();
-final TextView tat = findViewById(R.id.pwm_tv);
-test=intent.getStringExtra("tag");
-if(test != null){
-    tat.setText(test);
-}
+        final TextView tat = findViewById(R.id.pwm_tv);
+        test=intent.getStringExtra("tag");
+        if(test != null){
+            tat.setText(test);
+        }
 
         mAdapter = new RecodeInfoAdapter( mDataList);
         recyclerView.setAdapter(mAdapter);
@@ -126,7 +146,7 @@ if(test != null){
         adapter.setOnItemClickListener(new RecodeInfoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecodeInfoAdapter.CustomViewHolder holder, View view, int position) {
-               TextView tag =  view.findViewById(R.id.rec_tag);
+                TextView tag =  view.findViewById(R.id.rec_tag);
                 String tv = tag.getText().toString();
                 tat.setText(tv);
             }
@@ -134,44 +154,39 @@ if(test != null){
 
 
 
-       startDate = findViewById(R.id.pwm_start);
-        startDate.setText(pwmStart);
+
+        startDate = findViewById(R.id.pwm_start);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodePwmilk.this, new TimePickerDialog.OnTimeSetListener() {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalender.get(Calendar.MINUTE);
+                TimePickerDialog dialog;
+                dialog = new TimePickerDialog(InfoNursing.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                        // EditText에 출력할 형식 지정
-                        startDate.setText(" " + selectedHour + " : " + selectedMinute + " " );
-                        strt = (selectedHour*60)+selectedMinute;
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        strt = (hourOfDay*60)+minute;
                     }
-                }, hour, minute, true); // true의 경우 24시간 형식의 TimePicker 출현
-                mTimePicker.setTitle("시작 시간");
-                mTimePicker.show();
+                }, hour, minute, false);
+                dialog.setTitle("시작 시간");
+                dialog.show();
             }
         });
         endDate = findViewById(R.id.pwm_end);
-        endDate.setText(pwmEnd);
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(RecodePwmilk.this, new TimePickerDialog.OnTimeSetListener() {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalender.get(Calendar.MINUTE);
+                TimePickerDialog dialog;
+                dialog = new TimePickerDialog(InfoNursing.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                        // EditText에 출력할 형식 지정
-                        endDate.setText(" " + selectedHour + " : " + selectedMinute + " " );
-                        endt = (selectedHour*60)+selectedMinute;
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        endDate.setText(hourOfDay + "시 " + minute + "분");
+                        endt = (hourOfDay*60)+minute;
                         tthou=Integer.toString((endt-strt)/60);
                         ttmin=Integer.toString((endt-strt)%60);
                         if((endt-strt)>=60){
@@ -180,13 +195,11 @@ if(test != null){
                             tSum.setText(ttmin + "분");
                         }
                     }
-                }, hour, minute, true); // true의 경우 24시간 형식의 TimePicker 출현
-                mTimePicker.setTitle("완료 시간");
-                mTimePicker.show();
+                }, hour, minute, false);
+                dialog.setTitle("종료 시간");
+                dialog.show();
             }
         });
-
-
 
     }
 
@@ -225,7 +238,4 @@ if(test != null){
         builder.show();
     }
 
-
-
 }
-

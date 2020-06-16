@@ -84,7 +84,7 @@
             android:layout_height="50dp"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/pwm_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 app:layout_constraintVertical_bias="0.37"
                 app:srcCompat="@drawable/recordbar" />
 
-            <EditText
+            <TextView
                 android:id="@+id/pwm_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
