@@ -55,11 +55,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:padding="4dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_kg" />
 
@@ -72,8 +73,8 @@
                 android:text="몸무게"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_cm" />
 
@@ -86,8 +87,8 @@
                 android:text="신장"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_head1" />
 
@@ -99,8 +100,8 @@
                 android:id="@+id/h_girthInfoTxt"
                 android:text="머리둘레"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_temperature2" />
 

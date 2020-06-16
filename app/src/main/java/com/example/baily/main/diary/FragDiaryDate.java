@@ -249,9 +249,6 @@ public class FragDiaryDate extends Fragment {
             String dateString = simpleDateFormat.format(selectedDate);
             intent.putExtra("selectedDate", dateString);
             getActivity().startActivityForResult(intent, ADD_EVENT);
-        } else if (id == R.id.action_search) {
-            Intent intent = new Intent(getActivity(), SearchEvent.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -45,15 +45,15 @@ public class ChildFragWeek extends Fragment {
 
     ImageView weekBeforeBtn, weekAfterBtn;
     String weekStartDate, wToday;
-    Calendar wCal;
+    Calendar wCal,cal;
     Date date = new Date();
     SimpleDateFormat sFormat, wSimple, readChartD;
-    int maxDay, bMaxDay, aMaxDay;//마지막일
+    int maxDay, bMaxDay, aMaxDay,mMinDay,mMaxDay;//마지막일
 
     int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd, dbVersion = 3;
     String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
     String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
-
+    float[] weekArrKg, weekArrCm, weekArrHead, weekArrFever;
     LineData wKgData, wCmData, wHeadData, wFeverData;
 
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
@@ -84,17 +84,24 @@ public class ChildFragWeek extends Fragment {
         //차트구간을 위해 , N주차
         wSimple = new SimpleDateFormat("W");
         sFormat = new SimpleDateFormat("yy년 MM월");
+        readChartD = new SimpleDateFormat("yyyy년 MM월 dd일");
         wToday = sFormat.format(date); //이번달
 
         wCal = Calendar.getInstance();
+        cal = Calendar.getInstance();
+        cal.setTime(date);
+        mMaxDay = cal.getActualMaximum(Calendar.DATE);
+        Log.d("주간 학습"," maxDay = "+mMaxDay);
+        wCal.set(wCal.get(Calendar.YEAR),Calendar.DAY_OF_MONTH,wCal.getActualMinimum(Calendar.DATE));
 
         usingDB(container);
 
-        SearchDay = new String[5];
-        mArrKg = new String[5];
-        mArrCm = new String[5];
-        mArrHead = new String[5];
-        mArrFever = new String[5];
+        SearchDay = new String[31];
+        mArrKg = new String[31];
+        mArrCm = new String[31];
+        mArrHead = new String[31];
+        mArrFever = new String[31];
+        weekString();
 
         wCal.setTime(date);
         weekStartDate = sFormat.format(wCal.getTime());
@@ -102,7 +109,7 @@ public class ChildFragWeek extends Fragment {
 
         btnCk = false;
         abBtn = false;
-
+        getDBdata();
         //해당 달의 마지막 날
         maxDay = wCal.getActualMaximum(Calendar.DATE);
 
@@ -144,11 +151,15 @@ public class ChildFragWeek extends Fragment {
                 weekDateTxt.setText(weekStartDate);
 
                 bMaxDay = wCal.getActualMaximum(Calendar.DATE); //현재 달의 마지막날
+                mMaxDay=bMaxDay;
+
+
                 Log.d("이전 달의 마지막날", "이번달의 마지막 날은?==============" + bMaxDay);
 
+                weekString();
                 btnCk = true;
                 abBtn = false;
-
+                getDBdata();
                 SetGraphData();
                 //  중간 업데이트
                 MidDataSet();
@@ -179,11 +190,14 @@ public class ChildFragWeek extends Fragment {
                     weekStartDate = sFormat.format(wCal.getTime());
                     weekDateTxt.setText(weekStartDate);
                     aMaxDay = wCal.getActualMaximum(Calendar.DATE); //현재 달의 마지막날
+                    mMaxDay=aMaxDay;
                     Log.d("이후 달의 마지막날", "이번달의 마지막 날은?==============" + aMaxDay);
 
+
+                    weekString();
                     btnCk = true;
                     abBtn = true;
-
+                    getDBdata();
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
@@ -276,26 +290,6 @@ public class ChildFragWeek extends Fragment {
         line.setCircleColor(color);
     }
 
-    // 그래프 데이터 넣기용
-    private void SetGraphData() {
-        // 그래프 평균값 글자넣기
-        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
-        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
-        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
-        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
-
-        kgValues.clear();
-        cmValues.clear();
-        headValues.clear();
-        feverValues.clear();
-
-        XarWeek = getDate();
-        weekAvgWeight = dataStack(wKgSum, kgValues, weekAvgWeight);
-        weekAvgHeight = dataStack(wCmSum, cmValues, weekAvgHeight);
-        weekAvgHead = dataStack(wHeadSum, headValues, weekAvgHead);
-        weekAvgFever = dataStack(wFeverSum, feverValues, weekAvgFever);
-    }
-
 
     private float dataStack(float sum, ArrayList<Entry> values, float avg) {
         int count=0;
@@ -329,6 +323,46 @@ public class ChildFragWeek extends Fragment {
         avg=sum/count;
         return avg;
     }
+
+    // 그래프 데이터 넣기용
+    private void SetGraphData() {
+        // 그래프 평균값 글자넣기
+        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
+        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
+        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
+        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
+
+        kgValues.clear();
+        cmValues.clear();
+        headValues.clear();
+        feverValues.clear();
+
+        XarWeek = getDate();
+        weekAvgWeight = dataStack(wKgSum, kgValues, weekAvgWeight);
+        weekAvgHeight = dataStack(wCmSum, cmValues, weekAvgHeight);
+        weekAvgHead = dataStack(wHeadSum, headValues, weekAvgHead);
+        weekAvgFever = dataStack(wFeverSum, feverValues, weekAvgFever);
+    }
+
+
+//    private float dataStack(int start, String[] end, float sum, ArrayList<Entry> values, float avg) {
+//
+//        int count = 0;
+//        float val;
+//        for (int i = 0; i <= 6; i++) {
+//            if (end[i]!=null&&end[i]!="0") {
+//                val = Float.parseFloat(end[i].trim());
+//                sum = sum + val;
+//                values.add(new Entry(i, val));
+//                count += 1;
+//            }
+//        }
+//        avg = 0;
+//
+//
+//        avg = sum / count;
+//        return avg;
+//    }
 
     // chart X좌표 글자 넣기
     public ArrayList<String> getDate() {
@@ -367,7 +401,8 @@ public class ChildFragWeek extends Fragment {
     private void getDBdata() {
         Log.d("searchDay", "start ");
         // 현재 사용 아기데이터
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i < mMaxDay; i++) {
+            Log.d("searchWeek", "SearchDay "+SearchDay[i]);
             String sql = "select * from growlog where name='" + mBabyname + "'AND date='" + SearchDay[i] + "'"; // 검색용
             Cursor c = db.rawQuery(sql, null);
             while (c.moveToNext()) {
@@ -376,21 +411,34 @@ public class ChildFragWeek extends Fragment {
                 mArrCm[i] = c.getString(3);
                 mArrHead[i] = c.getString(4);
                 mArrFever[i] = c.getString(5);
-                Log.d("searchDay", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
+                Log.d("searchWeek", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
         }
-        // 입력 안된 null 들은 0 으로 변환
-        for (int i = 0; i <= 4; i++) {
-            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
-                mArrKg[i] = "0";
-            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
-                mArrCm[i] = "0";
-            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
-                mArrHead[i] = "0";
-            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
-                mArrFever[i] = "0";
+
+    }
+
+    private void weekAvg(){
+
+    }
+
+
+    public void weekString() {
+        wCal.set(wCal.get(Calendar.YEAR),wCal.get(Calendar.MONTH),wCal.getActualMinimum(Calendar.DATE));
+
+        Log.d("주간 학습"," 이번달 = "+readChartD.format((wCal.getTime())));
+        SearchDay[0] = readChartD.format((wCal.getTime()));
+        Log.d("주간 학습"," SearchDay = "+SearchDay[0]);
+        for (int i = 0; i < mMaxDay-1; i++) {
+            wCal.add(Calendar.DATE, +1);
+
+            SearchDay[i + 1] = readChartD.format((wCal.getTime()));
+            Log.d("주간 학습"," SearchDay = "+SearchDay[i + 1]);
+
         }
+
+        Log.d("주간 학습"," maxDay = "+mMaxDay);
+
     }
 
     private LineDataSet AvgData(float avgData){

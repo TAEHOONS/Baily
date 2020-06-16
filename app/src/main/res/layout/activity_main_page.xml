@@ -24,24 +24,38 @@
                 android:src="@drawable/logo"
                 android:layout_weight="2"/>
             // 상단 중앙 아기의 탄생일부터의 디데이
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="7">
+                android:layout_weight="7"
+                android:gravity="center">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.25"/>
+                    app:layout_constraintGuide_percent="0.33" />
+
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.66"/>
+                    app:layout_constraintGuide_percent="0.66" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_baseline_today_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/mft_dDayTxt"
+                    app:layout_constraintStart_toStartOf="@+id/guideline3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.482" />
 
                 <TextView
                     android:id="@+id/mft_dDayTxt"
@@ -49,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:text="D-day"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#EE4545"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline4"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
