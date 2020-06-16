@@ -1,7 +1,10 @@
 package com.example.baily.main.standard;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,8 +30,19 @@ public class ChildFragHead  extends Fragment {
     private View view;
     private LineChart headCart;
 
+    String dbName = "user.db";
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    // mId= 현재 사용 id, baby
+    private String mId, mBabyname;
+    private DBlink helper;
+    private SQLiteDatabase db;
+    String k;
+    float n;
+    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
     ArrayList<Entry> valuesBoy,valuesGirl,valuesBaby;
     float[] standardHeadBoy,standardHeadGirl;
+    float[] standardHeadBaby=new float[72];
 
     public static ChildFragHead newInstance(){
         ChildFragHead childFragHead = new ChildFragHead();
@@ -40,6 +55,9 @@ public class ChildFragHead  extends Fragment {
         view = inflater.inflate(R.layout.standard_child_frag_head,container,false);
 
         headCart = view.findViewById(R.id.headLineCart);
+
+        usingDB(container);
+        loadgrowLog();
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
@@ -54,11 +72,7 @@ public class ChildFragHead  extends Fragment {
         setGirlList();
 
         // 내 아이 임시 머리둘레 데이터
-        float[] standardHeadBaby = new float[73];
-        standardHeadBaby[0] = (float)40.88;
-        standardHeadBaby[1] = (float)42.55;
-        standardHeadBaby[2] = (float)44.25;
-        standardHeadBaby[3] = (float)47.53;
+
 
 
 
@@ -70,8 +84,9 @@ public class ChildFragHead  extends Fragment {
             valuesGirl.add(new Entry(i,standardHeadGirl[i]));
         }
         //내애기값넣기
-        for (int i = 0; i < 4; i++) {
-            valuesBaby.add(new Entry(i,standardHeadBaby[i]));
+        for (int j = 0; j < standardHeadBaby.length; j++) {
+            valuesBaby.add(new Entry(j, standardHeadBaby[j]));
+            Log.d("for문", "값: " + standardHeadBaby[j]);
         }
         LineDataSet set1;
         LineDataSet set2;
@@ -81,7 +96,7 @@ public class ChildFragHead  extends Fragment {
         set2 = new LineDataSet(valuesGirl, "여아 머리둘레");
         set3 = new LineDataSet(valuesBaby,"내 아이 머리둘레");
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
         dataSets.add(set1); // add the data sets
         dataSets.add(set2);
         dataSets.add(set3);
@@ -129,6 +144,43 @@ public class ChildFragHead  extends Fragment {
 
 
         return view;
+    }
+    //새로운시도
+    // DB 연결
+    private void usingDB(ViewGroup container) {
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
+
+    // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
+    private void loadgrowLog() {
+
+        String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        int i = 0;
+
+        while (c.moveToNext()) {
+
+            k = c.getString(4);
+            n = Float.parseFloat(k);
+            setBabyList(i, n);
+            i++;
+            Log.d("n값", "loadgrowLog: " + n);
+            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+
+        }
+        Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardHeadBaby[i]);
+
     }
     private void setBoyList(){
         standardHeadBoy = new float[73];
@@ -286,4 +338,9 @@ public class ChildFragHead  extends Fragment {
         standardHeadGirl[71] = (float)50.81;
         standardHeadGirl[72] = (float)50.86;
     }
+    private void setBabyList(int i, float n) {
+        standardHeadBaby[i] = n;
+    }
+
+
 }
