@@ -3,6 +3,7 @@ package com.example.baily.main.diary;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,13 +16,18 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
+import com.example.baily.main.BackPressClose;
 
 public class AddEvent extends Activity {
     String strDate ;
@@ -34,7 +40,7 @@ public class AddEvent extends Activity {
     private SQLiteDatabase db;
     String dbName = "user.db", mId, mBabyname;
     int dbVersion = 3;
-
+    private BackPressClose backPressClose;
 
     Fragment fragDiaryDate;
 
@@ -53,27 +59,26 @@ public class AddEvent extends Activity {
 
         //fragment 생성
         fragDiaryDate = new FragDiaryDate();
-
+        backPressClose=new BackPressClose(this);
         //번들객체 생성
 
 
 
-        EditText eventDate = findViewById(R.id.edit_eventDate);
-        eventDate.setText(strDate);
-        eventDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(AddEvent.this,dateSetListener,selectedYear,selectedMonth-1,selectedDay).show();
-            }
-        });
+        TextView diaryDateTxt = findViewById(R.id.diaryDateTxt);
+        diaryDateTxt.setText(strDate);
 
-        Button confirmBtn = findViewById(R.id.btn_eventAddConfirm);
+        ImageView confirmBtn = findViewById(R.id.btn_eventAddConfirm);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText eventName = findViewById(R.id.edit_eventName);
+                EditText eventDiary = findViewById(R.id.edit_eventMemo);
                 if(eventName.getText().toString().equals("")){
-                    Toast noname = Toast.makeText(getApplicationContext(),"Write Event Name!", Toast.LENGTH_SHORT);
+                    Toast noname = Toast.makeText(getApplicationContext(),"일기 제목을 작성해주세요!", Toast.LENGTH_SHORT);
+                    noname.show();
+                    return;
+                }else if(eventDiary.getText().toString().equals("")){
+                    Toast noname = Toast.makeText(getApplicationContext(),"일기 내용을 작성해주세요!", Toast.LENGTH_SHORT);
                     noname.show();
                     return;
                 }
@@ -81,7 +86,7 @@ public class AddEvent extends Activity {
                 Intent eventIntent = new Intent(AddEvent.this, FragDiaryDate.class);
                 // add eventName
                 eventIntent.putExtra("eventName",eventName.getText().toString());
-               bundle.putString("eventName",eventName.getText().toString());
+                bundle.putString("eventName",eventName.getText().toString());
                 Log.d("name",eventName.getText().toString());
                 //add eventDate
                 eventIntent.putExtra("eventDate",strDate);
@@ -113,8 +118,8 @@ public class AddEvent extends Activity {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             strDate = String.format("%d-%d-%d",year,month+1,dayOfMonth);
-            EditText eventDate = (EditText)findViewById(R.id.edit_eventDate);
-            eventDate.setText(strDate);
+            //EditText eventDate = (EditText)findViewById(R.id.edit_eventDate);
+            //eventDate.setText(strDate);
         }
     };
 
@@ -153,4 +158,8 @@ public class AddEvent extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        backPressClose.onBackPressed();
+    }
 }

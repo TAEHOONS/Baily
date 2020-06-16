@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -56,17 +58,17 @@ public class ShowEventInfo extends Activity {
 
         EditText eventName = findViewById(R.id.edit_eventName);
         eventName.setText(name);
-        final EditText eventDate = findViewById(R.id.edit_eventDate);
+        final TextView eventDate = findViewById(R.id.diaryDateTxt);
         eventDate.setText(date);
         EditText eventMemo = findViewById(R.id.edit_eventMemo);
         eventMemo.setText(memo);
 
-        eventDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(ShowEventInfo.this, dateSetListener, targetYear, targetMonth - 1, targetDay).show();
-            }
-        });
+//        eventDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new DatePickerDialog(ShowEventInfo.this, dateSetListener, targetYear, targetMonth - 1, targetDay).show();
+//            }
+//        });
 
         Button confirmBtn = findViewById(R.id.btn_eventConfirm);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +138,7 @@ public class ShowEventInfo extends Activity {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             strDate = String.format("%d-%d-%d", year, month + 1, dayOfMonth);
-            EditText eventDate = (EditText) findViewById(R.id.edit_eventDate);
+            TextView eventDate = findViewById(R.id.diaryDateTxt);
             eventDate.setText(strDate);
         }
     };

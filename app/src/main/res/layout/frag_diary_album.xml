@@ -24,6 +24,13 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="324dp" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="68dp" />
+
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
@@ -59,16 +66,25 @@
             </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addDiary"
+                android:id="@+id/searchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:clickable="true"
-                android:src="@drawable/ic_baseline_event_note_24"
-                app:backgroundTint="#DD9CDF"
+                android:src="@drawable/ic_round_search_24"
+                app:backgroundTint="#FFABC7"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/d_returnHome"
+                android:src="@drawable/ic_round_home_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
