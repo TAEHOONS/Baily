@@ -1,7 +1,6 @@
 package com.example.baily.main.recode;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,69 +12,53 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class InfoBath extends AppCompatActivity {
-    String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
+    String tthou,ttmin,memo , time  ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
-
+ String stt = null;
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    ArrayList<RecodeInfoItem> mDataList;
-    RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
     EditText  edmemo;
     TextView tSum, eatpwm , startDate, endDate;
     int strt,endt;
+
+    static int RESULT_REMOVE_EVENT = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bath);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
-
-        LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(InfoBath.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-
-        recyclerView.setAdapter(mAdapter);
 
 
         edmemo=findViewById(R.id.pwm_memo);
-        memo= edmemo.getText().toString();
-        mDataList = new ArrayList<>();
 
-        Intent intent = getIntent();
-        final TextView tat = findViewById(R.id.pwm_tv);
-        test=intent.getStringExtra("tag");
-        if(test != null){
-            tat.setText(test);
-        }
 
-        mAdapter = new RecodeInfoAdapter( mDataList);
-        recyclerView.setAdapter(mAdapter);
 
-        end = findViewById(R.id.rt_img_closeBtn);
-        back = findViewById(R.id.rt_img_checkBtn);
-        tagAdd = findViewById(R.id.rt_TV_plus);
+
+
+
+        back = findViewById(R.id.rt_img_closeBtn);
+        Button end = findViewById(R.id.button2);
+        Button delete = findViewById(R.id.button3);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         tSum = findViewById(R.id.pwm_sum);
 
@@ -85,31 +68,23 @@ public class InfoBath extends AppCompatActivity {
                 finish();
             }
         });
+        final Intent intent = getIntent();
+        stt = intent.getStringExtra("str");
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                memo= edmemo.getText().toString();
+                time = tSum.getText().toString();
+                intent.putExtra("str",startDate.getText().toString());
+                intent.putExtra("meme",edmemo.getText().toString());
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
 
-        tagAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Dialog();
-            }
-        });
 
-        RecodeInfoAdapter adapter = new RecodeInfoAdapter(mDataList);
-        adapter.setOnItemClickListener(new RecodeInfoAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecodeInfoAdapter.CustomViewHolder holder, View view, int position) {
-                TextView tag =  view.findViewById(R.id.rec_tag);
-                String tv = tag.getText().toString();
-                tat.setText(tv);
-            }
-        });
 
 
 
@@ -132,6 +107,32 @@ public class InfoBath extends AppCompatActivity {
                 dialog.show();
             }
         });
+        endDate = findViewById(R.id.pwm_end);
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalender.get(Calendar.MINUTE);
+                TimePickerDialog dialog;
+                dialog = new TimePickerDialog(InfoBath.this,new TimePickerDialog.OnTimeSetListener(){
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        endDate.setText(hourOfDay + "시 " + minute + "분");
+                        endt = (hourOfDay*60)+minute;
+                        tthou=Integer.toString((endt-strt)/60);
+                        ttmin=Integer.toString((endt-strt)%60);
+                        if((endt-strt)>=60){
+                            tSum.setText(tthou+ "시간" + ttmin +"분");
+                        }else {
+                            tSum.setText(ttmin + "분");
+                        }
+                    }
+                }, hour, minute, false);
+                dialog.setTitle("종료 시간");
+                dialog.show();
+            }
+        });
 
     }
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
@@ -144,29 +145,5 @@ public class InfoBath extends AppCompatActivity {
             }
         }
     };
-    public void Dialog(){
-        final EditText editTag = new EditText(this);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("퀵 버튼 추가");
-        builder.setMessage("자주 쓰는 단어를 퀵 버튼에 추가해 주세요.");
-        builder.setView(editTag);
-        builder.setPositiveButton("확인",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 4. 사용자가 입력한 내용을 가져와서
-                        String strTag = editTag.getText().toString();
-                        // 5. ArrayList에 추가하고
-                        RecodeInfoItem dict = new RecodeInfoItem(strTag);
-                        mDataList.add(0, dict); //첫번째 줄에 삽입됨
-                        //mArrayList.add(dict); //마지막 줄에 삽입됨
-                        // 6. 어댑터에서 RecyclerView에 반영하도록 합니다.
-                        mAdapter.notifyItemInserted(0);
-                        //RecodeInfoAdapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton("취소", null);
-
-        builder.show();
-    }
 
 }

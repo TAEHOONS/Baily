@@ -2,9 +2,10 @@ package com.example.baily.main.recode;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,17 +26,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragRecode extends Fragment {
 
@@ -63,6 +62,18 @@ public class FragRecode extends Fragment {
     private RecodeSearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
 
+    public static   int INFO_NURSING = 1;
+    public static   int INFO_BBFOOD = 2;
+    public static  int INFO_BOWEL = 3;
+    public static  int INFO_BATH = 4;
+    public static   int INFO_DRUG = 5;
+    public static  int INFO_HOSP = 6;
+    public static  int INFO_PLAY = 7;
+   public static int INFO_PWMILK = 8;
+    public static  int INFO_SLEEP = 9;
+    public static int INFO_TEMP = 10;
+    static int RESULT_REMOVE_EVENT = 101;
+Context context;
 
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
@@ -112,7 +123,7 @@ public class FragRecode extends Fragment {
         return fragRecode;
     }
 
-
+    private int index;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -160,6 +171,8 @@ public class FragRecode extends Fragment {
 
         }
 
+        ArrayList<RecodeData> dataArrayList = new ArrayList<>();
+
 
         recyclerView = v.findViewById(R.id.rec_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false); //레이아웃매니저 생성
@@ -168,7 +181,7 @@ public class FragRecode extends Fragment {
 
 
         recyclerView.setLayoutManager(layoutManager);
-        recodeAdapter = new RecodeAdapter(getActivity().getApplicationContext());
+        recodeAdapter = new RecodeAdapter(dataArrayList,this);
         recyclerView.setAdapter(recodeAdapter);
 
         nurs.setOnClickListener(new View.OnClickListener() {
@@ -387,8 +400,30 @@ public class FragRecode extends Fragment {
 
 
 
+
+
         return v;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+
+        if (requestCode == INFO_BATH) {
+            if (resultCode == RESULT_OK) {
+                String str = data.getStringExtra("str");
+                String dal = data.getStringExtra("meme");
+                arraylist.set(index,str);
+                recodeAdapter.notifyDataSetChanged();
+            }// else if (resultCode == RESULT_REMOVE_EVENT) {
+            //           deleteEvent(data.getExtras());
+            //        }
+        }
+
+    }
+
 
     @Override
     public void onResume() {
@@ -457,7 +492,8 @@ public class FragRecode extends Fragment {
 
 
     private void loadRecode(Boolean mode, String select) {
-        recodeAdapter = new RecodeAdapter(getActivity().getApplicationContext());
+        ArrayList<RecodeData> dataArrayList = new ArrayList<>();
+        recodeAdapter = new RecodeAdapter(dataArrayList,this);
         recyclerView.setAdapter(null);
         Log.d("recodeDBget", "loadRecode Start");
 
@@ -484,6 +520,9 @@ public class FragRecode extends Fragment {
             insertRecode(time, title, subt);
         }
     }
+
+
+
 
 
 }
