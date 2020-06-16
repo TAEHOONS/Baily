@@ -1,7 +1,6 @@
 package com.example.baily.main.recode;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,24 +12,20 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class InfoBath extends AppCompatActivity {
-    String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
+    String tthou,ttmin,memo , time  ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
-
+ String stt = null;
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
@@ -39,6 +34,8 @@ public class InfoBath extends AppCompatActivity {
     EditText  edmemo;
     TextView tSum, eatpwm , startDate, endDate;
     int strt,endt;
+
+    static int RESULT_REMOVE_EVENT = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,23 +44,41 @@ public class InfoBath extends AppCompatActivity {
 
 
         edmemo=findViewById(R.id.pwm_memo);
-        memo= edmemo.getText().toString();
 
 
 
 
 
-        end = findViewById(R.id.rt_img_closeBtn);
 
-
+        back = findViewById(R.id.rt_img_closeBtn);
+        Button end = findViewById(R.id.button2);
+        Button delete = findViewById(R.id.button3);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         tSum = findViewById(R.id.pwm_sum);
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        final Intent intent = getIntent();
+        stt = intent.getStringExtra("str");
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                memo= edmemo.getText().toString();
+                time = tSum.getText().toString();
+                intent.putExtra("str",startDate.getText().toString());
+                intent.putExtra("meme",edmemo.getText().toString());
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });

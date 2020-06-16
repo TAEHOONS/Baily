@@ -51,14 +51,24 @@ public class InfoNursing extends AppCompatActivity {
 
 
 
-
-        end = findViewById(R.id.rt_img_closeBtn);
-
-
+        back = findViewById(R.id.rt_img_closeBtn);
+        Button end = findViewById(R.id.button2);
+        Button delete = findViewById(R.id.button3);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         tSum = findViewById(R.id.pwm_sum);
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
