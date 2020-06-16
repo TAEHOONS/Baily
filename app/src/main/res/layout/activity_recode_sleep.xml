@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="10"
         android:gravity="center"
-        android:background="#84AECD"
+        android:background="#5781BF"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,23 +39,10 @@
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintHorizontal_bias="0.989"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_close" />
-
-            <ImageView
-                android:id="@+id/rt_img_checkBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.957"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.555"
-                app:srcCompat="@drawable/ic_select" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
@@ -63,7 +50,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:gravity="center"
         android:background="#EAEEFA"
         android:orientation="vertical">
@@ -75,137 +62,173 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="15"
-        android:background="#84AECD"
+        android:background="#5781BF"
         android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/pwm_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="시작 시간" />
+            android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="14dp"
+                android:layout_width="39dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.473"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
+                app:layout_constraintVertical_bias="0.089"
+                app:srcCompat="@drawable/ic_more_horiz_24px" />
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.518"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.089"
+                app:srcCompat="@drawable/ic_more_horiz_24px" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="39dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.432"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.089"
+                app:srcCompat="@drawable/ic_chevron_left_24px" />
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.559"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.089"
+                app:srcCompat="@drawable/ic_chevron_right_24px" />
+
+            <ImageView
+                android:id="@+id/record_milk_start_flag"
+                android:layout_width="31dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                app:layout_constraintHorizontal_bias="0.538"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.217"
+                app:srcCompat="@drawable/ic_outlined_flag_24px" />
+
+
+            <ImageView
+                android:id="@+id/record_milk_finish_flag"
+                android:layout_width="31dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.239"
+                app:srcCompat="@drawable/ic_outlined_flag_24px" />
 
             <TextView
                 android:id="@+id/pwm_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="60dp"
+                android:background="@null"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
                 android:inputType="textPersonName"
-                android:text="끝난 시간" />
-        </LinearLayout>
+                android:text="03:11 pm"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/pwm_sum"
+                app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
 
-        <TextView
-            android:id="@+id/pwm_sum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="비교값" />
+            <TextView
+                android:id="@+id/pwm_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="3dp"
+                android:background="@null"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:text="02:11 pm"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/pwm_sum"
+                app:layout_constraintHorizontal_bias="0.028"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
 
+            <TextView
+                android:id="@+id/pwm_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/godo"
+                android:text="60분"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.816" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="#EAEEFA"
-        android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="30"
-        android:background="#84AECD"
+        android:background="#5781BF"
         android:gravity="center"
         android:orientation="vertical">
 
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="0dp">
-
-            <LinearLayout
-                android:id="@+id/pwm_hori"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pwm_tag_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/recode_info_item" />
-
-                <Button
-                    android:id="@+id/rt_TV_plus"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/whitebutton"
-                    android:fontFamily="@font/godo"
-                    android:text="  +  "
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
-
-
-        <ImageView
-            android:layout_width="411dp"
-            android:layout_height="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37"
-            app:srcCompat="@drawable/recordbar" />
 
         <EditText
             android:id="@+id/pwm_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@null"
             android:ems="10"
             android:fontFamily="@font/godo"
-            android:hint="이곳을 터치하여 메모를 입력해주세요"
+            android:hint="  이곳을 터치하여 메모를 입력해주세요"
             android:inputType="textPersonName"
+            android:textColorHint="#000000"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -219,33 +242,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="75"
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="104dp"
+                android:background="@drawable/blue"
+                android:fontFamily="@font/godo"
+                android:text="수정"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="104dp"
+                android:background="@drawable/blue"
+                android:fontFamily="@font/godo"
+                android:text="삭제"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="30"
-        android:background="#84AECD"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/rt_img_carmera"
-            android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:srcCompat="@drawable/camera1" />
-
-    </LinearLayout>
-
 
 
 </LinearLayout>

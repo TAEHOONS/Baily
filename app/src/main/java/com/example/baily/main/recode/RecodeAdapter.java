@@ -1,5 +1,6 @@
 package com.example.baily.main.recode;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -124,6 +125,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
+
                     if(val.equals("●분유")){
                         Intent intent = new Intent(context, InfoPwmilk.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

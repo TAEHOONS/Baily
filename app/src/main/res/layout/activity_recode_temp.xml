@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="10"
         android:gravity="center"
-        android:background="#84AECD"
+        android:background="#2E75B6"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,23 +39,11 @@
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintHorizontal_bias="0.991"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_close" />
-
-            <ImageView
-                android:id="@+id/rt_img_checkBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.957"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.555"
-                app:srcCompat="@drawable/ic_select" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
@@ -63,74 +51,64 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:gravity="center"
         android:background="#EAEEFA"
         android:orientation="vertical">
     </LinearLayout>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
-        android:background="#84AECD"
+        android:layout_weight="20"
+        android:background="#2E75B6"
         android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/pwm_start"
+                android:id="@+id/rt_hospital_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="시작 시간" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:fontFamily="@font/godo"
+                android:text="07:00 pm"
+                android:textColor="#000000"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/recordbar" />
+                app:layout_constraintVertical_bias="0.222"></TextView>
 
             <TextView
-                android:id="@+id/pwm_end"
+                android:id="@+id/rt_hospital_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="끝난 시간" />
-        </LinearLayout>
+                android:fontFamily="@font/godo"
+                android:text="6월 2일"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rt_hospital_time"
+                app:layout_constraintVertical_bias="0.466" />
 
-        <TextView
-            android:id="@+id/pwm_sum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="비교값" />
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+
+
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
@@ -140,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="30"
-        android:background="#84AECD"
+        android:background="#2E75B6"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -180,7 +158,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
@@ -190,54 +168,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="30"
-        android:background="#84AECD"
+        android:background="#2E75B6"
         android:gravity="center"
         android:orientation="vertical">
 
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="0dp">
-
-            <LinearLayout
-                android:id="@+id/pwm_hori"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pwm_tag_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/recode_info_item" />
-
-                <Button
-                    android:id="@+id/rt_TV_plus"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/whitebutton"
-                    android:fontFamily="@font/godo"
-                    android:text="  +  "
-                    android:textColor="#000000"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
 
 
-        <ImageView
-            android:layout_width="411dp"
-            android:layout_height="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37"
-            app:srcCompat="@drawable/recordbar" />
 
         <EditText
             android:id="@+id/pwm_memo"
@@ -245,7 +182,9 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:fontFamily="@font/godo"
-            android:hint="이곳을 터치하여 메모를 입력해주세요"
+            android:hint="  이곳을 터치하여 메모를 입력해주세요"
+            android:textColorHint="#000000"
+            android:background="@null"
             android:inputType="textPersonName"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -260,32 +199,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="35"
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="104dp"
+                android:background="@drawable/blue"
+                android:fontFamily="@font/godo"
+                android:text="수정"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="104dp"
+                android:background="@drawable/blue"
+                android:fontFamily="@font/godo"
+                android:text="삭제"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="30"
-        android:background="#84AECD"
-        android:gravity="center"
-        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/rt_img_carmera"
-            android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
 
-            app:srcCompat="@drawable/camera1" />
-
-    </LinearLayout>
 
 
 
