@@ -227,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         // 최초 실행시 동작
         if (checkFirst != 1) {
             values.put("_id", 1);
-            //values.put("diaryset", 0);
             db.insert("thisusing", null, values);
             Log.d("사용 아이디", "DBcopy: insert 동작");
         } else {
