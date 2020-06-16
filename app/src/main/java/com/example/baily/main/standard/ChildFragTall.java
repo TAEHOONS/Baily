@@ -1,7 +1,10 @@
 package com.example.baily.main.standard;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -24,9 +28,20 @@ import java.util.ArrayList;
 public class ChildFragTall extends Fragment {
     private View view;
     private LineChart tallCart;
+    String dbName = "user.db";
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    // mId= 현재 사용 id, baby
+    private String mId, mBabyname;
+    private DBlink helper;
+    private SQLiteDatabase db;
+    String k;
+    float n;
+   ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
-    ArrayList<Entry> valuesBoy,valuesGirl,valuesBaby;
-    float[] standardTallBoy,standardTallGirl;
+    ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
+    float[] standardTallBoy, standardTallGirl;
+    float[] standardTallBaby=new float[72];
+
 
     public static ChildFragTall newInstance(){
         ChildFragTall childFragTall = new ChildFragTall();
@@ -40,9 +55,13 @@ public class ChildFragTall extends Fragment {
 
         tallCart = view.findViewById(R.id.tallLineCart);
 
+        usingDB(container);
+        loadgrowLog();
+
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
         valuesBaby = new ArrayList<>();
+
 
 
         //남아 표준 그래프(키) 배열 값 삽입
@@ -51,12 +70,6 @@ public class ChildFragTall extends Fragment {
         //여아 표준 그래프(키) 배열 값 삽입
         setGirlList();
 
-        // 내 아이 임시 데이터
-        float[] standardTallBaby = new float[73];
-        standardTallBaby[0] = (float)55.55;
-        standardTallBaby[1] = (float)56.69;
-        standardTallBaby[2] = (float)59.07;
-        standardTallBaby[3] = (float)63.80;
 
         //그래프에 값 넣기
         for (int i = 0; i < 73; i++) {
@@ -65,10 +78,11 @@ public class ChildFragTall extends Fragment {
         for (int i = 0; i < 73; i++) {
             valuesGirl.add(new Entry(i,standardTallGirl[i]));
         }
-        for (int i = 0; i < 4; i++) {
-            valuesBaby.add(new Entry(i,standardTallBaby[i]));
+        //내애기값넣기
+        for (int j = 0; j < standardTallBaby.length; j++) {
+            valuesBaby.add(new Entry(j, standardTallBaby[j]));
+            Log.d("for문", "값: " + standardTallBaby[j]);
         }
-
         LineDataSet set1;
         LineDataSet set2;
         LineDataSet set3;
@@ -77,7 +91,7 @@ public class ChildFragTall extends Fragment {
         set2 = new LineDataSet(valuesGirl, "여아 신장");
         set3 = new LineDataSet(valuesBaby,"내 아이 신장");
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
         dataSets.add(set1); // add the data sets
         dataSets.add(set2);
         dataSets.add(set3);
@@ -123,6 +137,43 @@ public class ChildFragTall extends Fragment {
         tallCart.setData(data3);
 
         return view;
+    }
+    //새로운시도
+    // DB 연결
+    private void usingDB(ViewGroup container) {
+        helper = new DBlink(container.getContext(), dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+
+    }
+
+    // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
+    private void loadgrowLog() {
+
+        String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        int i = 0;
+
+        while (c.moveToNext()) {
+
+            k = c.getString(3);
+            n = Float.parseFloat(k);
+            setBabyList(i, n);
+            i++;
+            Log.d("n값", "loadgrowLog: " + n);
+            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+
+        }
+        Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardTallBaby[i]);
+
     }
     private void setBoyList(){
         standardTallBoy = new float[73];
@@ -281,5 +332,8 @@ public class ChildFragTall extends Fragment {
         standardTallGirl[70] = (float)113.67;
         standardTallGirl[71] = (float)114.20;
         standardTallGirl[72] = (float)114.73;
+    }
+    private void setBabyList(int i, float n) {
+        standardTallBaby[i] = n;
     }
 }

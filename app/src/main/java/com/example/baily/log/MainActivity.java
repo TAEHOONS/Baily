@@ -224,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         // 최초 실행시 동작
         if (checkFirst != 1) {
             values.put("_id", 1);
