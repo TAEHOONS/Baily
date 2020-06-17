@@ -165,11 +165,16 @@ public class ChildFragTall extends Fragment {
         while (c.moveToNext()) {
 
             k = c.getString(3);
-            n = Float.parseFloat(k);
-            setBabyList(i, n);
-            i++;
-            Log.d("n값", "loadgrowLog: " + n);
-            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+            if (k!=null) {
+                try {
+                    n = Float.parseFloat(k);
+                    setBabyList(i, n);
+                    i++;
+                    Log.d("n값", "loadgrowLog: " + n);
+                    Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+                } catch (Exception e) {
+                }
+            }
 
         }
         Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardTallBaby[i]);

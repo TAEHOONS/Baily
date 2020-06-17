@@ -381,11 +381,17 @@ public class ChildFragDay extends Fragment {
         float val;
         for (int i = 0; i <= 6; i++) {
             if (end[i]!=null) {
-                val = Float.parseFloat(end[i].trim());
-                sum = sum + val;
-                values.add(new Entry(i, val));
-                count += 1;
+                try {
+                    val = Float.parseFloat(end[i].trim());
+                    sum = sum + val;
+                    values.add(new Entry(i, val));
+                    count += 1;
+                    Log.d("DBlogView", i+"end[i]  else: "+end[i]);
+                }catch (Exception e){
+                    Log.d("DBlogView", i+" 공백나옴");
+                }
             }
+
         }
         avg = 0;
 
@@ -461,6 +467,8 @@ public class ChildFragDay extends Fragment {
                 mArrCm[i] = c.getString(3);
                 mArrHead[i] = c.getString(4);
                 mArrFever[i] = c.getString(5);
+
+
                 Log.d("searchDay", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }

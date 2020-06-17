@@ -170,12 +170,16 @@ public class ChildFragKg extends Fragment {
         while (c.moveToNext()) {
 
             k = c.getString(2);
-            n = Float.parseFloat(k);
-            setBabyList(i, n);
-            i++;
-            Log.d("n값", "loadgrowLog: " + n);
-            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
-
+           if (k!=null) {
+               try {
+                   n = Float.parseFloat(k);
+                   setBabyList(i, n);
+                   i++;
+                   Log.d("n값", "loadgrowLog: " + n);
+                   Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+               } catch (Exception e) {
+               }
+           }
 
             //standardKgBaby[i] = n;
             //Log.d("for문", "onCreateView: " + standardKgBaby[i] + "i 값 = " + i);
