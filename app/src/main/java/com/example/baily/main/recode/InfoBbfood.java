@@ -35,8 +35,6 @@ public class InfoBbfood extends AppCompatActivity {
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    ArrayList<RecodeInfoItem> mDataList;
-    RecodeInfoAdapter mAdapter;
     private LinearLayout horizontalLayout;
     EditText  edmemo;
     TextView tSum, eatpwm , startDate, endDate;
@@ -46,17 +44,7 @@ public class InfoBbfood extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bbfood);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pwm_tag_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
 
-        horizontalLayout = (LinearLayout) findViewById(R.id.pwm_hori);
-
-        LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(InfoBbfood.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-
-        recyclerView.setAdapter(mAdapter);
 
         mSeekBar=findViewById(R.id.nurs_left_bar);
         eatpwm = findViewById(R.id.left_val);
@@ -80,30 +68,21 @@ public class InfoBbfood extends AppCompatActivity {
         });
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
-        mDataList = new ArrayList<>();
 
-        Intent intent = getIntent();
-        final TextView tat = findViewById(R.id.pwm_tv);
-        test=intent.getStringExtra("tag");
-        if(test != null){
-            tat.setText(test);
-        }
 
-        mAdapter = new RecodeInfoAdapter( mDataList);
-        recyclerView.setAdapter(mAdapter);
 
-        end = findViewById(R.id.rt_img_closeBtn);
-        back = findViewById(R.id.rt_img_checkBtn);
-        tagAdd = findViewById(R.id.rt_TV_plus);
-
-        tSum = findViewById(R.id.pwm_sum);
-
-        back.setOnClickListener(new View.OnClickListener() {
+        back = findViewById(R.id.rt_img_closeBtn);
+        Button end = findViewById(R.id.button2);
+        Button delete = findViewById(R.id.button3);
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        tSum = findViewById(R.id.pwm_sum);
+
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,27 +91,12 @@ public class InfoBbfood extends AppCompatActivity {
             }
         });
 
-        tagAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Dialog();
-            }
-        });
-
-        RecodeInfoAdapter adapter = new RecodeInfoAdapter(mDataList);
-        adapter.setOnItemClickListener(new RecodeInfoAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecodeInfoAdapter.CustomViewHolder holder, View view, int position) {
-                TextView tag =  view.findViewById(R.id.rec_tag);
-                String tv = tag.getText().toString();
-                tat.setText(tv);
-            }
-        });
 
 
 
-        startDate = findViewById(R.id.pwm_start);
+
+
+        startDate = findViewById(R.id.rt_hospital_time);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,29 +127,5 @@ public class InfoBbfood extends AppCompatActivity {
             }
         }
     };
-    public void Dialog(){
-        final EditText editTag = new EditText(this);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("퀵 버튼 추가");
-        builder.setMessage("자주 쓰는 단어를 퀵 버튼에 추가해 주세요.");
-        builder.setView(editTag);
-        builder.setPositiveButton("확인",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 4. 사용자가 입력한 내용을 가져와서
-                        String strTag = editTag.getText().toString();
-                        // 5. ArrayList에 추가하고
-                        RecodeInfoItem dict = new RecodeInfoItem(strTag);
-                        mDataList.add(0, dict); //첫번째 줄에 삽입됨
-                        //mArrayList.add(dict); //마지막 줄에 삽입됨
-                        // 6. 어댑터에서 RecyclerView에 반영하도록 합니다.
-                        mAdapter.notifyItemInserted(0);
-                        //RecodeInfoAdapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton("취소", null);
-
-        builder.show();
-    }
 
 }

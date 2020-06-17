@@ -380,7 +380,7 @@ public class ChildFragDay extends Fragment {
         int count = 0;
         float val;
         for (int i = 0; i <= 6; i++) {
-            if (end[i]!=null&&end[i]!="0") {
+            if (end[i]!=null) {
                 val = Float.parseFloat(end[i].trim());
                 sum = sum + val;
                 values.add(new Entry(i, val));
@@ -388,28 +388,6 @@ public class ChildFragDay extends Fragment {
             }
         }
         avg = 0;
-
-        /*
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(1, val));
-        count+=1;
-
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(3, val));
-        count+=1;
-
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(4, val));
-        count+=1;
-
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(5, val));
-        count+=1;
-*/
 
 
         avg = sum / count;

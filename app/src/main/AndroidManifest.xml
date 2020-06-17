@@ -16,7 +16,6 @@
             android:name=".main.diary.AddEvent"
             android:theme="@style/Animation.AppCompat.DropDownUp" />
         <activity android:name=".main.diary.ShowEventInfo" />
-        <activity android:name=".main.diary.SearchEvent" />
         <activity android:name=".main.setting" />
         <activity android:name=".babyPlus.BirthdayPicker" />
         <activity android:name=".log.FindPwPage4"/>

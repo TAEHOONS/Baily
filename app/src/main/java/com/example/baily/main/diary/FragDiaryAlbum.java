@@ -177,7 +177,7 @@ public class FragDiaryAlbum extends Fragment {
                         searchStr = searchEdit.getText().toString();
                         Log.d("searchDia", "  get TExt = " + searchStr);
                         showSearchResult(searchStr);
-                        diaryDateTxt.setText("검색어 // "+searchStr);
+                        diaryDateTxt.setText(searchStr);
                         beforeMonthBtn.setVisibility(View.GONE);//이전버튼 숨기기
                         afterMonthBtn.setVisibility(View.GONE);//이후버튼 숨기기
                     }
