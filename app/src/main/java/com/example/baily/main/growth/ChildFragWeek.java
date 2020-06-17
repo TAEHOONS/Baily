@@ -97,11 +97,11 @@ public class ChildFragWeek extends Fragment {
 
         usingDB(container);
 
-        SearchDay = new String[31];
-        mArrKg = new String[31];
-        mArrCm = new String[31];
-        mArrHead = new String[31];
-        mArrFever = new String[31];
+        SearchDay = new String[33];
+        mArrKg = new String[33];
+        mArrCm = new String[33];
+        mArrHead = new String[33];
+        mArrFever = new String[33];
         weekArrKg = new float[7];
         weekArrCm = new float[7];
         weekArrHead = new float[7];
@@ -153,6 +153,7 @@ public class ChildFragWeek extends Fragment {
             @Override
             public void onClick(View v) {
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,weekArrKg, weekArrCm, weekArrHead, weekArrFever);
+
                 wCal.add(Calendar.MONTH, -1);
                 weekStartDate = sFormat.format(wCal.getTime());
                 weekDateTxt.setText(weekStartDate);
@@ -191,6 +192,7 @@ public class ChildFragWeek extends Fragment {
             public void onClick(View v) {
                 //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, weekArrKg, weekArrCm, weekArrHead, weekArrFever);
+
                 if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -397,12 +399,13 @@ public class ChildFragWeek extends Fragment {
     }
 
     private void weekAvg(String[] MonthArr, float[] WeekArr) {
-        Log.d("weekarry", "실행");
+        Log.d("weekarry", "실행 mMaxDay= "+mMaxDay);
         int WeekCount=0,avgCount=0;
-        for (int i = 0; i < mMaxDay; i++) {
+        for (int i = 0; i <= mMaxDay; i++) {
             if (MonthArr[i] != null) {
                 try {
                     WeekArr[WeekCount] += Float.parseFloat(MonthArr[i].trim());
+                    Log.d("weekarry", "i="+i+"    "+WeekCount+" - WeekArr[WeekCount]="+WeekArr[WeekCount]+" MonthArr[i]= "+MonthArr[i]);
                     avgCount+=1;
                 } catch (Exception e) { }
             }
