@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.baily.DBlink;
 import com.example.baily.PopupSet;
@@ -97,7 +98,7 @@ public class setting extends AppCompatActivity {
         mBRevise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupCall(2);
+                BabyNameCheck(BabyNameEdit.getText().toString());
             }
         });
         mBabyDelete.setOnClickListener(new View.OnClickListener() {
@@ -271,7 +272,8 @@ public class setting extends AppCompatActivity {
                switch (mPopint){
                    case 1: DeleteId(exit);
                        break;
-                   case 2:ReviseBaby(exit);
+                   case 2:
+                       ReviseBaby(exit);
                        break;
                    case 3:DeleteBaby(exit);
                        break;
@@ -372,6 +374,26 @@ public class setting extends AppCompatActivity {
         ;
         BabyNameEdit.setHint(mBabyname);
 
+    }
+
+    // 아기이름 체크
+    private void BabyNameCheck(String getName){
+        String sql = "select * from baby where parents='"+mId+"'"; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        String DBName;
+        Boolean GAO=false;
+
+        // 기본 데이터
+        while (c.moveToNext()) {
+            DBName = c.getString(1);
+            if(getName.equals(DBName))
+                GAO=true;
+        }
+
+        if(GAO==true)
+            Toast.makeText(this, "계정에 같은 이름의 아이가 있습니다", Toast.LENGTH_SHORT).show();
+        else
+            PopupCall(2);
     }
 
     private void usingDB() {
