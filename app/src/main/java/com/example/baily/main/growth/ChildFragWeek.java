@@ -29,6 +29,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,10 +46,10 @@ public class ChildFragWeek extends Fragment {
 
     ImageView weekBeforeBtn, weekAfterBtn;
     String weekStartDate, wToday;
-    Calendar wCal,cal;
+    Calendar wCal, cal;
     Date date = new Date();
     SimpleDateFormat sFormat, wSimple, readChartD;
-    int maxDay, bMaxDay, aMaxDay,mMinDay,mMaxDay;//마지막일
+    int maxDay, bMaxDay, aMaxDay, mMinDay, mMaxDay;//마지막일
 
     int dStart, dEnd, dBeStart, dBeEnd, dAfStart, dAfEnd, dbVersion = 3;
     String dbName = "user.db", dayStart, dayEnd, mId, mBabyname;
@@ -91,8 +92,8 @@ public class ChildFragWeek extends Fragment {
         cal = Calendar.getInstance();
         cal.setTime(date);
         mMaxDay = cal.getActualMaximum(Calendar.DATE);
-        Log.d("주간 학습"," maxDay = "+mMaxDay);
-        wCal.set(wCal.get(Calendar.YEAR),Calendar.DAY_OF_MONTH,wCal.getActualMinimum(Calendar.DATE));
+        Log.d("주간 학습", " maxDay = " + mMaxDay);
+        wCal.set(wCal.get(Calendar.YEAR), Calendar.DAY_OF_MONTH, wCal.getActualMinimum(Calendar.DATE));
 
         usingDB(container);
 
@@ -101,6 +102,11 @@ public class ChildFragWeek extends Fragment {
         mArrCm = new String[31];
         mArrHead = new String[31];
         mArrFever = new String[31];
+        weekArrKg = new float[7];
+        weekArrCm = new float[7];
+        weekArrHead = new float[7];
+        weekArrFever = new float[7];
+
         weekString();
 
         wCal.setTime(date);
@@ -146,12 +152,14 @@ public class ChildFragWeek extends Fragment {
         weekBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,
+                        weekArrKg, weekArrCm, weekArrHead, weekArrFever);
                 wCal.add(Calendar.MONTH, -1);
                 weekStartDate = sFormat.format(wCal.getTime());
                 weekDateTxt.setText(weekStartDate);
 
                 bMaxDay = wCal.getActualMaximum(Calendar.DATE); //현재 달의 마지막날
-                mMaxDay=bMaxDay;
+                mMaxDay = bMaxDay;
 
 
                 Log.d("이전 달의 마지막날", "이번달의 마지막 날은?==============" + bMaxDay);
@@ -183,6 +191,8 @@ public class ChildFragWeek extends Fragment {
             @Override
             public void onClick(View v) {
                 //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
+                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,
+                        weekArrKg, weekArrCm, weekArrHead, weekArrFever);
                 if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -190,7 +200,7 @@ public class ChildFragWeek extends Fragment {
                     weekStartDate = sFormat.format(wCal.getTime());
                     weekDateTxt.setText(weekStartDate);
                     aMaxDay = wCal.getActualMaximum(Calendar.DATE); //현재 달의 마지막날
-                    mMaxDay=aMaxDay;
+                    mMaxDay = aMaxDay;
                     Log.d("이후 달의 마지막날", "이번달의 마지막 날은?==============" + aMaxDay);
 
 
@@ -292,35 +302,35 @@ public class ChildFragWeek extends Fragment {
 
 
     private float dataStack(float sum, ArrayList<Entry> values, float avg) {
-        int count=0;
+        int count = 0;
         float val;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(0, val));
-        count+=1;
+        count += 1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(1, val));
-        count+=1;
+        count += 1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(2, val));
-        count+=1;
+        count += 1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(3, val));
-        count+=1;
+        count += 1;
 
         val = (float) (Math.random() * 10);
         sum = sum + val;
         values.add(new Entry(4, val));
-        count+=1;
+        count += 1;
 
-        avg=sum/count;
+        avg = sum / count;
         return avg;
     }
 
@@ -380,6 +390,7 @@ public class ChildFragWeek extends Fragment {
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
+
     // DB 연결
     private void usingDB(ViewGroup container) {
         helper = new DBlink(container.getContext(), dbName, null, dbVersion);
@@ -402,7 +413,6 @@ public class ChildFragWeek extends Fragment {
         Log.d("searchDay", "start ");
         // 현재 사용 아기데이터
         for (int i = 0; i < mMaxDay; i++) {
-            Log.d("searchWeek", "SearchDay "+SearchDay[i]);
             String sql = "select * from growlog where name='" + mBabyname + "'AND date='" + SearchDay[i] + "'"; // 검색용
             Cursor c = db.rawQuery(sql, null);
             while (c.moveToNext()) {
@@ -415,47 +425,72 @@ public class ChildFragWeek extends Fragment {
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
         }
-
+        weekAvg(mArrKg ,weekArrKg);
+        weekAvg(mArrCm ,weekArrCm);
+        weekAvg(mArrHead ,weekArrHead);
+        weekAvg(mArrFever ,weekArrFever);
     }
 
-    private void weekAvg(){
+    private void weekAvg(String[] MonthArr, float[] WeekArr) {
+        Log.d("weekarry", "실행");
+        int WeekCount=0;
+        for (int i = 0; i < mMaxDay; i++) {
+            if (MonthArr[i] != null) {
+                try {
+                    WeekArr[WeekCount] += Float.parseFloat(MonthArr[i].trim());
+                } catch (Exception e) { }
+            }
+            if((i%6==0)&&i>0)
+            WeekCount+=1;
+        }
+
+        for(int o=0; o<=5; o++)
+            Log.d("weekarry", o+ "weekAvg: "+WeekArr[o]);
 
     }
 
 
     public void weekString() {
-        wCal.set(wCal.get(Calendar.YEAR),wCal.get(Calendar.MONTH),wCal.getActualMinimum(Calendar.DATE));
+        wCal.set(wCal.get(Calendar.YEAR), wCal.get(Calendar.MONTH), wCal.getActualMinimum(Calendar.DATE));
 
-        Log.d("주간 학습"," 이번달 = "+readChartD.format((wCal.getTime())));
         SearchDay[0] = readChartD.format((wCal.getTime()));
-        Log.d("주간 학습"," SearchDay = "+SearchDay[0]);
-        for (int i = 0; i < mMaxDay-1; i++) {
+        for (int i = 0; i < mMaxDay - 1; i++) {
             wCal.add(Calendar.DATE, +1);
-
             SearchDay[i + 1] = readChartD.format((wCal.getTime()));
-            Log.d("주간 학습"," SearchDay = "+SearchDay[i + 1]);
 
         }
-
-        Log.d("주간 학습"," maxDay = "+mMaxDay);
+        for (int i = 0; i < mMaxDay; i++)
+            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
 
     }
 
-    private LineDataSet AvgData(float avgData){
+    private LineDataSet AvgData(float avgData) {
         LineDataSet avgDataSet;
-        ArrayList<Entry> avgValues=new ArrayList<>();
+        ArrayList<Entry> avgValues = new ArrayList<>();
 
-        for (int i = 0; i <=4; i++) {
-            avgValues.add(new Entry(i,avgData));
+        for (int i = 0; i <= 4; i++) {
+            avgValues.add(new Entry(i, avgData));
         }
 
-        avgDataSet = new LineDataSet(avgValues,null);
+        avgDataSet = new LineDataSet(avgValues, null);
 
         avgDataSet.setDrawValues(false);//데이터 값 없애기
         avgDataSet.setDrawCircles(false);//포인트 원 없애기
         // 그래프 색 넣기
-        GraphLineColor(avgDataSet, Color.argb(0,255,0,0));
+        GraphLineColor(avgDataSet, Color.argb(0, 255, 0, 0));
 
         return avgDataSet;
     }
+    private void ArryClear(String []a,String []b,String []c,String []d,
+                      float [] q,float []w,float []e,float []r){
+        Arrays.fill(a,null);
+        Arrays.fill(b,null);
+        Arrays.fill(c,null);
+        Arrays.fill(d,null);
+        Arrays.fill(q,0);
+        Arrays.fill(w,0);
+        Arrays.fill(e,0);
+        Arrays.fill(r,0);
+    }
+
 }

@@ -309,11 +309,6 @@ public class ChildFragDay extends Fragment {
         YAxis headYAxisRight = growDayCart.getAxisRight(); //Y축의 오른쪽면 설정
 
         headYAxisRight.setLabelCount(4, true);
-
-
-        //  Log.d("CharAxis", "Max: "+yMax+"     ,Min = ");
-        //  SetAvgLine(avgFloat);
-
         growDayCart.setDescription(null);
 
         growDayCart.setData(dayData);
@@ -346,14 +341,6 @@ public class ChildFragDay extends Fragment {
                 avgHeight = dataStack(dAfStart, mArrCm, cmSum, cmValues, avgHeight);
                 avgHead = dataStack(dAfStart, mArrHead, headSum, headValues, avgHead);
                 avgFever = dataStack(dAfStart, mArrFever, feverSum, feverValues, avgFever);
-                // 이전 코드 보존용
-//                  for (int i = dAfStart; i <= dAfEnd; i++) {
-//                      float val = (float) (Math.random() * 10);
-//                      float sVal = (float) 36.5;
-//                      feverSum = feverSum + sVal;
-//                      feverValues.add(new Entry(i, sVal));
-//                      avgFever = feverSum / i;
-//                  }
 
             } else {
                 avgWeight = dataStack(dBeStart, mArrKg, kgSum, kgValues, avgWeight);
@@ -370,13 +357,6 @@ public class ChildFragDay extends Fragment {
     }
 
     private float dataStack(int start, String[] end, float sum, ArrayList<Entry> values, float avg) {
-        //Log.d("stackTest", "start: " + start + "   , end =" + end);
-        // Log.d("stackTest", "dayStart: " + dayStart + "   , dayEnd =" + dayEnd);
-        /*
-        for (int i = 0; i <= 6; i++) {
-            Log.d("FloatVal", "Float.parseFloat(end" + i + "): " + Float.parseFloat(end[i].trim()));
-        }
-        */
         int count = 0;
         float val;
         for (int i = 0; i <= 6; i++) {
@@ -386,9 +366,7 @@ public class ChildFragDay extends Fragment {
                     sum = sum + val;
                     values.add(new Entry(i, val));
                     count += 1;
-                    Log.d("DBlogView", i+"end[i]  else: "+end[i]);
                 }catch (Exception e){
-                    Log.d("DBlogView", i+" 공백나옴");
                 }
             }
 
@@ -473,17 +451,7 @@ public class ChildFragDay extends Fragment {
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
         }
-        // 입력 안된 null 들은 0 으로 변환
-//        for (int i = 0; i <= 6; i++) {
-//            if (mArrKg[i].equals(null) || mArrKg[i].equals(""))
-//                mArrKg[i] = "0";
-//            if (mArrCm[i].equals(null) || mArrCm[i].equals(""))
-//                mArrCm[i] = "0";
-//            if (mArrHead[i].equals(null) || mArrHead[i].equals(""))
-//                mArrHead[i] = "0";
-//            if (mArrFever[i].equals(null) || mArrFever[i].equals(""))
-//                mArrFever[i] = "0";
-//        }
+
     }
 
     private LineDataSet AvgData(float avgData) {
