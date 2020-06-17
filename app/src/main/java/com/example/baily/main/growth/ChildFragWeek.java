@@ -127,14 +127,14 @@ public class ChildFragWeek extends Fragment {
         // 값 셋팅하기
         SetGraphData();
 
+        //  중간 업데이트
+        MidDataSet();
+
         // 그래프 평균값 글자넣기
         weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
         weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
         weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
         weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
-
-        //  중간 업데이트
-        MidDataSet();
 
         //몸무게 차트 속성
         setGraph(growWeekKgCart, wKgData);
@@ -152,8 +152,7 @@ public class ChildFragWeek extends Fragment {
         weekBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,
-                        weekArrKg, weekArrCm, weekArrHead, weekArrFever);
+                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,weekArrKg, weekArrCm, weekArrHead, weekArrFever);
                 wCal.add(Calendar.MONTH, -1);
                 weekStartDate = sFormat.format(wCal.getTime());
                 weekDateTxt.setText(weekStartDate);
@@ -191,8 +190,7 @@ public class ChildFragWeek extends Fragment {
             @Override
             public void onClick(View v) {
                 //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
-                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,
-                        weekArrKg, weekArrCm, weekArrHead, weekArrFever);
+                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, weekArrKg, weekArrCm, weekArrHead, weekArrFever);
                 if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -301,46 +299,29 @@ public class ChildFragWeek extends Fragment {
     }
 
 
-    private float dataStack(float sum, ArrayList<Entry> values, float avg) {
+    private float dataStack(float sum, ArrayList<Entry> values,float avg ,float [] AvgArr) {
         int count = 0;
-        float val;
+        float val=0;
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(0, val));
-        count += 1;
+        for(int i=0; i<=5; i++){
+            if(AvgArr[i]!=0&&Float.isNaN(AvgArr[i])==false) {
+                val += AvgArr[i];
+                values.add(new Entry(i, AvgArr[i]));
+                count += 1;
+            }
+        }
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(1, val));
-        count += 1;
+        Log.d("평균 결산 ", "avg =" + avg+" , val = "+val+" , count = "+count);
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(2, val));
-        count += 1;
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(3, val));
-        count += 1;
 
-        val = (float) (Math.random() * 10);
-        sum = sum + val;
-        values.add(new Entry(4, val));
-        count += 1;
-
-        avg = sum / count;
+        avg = val / count;
         return avg;
     }
 
     // 그래프 데이터 넣기용
     private void SetGraphData() {
-        // 그래프 평균값 글자넣기
-        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
-        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
-        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
-        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
+
 
         kgValues.clear();
         cmValues.clear();
@@ -348,31 +329,20 @@ public class ChildFragWeek extends Fragment {
         feverValues.clear();
 
         XarWeek = getDate();
-        weekAvgWeight = dataStack(wKgSum, kgValues, weekAvgWeight);
-        weekAvgHeight = dataStack(wCmSum, cmValues, weekAvgHeight);
-        weekAvgHead = dataStack(wHeadSum, headValues, weekAvgHead);
-        weekAvgFever = dataStack(wFeverSum, feverValues, weekAvgFever);
+        weekAvgWeight = dataStack(wKgSum, kgValues, weekAvgWeight,weekArrKg);
+        weekAvgHeight = dataStack(wCmSum, cmValues, weekAvgHeight,weekArrCm);
+        weekAvgHead = dataStack(wHeadSum, headValues, weekAvgHead,weekArrHead);
+        weekAvgFever = dataStack(wFeverSum, feverValues, weekAvgFever, weekArrFever);
+
+        // 그래프 평균값 글자넣기
+        weekAvgKgTxt.setText(String.format("%.2f", weekAvgWeight) + " kg");
+        weekAvgCmTxt.setText(String.format("%.2f", weekAvgHeight) + " cm");
+        weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
+        weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
     }
 
 
-//    private float dataStack(int start, String[] end, float sum, ArrayList<Entry> values, float avg) {
-//
-//        int count = 0;
-//        float val;
-//        for (int i = 0; i <= 6; i++) {
-//            if (end[i]!=null&&end[i]!="0") {
-//                val = Float.parseFloat(end[i].trim());
-//                sum = sum + val;
-//                values.add(new Entry(i, val));
-//                count += 1;
-//            }
-//        }
-//        avg = 0;
-//
-//
-//        avg = sum / count;
-//        return avg;
-//    }
+
 
     // chart X좌표 글자 넣기
     public ArrayList<String> getDate() {
@@ -433,15 +403,20 @@ public class ChildFragWeek extends Fragment {
 
     private void weekAvg(String[] MonthArr, float[] WeekArr) {
         Log.d("weekarry", "실행");
-        int WeekCount=0;
+        int WeekCount=0,avgCount=0;
         for (int i = 0; i < mMaxDay; i++) {
             if (MonthArr[i] != null) {
                 try {
                     WeekArr[WeekCount] += Float.parseFloat(MonthArr[i].trim());
+                    avgCount+=1;
                 } catch (Exception e) { }
             }
-            if((i%6==0)&&i>0)
-            WeekCount+=1;
+
+            if((i%6==0)&&i>0) {
+                WeekArr[WeekCount]= WeekArr[WeekCount]/avgCount;
+                WeekCount += 1;
+                avgCount=0;
+            }
         }
 
         for(int o=0; o<=5; o++)
@@ -481,8 +456,8 @@ public class ChildFragWeek extends Fragment {
 
         return avgDataSet;
     }
-    private void ArryClear(String []a,String []b,String []c,String []d,
-                      float [] q,float []w,float []e,float []r){
+
+    private void ArryClear(String []a,String []b,String []c,String []d, float [] q,float []w,float []e,float []r){
         Arrays.fill(a,null);
         Arrays.fill(b,null);
         Arrays.fill(c,null);
