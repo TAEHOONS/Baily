@@ -298,7 +298,6 @@ public class ChildFragWeek extends Fragment {
         line.setCircleColor(color);
     }
 
-
     private float dataStack(float sum, ArrayList<Entry> values,float avg ,float [] AvgArr) {
         int count = 0;
         float val=0;
@@ -310,10 +309,6 @@ public class ChildFragWeek extends Fragment {
                 count += 1;
             }
         }
-
-        Log.d("평균 결산 ", "avg =" + avg+" , val = "+val+" , count = "+count);
-
-
 
         avg = val / count;
         return avg;
