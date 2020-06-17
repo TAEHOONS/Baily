@@ -29,8 +29,8 @@ public class FindIdPage3 extends AppCompatActivity {
     }
 
     public void mOnClick(View v) {
-        Intent intent = getIntent();
-        String SendRandomCode = intent.getStringExtra("code");
+        Intent intent1 = getIntent();
+        String SendRandomCode = intent1.getStringExtra("code");
 
         Log.d("email", " SendRandomCode=" + SendRandomCode);
         switch (v.getId()) {
@@ -53,7 +53,7 @@ public class FindIdPage3 extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent2 = new Intent(FindIdPage3.this, MainActivity.class);
                                 startActivity(intent2);
-                                dialog.dismiss();
+                                //dialog.dismiss();
 
                             }
                         });

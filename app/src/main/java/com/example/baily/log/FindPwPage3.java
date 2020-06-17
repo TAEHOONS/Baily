@@ -20,15 +20,12 @@ public class FindPwPage3 extends AppCompatActivity {
     EditText fpp_emailnumEdt;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_pw_page3);
-        fpp_emailnumEdt=(EditText)findViewById(R.id.fpp_emailnumEdt);
-        fpp_emailnumBtn=(Button)findViewById(R.id.fpp_emailnumBtn);
+        fpp_emailnumEdt=findViewById(R.id.fpp_emailnumEdt);
+        fpp_emailnumBtn=findViewById(R.id.fpp_emailnumBtn);
 
     }
 

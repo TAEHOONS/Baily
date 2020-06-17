@@ -466,19 +466,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
 
 // Add a new document with a generated ID
-        fdb.collection("member").document(id)
-                .set(member)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("입력", "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("에러", "Error writing document", e);
-                    }
-                });
+
+
     }
 }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.baily.R;
 
 public class FindIdPage2 extends AppCompatActivity {
+
     EditText fip_emailEdt;
     Button fip_emailBtn;
     String SendRandomCode;
@@ -36,17 +37,12 @@ public class FindIdPage2 extends AppCompatActivity {
 
                 Log.d("email", "email end");
 
-                Intent intent = new Intent(this,FindIdPage3.class);
-                intent.putExtra("code",SendRandomCode);
+                Intent intent1 = new Intent(this,FindIdPage3.class);
+                intent1.putExtra("code",SendRandomCode);
 
-                startActivity(intent);
-               // FindIdScreen3();
+                startActivity(intent1);
         }
+
     }
 
-    // 화면이동 -> FIND ID_확인BTN->이메일 확인페이지
-    private void FindIdScreen3() {
-       // Intent intent = new Intent(FindIdPage2.this, FindIdPage3.class);
-       // startActivity(intent);
-    }
 }

@@ -21,12 +21,8 @@ public class FindPwPage2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_pw_page2);
-
         fpp_emailBtn = findViewById(R.id.fpp_emailBtn);
         fpp_emailEdt = findViewById(R.id.fpp_emailEdt);
-
-
-
     }
     public void mOnClick(View v){
         switch (v.getId()){
