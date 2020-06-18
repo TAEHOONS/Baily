@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.baily.DBlink;
 import com.example.baily.NumberTextWatcher;
 import com.example.baily.R;
 
@@ -35,6 +38,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SecondPage extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 150;
+
+    String dbName = "user.db", mId = "";
+    int dbVersion = 3;
+    private DBlink helper;
+    private SQLiteDatabase db;
 
     TextView mHWATV, mBirthTV;
     RadioGroup mSexRG;
@@ -57,7 +65,7 @@ public class SecondPage extends AppCompatActivity {
         mSexRG = (RadioGroup) findViewById(R.id.sp_sexRG);
         imageview = (CircleImageView) findViewById(R.id.sp_profileImg);
 
-
+        usingDB();
         Locale locale = new Locale("es", "AR"); // For example Argentina
         int numDecs = 2; // Let's use 2 decimals
         TextWatcher tw = new NumberTextWatcher(mHeadlin, locale, numDecs);
@@ -82,7 +90,7 @@ public class SecondPage extends AppCompatActivity {
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.sp_creatBtn: {
-                ThirdScreen();
+                BabyNameCheck(mName.getText().toString());
                 break;
             }
             case R.id.sp_tallTV: {
@@ -103,6 +111,25 @@ public class SecondPage extends AppCompatActivity {
         }
 
     }
+    private void BabyNameCheck(String getName){
+        String sql = "select * from baby where parents='"+mId+"'"; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        String DBName;
+        Boolean GAO=false;
+
+        // 기본 데이터
+        while (c.moveToNext()) {
+            DBName = c.getString(1);
+            if(getName.equals(DBName))
+                GAO=true;
+        }
+
+        if(GAO==true)
+            Toast.makeText(this, "계정에 같은 이름의 아이가 있습니다", Toast.LENGTH_SHORT).show();
+        else
+        ThirdScreen();
+    }
+
 
     // 입력 -> 결과 확인  (데이터 이동)
     private void ThirdScreen() {
@@ -238,13 +265,26 @@ public class SecondPage extends AppCompatActivity {
         Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
         return new BitmapDrawable(resized);
     }
-
     public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = size;
         Bitmap src = BitmapFactory.decodeResource(resources, id, options);
         Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
         return resized;
+    }
+
+    // DB 사용
+    private void usingDB() {
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+        }
     }
 
 
