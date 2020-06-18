@@ -62,19 +62,19 @@ public class FragRecode extends Fragment {
     private RecodeSearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
 
-    public static   int INFO_NURSING = 1;
-    public static   int INFO_BBFOOD = 2;
-    public static  int INFO_BOWEL = 3;
-    public static  int INFO_BATH = 4;
-    public static   int INFO_DRUG = 5;
-    public static  int INFO_HOSP = 6;
-    public static  int INFO_PLAY = 7;
-   public static int INFO_PWMILK = 8;
-    public static  int INFO_SLEEP = 9;
+    public static int INFO_NURSING = 1;
+    public static int INFO_BBFOOD = 2;
+    public static int INFO_BOWEL = 3;
+    public static int INFO_BATH = 4;
+    public static int INFO_DRUG = 5;
+    public static int INFO_HOSP = 6;
+    public static int INFO_PLAY = 7;
+    public static int INFO_PWMILK = 8;
+    public static int INFO_SLEEP = 9;
     public static int INFO_TEMP = 10;
     static int RESULT_REMOVE_EVENT = 101;
     ArrayList<RecodeData> dataArrayList;
-Context context;
+    Context context;
 
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
@@ -125,6 +125,7 @@ Context context;
     }
 
     private int index;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ Context context;
         final boolean flag = true;
 
         final Handler handler = new Handler();
-        this.container=container;
+        this.container = container;
         handle = v.findViewById(R.id.handle);
         nurs = v.findViewById(R.id.nursing_btn);
         bbfood = v.findViewById(R.id.babyfood_btn);
@@ -182,7 +183,7 @@ Context context;
 
 
         recyclerView.setLayoutManager(layoutManager);
-        recodeAdapter = new RecodeAdapter(dataArrayList,this);
+        recodeAdapter = new RecodeAdapter(dataArrayList, this);
         recyclerView.setAdapter(recodeAdapter);
 
         nurs.setOnClickListener(new View.OnClickListener() {
@@ -397,43 +398,10 @@ Context context;
                 }
             }
         });
-        loadRecode(false,"");
-
-
-
+        loadRecode(false, "");
 
 
         return v;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-
-        if (requestCode == INFO_BATH) {
-            if (resultCode == RESULT_OK) {
-
-                String str = data.getStringExtra("str");
-                String dal = data.getStringExtra("meme");
-                RecodeData item = new RecodeData(str,"●목욕",dal);
-                dataArrayList.set(index,item);
-                recodeAdapter.notifyDataSetChanged();
-            }// else if (resultCode == RESULT_REMOVE_EVENT) {
-            //           deleteEvent(data.getExtras());
-            //        }
-        }
-
-    }
-
-    public  void update(Bundle extras){
-
-        String str = extras.getString("str");
-        String dal = extras.getString("meme");
-
-
-
     }
 
 
@@ -442,7 +410,7 @@ Context context;
         super.onResume();
 
         usingDB(container);
-        loadRecode(false,"");
+        loadRecode(false, "");
     }
 
 
@@ -454,7 +422,7 @@ Context context;
         TextView et_date = v.findViewById(R.id.whenDate);
         et_date.setText(sdf.format(myCalendar.getTime()));
         Log.d("recodeDate", "Date : " + myCalendar.getTime());
-        loadRecode(false,"");
+        loadRecode(false, "");
     }
 
     // DB 연결
@@ -485,27 +453,21 @@ Context context;
         values.put("parents", mId);
         db.insert("recode", null, values);
 
-        insertRecode(title);
 
-
+        loadRecode(false, "");
     }
 
-    private void insertRecode(String title) {
 
-        recodeAdapter.addItem(new RecodeData(getNowTime(), title, ""));
-        recyclerView.setAdapter(recodeAdapter);
-    }
+    private void insertRecode(String time, String title, String subt,int recodeId) {
 
-    private void insertRecode(String time, String title, String subt) {
-
-        recodeAdapter.addItem(new RecodeData(time, title, subt));
+        recodeAdapter.addItem(new RecodeData(time, title, subt,recodeId));
         recyclerView.setAdapter(recodeAdapter);
     }
 
 
     private void loadRecode(Boolean mode, String select) {
         ArrayList<RecodeData> dataArrayList = new ArrayList<>();
-        recodeAdapter = new RecodeAdapter(dataArrayList,this);
+        recodeAdapter = new RecodeAdapter(dataArrayList, this);
         recyclerView.setAdapter(null);
         Log.d("recodeDBget", "loadRecode Start");
 
@@ -515,22 +477,23 @@ Context context;
         Log.d("recodeDBget", "sqlday =" + sqlday);
         String sql; // true 지정 검색 모드, false는 기본모드
 
-        Log.d("recodeDBget", "mode =" + mode+" , baby = "+mBabyname);
-//        if (mode == true)
-//            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "'AND title='"+select+"' order by time"; // 검색용
-//        else
-//            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "' order by time"; // 검색용
-//        Cursor c = db.rawQuery(sql, null);
-//        // 기본 데이터
-//        while (c.moveToNext()) {
-//            String time = c.getString(3);
-//            String title = c.getString(4);
-//            String subt = c.getString(5);
-//            if (subt == null)
-//                subt = "";
-//            Log.d("recodeDBget", "db받기 time = " + time + "  ,title = " + title + "  , subt = " + subt);
-//            insertRecode(time, title, subt);
-//     }
+        Log.d("recodeDBget", "mode =" + mode + " , baby = " + mBabyname);
+        if (mode == true)
+            sql = "select * from recode where name='" + mBabyname + "'AND date='" + sqlday + "'AND title='" + select + "' order by time"; // 검색용
+        else
+            sql = "select * from recode where name='" + mBabyname + "'AND date='" + sqlday + "' order by time"; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        // 기본 데이터
+        while (c.moveToNext()) {
+            int recodeId=c.getInt(0);
+            String time = c.getString(3);
+            String title = c.getString(4);
+            String subt = c.getString(5);
+            if (subt == null)
+                subt = "";
+            Log.d("recodeDBget", "db받기 time = " + time + "  ,title = " + title + "  , subt = " + subt);
+            insertRecode(time, title, subt,recodeId);
+        }
     }
 
 

@@ -3,7 +3,10 @@ package com.example.baily.main.recode;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,19 +21,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class InfoPlay extends AppCompatActivity {
+
+    String dbName = "user.db",mId, mBabyname;
+    int dbVersion = 3,infoId,INFO_NULL = 999999999;
+    private DBlink helper;
+    private SQLiteDatabase db;
+
+
     String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
     String test = null;
     Button tagAdd ;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
-
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
@@ -45,14 +55,24 @@ public class InfoPlay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_play);
 
+        usingDB();
 
         edmemo=findViewById(R.id.pwm_memo);
         memo= edmemo.getText().toString();
 
         back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
+
+        Button revise = findViewById(R.id.rplay_Btn_revise);
+        Button delete = findViewById(R.id.rplay_Btn_delete);
+
         delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
+            }
+        });
+
+        revise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -68,15 +88,11 @@ public class InfoPlay extends AppCompatActivity {
             }
         });
 
-        end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         final Intent intent = getIntent();
        String stt = intent.getStringExtra("str");
+        infoId= intent.getIntExtra("id",INFO_NULL);
+
+        Log.d("recodeTest", "get recodeId = "+infoId);
         int idx = stt.indexOf(":");
         String stt1 = stt.substring(0,idx);
         String stt2 = stt.substring(idx+1);
@@ -134,6 +150,7 @@ public class InfoPlay extends AppCompatActivity {
         });
 
     }
+
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -145,5 +162,29 @@ public class InfoPlay extends AppCompatActivity {
         }
     };
 
+
+    private void reviseItem(){
+
+    }
+
+    private void deleteItem(){
+        String deletejob = "DELETE FROM recode where id="+infoId+" AND name='" + mBabyname + "'";
+        db.execSQL(deletejob);
+        finish();
+    }
+    private void usingDB() {
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+    }
 
 }

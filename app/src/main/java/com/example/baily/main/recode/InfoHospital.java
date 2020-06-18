@@ -3,7 +3,10 @@ package com.example.baily.main.recode;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,15 +21,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baily.DBlink;
 import com.example.baily.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class InfoHospital extends AppCompatActivity {
-    String pwmStart, pwmEnd, pwmMemo,tthou,ttmin,memo ;
+
+    String dbName = "user.db", mId, mBabyname;
+    int dbVersion = 3, infoId, INFO_NULL = 999999999;
+    private DBlink helper;
+    private SQLiteDatabase db;
+
+    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
     String test = null;
-    Button tagAdd ;
+    Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
@@ -37,18 +47,19 @@ public class InfoHospital extends AppCompatActivity {
 
 
     EditText edmemo;
-    TextView tSum, eatpwm , startDate, endDate;
+    TextView tSum, eatpwm, startDate, endDate;
 
-    int strt,endt;
+    int strt, endt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_health);
 
-        edmemo=findViewById(R.id.rt_hospital_checkupedit);
-        memo= edmemo.getText().toString();
+        edmemo = findViewById(R.id.rt_hospital_checkupedit);
+        memo = edmemo.getText().toString();
 
-
+        usingDB();
 
         back = findViewById(R.id.rt_img_closeBtn);
         Button end = findViewById(R.id.button2);
@@ -77,9 +88,8 @@ public class InfoHospital extends AppCompatActivity {
         });
 
         final Intent intent = getIntent();
-    String    stt = intent.getStringExtra("str");
-
-
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
 
         startDate = findViewById(R.id.rt_hospital_time);
         startDate.setText(stt);
@@ -90,11 +100,11 @@ public class InfoHospital extends AppCompatActivity {
                 int hour = myCalender.get(Calendar.HOUR_OF_DAY);
                 int minute = myCalender.get(Calendar.MINUTE);
                 TimePickerDialog dialog;
-                dialog = new TimePickerDialog(InfoHospital.this,new TimePickerDialog.OnTimeSetListener(){
+                dialog = new TimePickerDialog(InfoHospital.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         startDate.setText(hourOfDay + ":" + minute);
-                        strt = (hourOfDay*60)+minute;
+                        strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
                 dialog.setTitle("시작 시간");
@@ -103,6 +113,7 @@ public class InfoHospital extends AppCompatActivity {
         });
 
     }
+
     TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -114,5 +125,30 @@ public class InfoHospital extends AppCompatActivity {
         }
     };
 
+
+    private void reviseItem() {
+
+    }
+
+    private void deleteItem() {
+        String deletejob = "DELETE FROM recode where id=" + infoId + " AND name='" + mBabyname + "'";
+        db.execSQL(deletejob);
+        finish();
+    }
+
+    private void usingDB() {
+        helper = new DBlink(this, dbName, null, dbVersion);
+        db = helper.getWritableDatabase();
+
+        String sql = "select * from thisusing where _id=1"; // 검색용
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            mId = cursor.getString(1);
+            mBabyname = cursor.getString(2);
+            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
+        }
+    }
 
 }
