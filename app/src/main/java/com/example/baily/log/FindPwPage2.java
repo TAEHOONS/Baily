@@ -16,6 +16,7 @@ public class FindPwPage2 extends AppCompatActivity {
     Button fpp_emailBtn;
     EditText fpp_emailEdt;
     String SendRandomCode;
+    String nowId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,9 @@ public class FindPwPage2 extends AppCompatActivity {
         setContentView(R.layout.activity_find_pw_page2);
         fpp_emailBtn = findViewById(R.id.fpp_emailBtn);
         fpp_emailEdt = findViewById(R.id.fpp_emailEdt);
+
+        Intent intent = getIntent();
+        nowId = intent.getStringExtra("nowId");
     }
     public void mOnClick(View v){
         switch (v.getId()){
@@ -38,7 +42,7 @@ public class FindPwPage2 extends AppCompatActivity {
 
                 Intent intent = new Intent(this,FindPwPage3.class);
                 intent.putExtra("code",SendRandomCode);
-
+                intent.putExtra("nowId",nowId);
                 startActivity(intent);
 
         }

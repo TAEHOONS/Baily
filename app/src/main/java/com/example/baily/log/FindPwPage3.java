@@ -18,7 +18,7 @@ public class FindPwPage3 extends AppCompatActivity {
 
     Button fpp_emailnumBtn;
     EditText fpp_emailnumEdt;
-
+    String nowId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class FindPwPage3 extends AppCompatActivity {
     public void mOnClick(View v){
         Intent intent = getIntent();
         String SendRandomCode = intent.getStringExtra("code");
+        nowId = intent.getStringExtra("nowId");
 
         Log.d("email", " SendRandomCode=" + SendRandomCode);
         switch(v.getId()){
@@ -53,6 +54,7 @@ public class FindPwPage3 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(FindPwPage3.this,FindPwPage4.class);
+                                intent.putExtra("nowId",nowId);
                                 startActivity(intent);
                                 //dialog.dismiss();
 

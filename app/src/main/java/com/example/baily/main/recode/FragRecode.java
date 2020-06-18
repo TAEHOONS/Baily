@@ -504,25 +504,22 @@ Context context;
         String sql; // true 지정 검색 모드, false는 기본모드
 
         Log.d("recodeDBget", "mode =" + mode+" , baby = "+mBabyname);
-        if (mode == true)
-            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "'AND title='"+select+"' order by time"; // 검색용
-        else
-            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "' order by time"; // 검색용
-        Cursor c = db.rawQuery(sql, null);
-        // 기본 데이터
-        while (c.moveToNext()) {
-            String time = c.getString(3);
-            String title = c.getString(4);
-            String subt = c.getString(5);
-            if (subt == null)
-                subt = "";
-            Log.d("recodeDBget", "db받기 time = " + time + "  ,title = " + title + "  , subt = " + subt);
-            insertRecode(time, title, subt);
-        }
+//        if (mode == true)
+//            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "'AND title='"+select+"' order by time"; // 검색용
+//        else
+//            sql = "select * from recode where name='"+mBabyname+"'AND date='" + sqlday + "' order by time"; // 검색용
+//        Cursor c = db.rawQuery(sql, null);
+//        // 기본 데이터
+//        while (c.moveToNext()) {
+//            String time = c.getString(3);
+//            String title = c.getString(4);
+//            String subt = c.getString(5);
+//            if (subt == null)
+//                subt = "";
+//            Log.d("recodeDBget", "db받기 time = " + time + "  ,title = " + title + "  , subt = " + subt);
+//            insertRecode(time, title, subt);
+//     }
     }
-
-
-
 
 
 }

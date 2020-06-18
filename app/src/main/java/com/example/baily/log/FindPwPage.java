@@ -39,7 +39,10 @@ public class FindPwPage extends AppCompatActivity {
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.fpp_idBtn:
+                tmp=fpp_idEdt.getText().toString();
+
                 usingDB();
+                checkLogin(tmp);
                 //FindEmailScreen();
 
 
@@ -53,8 +56,9 @@ public class FindPwPage extends AppCompatActivity {
     }
     //아이디 있나없나 체크
     private void checkLogin(String insertId) {
-        String sql = "select * from user where id = '" + insertId + "' "; // 검색용
+        String sql = "select id from user where id = '" + insertId + "' "; // 검색용
         Cursor c = db.rawQuery(sql, null);
+        Log.d("insertid", "checkLogin: insertId :"+insertId);
         String sqlId = "";
 
         while (c.moveToNext()) {
@@ -66,16 +70,19 @@ public class FindPwPage extends AppCompatActivity {
             else if (sqlId.equals(insertId)) {//중복 있을경우
                 Log.d("중복", "checkLogin: " + insertId);
                 Toast.makeText(this, insertId+"님의 이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
-                FindEmailScreen();
+                Intent intent = new Intent(this,FindPwPage2.class);
+                intent.putExtra("nowId",insertId);
+                startActivity(intent);
+                //FindEmailScreen();
             }
 
         }
 
     }
 
-    // 화면이동 -> FINDPWpage 아이디_확인BTN->이메일 확인페이지
-    private void FindEmailScreen() {
-        Intent intent = new Intent(FindPwPage.this, FindPwPage2.class);
-        startActivity(intent);
-    }
+//    // 화면이동 -> FINDPWpage 아이디_확인BTN->이메일 확인페이지
+//    private void FindEmailScreen() {
+//        Intent intent = new Intent(FindPwPage.this, FindPwPage2.class);
+//        startActivity(intent);
+//    }
 }
