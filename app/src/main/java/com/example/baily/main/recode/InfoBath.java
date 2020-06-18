@@ -68,27 +68,34 @@ public class InfoBath extends AppCompatActivity {
                 finish();
             }
         });
-        final Intent intent = getIntent();
-        stt = intent.getStringExtra("str");
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent bath = new Intent();
                 memo= edmemo.getText().toString();
                 time = tSum.getText().toString();
-                intent.putExtra("str",startDate.getText().toString());
-                intent.putExtra("meme",edmemo.getText().toString());
-                setResult(RESULT_OK,intent);
+                bath.putExtra("str",startDate.getText().toString());
+                bath.putExtra("meme",edmemo.getText().toString());
+                setResult(RESULT_OK,bath);
                 finish();
             }
         });
 
 
-
+        final Intent intent = getIntent();
+        stt = intent.getStringExtra("str");
+        int idx = stt.indexOf(":");
+        String stt1 = stt.substring(0,idx);
+        String stt2 = stt.substring(idx+1);
+        int sa = Integer.parseInt(stt1);
+        int sb = Integer.parseInt(stt2);
+        strt = (sa*60)+sb;
 
 
 
         startDate = findViewById(R.id.pwm_start);
+        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +106,7 @@ public class InfoBath extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBath.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        startDate.setText(hourOfDay + ":" + minute);
                         strt = (hourOfDay*60)+minute;
                     }
                 }, hour, minute, false);
@@ -118,7 +125,7 @@ public class InfoBath extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBath.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        endDate.setText(hourOfDay + "시 " + minute + "분");
+                        endDate.setText(hourOfDay + ":" + minute );
                         endt = (hourOfDay*60)+minute;
                         tthou=Integer.toString((endt-strt)/60);
                         ttmin=Integer.toString((endt-strt)%60);

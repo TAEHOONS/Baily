@@ -57,6 +57,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalViewHolder
                 bundle.putString("eventDate",data.getDate());
                 bundle.putString("eventMemo",data.getMemo());
                 bundle.putInt("eventId",data.getId());
+
                 ((Activity)v.getContext()).startActivityForResult(intent, FragDiaryDate.SHOW_EVENT_INFO);
             }
         });

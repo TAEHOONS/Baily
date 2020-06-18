@@ -69,10 +69,13 @@ public class InfoDrug extends AppCompatActivity {
             }
         });
 
+        final Intent intent = getIntent();
+      String  stt = intent.getStringExtra("str");
 
 
 
         startDate = findViewById(R.id.rt_hospital_time);
+        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +86,7 @@ public class InfoDrug extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoDrug.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        startDate.setText(hourOfDay + ":" + minute);
                         strt = (hourOfDay*60)+minute;
                     }
                 }, hour, minute, false);

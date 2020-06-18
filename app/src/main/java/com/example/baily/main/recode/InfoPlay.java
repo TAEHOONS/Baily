@@ -75,11 +75,19 @@ public class InfoPlay extends AppCompatActivity {
             }
         });
 
-
+        final Intent intent = getIntent();
+       String stt = intent.getStringExtra("str");
+        int idx = stt.indexOf(":");
+        String stt1 = stt.substring(0,idx);
+        String stt2 = stt.substring(idx+1);
+        int sa = Integer.parseInt(stt1);
+        int sb = Integer.parseInt(stt2);
+        strt = (sa*60)+sb;
 
 
 
         startDate = findViewById(R.id.pwm_start);
+        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +98,7 @@ public class InfoPlay extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoPlay.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        startDate.setText(hourOfDay + ":" + minute);
                         strt = (hourOfDay*60)+minute;
                     }
                 }, hour, minute, false);
@@ -109,7 +117,7 @@ public class InfoPlay extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoPlay.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        endDate.setText(hourOfDay + "시 " + minute + "분");
+                        endDate.setText(hourOfDay + ":" + minute );
                         endt = (hourOfDay*60)+minute;
                         tthou=Integer.toString((endt-strt)/60);
                         ttmin=Integer.toString((endt-strt)%60);

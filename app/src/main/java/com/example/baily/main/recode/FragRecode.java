@@ -73,6 +73,7 @@ public class FragRecode extends Fragment {
     public static  int INFO_SLEEP = 9;
     public static int INFO_TEMP = 10;
     static int RESULT_REMOVE_EVENT = 101;
+    ArrayList<RecodeData> dataArrayList;
 Context context;
 
     Calendar myCalendar = Calendar.getInstance();
@@ -171,7 +172,7 @@ Context context;
 
         }
 
-        ArrayList<RecodeData> dataArrayList = new ArrayList<>();
+        dataArrayList = new ArrayList<>();
 
 
         recyclerView = v.findViewById(R.id.rec_list);
@@ -206,7 +207,7 @@ Context context;
 
                                         long sum = (end - start) / 1000;
                                         if (sum < TIME_MAXIMUM.SEC) {
-                                            sumT = sum + "초 전";
+                                            sumT = "방금 전";
                                         } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
                                             sumT = sum + "분 전";
                                         } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
@@ -263,7 +264,7 @@ Context context;
                                     public void run() {
                                         long sum = (end - start) / 1000;
                                         if (sum < TIME_MAXIMUM.SEC) {
-                                            sumT = sum + "초 전";
+                                            sumT = "방금 전";
                                         } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
                                             sumT = sum + "분 전";
                                         } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
@@ -316,7 +317,7 @@ Context context;
                                     public void run() {
                                         long sum = (end - start) / 1000;
                                         if (sum < TIME_MAXIMUM.SEC) {
-                                            sumT = sum + "초 전";
+                                            sumT = "방금 전";
                                         } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
                                             sumT = sum + "분 전";
                                         } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
@@ -413,14 +414,25 @@ Context context;
 
         if (requestCode == INFO_BATH) {
             if (resultCode == RESULT_OK) {
+
                 String str = data.getStringExtra("str");
                 String dal = data.getStringExtra("meme");
-                arraylist.set(index,str);
+                RecodeData item = new RecodeData(str,"●목욕",dal);
+                dataArrayList.set(index,item);
                 recodeAdapter.notifyDataSetChanged();
             }// else if (resultCode == RESULT_REMOVE_EVENT) {
             //           deleteEvent(data.getExtras());
             //        }
         }
+
+    }
+
+    public  void update(Bundle extras){
+
+        String str = extras.getString("str");
+        String dal = extras.getString("meme");
+
+
 
     }
 
