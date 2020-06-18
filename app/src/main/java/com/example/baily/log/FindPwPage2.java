@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,9 +32,14 @@ public class FindPwPage2 extends AppCompatActivity {
     public void mOnClick(View v){
         switch (v.getId()){
             case R.id.fpp_emailBtn:
+                if(fpp_emailEdt.length()==0){
+                    Toast.makeText(FindPwPage2.this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 SendMail mailServer = new SendMail();
                 mailServer.sendSecurityCode(getApplicationContext(), fpp_emailEdt.getText().toString());
                 SendRandomCode = mailServer.getRandomNum();
+                Log.d("지금아이디", "onCreate: p2 "+nowId);
 
 
                 Log.d("email", "reg_numsendBtn: SendRandomCode=" + SendRandomCode);

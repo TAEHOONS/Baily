@@ -23,7 +23,8 @@ public class FindPwPage extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
     EditText fpp_idEdt;
-    String tmp;
+    String tmp,ckId;
+    int count=0;
 
 
     @Override
@@ -33,6 +34,8 @@ public class FindPwPage extends AppCompatActivity {
 
         fpp_idBtn=(Button)findViewById(R.id.fpp_idBtn);
         fpp_idEdt=(EditText)findViewById(R.id.fpp_idEdt);
+
+        usingDB();
     }
 
     //아이디 입력 후 확인버튼 누를 시
@@ -40,10 +43,16 @@ public class FindPwPage extends AppCompatActivity {
         switch (v.getId()){
             case R.id.fpp_idBtn:
                 tmp=fpp_idEdt.getText().toString();
-
-                usingDB();
+                ckId(tmp);
                 checkLogin(tmp);
-                //FindEmailScreen();
+                if(tmp.length()==0) {
+                    Toast.makeText(FindPwPage.this, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }else if(count==0){
+                    Toast.makeText(FindPwPage.this, tmp+"님은 회원이 아닙니다.", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+
 
 
         }
@@ -56,7 +65,7 @@ public class FindPwPage extends AppCompatActivity {
     }
     //아이디 있나없나 체크
     private void checkLogin(String insertId) {
-        String sql = "select id from user where id = '" + insertId + "' "; // 검색용
+        String sql = "select * from user where id = '" + insertId + "' "; // 검색용
         Cursor c = db.rawQuery(sql, null);
         Log.d("insertid", "checkLogin: insertId :"+insertId);
         String sqlId = "";
@@ -64,25 +73,25 @@ public class FindPwPage extends AppCompatActivity {
         while (c.moveToNext()) {
             sqlId = c.getString(1);
 
-            if(!sqlId.equals(insertId)){
-                Toast.makeText(this, "없는 아이디 입니다.", Toast.LENGTH_SHORT).show();
-            }
-            else if (sqlId.equals(insertId)) {//중복 있을경우
+            if (sqlId.equals(insertId)) {//중복 있을경우
+                count++;
                 Log.d("중복", "checkLogin: " + insertId);
                 Toast.makeText(this, insertId+"님의 이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,FindPwPage2.class);
-                intent.putExtra("nowId",insertId);
+                Intent intent = new Intent(FindPwPage.this,FindPwPage2.class);
+                intent.putExtra("nowId",tmp);
                 startActivity(intent);
                 //FindEmailScreen();
+            }
+            else if(count==0){
+                Toast.makeText(this, insertId+"는 없는 아이디 입니다.", Toast.LENGTH_SHORT).show();
             }
 
         }
 
     }
 
-//    // 화면이동 -> FINDPWpage 아이디_확인BTN->이메일 확인페이지
-//    private void FindEmailScreen() {
-//        Intent intent = new Intent(FindPwPage.this, FindPwPage2.class);
-//        startActivity(intent);
-//    }
+
+    private void ckId(String id){
+        ckId=id;
+    }
 }

@@ -27,12 +27,15 @@ public class FindPwPage3 extends AppCompatActivity {
         fpp_emailnumEdt=findViewById(R.id.fpp_emailnumEdt);
         fpp_emailnumBtn=findViewById(R.id.fpp_emailnumBtn);
 
+
     }
 
     public void mOnClick(View v){
+
         Intent intent = getIntent();
         String SendRandomCode = intent.getStringExtra("code");
         nowId = intent.getStringExtra("nowId");
+        Log.d("지금아이디", "onCreate: p3 "+nowId);
 
         Log.d("email", " SendRandomCode=" + SendRandomCode);
         switch(v.getId()){

@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/graytextbox"
                 android:ems="10"
-                android:hint="G-Mail을 입력해주세요"
+                android:hint="E-Mail을 입력해주세요"
                 android:fontFamily="@font/godo"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toTopOf="@+id/fip_emailBtn"
