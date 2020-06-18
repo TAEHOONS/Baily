@@ -66,7 +66,7 @@ public class InfoBbfood extends AppCompatActivity {
 
             }
         });
-        edmemo=findViewById(R.id.pwm_memo);
+        edmemo=findViewById(R.id.rt_hospital_checkupedit);
         memo= edmemo.getText().toString();
 
 
@@ -91,12 +91,15 @@ public class InfoBbfood extends AppCompatActivity {
             }
         });
 
+        final Intent intent = getIntent();
+       String stt = intent.getStringExtra("str");
 
 
 
 
 
         startDate = findViewById(R.id.rt_hospital_time);
+        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +110,7 @@ public class InfoBbfood extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBbfood.this,new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + "시 " + minute + "분");
+                        startDate.setText(hourOfDay + ":" + minute);
                         strt = (hourOfDay*60)+minute;
                     }
                 }, hour, minute, false);

@@ -31,6 +31,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     int INFO_PWMILK = 8;
     int INFO_SLEEP = 9;
     int INFO_TEMP = 10;
+    public FragRecode fragRecode;
     //클릭이벤트처리 관련 사용자 정의(이 코드없으면 그냥 리사이클러뷰 구조)//////////////////////////////////////////////////////////////////////////
   private OnItemClickListener listener = null; //참고로 OnItemClickListener는 기존에 있는것과 동일한 이름인데 그냥 같은 이름으로 내가 정의를 했다. (리스트뷰에서는 이게 자동구현되있어서 OnItemClickListener를 구현안하고 호출해서 클릭시 이벤트를 처리할 수 있음)
 
@@ -125,33 +126,41 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
-final String tm = textView.getText().toString();
+                    final String tm = textView.getText().toString();
+
                     if(val.equals("●분유")){
                         Intent intent = new Intent(v.getContext(), InfoPwmilk.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PWMILK);
                     }
                     if(val.equals("●모유")){
                         Intent intent = new Intent(v.getContext(), InfoNursing.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_NURSING);
                     }
                     if(val.equals("●이유식")){
                         Intent intent = new Intent(v.getContext(), InfoBbfood.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BBFOOD);
                     }
                     if(val.equals("●잠")){
                         Intent intent = new Intent(v.getContext(), infoSleep.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_SLEEP);
                     }
                     if(val.equals("●기저귀")){
                         Intent intent = new Intent(v.getContext(), InfoBowel.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BOWEL);
                     }
                     if(val.equals("●약")){
                         Intent intent = new Intent(v.getContext(), InfoDrug.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_DRUG);
                     }
                     if(val.equals("●온도")){
                         Intent intent = new Intent(v.getContext(), InfoTemp.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_TEMP);
                     }
                     if(val.equals("●목욕")){
@@ -161,10 +170,12 @@ final String tm = textView.getText().toString();
                     }
                     if(val.equals("●병원")){
                         Intent intent = new Intent(v.getContext(), InfoHospital.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_HOSP);
                     }
                     if(val.equals("●놀이")){
                         Intent intent = new Intent(v.getContext(), InfoPlay.class);
+                        intent.putExtra("str",tm);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PLAY);
 
                     }
