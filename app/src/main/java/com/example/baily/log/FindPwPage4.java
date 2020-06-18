@@ -67,7 +67,7 @@ public class FindPwPage4 extends AppCompatActivity {
                 ad.show();
                 }else{//비번업댓후 로그인페이지로보내기
                     String userPwd = "UPDATE user SET pw='" + pwEdt.getText().toString() + "' WHERE id='" + nowId + "'";
-                    //db.execSQL(userPwd);
+                    db.execSQL(userPwd);
                     Intent intent = new Intent(FindPwPage4.this, MainActivity.class);
                     startActivity(intent);
                 }

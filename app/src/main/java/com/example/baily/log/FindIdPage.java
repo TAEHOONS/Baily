@@ -23,6 +23,8 @@ public class FindIdPage extends AppCompatActivity {
     private SQLiteDatabase db;
     EditText fip_nameEdt;
     String tmp;
+    String nowName,ckName;
+    int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,16 @@ public class FindIdPage extends AppCompatActivity {
             case R.id.fip_nameBtn: {
 
                 String name = fip_nameEdt.getText().toString();
+                ckName(name);
                 checkLogin(name);
+                if(name.length()==0) {
+                    Toast.makeText(FindIdPage.this, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }else if(count==0){
+                    Toast.makeText(FindIdPage.this, name+"님은 회원이 아닙니다.", Toast.LENGTH_SHORT).show();
+                }
+
+
+
                 break;
             }
         }
@@ -57,27 +68,26 @@ public class FindIdPage extends AppCompatActivity {
         String sql = "select * from user where name = '" + insertName + "' "; // 검색용
         Cursor c = db.rawQuery(sql, null);
         String sqlName = "";
-
+        Log.d("중복", "checkLogin:1 " + insertName);
         while (c.moveToNext()) {
             sqlName = c.getString(3);
-
-            if(!sqlName.equals(insertName)){
-                Toast.makeText(FindIdPage.this, "없는 이름 입니다.", Toast.LENGTH_SHORT).show();
-            }
-            else if (sqlName.equals(insertName)) {//중복 있을경우
-                Log.d("중복", "checkLogin: " + insertName);
+            Log.d("중복", "checkLogin:2 " + insertName);
+            ckName(sqlName);
+            if (sqlName.equals(insertName)) {//중복 있을경우
+                count++;
+                Log.d("중복", "checkLogin:3" + insertName);
                 Toast.makeText(FindIdPage.this, insertName+"님의 이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
-                FindIdScreen();
+                Intent intent = new Intent(FindIdPage.this, FindIdPage2.class);
+                nowName=insertName;
+                intent.putExtra("nowName",nowName);
+                startActivity(intent);
             }
 
         }
 
     }
-
-
-    // 화면이동 -> FIND ID_확인BTN->이메일 확인페이지
-    private void FindIdScreen() {
-        Intent intent = new Intent(FindIdPage.this, FindIdPage2.class);
-        startActivity(intent);
+    private void ckName(String name){
+        ckName=name;
     }
+
 }
