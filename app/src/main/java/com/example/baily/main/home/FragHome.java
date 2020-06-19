@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.baily.DBlink;
+import com.example.baily.NumberTextWatcher;
 import com.example.baily.R;
 import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.caldate;
@@ -56,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -169,20 +172,44 @@ public class FragHome extends Fragment {
             public void onClick(View v) {
                 dialogView = (View) View.inflate(activity, R.layout.write_dialog1, null);
                 AlertDialog.Builder dlg = new AlertDialog.Builder(activity);
+                kgAdd = (EditText) dialogView.findViewById(R.id.h_kgAddEdt);
+                cmAdd = (EditText) dialogView.findViewById(R.id.h_cmAddEdt);
+                girthAdd = (EditText) dialogView.findViewById(R.id.h_girthAddEdt);
+                feverAdd = (EditText) dialogView.findViewById(R.id.h_feverAddEdt);
+                Locale locale = new Locale("es", "AR"); // For example Argentina
+                int numDecs = 2; // Let's use 2 decimals
+
+                TextWatcher tw = new NumberTextWatcher(kgAdd, locale, numDecs);
+                kgAdd.addTextChangedListener(tw);
+                TextWatcher tw1 = new NumberTextWatcher(cmAdd, locale, numDecs);
+                cmAdd.addTextChangedListener(tw1);
+                TextWatcher tw2 = new NumberTextWatcher(girthAdd, locale, numDecs);
+                girthAdd.addTextChangedListener(tw2);
+                TextWatcher tw3 = new NumberTextWatcher(feverAdd, locale, numDecs);
+                feverAdd.addTextChangedListener(tw3);
+
 
                 dlg.setTitle("새 기록 작성");
                 dlg.setView(dialogView);
                 dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+
+
+
                         sFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
                         recodeDateNow = sFormat.format(now);//오늘 날짜
-                        kgAdd = (EditText) dialogView.findViewById(R.id.h_kgAddEdt);
-                        cmAdd = (EditText) dialogView.findViewById(R.id.h_cmAddEdt);
-                        girthAdd = (EditText) dialogView.findViewById(R.id.h_girthAddEdt);
-                        feverAdd = (EditText) dialogView.findViewById(R.id.h_feverAddEdt);
+
+
+
                         recodeDate = (TextView) view.findViewById(R.id.h_recodeDateTxt);
                         recodeDday = (TextView) view.findViewById(R.id.h_recodeDdayTxt);
+
+
+
+
+
 
                         kg = kgAdd.getText().toString();
                         cm = cmAdd.getText().toString();
