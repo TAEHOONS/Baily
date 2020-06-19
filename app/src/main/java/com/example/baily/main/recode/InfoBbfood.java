@@ -51,6 +51,9 @@ public class InfoBbfood extends AppCompatActivity {
     TextView tSum, eating, startDate, endDate;
     int strt, endt;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,22 +93,14 @@ public class InfoBbfood extends AppCompatActivity {
 
             }
         });
-        edmemo = findViewById(R.id.rt_hospital_checkupedit);
-        memo = edmemo.getText().toString();
 
 
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteItem();
             }
         });
-
-        tSum = findViewById(R.id.pwm_sum);
-
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override

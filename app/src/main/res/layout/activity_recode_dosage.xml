@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/recode_dosage_title"
+                android:id="@+id/rt_TV_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/recode_dosage_closeBtn"
+                android:id="@+id/recode_drug_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,21 +70,31 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/recode_dosage_time"
-                android:layout_width="132dp"
-                android:layout_height="49dp"
+                android:id="@+id/recode_drug_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:gravity="center"
                 android:text="07:00 pm"
                 android:textColor="#000000"
                 android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.518"></TextView>
+                app:layout_constraintVertical_bias="0.222"></TextView>
 
+            <TextView
+                android:id="@+id/rt_hospital_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/godo"
+                android:text="6월 2일"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.466" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -113,7 +123,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/recode_dosage_medicine_type"
+                android:id="@+id/pwm_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -122,7 +132,7 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.008"
+                app:layout_constraintHorizontal_bias="0.019"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
@@ -130,6 +140,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="411dp"
+
                 android:layout_height="14dp"
                 android:layout_marginTop="28dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +150,7 @@
                 app:srcCompat="@drawable/recordbar" />
 
             <EditText
-                android:id="@+id/recode_dosage_memo"
+                android:id="@+id/recode_drug_memo"
                 android:layout_width="404dp"
                 android:layout_height="114dp"
                 android:background="@null"
@@ -173,7 +184,7 @@
 
 
             <Button
-                android:id="@+id/recode_dosage_reviseBtn"
+                android:id="@+id/recode_drug_reviseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -188,7 +199,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/recode_dosage_deleteBtn"
+                android:id="@+id/recode_drug_deleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

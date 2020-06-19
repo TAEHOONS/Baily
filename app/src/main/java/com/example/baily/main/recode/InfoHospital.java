@@ -56,14 +56,14 @@ public class InfoHospital extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_health);
 
-        edmemo = findViewById(R.id.rt_hospital_checkupedit);
+        edmemo = findViewById(R.id.recode_health_memo);
         memo = edmemo.getText().toString();
 
         usingDB();
 
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
+        back = findViewById(R.id.recode_health_closeBtn);
+        Button end = findViewById(R.id.recode_health_reviseBtn);
+        Button delete = findViewById(R.id.recode_health_deleteBtn);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,7 @@ public class InfoHospital extends AppCompatActivity {
         String stt = intent.getStringExtra("str");
         infoId = intent.getIntExtra("id", INFO_NULL);
 
-        startDate = findViewById(R.id.rt_hospital_time);
+        startDate = findViewById(R.id.recode_health_time);
         startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
