@@ -376,28 +376,7 @@ public class FragRecode extends Fragment {
         });
 
 
-        handle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (count % 2 == 0) {
-                    handle.setImageResource(R.drawable.selectbuttonb);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentr, new FragRecodeSelect());
-                    fragmentTransaction.commit();
-                    count++;
-                } else {
-                    handle.setImageResource(R.drawable.selectbuttona);
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragmentr, new Fragment())
-                            .addToBackStack(null)
-                            .commit();
 
-                    count++;
-                }
-            }
-        });
         loadRecode(false, "");
 
 
