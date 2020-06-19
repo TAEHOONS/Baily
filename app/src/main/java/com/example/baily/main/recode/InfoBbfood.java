@@ -91,7 +91,7 @@ public class InfoBbfood extends AppCompatActivity {
             }
         });
 
-        tSum = findViewById(R.id.pwm_sum);
+      //  tSum = findViewById(R.id.pwm_sum);
 
 
         end.setOnClickListener(new View.OnClickListener() {

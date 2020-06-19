@@ -52,6 +52,7 @@ public class InfoBath extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bath);
+
         edmemo = findViewById(R.id.recode_bath_memo);
         back = findViewById(R.id.recode_bath_closeBtn);
         Button revise = findViewById(R.id.recode_bath_revise_btn);
@@ -209,8 +210,11 @@ public class InfoBath extends AppCompatActivity {
 
             startDate.setText(saveTime);
             endDate.setText(lastTime);
-            if (lastTime == null)
+            if (lastTime == null){
+                lastTime = saveTime;
                 endDate.setText(saveTime);
+            }
+
             edmemo.setText(memo);
 
 

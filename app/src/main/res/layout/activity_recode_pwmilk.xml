@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rt_TV_title"
+                android:id="@+id/recode_pwmilk_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/recode_pwmilk_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -121,7 +121,7 @@
                 app:srcCompat="@drawable/ic_chevron_right_24px" />
 
             <ImageView
-                android:id="@+id/record_milk_start_flag"
+                android:id="@+id/record_pwmilk_start_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -135,7 +135,7 @@
 
 
             <ImageView
-                android:id="@+id/record_milk_finish_flag"
+                android:id="@+id/record_pwmilk_finish_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -148,47 +148,45 @@
                 app:srcCompat="@drawable/ic_outlined_flag_24px" />
 
             <TextView
-                android:id="@+id/pwm_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="60dp"
+                android:id="@+id/recode_pwmilk_finishTime"
+                android:layout_width="84dp"
+                android:layout_height="29dp"
                 android:background="@null"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:inputType="textPersonName"
-                android:text="03:11 pm"
+                android:text="02:11"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/pwm_sum"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/record_pwmilk_finish_flag"
+                app:layout_constraintStart_toStartOf="@+id/record_pwmilk_finish_flag"
+                app:layout_constraintTop_toBottomOf="@+id/record_pwmilk_finish_flag" />
 
             <TextView
-                android:id="@+id/pwm_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="3dp"
+                android:id="@+id/recode_pwmilk_startTime"
+                android:layout_width="84dp"
+                android:layout_height="29dp"
                 android:background="@null"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
                 android:inputType="textPersonName"
-                android:text="02:11 pm"
+                android:text="02:11"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/pwm_sum"
-                app:layout_constraintHorizontal_bias="0.028"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/record_pwmilk_start_flag"
+                app:layout_constraintHorizontal_bias="0.509"
+                app:layout_constraintStart_toStartOf="@+id/record_pwmilk_start_flag"
+                app:layout_constraintTop_toBottomOf="@+id/record_pwmilk_start_flag"
+                app:layout_constraintVertical_bias="0.142" />
 
             <TextView
-                android:id="@+id/pwm_sum"
+                android:id="@+id/recode_pwmilk_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="60분"
+                android:text="0분"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -219,7 +217,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/pwm_tv"
+            android:id="@+id/recode_pwmilk_eatingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
@@ -234,7 +232,7 @@
             app:srcCompat="@drawable/recordbar" />
 
         <TextView
-            android:id="@+id/left_val"
+            android:id="@+id/recode_pwmilk_eating_ml"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
@@ -243,7 +241,7 @@
             android:textSize="25sp" />
 
         <SeekBar
-            android:id="@+id/nurs_left_bar"
+            android:id="@+id/recode_pwmilk_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -269,7 +267,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/pwm_memo"
+            android:id="@+id/recode_pwmilk_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -302,7 +300,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/recode_pwmilk_reviseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -317,7 +315,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recode_pwmilk_deleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

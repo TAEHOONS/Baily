@@ -92,7 +92,7 @@ public class InfoTemp extends AppCompatActivity {
             }
         });
 
-        tSum = findViewById(R.id.pwm_sum);
+       // tSum = findViewById(R.id.pwm_sum);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
