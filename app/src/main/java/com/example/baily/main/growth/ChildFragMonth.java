@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.baily.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -33,6 +34,7 @@ import static com.google.common.base.Ascii.FF;
 public class ChildFragMonth extends Fragment {
     private View view;
     private LineChart growMonthKgCart, growMonthCmCart, growMonthHeadCart, growMonthFeverCart;
+    private SwipeRefreshLayout mSwipeLayout;
     TextView monthAvgKgTxt, monthAvgCmTxt, monthAvgHeadTxt, monthAvgFeverTxt, monthDateTxt;
     float monthAvgWeight, monthAvgHeight, monthAvgHead, monthAvgFever, mKgSum = 0, mCmSum = 0, mHeadSum = 0, mFeverSum = 0;
 
@@ -58,6 +60,7 @@ public class ChildFragMonth extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.growth_child_frag_month, container, false);
+        mSwipeLayout = view.findViewById(R.id.mSwipeLayout);
         growMonthKgCart = view.findViewById(R.id.growthMonthKgLineCart);
         growMonthCmCart = view.findViewById(R.id.growthMonthCmLineCart);
         growMonthHeadCart = view.findViewById(R.id.growthMonthHeadLineCart);
@@ -171,6 +174,30 @@ public class ChildFragMonth extends Fragment {
             }
         });
 
+        //당겨서 새로고침
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SetGraphData();
+                //  중간 업데이트
+                MidDataSet();
+
+                //차트 속성
+                setGraph(growMonthKgCart, mKgData);
+                setGraph(growMonthCmCart, mCmData);
+                setGraph(growMonthHeadCart, mHeadData);
+                setGraph(growMonthFeverCart, mFeverData);
+
+
+                // 바뀐 차트 적용
+                ChartChange(growMonthKgCart);
+                ChartChange(growMonthCmCart);
+                ChartChange(growMonthHeadCart);
+                ChartChange(growMonthFeverCart);
+
+                mSwipeLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
