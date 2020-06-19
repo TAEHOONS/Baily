@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rt_TV_title"
+                android:id="@+id/recode_nursing_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/recode_nursing_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -118,7 +118,7 @@
                 app:srcCompat="@drawable/ic_chevron_right_24px" />
 
             <ImageView
-                android:id="@+id/record_milk_start_flag"
+                android:id="@+id/record_nursing_start_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -132,7 +132,7 @@
 
 
             <ImageView
-                android:id="@+id/record_milk_finish_flag"
+                android:id="@+id/record_nursing_finish_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -143,30 +143,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.239"
                 app:srcCompat="@drawable/ic_outlined_flag_24px" />
-            <TextView
-                android:id="@+id/pwm_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="60dp"
-                android:background="@null"
-                android:fontFamily="@font/godo"
-                android:gravity="center"
-                android:inputType="textPersonName"
-                android:text="03:11 pm"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/pwm_sum"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
+
 
             <TextView
-                android:id="@+id/pwm_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="3dp"
+                android:id="@+id/recode_nursing_finishTime"
+                android:layout_width="84dp"
+                android:layout_height="29dp"
                 android:background="@null"
                 android:fontFamily="@font/godo"
                 android:gravity="center"
@@ -174,21 +156,33 @@
                 android:text="02:11 pm"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/pwm_sum"
-                app:layout_constraintHorizontal_bias="0.028"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
-
-
-
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/record_nursing_finish_flag"
+                app:layout_constraintStart_toStartOf="@+id/record_nursing_finish_flag"
+                app:layout_constraintTop_toBottomOf="@+id/record_nursing_finish_flag" />
 
             <TextView
-                android:id="@+id/pwm_sum"
+                android:id="@+id/recode_nursing_startTime"
+                android:layout_width="84dp"
+                android:layout_height="29dp"
+                android:background="@null"
+                android:fontFamily="@font/godo"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:text="02:11 pm"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/record_nursing_start_flag"
+                app:layout_constraintStart_toStartOf="@+id/record_nursing_start_flag"
+                app:layout_constraintTop_toBottomOf="@+id/record_nursing_start_flag" />
+
+            <TextView
+                android:id="@+id/recode_nursing_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="60분"
+                android:text="0분"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -219,7 +213,7 @@
 
 
         <EditText
-            android:id="@+id/pwm_memo"
+            android:id="@+id/recode_nursing_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -252,7 +246,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/recode_nursing_revise_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -267,7 +261,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recode_nursing_delete_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

@@ -21,7 +21,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rt_TV_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -34,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/rplay_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +121,7 @@
                 app:srcCompat="@drawable/ic_chevron_right_24px" />
 
             <ImageView
-                android:id="@+id/record_milk_start_flag"
+                android:id="@+id/rplay_start_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -136,7 +135,7 @@
 
 
             <ImageView
-                android:id="@+id/record_milk_finish_flag"
+                android:id="@+id/rplay_finish_flag"
                 android:layout_width="31dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
@@ -149,7 +148,7 @@
                 app:srcCompat="@drawable/ic_outlined_flag_24px" />
 
             <TextView
-                android:id="@+id/pwm_end"
+                android:id="@+id/rplay_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -163,11 +162,11 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/pwm_sum"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
+                app:layout_constraintStart_toEndOf="@+id/rplay_sum"
+                app:layout_constraintTop_toBottomOf="@+id/rplay_finish_flag" />
 
             <TextView
-                android:id="@+id/pwm_start"
+                android:id="@+id/rplay_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
@@ -179,17 +178,17 @@
                 android:text="02:11 pm"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/pwm_sum"
+                app:layout_constraintEnd_toStartOf="@+id/rplay_sum"
                 app:layout_constraintHorizontal_bias="0.028"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
+                app:layout_constraintTop_toBottomOf="@+id/rplay_start_flag" />
 
             <TextView
-                android:id="@+id/pwm_sum"
+                android:id="@+id/rplay_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
-                android:text="60분"
+                android:text="0분"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -222,7 +221,7 @@
 
 
         <EditText
-            android:id="@+id/pwm_memo"
+            android:id="@+id/rplay_Memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -287,7 +286,7 @@
 
 
 
-    </LinearLayout>
+</LinearLayout>
 
 
 

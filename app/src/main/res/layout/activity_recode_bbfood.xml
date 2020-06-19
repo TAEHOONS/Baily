@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/recode_bbfood_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,11 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:gravity="center"
         android:background="#EAEEFA"
-        android:orientation="vertical">
-    </LinearLayout>
-
+        android:gravity="center"
+        android:orientation="vertical"></LinearLayout>
 
 
     <LinearLayout
@@ -73,32 +71,21 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rt_hospital_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:id="@+id/recode_bbfood_time"
+                android:layout_width="132dp"
+                android:layout_height="49dp"
                 android:fontFamily="@font/godo"
+                android:gravity="center"
                 android:text="07:00 pm"
                 android:textColor="#000000"
                 android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rt_date"></TextView>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.518"></TextView>
 
-            <TextView
-                android:id="@+id/rt_hospital_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/godo"
-                android:text="6월 2일"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rt_hospital_time"
-                app:layout_constraintVertical_bias="0.642" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
@@ -110,8 +97,7 @@
         android:layout_weight="5"
         android:background="#EAEEFA"
         android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -122,7 +108,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/pwm_tv"
+            android:id="@+id/recode_bbfood_eatingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
@@ -136,7 +122,7 @@
             app:srcCompat="@drawable/recordbar" />
 
         <TextView
-            android:id="@+id/left_val"
+            android:id="@+id/recode_bbfood_eating_ml"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
@@ -145,7 +131,7 @@
             android:textSize="25sp" />
 
         <SeekBar
-            android:id="@+id/nurs_left_bar"
+            android:id="@+id/recode_bbfood_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -160,10 +146,7 @@
         android:layout_weight="5"
         android:background="#EAEEFA"
         android:gravity="center"
-        android:orientation="vertical">
-    </LinearLayout>
-
-
+        android:orientation="vertical"></LinearLayout>
 
 
     <LinearLayout
@@ -179,7 +162,7 @@
 
 
             <TextView
-                android:id="@+id/bbf_tv"
+                android:id="@+id/recode_bbfood_typeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -193,15 +176,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/imageView5"
                 android:layout_width="411dp"
                 android:layout_height="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bbf_tv"
+                app:layout_constraintTop_toBottomOf="@+id/recode_bbfood_typeTitle"
                 app:srcCompat="@drawable/recordbar" />
 
             <EditText
-                android:id="@+id/rt_hospital_checkupedit"
+                android:id="@+id/recode_bbfood_memo"
                 android:layout_width="410dp"
                 android:layout_height="151dp"
                 android:background="@null"
@@ -215,8 +199,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.371"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bbf_tv"
-                app:layout_constraintVertical_bias="0.736" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -237,7 +220,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/recode_bbfood_reviseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -252,7 +235,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recode_bbfood_deleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"
@@ -265,7 +248,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
 
 
 </LinearLayout>
