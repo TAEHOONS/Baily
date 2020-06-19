@@ -29,7 +29,7 @@ public class ChildFragTall extends Fragment {
     private View view;
     private LineChart tallCart;
     String dbName = "user.db";
-    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count;
     // mId= 현재 사용 id, baby
     private String mId, mBabyname;
     private DBlink helper;
@@ -39,8 +39,7 @@ public class ChildFragTall extends Fragment {
    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
-    float[] standardTallBoy, standardTallGirl;
-    float[] standardTallBaby=new float[72];
+    float[] standardTallBoy, standardTallGirl,standardTallBaby;
 
 
     public static ChildFragTall newInstance(){
@@ -80,8 +79,11 @@ public class ChildFragTall extends Fragment {
         }
         //내애기값넣기
         for (int j = 0; j < standardTallBaby.length; j++) {
-            valuesBaby.add(new Entry(j, standardTallBaby[j]));
-            Log.d("for문", "값: " + standardTallBaby[j]);
+            if(standardTallBaby[j]!=0){
+                valuesBaby.add(new Entry(j, standardTallBaby[j]));
+                Log.d("for문", "값: " + standardTallBaby[j]);
+            }
+
         }
         LineDataSet set1;
         LineDataSet set2;
@@ -157,7 +159,7 @@ public class ChildFragTall extends Fragment {
 
     // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
     private void loadgrowLog() {
-
+        counting();
         String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
         Cursor c = db.rawQuery(sql, null);
         int i = 0;
@@ -174,10 +176,12 @@ public class ChildFragTall extends Fragment {
                     Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
                 } catch (Exception e) {
                 }
+            }else if(k==null){
+                i++;
             }
 
         }
-        Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardTallBaby[i]);
+
 
     }
     private void setBoyList(){
@@ -340,5 +344,14 @@ public class ChildFragTall extends Fragment {
     }
     private void setBabyList(int i, float n) {
         standardTallBaby[i] = n;
+    }
+    private int counting(){
+        count = 0;
+        Cursor cursor = db.rawQuery("select * from growlog",null);
+        count = cursor.getCount();
+        standardTallBaby = new float[count];
+        Log.d("count", "counting: "+count);
+        return count;
+
     }
 }
