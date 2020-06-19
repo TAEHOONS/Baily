@@ -94,38 +94,47 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#EAEEFA"
+                    android:background="#BEC8E6"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:tabIndicatorColor="#956797">
+                    app:tabIndicatorHeight="5dp"
+                    app:tabIndicatorColor="#161B5B"
+                    app:tabTextColor="#000000"
+                    app:tabSelectedTextColor="#121EB8"
+                    app:tabGravity="fill">
                     //일기탭
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Diary" />
+                        android:icon="@drawable/book5"
+                        android:text="일기" />
                     //기록탭
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recode" />
+                        android:icon="@drawable/write3"
+                        android:text="기록" />
                     //홈탭
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Home" />
+                        android:icon="@drawable/home6"
+                        android:text="홈" />
                     //성장 및 상태기록탭
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/tabItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Growth" />
+                        android:icon="@drawable/growth7"
+                        android:text="성장 기록" />
                     //표준그래프탭
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/tabItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Standard" />
+                        android:icon="@drawable/stand5"
+                        android:text="표준성장" />
                 </com.google.android.material.tabs.TabLayout>
                 //변경되는 화면
 
@@ -144,7 +153,7 @@
                         android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
