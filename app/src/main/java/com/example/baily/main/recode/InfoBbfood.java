@@ -34,12 +34,13 @@ public class InfoBbfood extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
+    String mMilkMl=null, saveTime, memo,getHour, getMinu;
     String test = null;
     Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
+
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -47,7 +48,7 @@ public class InfoBbfood extends AppCompatActivity {
 
     private LinearLayout horizontalLayout;
     EditText edmemo;
-    TextView tSum, eatpwm, startDate, endDate;
+    TextView tSum, eating, startDate, endDate;
     int strt, endt;
 
     @Override
@@ -55,16 +56,28 @@ public class InfoBbfood extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bbfood);
 
+        mSeekBar = findViewById(R.id.recode_bbfood_bar);
+        eating = findViewById(R.id.recode_bbfood_eating_ml);
+        edmemo = findViewById(R.id.recode_bbfood_memo);
+        back = findViewById(R.id.recode_bbfood_closeBtn);
+        Button end = findViewById(R.id.recode_bbfood_reviseBtn);
+        Button delete = findViewById(R.id.recode_bbfood_deleteBtn);
+        startDate = findViewById(R.id.recode_bbfood_time);
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+        startDate.setText(stt);
+        saveTime=stt;
+
         usingDB();
 
-        mSeekBar = findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
-        eatpwm.setText(String.valueOf(mSeekBarVal) + "ml");
+
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal) + "ml");
+                eating.setText(String.valueOf(mSeekBarVal) + "ml");
             }
 
             @Override
@@ -87,27 +100,26 @@ public class InfoBbfood extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                deleteItem();
             }
         });
 
-      //  tSum = findViewById(R.id.pwm_sum);
+        tSum = findViewById(R.id.pwm_sum);
 
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                reviseItem();
             }
         });
 
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
-
-
-        startDate = findViewById(R.id.rt_hospital_time);
-        startDate.setText(stt);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +130,8 @@ public class InfoBbfood extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBbfood.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + ":" + minute);
+                        saveTime = saveChaingeTime(hourOfDay, minute);
+                        startDate.setText(saveTime);
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -142,6 +155,12 @@ public class InfoBbfood extends AppCompatActivity {
 
     private void reviseItem() {
 
+        memo = edmemo.getText().toString();
+
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + eating.getText().toString() + "',contents1='" + memo + "' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
@@ -163,6 +182,36 @@ public class InfoBbfood extends AppCompatActivity {
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+
+            mMilkMl = cursor.getString(5);
+            memo = cursor.getString(6);
+
+            if(mMilkMl!=null) {
+                mMilkMl =mMilkMl.replace("ml","");
+                mSeekBar.setProgress(Integer.valueOf(mMilkMl));
+                eating.setText(Integer.valueOf(mMilkMl) + "ml");
+            }
+            if(memo!=null)
+            edmemo.setText(memo);
+        }
     }
 
+
+    private String saveChaingeTime(int hour, int min) {
+
+        getHour = Integer.toString(hour);
+        if (hour / 10 == 0)
+            getHour = ("0" + Integer.toString(hour));
+        getMinu = Integer.toString(min);
+        if (min / 10 == 0)
+            getMinu = ("0" + Integer.toString(min));
+
+
+        return getHour + ":" + getMinu;
+    }
 }
