@@ -115,6 +115,13 @@ public class InfoPlay extends AppCompatActivity {
                         saveTime = saveChaingeTime(hourOfDay, minute);
 
                         strt = (hourOfDay * 60) + minute;
+                        tthou = Integer.toString((endt - strt) / 60);
+                        ttmin = Integer.toString((endt - strt) % 60);
+                        if ((endt - strt) >= 60) {
+                            tSum.setText(tthou + "시간" + ttmin + "분");
+                        } else {
+                            tSum.setText(ttmin + "분");
+                        }
                     }
                 }, hour, minute, false);
                 dialog.setTitle("시작 시간");
@@ -213,8 +220,11 @@ public class InfoPlay extends AppCompatActivity {
 
             startDate.setText(saveTime);
             endDate.setText(lastTime);
-            if (lastTime == null)
+            if (lastTime == null){
+                lastTime = saveTime;
                 endDate.setText(saveTime);
+            }
+
             edmemo.setText(memo);
 
 
