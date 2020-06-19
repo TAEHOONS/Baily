@@ -4,10 +4,13 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,8 +38,11 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class FragRecode extends Fragment {
+    int suma;
+
 
     private DBlink helper;
     private SQLiteDatabase db;
@@ -123,13 +129,17 @@ public class FragRecode extends Fragment {
         FragRecode fragRecode = new FragRecode();
         return fragRecode;
     }
-
+    long start;
+    BackgroundTask task;
     private int index;
-
+    String sfName = "myFile";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.frag_recode, container, false);
+
+
+
 
         final boolean flag = true;
 
@@ -301,47 +311,11 @@ public class FragRecode extends Fragment {
             @Override
             public void onClick(View v) {
                 insertDB("기저귀");
-                final long start = System.currentTimeMillis();
-                if (thread != null) {
-                    thread.interrupt();
-                    thread = null;
-                }
-                thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (flag) {
-                            final long end = System.currentTimeMillis();
-                            try {
+                task = new BackgroundTask(bowerT);
+                //excute를 통해 백그라운드 task를 실행시킨다
+                //여기선 100을 매개변수로 보내는데 여기 예제에서는 이 매개변수를 doInBackGround에서 사용을 안했다.
+                task.execute(100);
 
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        long sum = (end - start) / 1000;
-                                        if (sum < TIME_MAXIMUM.SEC) {
-                                            sumT = "방금 전";
-                                        } else if ((sum /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
-                                            sumT = sum + "분 전";
-                                        } else if ((sum /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
-                                            sumT = (sum) + "시간 전";
-                                        } else if ((sum /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
-                                            sumT = (sum) + "일 전";
-                                        } else if ((sum /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
-                                            sumT = (sum) + "달 전";
-                                        } else {
-                                            sumT = (sum) + "년 전";
-                                        }
-                                        bowerT.setText(sumT);
-                                    }
-                                });
-
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-                thread.start();
             }
         });
         dosage.setOnClickListener(new View.OnClickListener() {
@@ -376,34 +350,74 @@ public class FragRecode extends Fragment {
         });
 
 
-        handle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (count % 2 == 0) {
-                    handle.setImageResource(R.drawable.selectbuttonb);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentr, new FragRecodeSelect());
-                    fragmentTransaction.commit();
-                    count++;
-                } else {
-                    handle.setImageResource(R.drawable.selectbuttona);
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragmentr, new Fragment())
-                            .addToBackStack(null)
-                            .commit();
 
-                    count++;
-                }
-            }
-        });
         loadRecode(false, "");
 
 
         return v;
     }
 
+
+
+    //새로운 TASK정의 (AsyncTask)
+    // < >안에 들은 자료형은 순서대로 doInBackground, onProgressUpdate, onPostExecute의 매개변수 자료형을 뜻한다.(내가 사용할 매개변수타입을 설정하면된다)
+    class BackgroundTask extends AsyncTask<Integer , Integer , Integer> {
+        //초기화 단계에서 사용한다. 초기화관련 코드를 작성했다.
+        TextView tv;
+        public BackgroundTask(TextView tv) {
+            this.tv = tv;
+        }
+        protected void onPreExecute() {
+             suma = 0;
+             start  = System.currentTimeMillis();
+        }
+        //스레드의 백그라운드 작업 구현
+        //여기서 매개변수 Intger ... values란 values란 이름의 Integer배열이라 생각하면된다.
+        //배열이라 여러개를 받을 수 도 있다. ex) excute(100, 10, 20, 30); 이런식으로 전달 받으면 된다.
+        protected Integer doInBackground(Integer ... values) {
+            //isCancelled()=> Task가 취소되었을때 즉 cancel당할때까지 반복
+            while (isCancelled() == false) {
+                final long end = System.currentTimeMillis();
+                long sum = (end - start) / 1000;
+                suma = (int) sum;
+                //위에 onCreate()에서 호출한 excute(100)의 100을 사용할려면 이런식으로 해줘도 같은 결과가 나온다.
+                //밑 대신 이렇게해도됨 if (value >= values[0].intValue())
+                if (suma >= 99999) {
+                    break;
+                } else {
+                    //publishProgress()는 onProgressUpdate()를 호출하는 메소드(그래서 onProgressUpdate의 매개변수인 int즉 Integer값을 보냄)
+                    //즉, 이 메소드를 통해 백그라운드 스레드작업을 실행하면서 중간중간  UI에 업데이트를 할 수 있다.
+                    //백그라운드에서는 UI작업을 할 수 없기 때문에 사용
+                    publishProgress(suma);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return suma;
+        }
+
+        //UI작업 관련 작업 (백그라운드 실행중 이 메소드를 통해 UI작업을 할 수 있다)
+        //publishProgress(value)의 value를 값으로 받는다.values는 배열이라 여러개 받기가능
+        protected void onProgressUpdate(Integer ... values) {
+            if( values[0] < TIME_MAXIMUM.SEC) {
+            tv.setText(values[0].toString() + "초 전");}
+            else if( (values[0] /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+                tv.setText(values[0].toString() + "분 전");
+            }else if(( values[0] /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+                tv.setText(values[0].toString() + "시간 전");
+            }else if( (values[0]  /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+                tv.setText(values[0].toString() + "일 전");
+            }else if( (values[0]  /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+                tv.setText(values[0].toString() + "달 전");
+            }else {
+                tv.setText(values[0].toString() + "년 전");
+
+            }
+        }
+    }
 
     @Override
     public void onResume() {

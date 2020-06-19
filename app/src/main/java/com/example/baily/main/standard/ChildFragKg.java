@@ -30,7 +30,7 @@ public class ChildFragKg extends Fragment {
     private LineChart kgCart;
 
     String dbName = "user.db";
-    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count;
     // mId= 현재 사용 id, baby
     private String mId, mBabyname;
     private DBlink helper;
@@ -40,8 +40,10 @@ public class ChildFragKg extends Fragment {
     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
-    float[] standardKgBoy, standardKgGirl;
-    float[] standardKgBaby=new float[72];
+    float[] standardKgBoy, standardKgGirl,standardKgBaby;
+
+
+
 
     public static ChildFragKg newInstance() {
         ChildFragKg childFragKg = new ChildFragKg();
@@ -54,7 +56,6 @@ public class ChildFragKg extends Fragment {
         view = inflater.inflate(R.layout.standard_child_frag_kg, container, false);
 
         kgCart = view.findViewById(R.id.kgLineCart);
-
         usingDB(container);
         loadgrowLog();
 
@@ -81,14 +82,19 @@ public class ChildFragKg extends Fragment {
             valuesGirl.add(new Entry(i, standardKgGirl[i]));
         }
         for (int j = 0; j < standardKgBaby.length; j++) {
-            valuesBaby.add(new Entry(j, standardKgBaby[j]));
-            Log.d("for문", "값: " + standardKgBaby[j]);
+            Log.d("배열값", "onCreateView: "+standardKgBaby.length);
+            if(standardKgBaby[j]!=0){
+                valuesBaby.add(new Entry(j, standardKgBaby[j]));
+                Log.d("for문123", "값: " + standardKgBaby[j]);
+            }
+
         }
 
 
         LineDataSet set1;
         LineDataSet set2;
         LineDataSet set3;
+
 
 
         set1 = new LineDataSet(valuesBoy, "남아 몸무게");
@@ -100,10 +106,12 @@ public class ChildFragKg extends Fragment {
         dataSets.add(set2);
         dataSets.add(set3);//내 아기
 
+
         // create a data object with the data sets
         LineData data1 = new LineData(dataSets);
         LineData data2 = new LineData(dataSets);
         LineData data3 = new LineData(dataSets);//내아기
+
 
         // black lines and points
         set1.setColor(Color.BLUE);
@@ -162,13 +170,11 @@ public class ChildFragKg extends Fragment {
 
     // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
     private void loadgrowLog() {
-
+        counting();
         String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
         Cursor c = db.rawQuery(sql, null);
         int i = 0;
-
         while (c.moveToNext()) {
-
             k = c.getString(2);
            if (k!=null) {
                try {
@@ -179,12 +185,12 @@ public class ChildFragKg extends Fragment {
                    Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
                } catch (Exception e) {
                }
+           }else if(k==null){
+               i++;
            }
-
             //standardKgBaby[i] = n;
-            //Log.d("for문", "onCreateView: " + standardKgBaby[i] + "i 값 = " + i);
+//            Log.d("for문", "onCreateView: " + standardKgBaby[i] + "i 값 = " + i);
         }
-        Log.d("와일 나와서 ", "standardKgBaby[i] " + standardKgBaby[i]);
 
     }
 
@@ -348,7 +354,16 @@ public class ChildFragKg extends Fragment {
     }
 
     private void setBabyList(int i, float n) {
+
         standardKgBaby[i] = n;
     }
+    private int counting(){
+        count = 0;
+        Cursor cursor = db.rawQuery("select * from growlog",null);
+        count = cursor.getCount();
+        standardKgBaby = new float[count];
+        Log.d("count", "counting: "+count);
+        return count;
 
+    }
 }
