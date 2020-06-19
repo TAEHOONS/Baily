@@ -24,6 +24,7 @@
         <activity android:name=".log.FindPwPage" />
         <activity android:name=".log.FindIdPage2" />
         <activity android:name=".log.FindIdPage" />
+        <activity android:name=".log.FindIdPage3" />
         <activity android:name=".babyPlus.ThirdPage" />
         <activity android:name=".babyPlus.SecondPage" />
         <activity android:name=".babyPlus.FirstPage" />

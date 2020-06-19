@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.R;
+import com.example.baily.main.diary.EventData;
 
 import java.util.ArrayList;
 
 public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder>  {
     Context context;
-    ArrayList<RecodeData> items = new ArrayList<RecodeData>();
-    ArrayList<RecodeData> filteredList;
-    int INFO_NURSING = 1;
-    int INFO_BBFOOD = 2;
-    int INFO_BOWEL = 3;
-    int INFO_BATH = 4;
-    int INFO_DRUG = 5;
-    int INFO_HOSP = 6;
-    int INFO_PLAY = 7;
-    int INFO_PWMILK = 8;
-    int INFO_SLEEP = 9;
-    int INFO_TEMP = 10;
+    ArrayList<RecodeData> recodeData;
+
+    int ItemId;
+    RecodeData recData;
+    public FragRecode fragRecode;
     //클릭이벤트처리 관련 사용자 정의(이 코드없으면 그냥 리사이클러뷰 구조)//////////////////////////////////////////////////////////////////////////
-  private OnItemClickListener listener = null; //참고로 OnItemClickListener는 기존에 있는것과 동일한 이름인데 그냥 같은 이름으로 내가 정의를 했다. (리스트뷰에서는 이게 자동구현되있어서 OnItemClickListener를 구현안하고 호출해서 클릭시 이벤트를 처리할 수 있음)
+
 
 
 
@@ -44,12 +39,12 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
 
 
     public RecodeAdapter(ArrayList<RecodeData> list, FragRecode context) {
-        items = list;
+        recodeData = list;
     }
 
     @Override //어댑터에서 관리하는 아이템의 개수를 반환
     public int getItemCount() {
-        return items.size();
+        return recodeData.size();
     }
 
 
@@ -71,32 +66,34 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
 
-        RecodeData item = items.get(position); //리사이클러뷰에서 몇번쨰게 지금 보여야되는시점이다 알려주기위해
+        final RecodeData item = recodeData.get(position); //리사이클러뷰에서 몇번쨰게 지금 보여야되는시점이다 알려주기위해
         viewHolder.setItem(item); //그거를 홀더에넣어서 뷰홀더가 데이터를 알 수 있게되서 뷰홀더에 들어가있는 뷰에다가 데이터 설정할 수 있음
 
         //클릭리스너
-        viewHolder.setOnItemClickListener(listener);
+        viewHolder.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ViewHolder holder, View view, int position) {
+                Log.d("recodeTest", "recodeA: recData="+item.getRecodeId());
+                ItemId=item.getRecodeId();
+            }
+        });
+
 
     }
 
     //아이템을 한개 추가해주고싶을때
     public  void addItem(RecodeData item){
-        items.add(item);
+        recodeData.add(item);
     }
 
     //한꺼번에 추가해주고싶을때
     public void addItems(ArrayList<RecodeData> items){
-        this.items = items;
+        this.recodeData = items;
     }
 
 
     public RecodeData getItem(int position){
-        return  items.get(position);
-    }
-
-    //클릭리스너관련
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
+        return  recodeData.get(position);
     }
 
     //뷰홀더
@@ -125,46 +122,66 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
-final String tm = textView.getText().toString();
+                    final String tm = textView.getText().toString();
+
                     if(val.equals("●분유")){
                         Intent intent = new Intent(v.getContext(), InfoPwmilk.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PWMILK);
                     }
                     if(val.equals("●모유")){
                         Intent intent = new Intent(v.getContext(), InfoNursing.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_NURSING);
                     }
                     if(val.equals("●이유식")){
                         Intent intent = new Intent(v.getContext(), InfoBbfood.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BBFOOD);
                     }
                     if(val.equals("●잠")){
                         Intent intent = new Intent(v.getContext(), infoSleep.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_SLEEP);
                     }
                     if(val.equals("●기저귀")){
                         Intent intent = new Intent(v.getContext(), InfoBowel.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BOWEL);
                     }
                     if(val.equals("●약")){
                         Intent intent = new Intent(v.getContext(), InfoDrug.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_DRUG);
                     }
                     if(val.equals("●온도")){
                         Intent intent = new Intent(v.getContext(), InfoTemp.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_TEMP);
                     }
                     if(val.equals("●목욕")){
                         Intent intent = new Intent(v.getContext(), InfoBath.class);
                         intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BATH);
                     }
                     if(val.equals("●병원")){
                         Intent intent = new Intent(v.getContext(), InfoHospital.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_HOSP);
                     }
                     if(val.equals("●놀이")){
                         Intent intent = new Intent(v.getContext(), InfoPlay.class);
+                        intent.putExtra("str",tm);
+                        intent.putExtra("id",ItemId);
                         ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PLAY);
 
                     }
