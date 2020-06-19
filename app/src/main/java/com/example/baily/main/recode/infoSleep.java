@@ -24,8 +24,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.baily.DBlink;
 import com.example.baily.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class infoSleep extends AppCompatActivity {
 
@@ -34,12 +38,14 @@ public class infoSleep extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
+    String  getHour, getMinu, saveTime, lastTime, tthou, ttmin, memo;
     String test = null;
     Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
+
+
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -56,42 +62,23 @@ public class infoSleep extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_sleep);
 
+        edmemo = findViewById(R.id.recode_sleep_memo);
+        back = findViewById(R.id.recode_sleep_closeBtn);
+        Button revise = findViewById(R.id.recode_sleep_reviseBtn);
+        Button delete = findViewById(R.id.recode_sleep_deleteBtn);
+        tSum = findViewById(R.id.recode_sleep_time);
+        startDate = findViewById(R.id.recode_sleep_startTime);
+        endDate = findViewById(R.id.recode_sleep_finishTime);
 
-        edmemo = findViewById(R.id.pwm_memo);
-        memo = edmemo.getText().toString();
-
-        usingDB();
-
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        tSum = findViewById(R.id.pwm_sum);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         final Intent intent = getIntent();
         String stt = intent.getStringExtra("str");
         infoId = intent.getIntExtra("id", INFO_NULL);
 
+        usingDB();
+
+
+        Log.d("recodeTest", "get recodeId = " + infoId);
         int idx = stt.indexOf(":");
         String stt1 = stt.substring(0, idx);
         String stt2 = stt.substring(idx + 1);
@@ -100,8 +87,26 @@ public class infoSleep extends AppCompatActivity {
         strt = (sa * 60) + sb;
 
 
-        startDate = findViewById(R.id.pwm_start);
-        startDate.setText(stt);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
+            }
+        });
+
+        revise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviseItem();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +117,9 @@ public class infoSleep extends AppCompatActivity {
                 dialog = new TimePickerDialog(infoSleep.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + ":" + minute);
+                        startDate.setText(saveChaingeTime(hourOfDay, minute));
+                        saveTime = saveChaingeTime(hourOfDay, minute);
+
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -120,7 +127,7 @@ public class infoSleep extends AppCompatActivity {
                 dialog.show();
             }
         });
-        endDate = findViewById(R.id.pwm_end);
+
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +138,8 @@ public class infoSleep extends AppCompatActivity {
                 dialog = new TimePickerDialog(infoSleep.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        endDate.setText(hourOfDay + ":" + minute);
+                        endDate.setText(saveChaingeTime(hourOfDay, minute));
+                        lastTime = saveChaingeTime(hourOfDay, minute);
                         endt = (hourOfDay * 60) + minute;
                         tthou = Integer.toString((endt - strt) / 60);
                         ttmin = Integer.toString((endt - strt) % 60);
@@ -160,8 +168,19 @@ public class infoSleep extends AppCompatActivity {
         }
     };
 
-    private void reviseItem() {
 
+    private void reviseItem() {
+        memo = edmemo.getText().toString();
+        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        if (lastTime.equals(saveTime))
+            lastTime = (lastTime + " ");
+        else
+            lastTime = lastTime + " 까지 놀았습니다.";
+
+        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
     }
 
     private void deleteItem() {
@@ -181,8 +200,66 @@ public class infoSleep extends AppCompatActivity {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            saveTime = cursor.getString(3);
+            lastTime = cursor.getString(5);
+            memo = cursor.getString(6);
+
+
+
+            if (lastTime != null)
+                lastTime = lastTime.substring(0, 5);
+
+
+            startDate.setText(saveTime);
+            endDate.setText(lastTime);
+            if (lastTime == null){
+                lastTime = saveTime;
+                endDate.setText(saveTime);
+            }
+
+            edmemo.setText(memo);
+
+
+            SimpleDateFormat f = new SimpleDateFormat("HH:mm", Locale.KOREA);
+            Date d1 = null,d2=null;
+            try {
+                d1 = f.parse(saveTime);
+                d2 = f.parse(lastTime);
+            } catch (ParseException e) { }
+
+
+            tthou = Integer.toString(((int)d2.getTime() - (int)d1.getTime()) / 3600000);
+            ttmin = Integer.toString((((int)d2.getTime() - (int)d1.getTime()) % 3600000)/60000);
+            Log.d("recodePlayTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
+
+            if (((int)d2.getTime() - (int)d1.getTime()) >= 3600000) {
+                tSum.setText(tthou + "시간" + ttmin + "분");
+            } else {
+                tSum.setText(ttmin + "분");
+            }
+
+        }
+
+
     }
 
+    private String saveChaingeTime(int hour, int min) {
+
+        getHour = Integer.toString(hour);
+        if (hour / 10 == 0)
+            getHour = ("0" + Integer.toString(hour));
+        getMinu = Integer.toString(min);
+        if (min / 10 == 0)
+            getMinu = ("0" + Integer.toString(min));
+
+
+        return getHour + ":" + getMinu;
+    }
 }

@@ -20,7 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.baily.DBlink;
 import com.example.baily.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class InfoBath extends AppCompatActivity {
 
@@ -29,20 +33,17 @@ public class InfoBath extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String tthou, ttmin, memo, time;
-    String test = null;
-    Button tagAdd;
+
+    String tthou, ttmin, memo, getHour, getMinu, saveTime, lastTime;
     ImageView back, end;
     private SeekBar mSeekBar;
-    private int mSeekBarVal = 0;
-    String stt = null;
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    private LinearLayout horizontalLayout;
     EditText edmemo;
     TextView tSum, eatpwm, startDate, endDate;
+
     int strt, endt;
 
     static int RESULT_REMOVE_EVENT = 101;
@@ -52,46 +53,23 @@ public class InfoBath extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bath);
 
-        usingDB();
-
-        edmemo = findViewById(R.id.pwm_memo);
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        tSum = findViewById(R.id.pwm_sum);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent bath = new Intent();
-                memo = edmemo.getText().toString();
-                time = tSum.getText().toString();
-                bath.putExtra("str", startDate.getText().toString());
-                bath.putExtra("meme", edmemo.getText().toString());
-                setResult(RESULT_OK, bath);
-                finish();
-            }
-        });
+        edmemo = findViewById(R.id.recode_bath_memo);
+        back = findViewById(R.id.recode_bath_closeBtn);
+        Button revise = findViewById(R.id.recode_bath_revise_btn);
+        Button delete = findViewById(R.id.recode_bath_delete_btn);
+        tSum = findViewById(R.id.recode_bath_time);
+        startDate = findViewById(R.id.recode_bath_startTime);
+        endDate = findViewById(R.id.recode_bath_finishTime);
 
 
         final Intent intent = getIntent();
-        stt = intent.getStringExtra("str");
+        String stt = intent.getStringExtra("str");
         infoId = intent.getIntExtra("id", INFO_NULL);
 
+        usingDB();
+
+
+        Log.d("recodeTest", "get recodeId = " + infoId);
         int idx = stt.indexOf(":");
         String stt1 = stt.substring(0, idx);
         String stt2 = stt.substring(idx + 1);
@@ -100,8 +78,26 @@ public class InfoBath extends AppCompatActivity {
         strt = (sa * 60) + sb;
 
 
-        startDate = findViewById(R.id.pwm_start);
-        startDate.setText(stt);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
+            }
+        });
+
+        revise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviseItem();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +108,9 @@ public class InfoBath extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBath.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + ":" + minute);
+                        startDate.setText(saveChaingeTime(hourOfDay, minute));
+                        saveTime = saveChaingeTime(hourOfDay, minute);
+
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -120,7 +118,7 @@ public class InfoBath extends AppCompatActivity {
                 dialog.show();
             }
         });
-        endDate = findViewById(R.id.pwm_end);
+
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +129,8 @@ public class InfoBath extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBath.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        endDate.setText(hourOfDay + ":" + minute);
+                        endDate.setText(saveChaingeTime(hourOfDay, minute));
+                        lastTime = saveChaingeTime(hourOfDay, minute);
                         endt = (hourOfDay * 60) + minute;
                         tthou = Integer.toString((endt - strt) / 60);
                         ttmin = Integer.toString((endt - strt) % 60);
@@ -160,8 +159,19 @@ public class InfoBath extends AppCompatActivity {
         }
     };
 
-    private void reviseItem() {
 
+    private void reviseItem() {
+        memo = edmemo.getText().toString();
+        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        if (lastTime.equals(saveTime))
+            lastTime = (lastTime + " ");
+        else
+            lastTime = lastTime + " 까지 놀았습니다.";
+
+        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
     }
 
     private void deleteItem() {
@@ -181,8 +191,66 @@ public class InfoBath extends AppCompatActivity {
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
-            Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            saveTime = cursor.getString(3);
+            lastTime = cursor.getString(5);
+            memo = cursor.getString(6);
+
+
+
+            if (lastTime != null)
+                lastTime = lastTime.substring(0, 5);
+
+
+            startDate.setText(saveTime);
+            endDate.setText(lastTime);
+            if (lastTime == null){
+                lastTime = saveTime;
+                endDate.setText(saveTime);
+            }
+
+            edmemo.setText(memo);
+
+
+            SimpleDateFormat f = new SimpleDateFormat("HH:mm", Locale.KOREA);
+            Date d1 = null,d2=null;
+            try {
+                d1 = f.parse(saveTime);
+                d2 = f.parse(lastTime);
+            } catch (ParseException e) { }
+
+
+            tthou = Integer.toString(((int)d2.getTime() - (int)d1.getTime()) / 3600000);
+            ttmin = Integer.toString((((int)d2.getTime() - (int)d1.getTime()) % 3600000)/60000);
+            Log.d("recodePlayTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
+
+            if (((int)d2.getTime() - (int)d1.getTime()) >= 3600000) {
+                tSum.setText(tthou + "시간" + ttmin + "분");
+            } else {
+                tSum.setText(ttmin + "분");
+            }
+
+        }
+
+
     }
 
+    private String saveChaingeTime(int hour, int min) {
+
+        getHour = Integer.toString(hour);
+        if (hour / 10 == 0)
+            getHour = ("0" + Integer.toString(hour));
+        getMinu = Integer.toString(min);
+        if (min / 10 == 0)
+            getMinu = ("0" + Integer.toString(min));
+
+
+        return getHour + ":" + getMinu;
+    }
 }
