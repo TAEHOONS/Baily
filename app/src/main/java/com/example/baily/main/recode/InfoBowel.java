@@ -58,11 +58,11 @@ public class InfoBowel extends AppCompatActivity {
 
         usingDB();
 
-        edmemo = findViewById(R.id.pwm_memo);
+        edmemo = findViewById(R.id.recode_bowel_memo);
         memo = edmemo.getText().toString();
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
+        back = findViewById(R.id.recode_bowel_closeBtn);
+        Button end = findViewById(R.id.recode_bowel_reviseBtn);
+        Button delete = findViewById(R.id.recode_bowel_deleteBtn);
 
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class InfoBowel extends AppCompatActivity {
         infoId = intent.getIntExtra("id", INFO_NULL);
 
 
-        startDate = findViewById(R.id.rt_hospital_time);
+        startDate = findViewById(R.id.recode_temp_time);
         startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override

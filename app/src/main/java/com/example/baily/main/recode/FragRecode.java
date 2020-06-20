@@ -145,6 +145,7 @@ public class FragRecode extends Fragment {
 
         final Handler handler = new Handler();
         this.container = container;
+
         nurs = v.findViewById(R.id.nursing_btn);
         bbfood = v.findViewById(R.id.babyfood_btn);
         sleep = v.findViewById(R.id.sleep_btn);

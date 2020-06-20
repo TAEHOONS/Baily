@@ -30,18 +30,14 @@ import java.util.Calendar;
 public class InfoTemp extends AppCompatActivity {
 
     String dbName = "user.db", mId, mBabyname;
-    int dbVersion = 3,infoId,INFO_NULL = 999999999;
+    int dbVersion = 3, infoId, INFO_NULL = 999999999;
     private DBlink helper;
     private SQLiteDatabase db;
 
 
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
-    String test = null;
-    Button tagAdd;
+    String tthou, ttmin, memo, getHour, getMinu, saveTime, lastTime;
     ImageView back, end;
     private SeekBar mSeekBar;
-    private int mSeekBarVal = (int) 36.5;
-
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
@@ -51,6 +47,10 @@ public class InfoTemp extends AppCompatActivity {
 
     int strt, endt;
 
+
+    private double mSeekBarVal = 36.5;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +58,18 @@ public class InfoTemp extends AppCompatActivity {
 
         usingDB();
 
-        mSeekBar = findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
+        mSeekBar = findViewById(R.id.recode_temp_bar);
+        eatpwm = findViewById(R.id.recode_temp_temperature);
         eatpwm.setText(String.valueOf(mSeekBarVal) + "℃");
+        mSeekBar.setProgress((int) mSeekBarVal);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal) + "℃");
+                float decimalProgress = (float) progress/10;
+
+                mSeekBarVal = decimalProgress;
+                String strNumber = String.format("%.1f", mSeekBarVal);
+                eatpwm.setText(String.valueOf(strNumber) + "℃");
             }
 
             @Override
@@ -78,13 +82,13 @@ public class InfoTemp extends AppCompatActivity {
 
             }
         });
-        edmemo = findViewById(R.id.pwm_memo);
+        edmemo = findViewById(R.id.recode_temp_memo);
         memo = edmemo.getText().toString();
 
 
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
+        back = findViewById(R.id.recode_temp_closeBtn);
+        Button end = findViewById(R.id.recode_temp_reviseBtn);
+        Button delete = findViewById(R.id.recode_temp_deleteBtn);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +96,7 @@ public class InfoTemp extends AppCompatActivity {
             }
         });
 
-       // tSum = findViewById(R.id.pwm_sum);
+        tSum = findViewById(R.id.pwm_sum);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +117,7 @@ public class InfoTemp extends AppCompatActivity {
         infoId = intent.getIntExtra("id", INFO_NULL);
 
 
-        startDate = findViewById(R.id.rt_hospital_time);
+        startDate = findViewById(R.id.recode_temp_time);
         startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override

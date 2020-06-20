@@ -38,23 +38,26 @@ public class InfoPwmilk extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-
-    String tthou, ttmin, memo, getHour, getMinu, saveTime, lastTime;
+    String mMilkMl=null, saveTime, memo,getHour, getMinu;
+    String tthou, ttmin, lastTime;
     String test = null;
     Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
 
+
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-
+    private LinearLayout horizontalLayout;
     EditText edmemo;
-    TextView tSum, eatpwm, startDate, endDate;
-
+    TextView tSum, eating, startDate, endDate;
     int strt, endt;
+
+
+
 
 
     @Override
@@ -62,29 +65,44 @@ public class InfoPwmilk extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_pwmilk);
 
-        edmemo = findViewById(R.id.recode_pwmilk_memo);
-        back = findViewById(R.id.recode_pwmilk_closeBtn);
-        Button revise = findViewById(R.id.recode_pwmilk_reviseBtn);
-        Button delete = findViewById(R.id.recode_pwmilk_deleteBtn);
-        tSum = findViewById(R.id.recode_pwmilk_time);
-        startDate = findViewById(R.id.recode_pwmilk_startTime);
-        endDate = findViewById(R.id.recode_pwmilk_finishTime);
 
+        mSeekBar = findViewById(R.id.recode_pwm_bar);
+        eating = findViewById(R.id.recode_pwm_eating_ml);
+        edmemo = findViewById(R.id.recode_pwm_memo);
+        back = findViewById(R.id.recode_pwm_closeBtn);
+        tSum = findViewById(R.id.recode_pwm_sum);
+        Button end = findViewById(R.id.recode_pwm_reviseBtn);
+        Button delete = findViewById(R.id.recode_pwm_deleteBtn);
+        startDate = findViewById(R.id.recode_pwm_start);
+        endDate = findViewById(R.id.recode_pwm_end);
 
         final Intent intent = getIntent();
         String stt = intent.getStringExtra("str");
         infoId = intent.getIntExtra("id", INFO_NULL);
+        startDate.setText(stt);
+        saveTime=stt;
 
         usingDB();
 
 
-        Log.d("recodeTest", "get recodeId = " + infoId);
-        int idx = stt.indexOf(":");
-        String stt1 = stt.substring(0, idx);
-        String stt2 = stt.substring(idx + 1);
-        int sa = Integer.parseInt(stt1);
-        int sb = Integer.parseInt(stt2);
-        strt = (sa * 60) + sb;
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSeekBarVal = progress;
+                eating.setText(String.valueOf(mSeekBarVal) + "ml");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +112,7 @@ public class InfoPwmilk extends AppCompatActivity {
             }
         });
 
-        revise.setOnClickListener(new View.OnClickListener() {
+        end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reviseItem();
@@ -117,9 +135,8 @@ public class InfoPwmilk extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoPwmilk.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(saveChaingeTime(hourOfDay, minute));
                         saveTime = saveChaingeTime(hourOfDay, minute);
-
+                        startDate.setText(saveTime);
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -127,6 +144,7 @@ public class InfoPwmilk extends AppCompatActivity {
                 dialog.show();
             }
         });
+
 
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,13 +189,13 @@ public class InfoPwmilk extends AppCompatActivity {
 
     private void reviseItem() {
         memo = edmemo.getText().toString();
-        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        Log.d("recodePwmilk", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 까지 놀았습니다.";
+            lastTime = lastTime + " 동안 먹었습니다.";
 
-        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        Log.d("recodePwmilk", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
@@ -201,7 +219,6 @@ public class InfoPwmilk extends AppCompatActivity {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
         }
-
         sql = "select * from recode where id=" + infoId + " "; // 검색용
         cursor = db.rawQuery(sql, null);
 
@@ -211,11 +228,8 @@ public class InfoPwmilk extends AppCompatActivity {
             lastTime = cursor.getString(5);
             memo = cursor.getString(6);
 
-
-
             if (lastTime != null)
                 lastTime = lastTime.substring(0, 5);
-
 
             startDate.setText(saveTime);
             endDate.setText(lastTime);
@@ -223,7 +237,6 @@ public class InfoPwmilk extends AppCompatActivity {
                 lastTime = saveTime;
                 endDate.setText(saveTime);
             }
-
             edmemo.setText(memo);
 
 
@@ -233,33 +246,25 @@ public class InfoPwmilk extends AppCompatActivity {
                 d1 = f.parse(saveTime);
                 d2 = f.parse(lastTime);
             } catch (ParseException e) { }
-
-
             tthou = Integer.toString(((int)d2.getTime() - (int)d1.getTime()) / 3600000);
             ttmin = Integer.toString((((int)d2.getTime() - (int)d1.getTime()) % 3600000)/60000);
-            Log.d("recodePlayTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
+            Log.d("recodePwmilkTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
 
             if (((int)d2.getTime() - (int)d1.getTime()) >= 3600000) {
                 tSum.setText(tthou + "시간" + ttmin + "분");
             } else {
                 tSum.setText(ttmin + "분");
             }
-
         }
-
-
     }
 
     private String saveChaingeTime(int hour, int min) {
-
         getHour = Integer.toString(hour);
         if (hour / 10 == 0)
             getHour = ("0" + Integer.toString(hour));
         getMinu = Integer.toString(min);
         if (min / 10 == 0)
             getMinu = ("0" + Integer.toString(min));
-
-
         return getHour + ":" + getMinu;
     }
 }

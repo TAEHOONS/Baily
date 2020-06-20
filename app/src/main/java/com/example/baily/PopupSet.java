@@ -47,7 +47,7 @@ public class PopupSet extends Dialog {
 
         mCinfirmBtn = (Button) findViewById(R.id.popup_Confirm);
         mCancleBtn = (Button) findViewById(R.id.popup_Cancle);
-        mPopUpText = (TextView) findViewById(R.id.popup_TextView);
+        mPopUpText = (TextView) findViewById(R.id.popup_TextView2);
 
 
         mCinfirmBtn.setOnClickListener(new View.OnClickListener() {

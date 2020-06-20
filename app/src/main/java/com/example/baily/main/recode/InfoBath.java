@@ -46,20 +46,18 @@ public class InfoBath extends AppCompatActivity {
 
     int strt, endt;
 
-    static int RESULT_REMOVE_EVENT = 101;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bath);
 
-        edmemo = findViewById(R.id.recode_bath_memo);
-        back = findViewById(R.id.recode_bath_closeBtn);
-        Button revise = findViewById(R.id.recode_bath_revise_btn);
-        Button delete = findViewById(R.id.recode_bath_delete_btn);
-        tSum = findViewById(R.id.recode_bath_time);
-        startDate = findViewById(R.id.recode_bath_startTime);
-        endDate = findViewById(R.id.recode_bath_finishTime);
+        edmemo = findViewById(R.id.rbath_memo);
+        back = findViewById(R.id.rbath_closeBtn);
+        Button revise = findViewById(R.id.rbath_Btn_revise);
+        Button delete = findViewById(R.id.rbath_Btn_delete);
+        tSum = findViewById(R.id.rbath_sum);
+        startDate = findViewById(R.id.rbath_start);
+        endDate = findViewById(R.id.rbath_end);
 
 
         final Intent intent = getIntent();
@@ -89,6 +87,7 @@ public class InfoBath extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 reviseItem();
+                finish();
             }
         });
 
@@ -112,6 +111,13 @@ public class InfoBath extends AppCompatActivity {
                         saveTime = saveChaingeTime(hourOfDay, minute);
 
                         strt = (hourOfDay * 60) + minute;
+                        tthou = Integer.toString((endt - strt) / 60);
+                        ttmin = Integer.toString((endt - strt) % 60);
+                        if ((endt - strt) >= 60) {
+                            tSum.setText(tthou + "시간" + ttmin + "분");
+                        } else {
+                            tSum.setText(ttmin + "분");
+                        }
                     }
                 }, hour, minute, false);
                 dialog.setTitle("시작 시간");
@@ -162,19 +168,19 @@ public class InfoBath extends AppCompatActivity {
 
     private void reviseItem() {
         memo = edmemo.getText().toString();
-        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        Log.d("recodeBath", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 까지 놀았습니다.";
+            lastTime = lastTime + " 동안 목욕하였습니다.";
 
-        Log.d("recodePlay", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
+        Log.d("recodeBath", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
     }
 
-    private void deleteItem() {
+    private void deleteItem()  {
         String deletejob = "DELETE FROM recode where id=" + infoId + " AND name='" + mBabyname + "'";
         db.execSQL(deletejob);
         finish();
@@ -192,7 +198,6 @@ public class InfoBath extends AppCompatActivity {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
         }
-
         sql = "select * from recode where id=" + infoId + " "; // 검색용
         cursor = db.rawQuery(sql, null);
 
@@ -202,11 +207,8 @@ public class InfoBath extends AppCompatActivity {
             lastTime = cursor.getString(5);
             memo = cursor.getString(6);
 
-
-
             if (lastTime != null)
                 lastTime = lastTime.substring(0, 5);
-
 
             startDate.setText(saveTime);
             endDate.setText(lastTime);
@@ -214,7 +216,6 @@ public class InfoBath extends AppCompatActivity {
                 lastTime = saveTime;
                 endDate.setText(saveTime);
             }
-
             edmemo.setText(memo);
 
 
@@ -224,33 +225,25 @@ public class InfoBath extends AppCompatActivity {
                 d1 = f.parse(saveTime);
                 d2 = f.parse(lastTime);
             } catch (ParseException e) { }
-
-
             tthou = Integer.toString(((int)d2.getTime() - (int)d1.getTime()) / 3600000);
             ttmin = Integer.toString((((int)d2.getTime() - (int)d1.getTime()) % 3600000)/60000);
-            Log.d("recodePlayTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
+            Log.d("recodeBathTime", "시간: "+((int)d2.getTime() - (int)d1.getTime()));
 
             if (((int)d2.getTime() - (int)d1.getTime()) >= 3600000) {
                 tSum.setText(tthou + "시간" + ttmin + "분");
             } else {
                 tSum.setText(ttmin + "분");
             }
-
         }
-
-
     }
 
     private String saveChaingeTime(int hour, int min) {
-
         getHour = Integer.toString(hour);
         if (hour / 10 == 0)
             getHour = ("0" + Integer.toString(hour));
         getMinu = Integer.toString(min);
         if (min / 10 == 0)
             getMinu = ("0" + Integer.toString(min));
-
-
         return getHour + ":" + getMinu;
     }
 }
