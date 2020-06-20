@@ -137,6 +137,7 @@
 
         <SeekBar
             android:id="@+id/recode_temp_bar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -192,20 +193,6 @@
         android:background="#EAEEFA"
         android:gravity="center"
         android:orientation="vertical">
-
-        <SeekBar
-            android:id="@+id/testbar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="380"
-            android:progress="36" />
-
-        <TextView
-            android:id="@+id/test1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
