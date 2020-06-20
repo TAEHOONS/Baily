@@ -47,7 +47,6 @@ public class InfoTemp extends AppCompatActivity {
 
     int strt, endt;
 
-
     private double mSeekBarVal = 36.5;
 
 
@@ -60,18 +59,45 @@ public class InfoTemp extends AppCompatActivity {
 
         mSeekBar = findViewById(R.id.recode_temp_bar);
         eatpwm = findViewById(R.id.recode_temp_temperature);
+        edmemo = findViewById(R.id.recode_temp_memo);
+        back = findViewById(R.id.recode_temp_closeBtn);
+        Button end = findViewById(R.id.recode_temp_reviseBtn);
+        Button delete = findViewById(R.id.recode_temp_deleteBtn);
+        tSum = findViewById(R.id.pwm_sum);
+        startDate = findViewById(R.id.recode_temp_time);
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+
+
+
+
+
+
+        memo = edmemo.getText().toString();
+
+
+        startDate.setText(stt);
+
+
+        mSeekBar.setProgress(36);
         eatpwm.setText(String.valueOf(mSeekBarVal) + "℃");
-        mSeekBar.setProgress((int) mSeekBarVal);
+
+        mSeekBar.setMax(38);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float decimalProgress = (float) progress/10;
+                if(progress <= 350){
+                    progress = 350 + progress;
 
-                mSeekBarVal = decimalProgress;
-                String strNumber = String.format("%.1f", mSeekBarVal);
-                eatpwm.setText(String.valueOf(strNumber) + "℃");
+                    float decimalProgress = (float) progress/10;
+
+                    mSeekBarVal = decimalProgress;
+                    String strNumber = String.format("%.1f", mSeekBarVal);
+                    eatpwm.setText(String.valueOf(strNumber) + "℃");
+                }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -82,21 +108,13 @@ public class InfoTemp extends AppCompatActivity {
 
             }
         });
-        edmemo = findViewById(R.id.recode_temp_memo);
-        memo = edmemo.getText().toString();
 
-
-        back = findViewById(R.id.recode_temp_closeBtn);
-        Button end = findViewById(R.id.recode_temp_reviseBtn);
-        Button delete = findViewById(R.id.recode_temp_deleteBtn);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                deleteItem();
             }
         });
-
-        tSum = findViewById(R.id.pwm_sum);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +130,6 @@ public class InfoTemp extends AppCompatActivity {
             }
         });
 
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
-
-
-        startDate = findViewById(R.id.recode_temp_time);
-        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

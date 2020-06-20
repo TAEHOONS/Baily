@@ -57,17 +57,17 @@ public class InfoDrug extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_dosage);
 
-
-
         edmemo = findViewById(R.id.recode_drug_memo);
         back = findViewById(R.id.recode_drug_closeBtn);
         Button end = findViewById(R.id.recode_drug_reviseBtn);
         Button delete = findViewById(R.id.recode_drug_deleteBtn);
         startDate = findViewById(R.id.recode_drug_time);
 
+
         final Intent intent = getIntent();
         String stt = intent.getStringExtra("str");
         infoId = intent.getIntExtra("id", INFO_NULL);
+
         startDate.setText(stt);
         saveTime=stt;
 
@@ -132,7 +132,7 @@ public class InfoDrug extends AppCompatActivity {
 
         memo = edmemo.getText().toString();
 
-        String Revisejob = "UPDATE recode SET time='" + saveTime + "',contents1='" + memo + "' " +
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + memo + "' " +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
         finish();
@@ -162,7 +162,7 @@ public class InfoDrug extends AppCompatActivity {
         cursor = db.rawQuery(sql, null);
         // 기본 데이터
         while (cursor.moveToNext()) {
-            memo = cursor.getString(6);
+            memo = cursor.getString(5);
             if(memo!=null)
                 edmemo.setText(memo);
         }

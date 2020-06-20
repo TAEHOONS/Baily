@@ -56,13 +56,22 @@ public class InfoBowel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bowel);
 
-        usingDB();
-
         edmemo = findViewById(R.id.recode_bowel_memo);
-        memo = edmemo.getText().toString();
         back = findViewById(R.id.recode_bowel_closeBtn);
         Button end = findViewById(R.id.recode_bowel_reviseBtn);
         Button delete = findViewById(R.id.recode_bowel_deleteBtn);
+        startDate = findViewById(R.id.recode_bowel_time);
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+
+        usingDB();
+        memo = edmemo.getText().toString();
+        startDate.setText(stt);
+
+
+
 
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -86,14 +95,6 @@ public class InfoBowel extends AppCompatActivity {
                 finish();
             }
         });
-
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
-
-
-        startDate = findViewById(R.id.recode_temp_time);
-        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

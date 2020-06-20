@@ -196,9 +196,11 @@ public class InfoPwmilk extends AppCompatActivity {
             lastTime = lastTime + " 동안 먹었습니다.";
 
         Log.d("recodePwmilk", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
-        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "'," +
+                "contents1='" + memo + "',contents2 ='"+eating.getText().toString()+"'" +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
@@ -227,7 +229,7 @@ public class InfoPwmilk extends AppCompatActivity {
             saveTime = cursor.getString(3);
             lastTime = cursor.getString(5);
             memo = cursor.getString(6);
-
+            mMilkMl= cursor.getString(7);
             if (lastTime != null)
                 lastTime = lastTime.substring(0, 5);
 
@@ -237,8 +239,15 @@ public class InfoPwmilk extends AppCompatActivity {
                 lastTime = saveTime;
                 endDate.setText(saveTime);
             }
+
             edmemo.setText(memo);
 
+
+            if(mMilkMl!=null) {
+                mMilkMl =mMilkMl.replace("ml","");
+                mSeekBar.setProgress(Integer.valueOf(mMilkMl));
+                eating.setText(Integer.valueOf(mMilkMl) + "ml");
+            }
 
             SimpleDateFormat f = new SimpleDateFormat("HH:mm", Locale.KOREA);
             Date d1 = null,d2=null;
