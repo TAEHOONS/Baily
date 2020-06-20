@@ -191,7 +191,7 @@
                 android:background="@null"
                 android:ems="10"
                 android:fontFamily="@font/godo"
-                android:hint="   검진 내용 및 증상을 입력해주세요"
+                android:hint="   이곳을 터치하여 메모를 입력해주세요."
                 android:inputType="textPersonName"
                 android:textColorHint="#000000"
                 android:textSize="20sp"

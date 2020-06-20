@@ -48,8 +48,9 @@ public class InfoTemp extends AppCompatActivity {
     int strt, endt;
 
     private double mSeekBarVal = 36.5;
-
-
+    private SeekBar mtestBar;
+    private double mtestVal = 36.5;
+TextView textV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +109,37 @@ public class InfoTemp extends AppCompatActivity {
 
             }
         });
+
+        mtestBar = findViewById(R.id.testbar);
+         textV = findViewById(R.id.test1);
+        mtestBar.setProgress(36);
+        textV.setText(String.valueOf(mtestVal) + "℃");
+
+        mtestBar.setMax(38);
+        mtestBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(progress <= 350){
+                    progress = 350 + progress;
+
+                    float decimalProgress = (float) progress/10;
+
+                    mtestVal = decimalProgress;
+                    String strNumber = String.format("%.1f", mtestVal);
+                    textV.setText(String.valueOf(strNumber) + "℃");
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
