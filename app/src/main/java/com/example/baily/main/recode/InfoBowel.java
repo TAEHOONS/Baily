@@ -74,12 +74,7 @@ public class InfoBowel extends AppCompatActivity {
 
 
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
         //tSum = findViewById(R.id.pwm_sum);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +90,13 @@ public class InfoBowel extends AppCompatActivity {
                 finish();
             }
         });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
+            }
+        });
+
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +153,7 @@ public class InfoBowel extends AppCompatActivity {
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
     }
 
 }
