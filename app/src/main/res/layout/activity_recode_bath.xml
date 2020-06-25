@@ -40,7 +40,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.983"
-                app:layout_constraintStart_toEndOf="@+id/rt_TV_title"
+                app:layout_constraintStart_toEndOf="@+id/recode_bath_title"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_close" />
 
