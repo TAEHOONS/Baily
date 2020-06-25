@@ -228,7 +228,7 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
 
             }
             imageView.setImageResource(R.drawable.right);
-            textView3.setText(item.getDal()+"임");
+            textView3.setText(item.getDal());
         }
 
 

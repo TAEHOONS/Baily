@@ -47,7 +47,7 @@ public class InfoBowel extends AppCompatActivity {
     int minute = myCalender.get(Calendar.MINUTE);
 
     private LinearLayout horizontalLayout;
-    EditText edmemo;
+    EditText edmemo1;
     TextView tSum, eating, startDate, endDate;
     int strt, endt;
 
@@ -56,7 +56,7 @@ public class InfoBowel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bowel);
 
-        edmemo = findViewById(R.id.recode_bowel_memo);
+        edmemo1 = findViewById(R.id.recode_bowel_memo);
         back = findViewById(R.id.recode_bowel_closeBtn);
         Button end = findViewById(R.id.recode_bowel_reviseBtn);
         Button delete = findViewById(R.id.recode_bowel_deleteBtn);
@@ -130,9 +130,9 @@ public class InfoBowel extends AppCompatActivity {
 
     private void reviseItem() {
 
-        memo = edmemo.getText().toString();
+        memo = edmemo1.getText().toString();
 
-        String Revisejob = "UPDATE recode SET time='" + saveTime + "',contents1='" + memo + "' " +
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + memo + "' " +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
         finish();
@@ -164,7 +164,7 @@ public class InfoBowel extends AppCompatActivity {
         while (cursor.moveToNext()) {
             memo = cursor.getString(6);
             if(memo!=null)
-                edmemo.setText(memo);
+                edmemo1.setText(memo);
         }
     }
     private String saveChaingeTime(int hour, int min) {

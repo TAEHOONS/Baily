@@ -40,7 +40,7 @@ import java.util.List;
 
 public class WriteDiary extends AppCompatActivity {
 
-    FragDiaryAlbum diaryAlbumFrag;
+    FragDiarysearch diaryAlbumFrag;
     ImageView backBtn, confirmBtn, photoBtn, diaryPhoto;//이전, 완료 버튼,사진추가버튼, 사진
     EditText diaryEdt;
     String recodeDate, diaryAdd;
@@ -48,7 +48,7 @@ public class WriteDiary extends AppCompatActivity {
     TextView diaryDateTxt;
     Date now = new Date();
     SimpleDateFormat sFormat;
-    private List<DiaryItem> diaryDataList = new ArrayList<>();
+    private ArrayList<EventData> diaryDataList = new ArrayList<>();
     RecyclerView diaryRecyclerView;
 
     @Override
@@ -67,7 +67,7 @@ public class WriteDiary extends AppCompatActivity {
         sFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
         recodeDate = sFormat.format(now);//오늘 날짜
         diaryEdt = (EditText) findViewById(R.id.d_WriteEdt);
-        diaryAlbumFrag = new FragDiaryAlbum();
+        diaryAlbumFrag = new FragDiarysearch();
 
 
         diaryDateTxt.setText(recodeDate);
@@ -120,7 +120,7 @@ public class WriteDiary extends AppCompatActivity {
                     dlg.setNegativeButton("취소", null);
                     dlg.show();
                 } else {
-                    diaryAlbumFrag = new FragDiaryAlbum();
+                    diaryAlbumFrag = new FragDiarysearch();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("DiaryAdd", diaryAdd);

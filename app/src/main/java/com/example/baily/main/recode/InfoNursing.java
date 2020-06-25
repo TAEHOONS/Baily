@@ -179,7 +179,7 @@ public class InfoNursing extends AppCompatActivity {
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 동안 수유하였습니다.";
+            lastTime = lastTime + " 까지 수유하였습니다.";
 
         Log.d("recodeNursing", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +

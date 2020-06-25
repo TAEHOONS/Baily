@@ -193,7 +193,7 @@ public class InfoPwmilk extends AppCompatActivity {
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 동안 먹었습니다.";
+            lastTime = lastTime + " 까지 먹었습니다.";
 
         Log.d("recodePwmilk", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "'," +
