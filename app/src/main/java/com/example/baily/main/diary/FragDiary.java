@@ -52,7 +52,7 @@ public class FragDiary extends Fragment {
                 diary_date.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragD, new FragDiaryAlbum());
+                fragmentTransaction.replace(R.id.fragD, new FragDiarysearch());
                 fragmentTransaction.commit();
 
             }

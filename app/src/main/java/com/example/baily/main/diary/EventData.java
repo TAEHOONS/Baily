@@ -21,6 +21,13 @@ public class EventData {
         this.id = id;
     }
 
+    public EventData(String title, String date, String memo, int id) {
+        this.title = title;
+        this.date = date;
+        this.memo = memo;
+        this.id = id;
+    }
+
     public void setUser(String user) {
         this.user = user;
     }

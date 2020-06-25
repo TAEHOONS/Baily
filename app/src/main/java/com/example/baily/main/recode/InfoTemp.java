@@ -30,44 +30,79 @@ import java.util.Calendar;
 public class InfoTemp extends AppCompatActivity {
 
     String dbName = "user.db", mId, mBabyname;
-    int dbVersion = 3,infoId,INFO_NULL = 999999999;
+    int dbVersion = 3, infoId, INFO_NULL = 999999999;
     private DBlink helper;
     private SQLiteDatabase db;
 
-
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
+    String mMilkMl=null, saveTime, memo,getHour, getMinu;
     String test = null;
     Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
-    private int mSeekBarVal = (int) 36.5;
+
+
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
+    private LinearLayout horizontalLayout;
     EditText edmemo;
-    TextView tSum, eatpwm, startDate, endDate;
-
+    TextView tSum, eating, startDate, endDate;
     int strt, endt;
+
+    private double mSeekBarVal = 36.5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_temp);
 
+        mSeekBar = findViewById(R.id.recode_temp_bar);
+        eating = findViewById(R.id.recode_temp_temperature);
+        edmemo = findViewById(R.id.recode_temp_memo);
+        back = findViewById(R.id.recode_temp_closeBtn);
+        Button end = findViewById(R.id.recode_temp_reviseBtn);
+        Button delete = findViewById(R.id.recode_temp_deleteBtn);
+        startDate = findViewById(R.id.recode_temp_time);
+
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+        startDate.setText(stt);
+        saveTime=stt;
+
         usingDB();
 
-        mSeekBar = findViewById(R.id.nurs_left_bar);
-        eatpwm = findViewById(R.id.left_val);
-        eatpwm.setText(String.valueOf(mSeekBarVal) + "℃");
+
+
+
+
+
+        memo = edmemo.getText().toString();
+
+
+        startDate.setText(stt);
+
+
+        mSeekBar.setProgress(36);
+        eating.setText(String.valueOf(mSeekBarVal) + "℃");
+
+        mSeekBar.setMax(38);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekBarVal = progress;
-                eatpwm.setText(String.valueOf(mSeekBarVal) + "℃");
-            }
+                if(progress <= 350){
+                    progress = 350 + progress;
 
+                    float decimalProgress = (float) progress/10;
+
+                    mSeekBarVal = decimalProgress;
+                    String strNumber = String.format("%.1f", mSeekBarVal);
+                    eating.setText(String.valueOf(strNumber) + "℃");
+                }
+            }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -78,21 +113,10 @@ public class InfoTemp extends AppCompatActivity {
 
             }
         });
-        edmemo = findViewById(R.id.pwm_memo);
-        memo = edmemo.getText().toString();
 
 
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
-       // tSum = findViewById(R.id.pwm_sum);
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,20 +125,20 @@ public class InfoTemp extends AppCompatActivity {
             }
         });
 
-        end.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                deleteItem();
             }
         });
 
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviseItem();
+            }
+        });
 
-
-        startDate = findViewById(R.id.rt_hospital_time);
-        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +149,8 @@ public class InfoTemp extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoTemp.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + ":" + minute);
+                        saveTime = saveChaingeTime(hourOfDay, minute);
+                        startDate.setText(saveTime);
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -133,6 +158,7 @@ public class InfoTemp extends AppCompatActivity {
                 dialog.show();
             }
         });
+
 
 
     }
@@ -150,6 +176,12 @@ public class InfoTemp extends AppCompatActivity {
 
     private void reviseItem() {
 
+        memo = edmemo.getText().toString();
+
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + eating.getText().toString() + "',contents1='" + memo + "' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
@@ -157,7 +189,6 @@ public class InfoTemp extends AppCompatActivity {
         db.execSQL(deletejob);
         finish();
     }
-
     private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
@@ -171,6 +202,37 @@ public class InfoTemp extends AppCompatActivity {
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+
+            mMilkMl = cursor.getString(5);
+            memo = cursor.getString(6);
+
+            if(mMilkMl!=null) {
+                mMilkMl =mMilkMl.replace("℃","");
+                mSeekBar.setProgress((int) Double.parseDouble(mMilkMl));
+                eating.setText(Double.parseDouble(mMilkMl) + "℃");
+            }
+            if(memo!=null)
+                edmemo.setText(memo);
+        }
+    }
+
+
+    private String saveChaingeTime(int hour, int min) {
+
+        getHour = Integer.toString(hour);
+        if (hour / 10 == 0)
+            getHour = ("0" + Integer.toString(hour));
+        getMinu = Integer.toString(min);
+        if (min / 10 == 0)
+            getMinu = ("0" + Integer.toString(min));
+
+
+        return getHour + ":" + getMinu;
     }
 
 }
