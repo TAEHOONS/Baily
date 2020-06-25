@@ -172,7 +172,7 @@ public class InfoBath extends AppCompatActivity {
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 동안 목욕하였습니다.";
+            lastTime = lastTime + " 까지 목욕하였습니다.";
 
         Log.d("recodeBath", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +

@@ -177,7 +177,7 @@ public class infoSleep extends AppCompatActivity {
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 동안 잤습니다.";
+            lastTime = lastTime + " 까지 잤습니다.";
 
         Log.d("recodeSleep", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
