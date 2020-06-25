@@ -65,7 +65,6 @@ public class FragRecode extends Fragment {
 
     String dateInit = null;
     private List<String> list;
-    private RecodeSearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
 
     public static int INFO_NURSING = 1;
