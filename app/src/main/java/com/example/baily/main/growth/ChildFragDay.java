@@ -72,7 +72,8 @@ public class ChildFragDay extends Fragment {
 
     LineData dayKgData, dayCmData, dayHeadData, dayFeverData, AvgLineData;
 
-    //차트에 들어가는 값,, 도저히 모르겠습니당..
+    //차트에 들어가는 값
+
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
     ArrayList<String> XariDay;
     ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets, AvgDataSets;

@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,11 +41,17 @@ public class ChildFragHead  extends Fragment {
     private SQLiteDatabase db;
     String k;
     float n;
-    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
-    ArrayList<Entry> valuesBoy,valuesGirl,valuesBaby;
+    TextView headDateTxt;//생후 N개월 텍스트뷰
+    ImageView headBeforeBtn, headAfterBtn;//이전 이후 버튼
+    String headDate, mToday;
+    int sM, eM;//sM=시작개월, eM=끝개월
+    LineData boyHeadData, girlHeadData, babyHeadData;
+
+    ArrayList<ILineDataSet> dataSets;
+    ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardHeadBoy,standardHeadGirl;
-    float[] standardHeadBaby=new float[72];
+    float[] standardHeadBaby=new float[73];
 
     public static ChildFragHead newInstance(){
         ChildFragHead childFragHead = new ChildFragHead();
@@ -53,98 +62,185 @@ public class ChildFragHead  extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.standard_child_frag_head,container,false);
-
+        //이전, 이후 버튼과 텍스트뷰
+        headDateTxt = view.findViewById(R.id.headDateTxt);
+        headBeforeBtn = (ImageView) view.findViewById(R.id.sHeadBeforeBtn);
+        headAfterBtn = (ImageView) view.findViewById(R.id.sHeadAfterBtn);
+        //표준머리둘레 차트
         headCart = view.findViewById(R.id.headLineCart);
+
+        sM=1;
+        eM=12;
 
         usingDB(container);
         loadgrowLog();
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
-        valuesBaby = new ArrayList<>();
+        valuesBaby = new ArrayList<>();//내애기
 
-
-
-        //남아 표준 그래프(머리둘레) 배열 값 삽입
+        //남아 표준 그래프(몸무게) 배열 값 삽입
         setBoyList();
-
-        //여아 표준 그래프(머리둘레) 배열 값 삽입
+        //여아 표준 그래프(몸무게) 배열 값 삽입
         setGirlList();
 
-        // 내 아이 임시 머리둘레 데이터
+        // 값 셋팅하기
+        SetGraphData();
 
+        //  중간 업데이트
+        MidDataSet();
 
+        // 차트 속성
+        setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
 
+        //이전버튼눌렀을 때
+        headBeforeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eM==12){
+                    Toast.makeText(getActivity(), "이전 기록은 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    sM= sM-12;
+                    eM = eM-12;
+                    headDate = "~ 생후 "+eM+"개월";
+                    headDateTxt.setText(headDate);
 
-        //그래프에 값 넣기
-        for (int i = 0; i < 73; i++) {
-            valuesBoy.add(new Entry(i,standardHeadBoy[i]));
-        }
-        for (int i = 0; i < 73; i++) {
-            valuesGirl.add(new Entry(i,standardHeadGirl[i]));
-        }
-        //내애기값넣기
-        for (int j = 0; j < standardHeadBaby.length; j++) {
-            valuesBaby.add(new Entry(j, standardHeadBaby[j]));
-            Log.d("for문", "값: " + standardHeadBaby[j]);
-        }
-        LineDataSet set1;
-        LineDataSet set2;
-        LineDataSet set3; // 내애기
+                    //남아 표준 그래프(몸무게) 배열 값 삽입
+                    setBoyList();
+                    //여아 표준 그래프(몸무게) 배열 값 삽입
+                    setGirlList();
 
-        set1 = new LineDataSet(valuesBoy, "남아 머리둘레");
-        set2 = new LineDataSet(valuesGirl, "여아 머리둘레");
-        set3 = new LineDataSet(valuesBaby,"내 아이 머리둘레");
+                    SetGraphData();
+                    //  중간 업데이트
+                    MidDataSet();
+                    // 차트 속성
+                    setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
+                    ChartChange(headCart);
+                }
+            }
+        });
+        //이후버튼 눌렀을때
+        headAfterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eM==72){
+                    Toast.makeText(getActivity(), "72개월 이후 기록은 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    sM = sM + 12;
+                    eM = eM + 12;
+                    headDate = "~ 생후 " + eM + "개월";
+                    headDateTxt.setText(headDate);
 
+                    //남아 표준 그래프(몸무게) 배열 값 삽입
+                    setBoyList();
+                    //여아 표준 그래프(몸무게) 배열 값 삽입
+                    setGirlList();
 
-        dataSets.add(set1); // add the data sets
-        dataSets.add(set2);
-        dataSets.add(set3);
-
-        // create a data object with the data sets
-        LineData data1 = new LineData(dataSets);
-        LineData data2 = new LineData(dataSets);
-        LineData data3 = new LineData(dataSets);//내애기
-
-        // black lines and points
-        set1.setColor(Color.BLUE);
-        set1.setDrawCircles(false);//포인트 점(원)없애기
-        set1.setDrawValues(false);//데이터 값 텍스트 없애기
-        set2.setColor(Color.RED);
-        set2.setDrawCircles(false);//포인트 점(원)없애기
-        set2.setDrawValues(false);//데이터 값 텍스트 없애기
-        set3.setColor(Color.BLACK);
-        set3.setCircleColor(Color.BLACK);
-
-
-        XAxis xAxis = headCart.getXAxis(); // x 축 설정
-        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-       // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
-        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
-
-        YAxis yAxisLeft = headCart.getAxisLeft(); //Y축의 왼쪽면 설정
-        yAxisLeft.setDrawLabels(false);
-        yAxisLeft.setDrawAxisLine(false);
-        yAxisLeft.setDrawGridLines(false);
-        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
-
-        YAxis yAxisRight = headCart.getAxisRight(); //Y축의 오른쪽면 설정
-
-        headCart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
-        headCart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
-
-
-        // set data
-        headCart.setData(data1);
-        headCart.setData(data2);
-        headCart.setData(data3);
+                    SetGraphData();
+                    //  중간 업데이트
+                    MidDataSet();
+                    // 차트 속성
+                    setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
+                    ChartChange(headCart);
+                }
+            }
+        });
 
 
         return view;
     }
+
+    private void MidDataSet() {
+
+        LineDataSet boy, girl, baby;
+
+        boy = new LineDataSet(valuesBoy, "남아 몸무게");
+        girl = new LineDataSet(valuesGirl, "여아 몸무게");
+        baby = new LineDataSet(valuesBaby, "내 아이 몸무게");
+
+        // 기초 라인들 만들기
+        dataSets = new ArrayList<>();
+
+        // day"++"DataSets에 linedata 받은거 추가하기
+        dataSets.add(boy); // 남아표준
+        dataSets.add(girl); // 여아표준
+        dataSets.add(baby);//내 아기
+
+        // 실질적 라인인 day"++"Data에 새로 값넣기
+        boyHeadData = new LineData(dataSets);
+        girlHeadData = new LineData(dataSets);
+        babyHeadData = new LineData(dataSets);//내아기
+
+        // 그래프 색 넣기
+        GraphLineColor2(boy, Color.BLUE);
+        GraphLineColor2(girl, Color.RED);
+
+        GraphLineColor(baby, Color.BLACK);
+    }
+
+    // 그래프에 데이터 적용 셋팅
+    private void setGraph(LineChart headChart, LineData data1,LineData data2,LineData data3) {
+
+        XAxis xAxis = headChart.getXAxis(); // x 축 설정
+        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
+        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
+        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+
+        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
+        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
+
+        YAxis yAxisLeft = headChart.getAxisLeft(); //Y축의 왼쪽면 설정
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawAxisLine(true);
+        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
+        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
+
+        YAxis yAxisRight = headChart.getAxisRight(); //Y축의 오른쪽면 설정
+        yAxisRight.setDrawGridLines(false);
+
+        headChart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
+
+        headChart.setData(data1);
+        headChart.setData(data2);
+        headChart.setData(data3); //내아기
+    }
+
+    // 표준 그래프 컬러 적용
+    private void GraphLineColor2(LineDataSet line, int color) {
+        line.setColor(color);
+        line.setDrawCircles(false);//포인트 점(원)없애기
+        line.setDrawValues(false);//데이터 값 텍스트 없애기
+    }
+    // 내 아기 그래프 컬러 적용
+    private void GraphLineColor(LineDataSet line, int color) {
+        line.setColor(color);
+        line.setCircleColor(color);
+    }
+
+    // 그래프 데이터 넣기용
+    private void SetGraphData() {
+        valuesBoy.clear();
+        valuesGirl.clear();
+        valuesBaby.clear();
+
+        dataStack(sM,eM,valuesBoy, standardHeadBoy);
+        dataStack(sM,eM,valuesGirl, standardHeadGirl);
+        dataStack(sM,eM,valuesBaby, standardHeadBaby);
+    }
+
+    private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
+        for (int i = start; i <= end; i++) {
+            values.add(new Entry(i, list[i]));
+        }
+    }
+    // 차트 변경 적용
+    private void ChartChange(LineChart chart) {
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
+
     //새로운시도
     // DB 연결
     private void usingDB(ViewGroup container) {

@@ -193,9 +193,10 @@ public class ChildFragWeek extends Fragment {
         weekAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
+
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, weekArrKg, weekArrCm, weekArrHead, weekArrFever);
 
+                //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
                 if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
