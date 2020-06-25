@@ -123,6 +123,7 @@
             android:layout_width="411dp"
             android:layout_height="14dp"
 
+            android:background="#5583A8"
             app:srcCompat="@drawable/recordbar" />
 
         <LinearLayout
@@ -132,35 +133,35 @@
 
             <Button
                 android:id="@+id/recode_bowel_yellow1Btn"
-                android:layout_width="wrap_content"
+                android:layout_width="82.2dp"
                 android:layout_height="wrap_content"
                 android:background="#DDBF27"
                 android:text="    " />
 
             <Button
                 android:id="@+id/recode_bowel_yellow2Btn"
-                android:layout_width="wrap_content"
+                android:layout_width="82.2dp"
                 android:layout_height="wrap_content"
                 android:background="#AC820F"
                 android:text="    " />
 
             <Button
                 android:id="@+id/recode_bowel_brownBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="82.2dp"
                 android:layout_height="wrap_content"
                 android:background="#7E6501"
                 android:text="    " />
 
             <Button
                 android:id="@+id/recode_bowel_greenBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="82.2dp"
                 android:layout_height="wrap_content"
                 android:background="#2B8A0F"
                 android:text="    " />
 
             <Button
                 android:id="@+id/recode_bowel_redBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="82.2dp"
                 android:layout_height="wrap_content"
                 android:background="#CA4343"
                 android:text="    "/>

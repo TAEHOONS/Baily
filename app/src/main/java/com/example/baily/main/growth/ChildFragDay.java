@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
@@ -53,6 +54,7 @@ public class ChildFragDay extends Fragment {
     private View view;
     private Activity activity;
     private LineChart growDayKgCart, growDayCmCart, growDayHeadCart, growDayFeverCart;
+    private SwipeRefreshLayout swipeLayout;
     TextView avgKgTxt, avgCmTxt, avgHeadTxt, avgFeverTxt, dayDateTxt;
     Boolean btnCk;
     Boolean abBtn;
@@ -70,7 +72,8 @@ public class ChildFragDay extends Fragment {
 
     LineData dayKgData, dayCmData, dayHeadData, dayFeverData, AvgLineData;
 
-    //차트에 들어가는 값,, 도저히 모르겠습니당..
+    //차트에 들어가는 값
+
     ArrayList<Entry> kgValues, cmValues, headValues, feverValues;
     ArrayList<String> XariDay;
     ArrayList<ILineDataSet> dayKgDataSets, dayCmDataSets, dayHeadDataSets, dayFeverDataSets, AvgDataSets;
@@ -84,6 +87,7 @@ public class ChildFragDay extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.growth_child_frag_day, container, false);
+        swipeLayout = view.findViewById(R.id.swipeLayout);
         growDayKgCart = view.findViewById(R.id.growthDayKgLineCart);
         growDayCmCart = view.findViewById(R.id.growthDayCmLineCart);
         growDayHeadCart = view.findViewById(R.id.growthDayHeadLineCart);
@@ -240,6 +244,29 @@ public class ChildFragDay extends Fragment {
                     ChartChange(growDayFeverCart);
 
                 }
+            }
+        });
+        //당겨서 새로고침
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SetGraphData();
+                //  중간 업데이트
+                MidDataSet();
+
+                // 차트 속성
+                setGraph(growDayKgCart, dayKgData);
+                setGraph(growDayCmCart, dayCmData);
+                setGraph(growDayHeadCart, dayHeadData);
+                setGraph(growDayFeverCart, dayFeverData);
+
+                // 바뀐 차트 적용
+                ChartChange(growDayKgCart);
+                ChartChange(growDayCmCart);
+                ChartChange(growDayHeadCart);
+                ChartChange(growDayFeverCart);
+
+                swipeLayout.setRefreshing(false);
             }
         });
 

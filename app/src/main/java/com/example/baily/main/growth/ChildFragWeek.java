@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
@@ -39,6 +40,7 @@ public class ChildFragWeek extends Fragment {
     private SQLiteDatabase db;
     private View view;
     private LineChart growWeekKgCart, growWeekCmCart, growWeekHeadCart, growWeekFeverCart;
+    private SwipeRefreshLayout wSwipeLayout;
     TextView weekAvgKgTxt, weekAvgCmTxt, weekAvgHeadTxt, weekAvgFeverTxt, weekDateTxt;
     float weekAvgWeight, weekAvgHeight, weekAvgHead, weekAvgFever, wKgSum = 0, wCmSum = 0, wHeadSum = 0, wFeverSum = 0;
     Boolean btnCk;//버튼을 눌렀는가 체크
@@ -70,6 +72,7 @@ public class ChildFragWeek extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.growth_child_frag_week, container, false);
+        wSwipeLayout = view.findViewById(R.id.wSwipeLayout);
         growWeekKgCart = view.findViewById(R.id.growthWeekKgLineCart);
         growWeekCmCart = view.findViewById(R.id.growthWeekCmLineCart);
         growWeekHeadCart = view.findViewById(R.id.growthWeekHeadLineCart);
@@ -190,9 +193,10 @@ public class ChildFragWeek extends Fragment {
         weekAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
+
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, weekArrKg, weekArrCm, weekArrHead, weekArrFever);
 
+                //보여지는 달이 이번달이면 다음 달로 넘어갈수 없게
                 if (wToday.equals(weekStartDate)) {
                     Toast.makeText(getActivity(), "다음 달 기록이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -224,6 +228,33 @@ public class ChildFragWeek extends Fragment {
                     ChartChange(growWeekHeadCart);
                     ChartChange(growWeekFeverCart);
                 }
+            }
+        });
+
+        //당겨서 새로고침
+        wSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ArryClear(mArrKg, mArrCm, mArrHead, mArrFever,weekArrKg, weekArrCm, weekArrHead, weekArrFever);
+                weekString();
+                getDBdata();
+                SetGraphData();
+                //  중간 업데이트
+                MidDataSet();
+
+                // 차트 속성
+                setGraph(growWeekKgCart, wKgData);
+                setGraph(growWeekCmCart, wCmData);
+                setGraph(growWeekHeadCart, wHeadData);
+                setGraph(growWeekFeverCart, wFeverData);
+
+                // 바뀐 차트 적용
+                ChartChange(growWeekKgCart);
+                ChartChange(growWeekCmCart);
+                ChartChange(growWeekHeadCart);
+                ChartChange(growWeekFeverCart);
+
+                wSwipeLayout.setRefreshing(false);
             }
         });
 
@@ -337,8 +368,6 @@ public class ChildFragWeek extends Fragment {
         weekAvgHeadTxt.setText(String.format("%.2f", weekAvgHead) + " cm");
         weekAvgFeverTxt.setText(String.format("%.2f", weekAvgFever) + " °C");
     }
-
-
 
 
     // chart X좌표 글자 넣기

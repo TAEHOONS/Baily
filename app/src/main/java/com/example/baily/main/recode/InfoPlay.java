@@ -182,6 +182,7 @@ public class InfoPlay extends AppCompatActivity {
         String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "',contents1='" + memo + "' " +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
