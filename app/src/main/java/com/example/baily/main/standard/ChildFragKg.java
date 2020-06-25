@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
@@ -24,20 +25,16 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ChildFragKg extends Fragment {
     private View view;
-    private LineChart kgChart;
+    private LineChart KgChart;
 
     String dbName = "user.db";
-    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0, count = 0;
     // mId= 현재 사용 id, baby
     private String mId, mBabyname;
     private DBlink helper;
@@ -49,14 +46,12 @@ public class ChildFragKg extends Fragment {
     ImageView kgBeforeBtn, kgAfterBtn;//이전 이후 버튼
     String kgDate, mToday;
     int sM, eM;//sM=시작개월, eM=끝개월
-    String[] arrBoy, arrGirl,arrBaby;
     LineData boyKgData, girlKgData, babyKgData;
 
     ArrayList<ILineDataSet> dataSets;
-    ArrayList<String> XarMonth;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardKgBoy, standardKgGirl;
-    float[] standardKgBaby=new float[72];
+    float[] standardKgBaby = new float[100];
 
     public static ChildFragKg newInstance() {
         ChildFragKg childFragKg = new ChildFragKg();
@@ -71,20 +66,22 @@ public class ChildFragKg extends Fragment {
         kgDateTxt = view.findViewById(R.id.kgDateTxt);
         kgBeforeBtn = (ImageView) view.findViewById(R.id.sKgBeforeBtn);
         kgAfterBtn = (ImageView) view.findViewById(R.id.sKgAfterBtn);
-        //표준몸무게 그래프
-        kgChart = view.findViewById(R.id.kgLineChart);
-        sM=1;
-        eM=12;
+        //표준머리둘레 차트
+        KgChart = view.findViewById(R.id.kgLineChart);
+
+        sM = 1;
+        eM = 12;
+
         usingDB(container);
-        //loadgrowLog();
+        loadgrowLog();
+
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
-        //valuesBaby = new ArrayList<>();//내애기
+        valuesBaby = new ArrayList<>();//내애기
 
         //남아 표준 그래프(몸무게) 배열 값 삽입
         setBoyList();
-
         //여아 표준 그래프(몸무게) 배열 값 삽입
         setGirlList();
 
@@ -95,33 +92,31 @@ public class ChildFragKg extends Fragment {
         MidDataSet();
 
         // 차트 속성
-        setGraph(kgChart,boyKgData,girlKgData);
+        setGraph(KgChart, boyKgData, girlKgData, babyKgData);
 
         //이전버튼눌렀을 때
         kgBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(eM==12){
+                if (eM == 12) {
                     Toast.makeText(getActivity(), "이전 기록은 없습니다.", Toast.LENGTH_SHORT).show();
-                    Log.d("시작개월~끝개월", "시작개월 : "+sM+" ~ 끝개월 : "+eM);
-                }
-                else{
-                    sM= sM-12;
-                    eM = eM-12;
-                    kgDate = "~ 생후 "+eM+"개월";
+                } else {
+                    sM = sM - 12;
+                    eM = eM - 12;
+                    kgDate = "~ 생후 " + eM + "개월";
                     kgDateTxt.setText(kgDate);
-                    Log.d("시작개월~끝개월", "시작개월 : "+sM+" ~ 끝개월 : "+eM);
+
                     //남아 표준 그래프(몸무게) 배열 값 삽입
                     setBoyList();
-
                     //여아 표준 그래프(몸무게) 배열 값 삽입
                     setGirlList();
+
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(kgChart,boyKgData,girlKgData);
-                    ChartChange(kgChart);
+                    setGraph(KgChart, boyKgData, girlKgData, babyKgData);
+                    ChartChange(KgChart);
                 }
             }
         });
@@ -129,17 +124,13 @@ public class ChildFragKg extends Fragment {
         kgAfterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(eM==72){
+                if (eM == 72) {
                     Toast.makeText(getActivity(), "72개월 이후 기록은 없습니다.", Toast.LENGTH_SHORT).show();
-                    Log.d("시작개월~끝개월", "시작개월 : "+sM+" ~ 끝개월 : "+eM);
-                }
-                else {
-
+                } else {
                     sM = sM + 12;
                     eM = eM + 12;
                     kgDate = "~ 생후 " + eM + "개월";
                     kgDateTxt.setText(kgDate);
-                    Log.d("시작개월~끝개월", "시작개월 : "+sM+" ~ 끝개월 : "+eM);
 
                     //남아 표준 그래프(몸무게) 배열 값 삽입
                     setBoyList();
@@ -150,92 +141,12 @@ public class ChildFragKg extends Fragment {
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(kgChart,boyKgData,girlKgData);
-                    ChartChange(kgChart);
+                    setGraph(KgChart, boyKgData, girlKgData, babyKgData);
+                    ChartChange(KgChart);
                 }
             }
         });
 
-//        //남아 표준 그래프(몸무게) 배열 값 삽입
-//        setBoyList();
-//
-//        //여아 표준 그래프(몸무게) 배열 값 삽입
-//        setGirlList();
-
-        // 내애기 몸무게 임시데이터
-        //setBabyList();
-
-//
-//        //그래프에 값 넣기
-//        for (int i = sM; i <=eM; i++) {
-//            valuesBoy.add(new Entry(i, standardKgBoy[i]));
-//        }
-//        for (int i = sM; i <= eM; i++) {
-//            valuesGirl.add(new Entry(i, standardKgGirl[i]));
-//        }
-//        for (int j = sM; j <= eM; j++) {
-//            valuesBaby.add(new Entry(j, standardKgBaby[j]));
-//            Log.d("for문", "값: " + standardKgBaby[j]);
-//        }
-//        for (int j = 0; j < standardKgBaby.length; j++) {
-//            valuesBaby.add(new Entry(j, standardKgBaby[j]));
-//            Log.d("for문", "값: " + standardKgBaby[j]);
-//        }
-
-
-//        LineDataSet set1;
-//        LineDataSet set2;
-//        LineDataSet set3;
-//
-//
-//        set1 = new LineDataSet(valuesBoy, "남아 몸무게");
-//        set2 = new LineDataSet(valuesGirl, "여아 몸무게");
-//        set3 = new LineDataSet(valuesBaby, "내 아이 몸무게");
-//
-//
-//        dataSets.add(set1); // add the data sets
-//        dataSets.add(set2);
-//        dataSets.add(set3);//내 아기
-//
-//        // create a data object with the data sets
-//        LineData data1 = new LineData(dataSets);
-//        LineData data2 = new LineData(dataSets);
-//        LineData data3 = new LineData(dataSets);//내아기
-//
-//        // black lines and points
-//        set1.setColor(Color.BLUE);
-//        set1.setDrawCircles(false);//포인트 점(원)없애기
-//        set1.setDrawValues(false);//데이터 값 텍스트 없애기
-//        set2.setColor(Color.RED);
-//        set2.setDrawCircles(false);//포인트 점(원)없애기
-//        set2.setDrawValues(false);//데이터 값 텍스트 없애기
-//
-//        set3.setColor(Color.BLACK);
-//        set3.setCircleColor(Color.BLACK);
-
-//        XAxis xAxis = kgChart.getXAxis(); // x 축 설정
-//        xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-//        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
-//        xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-//
-//        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-//        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
-//
-//        YAxis yAxisLeft = kgChart.getAxisLeft(); //Y축의 왼쪽면 설정
-//        yAxisLeft.setDrawLabels(false);
-//        yAxisLeft.setDrawAxisLine(true);
-//        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-//        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
-//
-//        YAxis yAxisRight = kgChart.getAxisRight(); //Y축의 오른쪽면 설정
-//        yAxisRight.setDrawGridLines(false);
-//        kgChart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
-//        kgChart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
-//
-//        // set data
-//        kgChart.setData(data1);
-//        kgChart.setData(data2);
-//        kgChart.setData(data3); //내아기
 
         return view;
     }
@@ -246,7 +157,7 @@ public class ChildFragKg extends Fragment {
 
         boy = new LineDataSet(valuesBoy, "남아 몸무게");
         girl = new LineDataSet(valuesGirl, "여아 몸무게");
-        //baby = new LineDataSet(valuesBaby, "내 아이 몸무게");
+        baby = new LineDataSet(valuesBaby, "내 아이 몸무게");
 
         // 기초 라인들 만들기
         dataSets = new ArrayList<>();
@@ -254,45 +165,40 @@ public class ChildFragKg extends Fragment {
         // day"++"DataSets에 linedata 받은거 추가하기
         dataSets.add(boy); // 남아표준
         dataSets.add(girl); // 여아표준
-        //dataSets.add(baby);//내 아기
+        dataSets.add(baby);//내 아기
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         boyKgData = new LineData(dataSets);
         girlKgData = new LineData(dataSets);
-        //babyKgData = new LineData(dataSets);//내아기
+        babyKgData = new LineData(dataSets);//내아기
 
         // 그래프 색 넣기
         GraphLineColor2(boy, Color.BLUE);
         GraphLineColor2(girl, Color.RED);
 
-        //GraphLineColor(baby, Color.BLACK);
+        GraphLineColor(baby, Color.BLACK);
     }
 
     // 그래프에 데이터 적용 셋팅
-    private void setGraph(LineChart kgChart, LineData data1,LineData data2) {
+    private void setGraph(LineChart KgChart, LineData data1, LineData data2, LineData data3) {
 
-        XAxis xAxis = kgChart.getXAxis(); // x 축 설정
+        XAxis xAxis = KgChart.getXAxis(); // x 축 설정
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
         // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
-        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
-
-        YAxis yAxisLeft = kgChart.getAxisLeft(); //Y축의 왼쪽면 설정
+        YAxis yAxisLeft = KgChart.getAxisLeft(); //Y축의 왼쪽면 설정
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(true);
-        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
 
-        YAxis yAxisRight = kgChart.getAxisRight(); //Y축의 오른쪽면 설정
+        YAxis yAxisRight = KgChart.getAxisRight(); //Y축의 오른쪽면 설정
         yAxisRight.setDrawGridLines(false);
 
-        kgChart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
+        KgChart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
 
-        kgChart.setData(data1);
-        kgChart.setData(data2);
-        //kgChart.setData(data3); //내아기
+        KgChart.setData(data1);
+        KgChart.setData(data2);
+        KgChart.setData(data3); //내아기
     }
 
     // 표준 그래프 컬러 적용
@@ -301,39 +207,37 @@ public class ChildFragKg extends Fragment {
         line.setDrawCircles(false);//포인트 점(원)없애기
         line.setDrawValues(false);//데이터 값 텍스트 없애기
     }
+
     // 내 아기 그래프 컬러 적용
     private void GraphLineColor(LineDataSet line, int color) {
         line.setColor(color);
         line.setCircleColor(color);
     }
 
-
     // 그래프 데이터 넣기용
     private void SetGraphData() {
         valuesBoy.clear();
         valuesGirl.clear();
-        //valuesBaby.clear();
-
-        dataStack(sM,eM,valuesBoy, standardKgBoy);
-        dataStack(sM,eM,valuesGirl, standardKgGirl);
-        //dataStack(sM,eM,valuesBaby, standardKgBaby);
+        valuesBaby.clear();
+        dataStack(sM, eM, valuesBoy, standardKgBoy);
+        dataStack(sM, eM, valuesGirl, standardKgGirl);
+        dataStack(sM, eM, valuesBaby, standardKgBaby);
     }
 
-    private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
+    private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
         for (int i = start; i <= end; i++) {
-            values.add(new Entry(i, list[i]));
+            if (list[i] != 0) {
+                values.add(new Entry(i, list[i]));
+                Log.d("for문123", "값: " + list[i]);
+            }
         }
     }
-
 
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
-
-
-
 
     //새로운시도
     // DB 연결
@@ -354,7 +258,6 @@ public class ChildFragKg extends Fragment {
 
     // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
     private void loadgrowLog() {
-
         String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
         Cursor c = db.rawQuery(sql, null);
         int i = 0;
@@ -362,21 +265,23 @@ public class ChildFragKg extends Fragment {
         while (c.moveToNext()) {
 
             k = c.getString(2);
-           if (k!=null) {
-               try {
-                   n = Float.parseFloat(k);
-                   setBabyList(i, n);
-                   i++;
-                   Log.d("n값", "loadgrowLog: " + n);
-                   Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
-               } catch (Exception e) {
-               }
-           }
+            Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
 
-            //standardKgBaby[i] = n;
-            //Log.d("for문", "onCreateView: " + standardKgBaby[i] + "i 값 = " + i);
+            try {
+                if (k == null)
+                    n = 0;
+                else
+                    n = Float.parseFloat(k);
+                setBabyList(i, n);
+                i++;
+                Log.d("n값", "loadgrowLog: " + n);
+                Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+            } catch (Exception e) {
+            }
+
+
         }
-        Log.d("와일 나와서 ", "standardKgBaby[i] " + standardKgBaby[i]);
+
 
     }
 
@@ -540,7 +445,9 @@ public class ChildFragKg extends Fragment {
     }
 
     private void setBabyList(int i, float n) {
+
         standardKgBaby[i] = n;
     }
+
 
 }
