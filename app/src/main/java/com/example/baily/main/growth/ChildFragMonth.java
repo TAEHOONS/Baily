@@ -56,7 +56,7 @@ public class ChildFragMonth extends Fragment {
     int maxDay, bMaxDay, aMaxDay, mMaxDay;//마지막일
 
     int dbVersion = 3;
-    String dbName = "user.db", mId, mBabyname;
+    String dbName = "user.db", mId, mBabyname, mBabyBirthYear;
     String[] SearchDay, mArrKg, mArrCm, mArrHead, mArrFever;
     float[] monthArrKg, monthArrCm, monthArrHead, monthArrFever;
     LineData mKgData, mCmData, mHeadData, mFeverData;
@@ -114,11 +114,13 @@ public class ChildFragMonth extends Fragment {
         monthArrHead = new float[14];
         monthArrFever = new float[14];
 
-        monthString();
-
         mCal.setTime(date);
         monthStartDate = sFormat.format(mCal.getTime());
         monthDateTxt.setText(monthStartDate);
+
+        monthString();
+
+
 
         btnCk = false;
         abBtn = false;
@@ -160,17 +162,23 @@ public class ChildFragMonth extends Fragment {
             @Override
             public void onClick(View v) {
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, monthArrKg, monthArrCm, monthArrHead, monthArrFever);
+                //if (monthStartDate.equals(mBabyBirthYear)) {//아이의 출생년도랑 비교해야함
+                int a=Integer.valueOf(monthStartDate.substring(0,4));
+                    a-=1;
+                mCal.set(a,1,1);
+                monthStartDate = sFormat.format(mCal.getTime());
 
                 if (monthStartDate.equals("2015년")) {//아이의 출생년도랑 비교해야함
-                    Toast.makeText(getActivity(), "2015년 이전의 기록은 확인불가합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mBabyBirthYear+" 이전의 기록은 확인불가합니다.", Toast.LENGTH_SHORT).show();
+                    a+=1;
+                    mCal.set(a,1,1);
+                    monthStartDate = sFormat.format(mCal.getTime());
+
                 } else {
 
-                    mCal.add(Calendar.YEAR, -1);
-                    monthStartDate = sFormat.format(mCal.getTime());
+
                     monthDateTxt.setText(monthStartDate);
 
-
-                    Log.d("이전 달의 마지막날", "이번달의 마지막 날은?==============" + bMaxDay);
 
                     monthString();
                     btnCk = true;
@@ -202,10 +210,21 @@ public class ChildFragMonth extends Fragment {
 
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, monthArrKg, monthArrCm, monthArrHead, monthArrFever);
 
-                if (mToday.equals(monthStartDate)) {
+                int a=Integer.valueOf(monthStartDate.substring(0,4));
+                a+=1;
+                mCal.set(a,1,1);
+                monthStartDate = sFormat.format(mCal.getTime());
+
+                Log.d("연도 변경", "년도 옮기기" + monthStartDate);
+
+
+                if (monthStartDate.equals("2021년")) {
                     Toast.makeText(getActivity(), "다음 년도 기록이 없습니다.", Toast.LENGTH_SHORT).show();
+                    a-=1;
+                    mCal.set(a,1,1);
+                    monthStartDate = sFormat.format(mCal.getTime());
                 } else {
-                    mCal.add(Calendar.YEAR, +1);
+
                     monthStartDate = sFormat.format(mCal.getTime());
                     monthDateTxt.setText(monthStartDate);
                     aMaxDay = mCal.getActualMaximum(Calendar.DATE); //현재 달의 마지막날
@@ -242,6 +261,7 @@ public class ChildFragMonth extends Fragment {
             @Override
             public void onRefresh() {
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, monthArrKg, monthArrCm, monthArrHead, monthArrFever);
+
                 monthString();
                 getDBdata();
                 SetGraphData();
@@ -400,14 +420,22 @@ public class ChildFragMonth extends Fragment {
 
         String sql = "select * from thisusing where _id=1"; // 검색용
         Cursor cursor = db.rawQuery(sql, null);
-
-        // 기본 데이터
         while (cursor.moveToNext()) {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
 
+        sql = "select * from baby where name='"+mBabyname+"'"; // 검색용
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            mBabyBirthYear = Integer.valueOf(cursor.getInt(3))+"년";
+
+        }
+
+
+
+                cursor.close();
     }
 
     // 현재값 받기
@@ -426,11 +454,13 @@ public class ChildFragMonth extends Fragment {
                 Log.d("searchWeek", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
+            c.close();
         }
         monthAvg(mArrKg, monthArrKg);
         monthAvg(mArrCm, monthArrCm);
         monthAvg(mArrHead, monthArrHead);
         monthAvg(mArrFever, monthArrFever);
+
     }
 
 
@@ -456,7 +486,10 @@ public class ChildFragMonth extends Fragment {
     }
 
     public void monthString() {
-        mCal.set(mCal.get(Calendar.YEAR), mCal.getActualMinimum(Calendar.MONTH), mCal.getActualMinimum(Calendar.DATE));
+        Log.d("ekffur", "year: "+mCal.get(Calendar.YEAR)+"  , month = "+mCal.getActualMinimum(Calendar.MONTH));
+        int a=Integer.valueOf(monthStartDate.substring(0,4));
+        mCal.set(a,1,1);
+
 
         SearchDay[0] = readChartD.format((mCal.getTime()));
         for (int i = 0; i < 367; i++) {
@@ -464,8 +497,8 @@ public class ChildFragMonth extends Fragment {
             SearchDay[i + 1] = readChartD.format((mCal.getTime()));
 
         }
-        for (int i = 0; i < 367; i++)
-            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
+//        for (int i = 0; i < 367; i++)
+//            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
 
     }
 
