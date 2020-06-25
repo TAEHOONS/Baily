@@ -1,13 +1,20 @@
 package com.example.baily.main;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.baily.R;
 import com.example.baily.main.diary.FragDiary;
 import com.example.baily.main.growth.FragGrowth;
 import com.example.baily.main.home.FragHome;
@@ -15,10 +22,15 @@ import com.example.baily.main.recode.FragRecode;
 import com.example.baily.main.standard.FragStandard;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-    public ViewPagerAdapter(@NonNull FragmentManager fm) {
+    public ViewPagerAdapter(@NonNull FragmentManager fm, android.content.Context context) {
         super(fm);
+        this.context=context;
     }
-
+    Drawable myDrawable;
+    String title;
+    Context context;
+    SpannableStringBuilder sb;
+    ImageSpan span;
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -56,7 +68,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "Diary";
+                myDrawable = ContextCompat.getDrawable(context,R.drawable.book5);
+                sb = new SpannableStringBuilder("Diary"); // space added before text for convenience
+
+                myDrawable.setBounds(0, 0, 90, 70);
+                Log.d("ahfmrpTek", "getPageTitle: "+myDrawable.getIntrinsicHeight());
+                span = new ImageSpan(myDrawable, ImageSpan.ALIGN_BASELINE);
+
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb;
             case 1:
                 return "Recode";
             case 2:
