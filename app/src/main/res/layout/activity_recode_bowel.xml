@@ -122,49 +122,94 @@
         <ImageView
             android:layout_width="411dp"
             android:layout_height="14dp"
-
-            android:background="#5583A8"
+            android:background="#D1A97C"
             app:srcCompat="@drawable/recordbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="130dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/recode_bowel_yellow1Btn"
-                android:layout_width="82.2dp"
-                android:layout_height="wrap_content"
-                android:background="#DDBF27"
-                android:text="    " />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/recode_bowel_yellow2Btn"
-                android:layout_width="82.2dp"
-                android:layout_height="wrap_content"
-                android:background="#AC820F"
-                android:text="    " />
+                <Button
+                    android:id="@+id/recode_bowel_yellow1Btn"
+                    android:layout_width="82.2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#DDBF27"
+                    android:text="    "
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.195" />
 
-            <Button
-                android:id="@+id/recode_bowel_brownBtn"
-                android:layout_width="82.2dp"
-                android:layout_height="wrap_content"
-                android:background="#7E6501"
-                android:text="    " />
+                <Button
+                    android:id="@+id/recode_bowel_yellow2Btn"
+                    android:layout_width="82.2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#AC820F"
+                    android:text="    "
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/recode_bowel_yellow1Btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.195" />
 
-            <Button
-                android:id="@+id/recode_bowel_greenBtn"
-                android:layout_width="82.2dp"
-                android:layout_height="wrap_content"
-                android:background="#2B8A0F"
-                android:text="    " />
+                <Button
+                    android:id="@+id/recode_bowel_brownBtn"
+                    android:layout_width="82.2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#7E6501"
+                    android:text="    "
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/recode_bowel_yellow2Btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.195" />
 
-            <Button
-                android:id="@+id/recode_bowel_redBtn"
-                android:layout_width="82.2dp"
-                android:layout_height="wrap_content"
-                android:background="#CA4343"
-                android:text="    "/>
+                <Button
+                    android:id="@+id/recode_bowel_greenBtn"
+                    android:layout_width="82.2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#2B8A0F"
+                    android:text="    "
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/recode_bowel_brownBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.195" />
+
+                <Button
+                    android:id="@+id/recode_bowel_redBtn"
+                    android:layout_width="82.2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#CA4343"
+                    android:text="    "
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/recode_bowel_greenBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.195" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="82dp"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#FFFFFF"
+                    android:fontFamily="@font/godo"
+                    android:gravity="center"
+                    android:text="현재 색상"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recode_bowel_brownBtn"
+                    app:layout_constraintVertical_bias="1.0" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -196,7 +241,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:fontFamily="@font/godo"
-                android:hint="  이곳을 터치하여 메모를 입력해주세요"
+                android:hint="    이곳을 터치하여 메모를 입력해주세요"
                 android:textColorHint="#000000"
                 android:background="@null"
                 android:inputType="textPersonName"
