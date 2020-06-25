@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/recode_drug_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +70,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/rt_hospital_time"
+                android:id="@+id/recode_drug_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -94,7 +94,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rt_hospital_time"
                 app:layout_constraintVertical_bias="0.466" />
 
 
@@ -151,7 +150,7 @@
                 app:srcCompat="@drawable/recordbar" />
 
             <EditText
-                android:id="@+id/pwm_memo"
+                android:id="@+id/recode_drug_memo"
                 android:layout_width="404dp"
                 android:layout_height="114dp"
                 android:background="@null"
@@ -185,7 +184,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/recode_drug_reviseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -200,7 +199,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recode_drug_deleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

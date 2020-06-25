@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/rbath_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -146,7 +146,7 @@
 
 
             <TextView
-                android:id="@+id/pwm_end"
+                android:id="@+id/rbath_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -164,7 +164,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
 
             <TextView
-                android:id="@+id/pwm_start"
+                android:id="@+id/rbath_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
@@ -182,7 +182,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
 
             <TextView
-                android:id="@+id/pwm_sum"
+                android:id="@+id/rbath_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -218,7 +218,7 @@
 
 
         <EditText
-            android:id="@+id/pwm_memo"
+            android:id="@+id/rbath_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -251,7 +251,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/rbath_Btn_revise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -266,7 +266,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/rbath_Btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

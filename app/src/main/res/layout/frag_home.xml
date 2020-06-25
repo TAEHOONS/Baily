@@ -123,14 +123,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="416dp"
+            android:layout_height="455dp"
             android:background="#EAEEFA"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/h_rView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="match_parent"
                 tools:listitem="@layout/item_card" />
         </LinearLayout>
     </LinearLayout>

@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/rt_img_closeBtn"
+                android:id="@+id/recode_pwm_closeBtn"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -148,7 +148,7 @@
                 app:srcCompat="@drawable/ic_outlined_flag_24px" />
 
             <TextView
-                android:id="@+id/pwm_end"
+                android:id="@+id/recode_pwm_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -166,7 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/record_milk_finish_flag" />
 
             <TextView
-                android:id="@+id/pwm_start"
+                android:id="@+id/recode_pwm_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
@@ -184,7 +184,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/record_milk_start_flag" />
 
             <TextView
-                android:id="@+id/pwm_sum"
+                android:id="@+id/recode_pwm_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/godo"
@@ -234,7 +234,7 @@
             app:srcCompat="@drawable/recordbar" />
 
         <TextView
-            android:id="@+id/left_val"
+            android:id="@+id/recode_pwm_eating_ml"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/godo"
@@ -243,7 +243,7 @@
             android:textSize="25sp" />
 
         <SeekBar
-            android:id="@+id/nurs_left_bar"
+            android:id="@+id/recode_pwm_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -269,7 +269,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/pwm_memo"
+            android:id="@+id/recode_pwm_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -302,7 +302,7 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/recode_pwm_reviseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="104dp"
@@ -317,7 +317,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/recode_pwm_deleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="104dp"

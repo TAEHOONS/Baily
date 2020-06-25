@@ -34,12 +34,13 @@ public class InfoBowel extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
+    String mMilkMl=null, saveTime, memo,getHour, getMinu;
     String test = null;
     Button tagAdd;
     ImageView back, end;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
+
 
     Calendar myCalender = Calendar.getInstance();
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
@@ -47,8 +48,7 @@ public class InfoBowel extends AppCompatActivity {
 
     private LinearLayout horizontalLayout;
     EditText edmemo;
-    TextView tSum, eatpwm, startDate, endDate;
-
+    TextView tSum, eating, startDate, endDate;
     int strt, endt;
 
     @Override
@@ -56,22 +56,36 @@ public class InfoBowel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_bowel);
 
+        edmemo = findViewById(R.id.recode_bowel_memo);
+        back = findViewById(R.id.recode_bowel_closeBtn);
+        Button end = findViewById(R.id.recode_bowel_reviseBtn);
+        Button delete = findViewById(R.id.recode_bowel_deleteBtn);
+        startDate = findViewById(R.id.recode_bowel_time);
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+        startDate.setText(stt);
+        saveTime=stt;
+
         usingDB();
 
-        edmemo = findViewById(R.id.pwm_memo);
-        memo = edmemo.getText().toString();
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
+
 
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                deleteItem();
             }
         });
-        tSum = findViewById(R.id.pwm_sum);
+
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviseItem();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,20 +94,6 @@ public class InfoBowel extends AppCompatActivity {
             }
         });
 
-        end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
-
-
-        startDate = findViewById(R.id.rt_hospital_time);
-        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +104,8 @@ public class InfoBowel extends AppCompatActivity {
                 dialog = new TimePickerDialog(InfoBowel.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startDate.setText(hourOfDay + ":" + minute);
+                        saveTime = saveChaingeTime(hourOfDay, minute);
+                        startDate.setText(saveTime);
                         strt = (hourOfDay * 60) + minute;
                     }
                 }, hour, minute, false);
@@ -129,6 +130,12 @@ public class InfoBowel extends AppCompatActivity {
 
     private void reviseItem() {
 
+        memo = edmemo.getText().toString();
+
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',contents1='" + memo + "' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
@@ -150,6 +157,28 @@ public class InfoBowel extends AppCompatActivity {
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            memo = cursor.getString(6);
+            if(memo!=null)
+                edmemo.setText(memo);
+        }
     }
+    private String saveChaingeTime(int hour, int min) {
+
+        getHour = Integer.toString(hour);
+        if (hour / 10 == 0)
+            getHour = ("0" + Integer.toString(hour));
+        getMinu = Integer.toString(min);
+        if (min / 10 == 0)
+            getMinu = ("0" + Integer.toString(min));
+
+
+        return getHour + ":" + getMinu;
+    }
+
 
 }

@@ -34,7 +34,7 @@ public class InfoHospital extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String pwmStart, pwmEnd, pwmMemo, tthou, ttmin, memo;
+    String pwmStart, pwmEnd, saveTime, tthou, ttmin, memo;
     String test = null;
     Button tagAdd;
     ImageView back, end;
@@ -46,7 +46,7 @@ public class InfoHospital extends AppCompatActivity {
     int minute = myCalender.get(Calendar.MINUTE);
 
 
-    EditText edmemo;
+    EditText EditHospital,EditDoctor,edmemo;
     TextView tSum, eatpwm, startDate, endDate;
 
     int strt, endt;
@@ -56,22 +56,27 @@ public class InfoHospital extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recode_health);
 
-        edmemo = findViewById(R.id.rt_hospital_checkupedit);
-        memo = edmemo.getText().toString();
+        EditHospital= findViewById(R.id.recode_health_hospitalName_editText);
+        EditDoctor= findViewById(R.id.recode_health_doctorName_editText);
+        edmemo = findViewById(R.id.recode_health_memo);
+
+        startDate = findViewById(R.id.recode_health_time);
+        back = findViewById(R.id.recode_health_closeBtn);
+        Button end = findViewById(R.id.recode_health_reviseBtn);
+        Button delete = findViewById(R.id.recode_health_deleteBtn);
+
+
+
+
+        final Intent intent = getIntent();
+        String stt = intent.getStringExtra("str");
+        infoId = intent.getIntExtra("id", INFO_NULL);
+        startDate.setText(stt);
+        saveTime=stt;
 
         usingDB();
 
-        back = findViewById(R.id.rt_img_closeBtn);
-        Button end = findViewById(R.id.button2);
-        Button delete = findViewById(R.id.button3);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
-        tSum = findViewById(R.id.pwm_sum);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,16 +88,16 @@ public class InfoHospital extends AppCompatActivity {
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                reviseItem();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
             }
         });
 
-        final Intent intent = getIntent();
-        String stt = intent.getStringExtra("str");
-        infoId = intent.getIntExtra("id", INFO_NULL);
-
-        startDate = findViewById(R.id.rt_hospital_time);
-        startDate.setText(stt);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +132,15 @@ public class InfoHospital extends AppCompatActivity {
 
 
     private void reviseItem() {
+        String hosputal=EditHospital.getText().toString();
+        String doctor=EditDoctor.getText().toString();
+        memo = edmemo.getText().toString();
 
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + memo + "'," +
+                "contents1='"+hosputal+"',contents2='"+doctor+"' " +
+                "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
+        db.execSQL(Revisejob);
+        finish();
     }
 
     private void deleteItem() {
@@ -149,6 +162,26 @@ public class InfoHospital extends AppCompatActivity {
             mBabyname = cursor.getString(2);
             Log.d("Home", "db받기 id = " + mId + "  현재 아기 = " + mBabyname);
         }
+
+        sql = "select * from recode where id=" + infoId + " "; // 검색용
+        cursor = db.rawQuery(sql, null);
+        // 기본 데이터
+        while (cursor.moveToNext()) {
+            memo = cursor.getString(5);
+          String hosputal = cursor.getString(6);
+          String  doctor = cursor.getString(7);
+            if(memo!=null)
+                edmemo.setText(memo);
+            if(hosputal!=null)
+                EditHospital.setText(hosputal);
+            if(doctor!=null)
+                EditDoctor.setText(doctor);
+
+
+        }
+
+
+
     }
 
 }

@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
+        android:fontFamily="@font/godo"
+        android:textColor="#000000"
         android:gravity="center_horizontal"
         android:text="아기의 키와 몸무게를 입력해주세요"
         android:textSize="15dp" />
@@ -88,6 +90,7 @@
             android:id="@+id/haw_inputBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/bora2"
             android:text="확인"
             />
     </LinearLayout>
