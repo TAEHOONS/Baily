@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
@@ -28,11 +29,12 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
-public class ChildFragTall extends Fragment {
+public class ChildFragTall  extends Fragment {
     private View view;
-    private LineChart tallCart;
+    private LineChart tallChart;
+
     String dbName = "user.db";
-    int dbVersion = 3, BYear, BMonth, BDay, i = 0, count = 0;
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
     // mId= 현재 사용 id, baby
     private String mId, mBabyname;
     private DBlink helper;
@@ -48,38 +50,38 @@ public class ChildFragTall extends Fragment {
 
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
-    float[] standardTallBoy, standardTallGirl;
-    float[] standardTallBaby = new float[72];
+    float[] standardTallBoy,standardTallGirl;
+    float[] standardTallBaby = new float[100];
 
 
-    public static ChildFragTall newInstance() {
+    public static ChildFragTall newInstance(){
         ChildFragTall childFragTall = new ChildFragTall();
         return childFragTall;
     }
 
-
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.standard_child_frag_tall, container, false);
+        view = inflater.inflate(R.layout.standard_child_frag_tall,container,false);
         //이전, 이후 버튼과 텍스트뷰
         tallDateTxt = view.findViewById(R.id.tallDateTxt);
         tallBeforeBtn = (ImageView) view.findViewById(R.id.sTallBeforeBtn);
         tallAfterBtn = (ImageView) view.findViewById(R.id.sTallAfterBtn);
-        //신장 표준 그래프
-        tallCart = view.findViewById(R.id.tallLineCart);
+        //표준머리둘레 차트
+        tallChart = view.findViewById(R.id.tallLineCart);
+
         sM=1;
         eM=12;
 
         usingDB(container);
-        //loadgrowLog();
+        loadgrowLog();
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
-        //valuesBaby = new ArrayList<>();//내애기
+        valuesBaby = new ArrayList<>();//내애기
 
         //남아 표준 그래프(몸무게) 배열 값 삽입
         setBoyList();
-
         //여아 표준 그래프(몸무게) 배열 값 삽입
         setGirlList();
 
@@ -90,7 +92,8 @@ public class ChildFragTall extends Fragment {
         MidDataSet();
 
         // 차트 속성
-        setGraph(tallCart,boyTallData,girlTallData);
+        setGraph(tallChart,boyTallData,girlTallData,babyTallData);
+
         //이전버튼눌렀을 때
         tallBeforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,8 +116,8 @@ public class ChildFragTall extends Fragment {
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(tallCart,boyTallData,girlTallData);
-                    ChartChange(tallCart);
+                    setGraph(tallChart,boyTallData,girlTallData,babyTallData);
+                    ChartChange(tallChart);
                 }
             }
         });
@@ -140,11 +143,12 @@ public class ChildFragTall extends Fragment {
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(tallCart,boyTallData,girlTallData);
-                    ChartChange(tallCart);
+                    setGraph(tallChart,boyTallData,girlTallData,babyTallData);
+                    ChartChange(tallChart);
                 }
             }
         });
+
 
         return view;
     }
@@ -155,7 +159,7 @@ public class ChildFragTall extends Fragment {
 
         boy = new LineDataSet(valuesBoy, "남아 몸무게");
         girl = new LineDataSet(valuesGirl, "여아 몸무게");
-        //baby = new LineDataSet(valuesBaby, "내 아이 몸무게");
+        baby = new LineDataSet(valuesBaby, "내 아이 몸무게");
 
         // 기초 라인들 만들기
         dataSets = new ArrayList<>();
@@ -163,22 +167,22 @@ public class ChildFragTall extends Fragment {
         // day"++"DataSets에 linedata 받은거 추가하기
         dataSets.add(boy); // 남아표준
         dataSets.add(girl); // 여아표준
-        //dataSets.add(baby);//내 아기
+        dataSets.add(baby);//내 아기
 
         // 실질적 라인인 day"++"Data에 새로 값넣기
         boyTallData = new LineData(dataSets);
         girlTallData = new LineData(dataSets);
-        //babyTallData = new LineData(dataSets);//내아기
+        babyTallData = new LineData(dataSets);//내아기
 
         // 그래프 색 넣기
         GraphLineColor2(boy, Color.BLUE);
         GraphLineColor2(girl, Color.RED);
 
-        //GraphLineColor(baby, Color.BLACK);
+        GraphLineColor(baby, Color.BLACK);
     }
 
     // 그래프에 데이터 적용 셋팅
-    private void setGraph(LineChart tallChart, LineData data1,LineData data2) {
+    private void setGraph(LineChart tallChart, LineData data1,LineData data2,LineData data3) {
 
         XAxis xAxis = tallChart.getXAxis(); // x 축 설정
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
@@ -201,7 +205,7 @@ public class ChildFragTall extends Fragment {
 
         tallChart.setData(data1);
         tallChart.setData(data2);
-        //kgChart.setData(data3); //내아기
+        tallChart.setData(data3); //내아기
     }
 
     // 표준 그래프 컬러 적용
@@ -220,18 +224,23 @@ public class ChildFragTall extends Fragment {
     private void SetGraphData() {
         valuesBoy.clear();
         valuesGirl.clear();
-        //valuesBaby.clear();
+        valuesBaby.clear();
 
         dataStack(sM,eM,valuesBoy, standardTallBoy);
         dataStack(sM,eM,valuesGirl, standardTallGirl);
-        //dataStack(sM,eM,valuesBaby, standardTallBaby);
+        dataStack(sM,eM,valuesBaby, standardTallBaby);
     }
 
     private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
         for (int i = start; i <= end; i++) {
-            values.add(new Entry(i, list[i]));
+            if (list[i] != 0) {
+                values.add(new Entry(i, list[i]));
+                Log.d("for문123", "값: " + list[i]);
+            }
         }
     }
+
+
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
@@ -265,22 +274,21 @@ public class ChildFragTall extends Fragment {
         while (c.moveToNext()) {
 
             k = c.getString(3);
-            if (k != null) {
-                try {
+            try {
+                if (k == null)
+                    n = 0;
+                else
                     n = Float.parseFloat(k);
-                    setBabyList(i, n);
-                    i++;
-                    Log.d("n값", "loadgrowLog: " + n);
-                    Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
-                } catch (Exception e) {
-                }
+                setBabyList(i, n);
+                i++;
+                Log.d("n값", "loadgrowLog: " + n);
+                Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+            } catch (Exception e) {
             }
 
         }
-        Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardTallBaby[i]);
 
     }
-
     private void setBoyList() {
         standardTallBoy = new float[73];
         standardTallBoy[0] = (float) 49.88;
@@ -444,4 +452,17 @@ public class ChildFragTall extends Fragment {
     private void setBabyList(int i, float n) {
         standardTallBaby[i] = n;
     }
+//    private int counting(){
+//        count = 0;
+//        Cursor cursor = db.rawQuery("select * from growlog",null);
+//        count = cursor.getCount();
+//        standardTallBaby = new float[count];
+//        Log.d("count", "counting: "+count);
+//        return count;
+//
+//    }
+
+
 }
+
+

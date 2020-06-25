@@ -81,20 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.222"></TextView>
-
-            <TextView
-                android:id="@+id/rt_hospital_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/godo"
-                android:text="6월 2일"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.466" />
+                app:layout_constraintVertical_bias="0.512"></TextView>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
