@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +35,7 @@ public class InfoBowel extends AppCompatActivity {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    String mMilkMl=null, saveTime, memo,getHour, getMinu;
+    String mMilkMl=null, saveTime, memo,getHour, getMinu,ColorString="";
     String test = null;
     Button tagAdd;
     ImageView back, end;
@@ -48,7 +49,7 @@ public class InfoBowel extends AppCompatActivity {
 
     private LinearLayout horizontalLayout;
     EditText edmemo1;
-    TextView tSum, eating, startDate, endDate;
+    TextView tSum, eating, startDate, endDate,thisColor;
     int strt, endt;
 
     @Override
@@ -61,6 +62,7 @@ public class InfoBowel extends AppCompatActivity {
         Button end = findViewById(R.id.recode_bowel_reviseBtn);
         Button delete = findViewById(R.id.recode_bowel_deleteBtn);
         startDate = findViewById(R.id.recode_bowel_time);
+        thisColor=findViewById(R.id.recode_bowel_thisColor);
 
         final Intent intent = getIntent();
         String stt = intent.getStringExtra("str");
@@ -132,7 +134,8 @@ public class InfoBowel extends AppCompatActivity {
 
         memo = edmemo1.getText().toString();
 
-        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + memo + "' " +
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "'," +
+                "subt='" + ColorString + "' ,contents1='"+memo+"'" +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
         finish();
@@ -143,6 +146,55 @@ public class InfoBowel extends AppCompatActivity {
         db.execSQL(deletejob);
         finish();
     }
+
+    public void recodeOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.recode_bowel_yellow1Btn:
+                ColorSetting("#DDBF27");
+                break;
+            case R.id.recode_bowel_yellow2Btn:
+                ColorSetting("#AC820F");
+                break;
+            case R.id.recode_bowel_brownBtn:
+                ColorSetting("#7E6501");
+                break;
+            case R.id.recode_bowel_greenBtn:
+                ColorSetting("#2B8A0F");
+                break;
+            case R.id.recode_bowel_redBtn:
+                ColorSetting("#CA4343");
+                break;
+
+
+        }
+    }
+
+    private void ColorSetting(String colorCode){
+        switch (colorCode) {
+            case "#DDBF27":
+                thisColor.setBackgroundColor(Color.parseColor("#DDBF27"));
+                ColorString="#DDBF27";
+                break;
+            case "#AC820F":
+                thisColor.setBackgroundColor(Color.parseColor("#AC820F"));
+                ColorString="#AC820F";
+                break;
+            case "#7E6501":
+                thisColor.setBackgroundColor(Color.parseColor("#7E6501"));
+                ColorString="#7E6501";
+                break;
+            case "#2B8A0F":
+                thisColor.setBackgroundColor(Color.parseColor("#2B8A0F"));
+                ColorString="#2B8A0F";
+                break;
+            case "#CA4343":
+                thisColor.setBackgroundColor(Color.parseColor("#CA4343"));
+                ColorString="#CA4343";
+                break;
+
+        }
+    }
+
 
     private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
@@ -162,9 +214,12 @@ public class InfoBowel extends AppCompatActivity {
         cursor = db.rawQuery(sql, null);
         // 기본 데이터
         while (cursor.moveToNext()) {
+            ColorString=cursor.getString(5);
             memo = cursor.getString(6);
             if(memo!=null)
                 edmemo1.setText(memo);
+            if(ColorString!=null)
+                ColorSetting(ColorString);
         }
     }
     private String saveChaingeTime(int hour, int min) {
