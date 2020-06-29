@@ -32,7 +32,10 @@ import com.example.baily.babyPlus.SecondPage;
 import com.example.baily.caldate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import org.w3c.dom.Text;
 
@@ -62,7 +65,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     View r_dialog;
     TextView checkTxt;
     //인증번호확인과 중복아이디 체크를 했는지 확인하기 위한
-    Boolean numClick=false;
+    Boolean numClick = false;
     Boolean sameCk = false;
 
     //여기에 추가적으로 인증번호
@@ -78,9 +81,9 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     CountDownTimer countDownTimer;
     final int MILLISINFUTURE = 180 * 1000; //총 시간 (300초 = 5분)
     final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
-    int count=0; //count_method에 쓰이는변수
+    int count = 0; //count_method에 쓰이는변수
     String dbName = "user.db", mgetId = "";
-    String mgetPassword, mgetRePassword, mgetIdCk,mgetNameCk,mgetEmailCk,mgetEmailNumCk;  // 최종확인할때 쓰는버튼
+    String mgetPassword, mgetRePassword, mgetIdCk, mgetNameCk, mgetEmailCk, mgetEmailNumCk;  // 최종확인할때 쓰는버튼
     int dbVersion = 3;
     private DBlink helper;
     private SQLiteDatabase db;
@@ -91,10 +94,6 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .permitDiskReads()
-                .permitDiskWrites()
-                .permitNetwork().build());
 
         //보내기 버튼을 누르면 이메일로 전송
         reg_numsendBtn = (Button) findViewById(R.id.reg_numsendBtn);//emailEditText
@@ -104,7 +103,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         emailText = (EditText) findViewById(R.id.emailText);
         reg_emailEdt = (EditText) findViewById(R.id.reg_emailnumEdt);
 
-        checkTxt = (TextView)findViewById(R.id.checkTxt);
+        checkTxt = (TextView) findViewById(R.id.checkTxt);
 
         reg_nameEdt = (EditText) findViewById(R.id.reg_nameEdt);
         reg_textEdt = (EditText) findViewById(R.id.reg_idEdt);
@@ -116,7 +115,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         Get_Internet(this);
 
         //공용아이디
-       // InsertData("200112", "1111","신태훈");
+        // InsertData("200112", "1111","신태훈");
 
 
         //다이얼로그
@@ -213,7 +212,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
     private boolean EmailCk(boolean emailFlag) {
         //이메일 인증번호 check
-        if (emailFlag ==false) {
+        if (emailFlag == false) {
 
             ad.setTitle("이메일 재확인 요망");
             ad.setMessage("이메일 인증번호가 틀립니다");
@@ -250,17 +249,17 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-               // Toast.makeText(context, "와이파이", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "와이파이", Toast.LENGTH_SHORT).show();
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-               // Toast.makeText(context, "데이터 연결", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "데이터 연결", Toast.LENGTH_SHORT).show();
             }
         }
-       // Toast.makeText(context, "인터넷 연결을 확인해주십시오", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, "인터넷 연결을 확인해주십시오", Toast.LENGTH_SHORT).show();
     }
 
 
     //데이터 넣는법
-    private void InsertData(String userId, String userPw,String userName,String userEmail) {
+    private void InsertData(String userId, String userPw, String userName, String userEmail) {
         //선언
         ContentValues values = new ContentValues();
         //values에 테이블의 column에 넣을값 x 넣기
@@ -350,7 +349,7 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                 mgetEmailNumCk = reg_emailEdt.getText().toString();
 
                 //모든 칸이 빈칸일 경우
-                if (mgetNameCk.equals("")&&mgetIdCk.equals("")&&mgetPassword.equals("")&&mgetRePassword.equals("")&&mgetEmailCk.equals("")&&mgetEmailNumCk.equals("")){
+                if (mgetNameCk.equals("") && mgetIdCk.equals("") && mgetPassword.equals("") && mgetRePassword.equals("") && mgetEmailCk.equals("") && mgetEmailNumCk.equals("")) {
                     dlg.setTitle("정보 재확인 요망");
                     dlg.setMessage("정보를 입력해주세요");
                     dlg.setPositiveButton("확인", null);
@@ -360,68 +359,59 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                 else {
 
                     //dlg.setTitle("정보 재확인 요망");
-                    if(mgetNameCk.equals("")){
+                    if (mgetNameCk.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("이름을 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(mgetIdCk.equals("")){
+                    } else if (mgetIdCk.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("아이디를 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(mgetPassword.equals("")){
+                    } else if (mgetPassword.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("비밀번호를 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(mgetRePassword.equals("")){
+                    } else if (mgetRePassword.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("비밀번호 확인란에 비밀번호를 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(!mgetRePassword.equals(mgetPassword)){
+                    } else if (!mgetRePassword.equals(mgetPassword)) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("비밀번호가 일치하지 않습니다.");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(mgetEmailCk.equals("")){
+                    } else if (mgetEmailCk.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("이메일을 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(mgetEmailNumCk.equals("")){
+                    } else if (mgetEmailNumCk.equals("")) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("이메일 인증번호를 입력해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(numClick==false){
+                    } else if (numClick == false) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("이메일 인증번호 확인을 완료해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else if(sameCk == false){
+                    } else if (sameCk == false) {
                         dlg.setTitle("정보 재확인 요망");
                         dlg.setMessage("중복된 아이디가 있는지 체크해주세요");
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
-                    }
-                    else{
+                    } else {
                         putFireStore(reg_textEdt.getText().toString());
                         dlg.setTitle("회원가입 완료");
-                        dlg.setMessage(mgetNameCk+"님 환영합니다.");
+                        dlg.setMessage(mgetNameCk + "님 환영합니다.");
 
                         //로컬디비에 넣는거 //0608 여기수정중
-                        InsertData(reg_textEdt.getText().toString(), reg_pwdEdt.getText().toString(),reg_nameEdt.getText().toString(),emailText.getText().toString());
-                        Log.d("로컬디비", "onCreate: "+reg_textEdt);
+                        InsertData(reg_textEdt.getText().toString(), reg_pwdEdt.getText().toString(), reg_nameEdt.getText().toString(), emailText.getText().toString());
+                        Log.d("로컬디비", "onCreate: " + reg_textEdt);
 
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
@@ -441,15 +431,15 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
 
 
     // FireBase에 회원가입 정보넣기
-    public class member {
+    public class User {
 
         public String name, pw, email;
 
-        public member() {
+        public User() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
-        public member(String name, String password, String email) {
+        public User(String name, String password, String email) {
             this.name = name;
             this.pw = password;
             this.email = email;
@@ -458,11 +448,25 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
     }
 
     public void putFireStore(String id) {
-        FirebaseFirestore fdb = FirebaseFirestore.getInstance();
-        member member = new member(reg_nameEdt.getText().toString(), reg_pwdEdt.getText().toString(), emailText.getText().toString());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        User member = new User(reg_nameEdt.getText().toString(), reg_pwdEdt.getText().toString(), emailText.getText().toString());
 
 
 // Add a new document with a generated ID
+        db.collection("users").document(id)
+                .set(member)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("regitFire", "파베 입력 성공");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("regitFire", "입력 실패", e);
+                    }
+                });
 
 
 // Add a new document with a generated ID

@@ -482,6 +482,7 @@ public class ChildFragMonth extends Fragment {
             }
         }
 
+
     }
 
     public void monthString() {
@@ -496,6 +497,8 @@ public class ChildFragMonth extends Fragment {
             SearchDay[i + 1] = readChartD.format((mCal.getTime()));
 
         }
+//        for (int i = 0; i < 367; i++)
+//            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
 
     }
 

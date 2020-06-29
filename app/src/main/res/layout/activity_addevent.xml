@@ -46,6 +46,7 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:text="일기 작성한 날"
+                android:fontFamily="@font/godo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000" />
 
@@ -61,6 +62,7 @@
                 android:id="@+id/edit_eventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/godo"
                 android:hint="Diary  Title" />
 
             <EditText
@@ -68,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="일기 작성부분!!!!!!!!!!!!!!!!!"
+                android:fontFamily="@font/godo"
                 android:textColorLink="#FFA9A9"/>
 
         </LinearLayout>

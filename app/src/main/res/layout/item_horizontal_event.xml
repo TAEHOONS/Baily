@@ -30,6 +30,7 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:id="@+id/item_name"
+                android:fontFamily="@font/godo"
                 android:text="일기 제목"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000" />
@@ -48,6 +49,7 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:id="@+id/item_date"
+                android:fontFamily="@font/godo"
                 android:text="일기 작성한 날"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
