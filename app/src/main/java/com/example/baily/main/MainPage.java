@@ -60,16 +60,7 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        ArrayList<Integer> images = new ArrayList<>();
-        images.add(R.drawable.ic_round_import_contacts_24);
-        images.add(R.drawable.ic_recode);
-        images.add(R.drawable.ic_home11);
-        images.add(R.drawable.ic_growth);
-        images.add(R.drawable.ic_chart);
 
-        for(int i=0; i<5; i++){
-            tabLayout.getTabAt(i).setIcon(images.get(i));
-        }
         viewPager.setOffscreenPageLimit(0);
         viewPager.setCurrentItem(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

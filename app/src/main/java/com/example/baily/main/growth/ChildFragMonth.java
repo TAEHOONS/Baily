@@ -335,7 +335,6 @@ public class ChildFragMonth extends Fragment {
         wXAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         wXAxis.setDrawAxisLine(false);
-        //wXAxis.setDrawGridLines(false);
 
         // 차트 x 에 라벨 넣기
         wXAxis.setValueFormatter(new IndexAxisValueFormatter(XarMonth));
@@ -343,7 +342,6 @@ public class ChildFragMonth extends Fragment {
         YAxis wYAxisLeft = growMonthCart.getAxisLeft(); //Y축의 왼쪽면 설정
 
         wYAxisLeft.setDrawLabels(false);
-        //wYAxisLeft.setDrawAxisLine(false);
         wYAxisLeft.setDrawGridLines(false);
 
         YAxis wYAxisRight = growMonthCart.getAxisRight(); //Y축의 오른쪽면 설정
@@ -433,9 +431,7 @@ public class ChildFragMonth extends Fragment {
 
         }
 
-
-
-                cursor.close();
+        cursor.close();
     }
 
     // 현재값 받기
@@ -466,7 +462,7 @@ public class ChildFragMonth extends Fragment {
 
     private void monthAvg(String[] dayArr, float[] YearArr) {
         Log.d("weekarry", "실행 mMaxDay= "+mMaxDay);
-        int monthCount=0,avgCount=0;
+        int monthCount=1,avgCount=0;
         for (int i = 0; i < 367; i++) {
             if (dayArr[i] != null) {
                 try {
@@ -497,8 +493,6 @@ public class ChildFragMonth extends Fragment {
             SearchDay[i + 1] = readChartD.format((mCal.getTime()));
 
         }
-//        for (int i = 0; i < 367; i++)
-//            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
 
     }
 

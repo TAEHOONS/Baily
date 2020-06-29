@@ -62,6 +62,7 @@
                     android:id="@+id/mft_dDayTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/godo"
                     android:text="D-day"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#EE4545"

@@ -30,10 +30,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         this.context=context;
 
     }
-    Drawable myDrawable;
+    Drawable myDrawable,mD1,mD2,mD3,mD4;
     String title;
     Context context;
-    SpannableStringBuilder sb;
+    SpannableStringBuilder sb,sb1,sb2,sb3,sb4;
     ImageSpan span;
     @NonNull
     @Override
@@ -74,15 +74,60 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return "Diary";
+                myDrawable = ContextCompat.getDrawable(context,R.drawable.main_diary);
+                sb = new SpannableStringBuilder(" "); // space added before text for convenience
+
+                myDrawable.setBounds(0, 20, 100, 120);
+                Log.d("ahfmrpTek", "getPageTitle: "+myDrawable.getIntrinsicHeight());
+                span = new ImageSpan(myDrawable, ImageSpan.ALIGN_BASELINE);
+
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb;
             case 1:
-                return "Recode";
+                mD1 = ContextCompat.getDrawable(context,R.drawable.main_record);
+                sb1 = new SpannableStringBuilder(" "); // space added before text for convenience
+
+                mD1.setBounds(0, 15, 90, 130);
+                Log.d("ahfmrpTek", "getPageTitle: "+mD1.getIntrinsicHeight());
+                span = new ImageSpan(mD1, ImageSpan.ALIGN_BASELINE);
+
+                sb1.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb1;
             case 2:
-                return "Home";
+                mD2 = ContextCompat.getDrawable(context,R.drawable.main_home);
+                sb2 = new SpannableStringBuilder(" "); // space added before text for convenience
+
+                mD2.setBounds(0, 15, 100, 130);
+                Log.d("ahfmrpTek", "getPageTitle: "+mD2.getIntrinsicHeight());
+                span = new ImageSpan(mD2, ImageSpan.ALIGN_BASELINE);
+
+                sb2.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb2;
             case 3:
-                return "Growth";
+                mD3 = ContextCompat.getDrawable(context,R.drawable.main_growth);
+                sb3 = new SpannableStringBuilder(" "); // space added before text for convenience
+
+                mD3.setBounds(0, 15, 100, 140);
+                Log.d("ahfmrpTek", "getPageTitle: "+mD3.getIntrinsicHeight());
+                span = new ImageSpan(mD3, ImageSpan.ALIGN_BASELINE);
+
+                sb3.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb3;
             case 4:
-                return "Standard";
+                mD4 = ContextCompat.getDrawable(context,R.drawable.main_standardgrowth);
+                sb4 = new SpannableStringBuilder(" "); // space added before text for convenience
+
+                mD4.setBounds(0, 15, 100, 140);
+                Log.d("ahfmrpTek", "getPageTitle: "+mD4.getIntrinsicHeight());
+                span = new ImageSpan(mD4, ImageSpan.ALIGN_BASELINE);
+
+                sb4.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                return sb4;
             default:
                 return null;
         }
