@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("접속", "DB 접속");
 
 
-        DocumentReference docRef = db.collection("member").document(id);
+        DocumentReference docRef = db.collection("users").document(id);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

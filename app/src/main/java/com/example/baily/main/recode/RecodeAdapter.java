@@ -19,7 +19,7 @@ import com.example.baily.main.diary.EventData;
 
 import java.util.ArrayList;
 
-public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder>  {
+public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder> {
     Context context;
     ArrayList<RecodeData> recodeData;
 
@@ -29,13 +29,9 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     //클릭이벤트처리 관련 사용자 정의(이 코드없으면 그냥 리사이클러뷰 구조)//////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-    public   interface  OnItemClickListener{
-         void onItemClick(ViewHolder holder, View view, int position);
+    public interface OnItemClickListener {
+        void onItemClick(ViewHolder holder, View view, int position);
     }
-
 
 
     public RecodeAdapter(ArrayList<RecodeData> list, FragRecode context) {
@@ -59,7 +55,6 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     }
 
 
-
     //각각의 아이템을 위한 뷰의 xml레이아웃과 서로 뭉쳐지는(결합되는) 경우 자동으로 호출( 즉 뷰홀더가 각각의 아이템을 위한 뷰를 담아주기위한 용도인데 뷰와 아이템이 합질때 호출)
     // Replace the contents of a view //적절한 데이터를 가져와 뷰 소유자의 레이아웃을 채우기 위해 사용(뷰홀더에 각 아이템의 데이터를 설정함)
     @Override
@@ -73,8 +68,8 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
         viewHolder.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(ViewHolder holder, View view, int position) {
-                Log.d("recodeTest", "recodeA: recData="+item.getRecodeId());
-                ItemId=item.getRecodeId();
+                Log.d("recodeTest", "recodeA: recData=" + item.getRecodeId());
+                ItemId = item.getRecodeId();
             }
         });
 
@@ -82,18 +77,18 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
     }
 
     //아이템을 한개 추가해주고싶을때
-    public  void addItem(RecodeData item){
+    public void addItem(RecodeData item) {
         recodeData.add(item);
     }
 
     //한꺼번에 추가해주고싶을때
-    public void addItems(ArrayList<RecodeData> items){
+    public void addItems(ArrayList<RecodeData> items) {
         this.recodeData = items;
     }
 
 
-    public RecodeData getItem(int position){
-        return  recodeData.get(position);
+    public RecodeData getItem(int position) {
+        return recodeData.get(position);
     }
 
     //뷰홀더
@@ -118,71 +113,71 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if(listenr != null ){
+                    if (listenr != null) {
                         listenr.onItemClick(ViewHolder.this, itemView, position);
                     }
                     final String val = textView2.getText().toString();
                     final String tm = textView.getText().toString();
 
-                    if(val.equals("●분유")){
+                    if (val.equals("●분유")) {
                         Intent intent = new Intent(v.getContext(), InfoPwmilk.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PWMILK);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_PWMILK);
                     }
-                    if(val.equals("●모유")){
+                    if (val.equals("●모유")) {
                         Intent intent = new Intent(v.getContext(), InfoNursing.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_NURSING);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_NURSING);
                     }
-                    if(val.equals("●이유식")){
+                    if (val.equals("●이유식")) {
                         Intent intent = new Intent(v.getContext(), InfoBbfood.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BBFOOD);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_BBFOOD);
                     }
-                    if(val.equals("●잠")){
+                    if (val.equals("●잠")) {
                         Intent intent = new Intent(v.getContext(), infoSleep.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_SLEEP);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_SLEEP);
                     }
-                    if(val.equals("●기저귀")){
+                    if (val.equals("●기저귀")) {
                         Intent intent = new Intent(v.getContext(), InfoBowel.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BOWEL);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_BOWEL);
                     }
-                    if(val.equals("●약")){
+                    if (val.equals("●약")) {
                         Intent intent = new Intent(v.getContext(), InfoDrug.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_DRUG);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_DRUG);
                     }
-                    if(val.equals("●온도")){
+                    if (val.equals("●온도")) {
                         Intent intent = new Intent(v.getContext(), InfoTemp.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_TEMP);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_TEMP);
                     }
-                    if(val.equals("●목욕")){
+                    if (val.equals("●목욕")) {
                         Intent intent = new Intent(v.getContext(), InfoBath.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_BATH);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_BATH);
                     }
-                    if(val.equals("●병원")){
+                    if (val.equals("●병원")) {
                         Intent intent = new Intent(v.getContext(), InfoHospital.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_HOSP);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_HOSP);
                     }
-                    if(val.equals("●놀이")){
+                    if (val.equals("●놀이")) {
                         Intent intent = new Intent(v.getContext(), InfoPlay.class);
-                        intent.putExtra("str",tm);
-                        intent.putExtra("id",ItemId);
-                        ((Activity)v.getContext()).startActivityForResult(intent, FragRecode.INFO_PLAY);
+                        intent.putExtra("str", tm);
+                        intent.putExtra("id", ItemId);
+                        ((Activity) v.getContext()).startActivityForResult(intent, FragRecode.INFO_PLAY);
 
                     }
                 }
@@ -193,53 +188,86 @@ public class RecodeAdapter extends RecyclerView.Adapter<RecodeAdapter.ViewHolder
         //setItem 메소드는 SingerItem 객체를 전달받아 뷰홀더 안에 있는 뷰에 데이터를 설정하는 역할을 합니다.
         public void setItem(RecodeData item) {
             textView.setText(item.getTime());
-            textView2.setText("●"+item.getValue());
-            switch (item.getValue()){
-                case "모유" :
+            textView2.setText("●" + item.getValue());
+            switch (item.getValue()) {
+                case "모유":
                     textView2.setTextColor(Color.parseColor("#C55A11"));
                     break;
-                case "이유식" :
+                case "이유식":
                     textView2.setTextColor(Color.parseColor("#FFA9A9"));
                     break;
-                case "잠" :
+                case "잠":
                     textView2.setTextColor(Color.parseColor("#5781BF"));
                     break;
-                case "분유" :
+                case "분유":
                     textView2.setTextColor(Color.parseColor("#F4B184"));
                     break;
-                case "기저귀" :
+                case "기저귀":
                     textView2.setTextColor(Color.parseColor("#BF9000"));
                     break;
-                case "약" :
+                case "약":
                     textView2.setTextColor(Color.parseColor("#A9D18E"));
                     break;
-                case "온도" :
+                case "온도":
                     textView2.setTextColor(Color.parseColor("#2E75B6"));
                     break;
-                case "목욕" :
+                case "목욕":
                     textView2.setTextColor(Color.parseColor("#FFE699"));
                     break;
-                case "병원" :
+                case "병원":
                     textView2.setTextColor(Color.parseColor("#00B050"));
                     break;
-                case "놀이" :
+                case "놀이":
                     textView2.setTextColor(Color.parseColor("#F4B183"));
                     break;
 
             }
             imageView.setImageResource(R.drawable.right);
+
             textView3.setText(item.getDal());
+            if (item.getValue().equals("기저귀")) {
+                Log.d("recodecatch", "setItem: " + item.getDal());
+                if (item.getDal().equals("null")) {
+                    textView3.setText("");
+                    Log.d("recodecatch", "if");
+                } else if (item.getDal() != null&&item.getDal() !="") {
+
+                    Log.d("recodecatch", "esle");
+                    textView3.setText("아기의 변 색깔 입니다");
+                    switch (item.getDal()) {
+                        case "#DDBF27":
+                            textView3.setBackgroundColor(Color.parseColor("#DDBF27"));
+                            break;
+                        case "#AC820F":
+                            textView3.setBackgroundColor(Color.parseColor("#AC820F"));
+                            break;
+                        case "#7E6501":
+                            textView3.setBackgroundColor(Color.parseColor("#7E6501"));
+                            break;
+                        case "#2B8A0F":
+                            textView3.setBackgroundColor(Color.parseColor("#2B8A0F"));
+                            break;
+                        case "#CA4343":
+                            textView3.setBackgroundColor(Color.parseColor("#CA4343"));
+                            break;
+
+                    }
+
+                }
+
+
+            }
+
         }
 
 
         //클릭이벤트처리
-        public void setOnItemClickListener(OnItemClickListener listenr){
+        public void setOnItemClickListener(OnItemClickListener listenr) {
             this.listenr = listenr;
         }
 
 
     }
-
 
 
 }

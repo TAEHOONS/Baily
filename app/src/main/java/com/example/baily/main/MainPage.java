@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,7 +50,8 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         ViewPager viewPager = findViewById(R.id.viewPager);
-        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        Context context=getApplicationContext();
+        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),context);
         usingDB();
 
         backPressClose=new BackPressClose(this);
