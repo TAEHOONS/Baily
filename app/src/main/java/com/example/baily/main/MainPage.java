@@ -29,6 +29,7 @@ import com.google.protobuf.Value;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,6 +58,18 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         backPressClose=new BackPressClose(this);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        ArrayList<Integer> images = new ArrayList<>();
+        images.add(R.drawable.ic_round_import_contacts_24);
+        images.add(R.drawable.ic_recode);
+        images.add(R.drawable.ic_home11);
+        images.add(R.drawable.ic_growth);
+        images.add(R.drawable.ic_chart);
+
+        for(int i=0; i<5; i++){
+            tabLayout.getTabAt(i).setIcon(images.get(i));
+        }
         viewPager.setOffscreenPageLimit(0);
         viewPager.setCurrentItem(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -77,7 +90,7 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
             }
         });
 
-        tabLayout.setupWithViewPager(viewPager);
+
 
         ImageView setBtn = (ImageView) findViewById(R.id.mft_setBtn);
         DayText = (TextView) findViewById(R.id.mft_dDayTxt);

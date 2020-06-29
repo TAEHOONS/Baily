@@ -29,6 +29,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:text=" ~ 생후 12개월"
+            android:fontFamily="@font/godo"
             android:textColor="#000000" />
 
         <ImageView

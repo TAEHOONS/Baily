@@ -437,6 +437,7 @@
                 android:layout_height="26dp"
                 android:gravity="left"
                 android:text="2020년 01월 01일"
+                android:fontFamily="@font/godo"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

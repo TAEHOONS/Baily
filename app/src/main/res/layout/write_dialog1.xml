@@ -43,6 +43,7 @@
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="몸무게"
             android:textSize="24dp" />
 
@@ -51,6 +52,7 @@
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="키"
             android:textSize="24dp" />
 
@@ -59,6 +61,7 @@
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="머리 둘레"
             android:textSize="24dp" />
 
@@ -67,6 +70,7 @@
             android:layout_column="1"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="체온"
             android:textSize="24dp" />
 
@@ -115,6 +119,7 @@
             android:layout_column="3"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="kg"
             android:textSize="24dp" />
 
@@ -123,6 +128,7 @@
             android:layout_column="3"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="cm"
             android:textSize="24dp" />
 
@@ -131,6 +137,7 @@
             android:layout_column="3"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="cm"
             android:textSize="24dp" />
 
@@ -139,6 +146,7 @@
             android:layout_column="3"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
+            android:fontFamily="@font/godo"
             android:text="°C"
             android:textSize="24dp" />
     </GridLayout>

@@ -213,6 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:fontFamily="@font/godo"
                 android:text="오늘날짜"
                 android:textSize="24sp" />
 

@@ -79,18 +79,29 @@
                     android:id="@+id/h_bNameTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/godo"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Baby Name" />
                 <!--                    //아기 태어난 후부터 디데이-->
                 <TextView
                     android:id="@+id/h_birthDdayTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="D+day, N개월" />
+                    android:fontFamily="@font/godo"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="D+day\n N개월" />
                 <!--아기 몸무게와 키-->
                 <TextView
                     android:id="@+id/h_babyKgCmTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/godo"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
                     android:text="현재? N kg, N cm" />
             </LinearLayout>
         </LinearLayout>
