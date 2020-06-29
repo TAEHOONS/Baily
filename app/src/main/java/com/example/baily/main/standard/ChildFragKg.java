@@ -51,7 +51,7 @@ public class ChildFragKg extends Fragment {
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardKgBoy, standardKgGirl;
-    float[] standardKgBaby = new float[100];
+    float[] standardKgBaby = new float[80];
 
     public static ChildFragKg newInstance() {
         ChildFragKg childFragKg = new ChildFragKg();
@@ -226,8 +226,8 @@ public class ChildFragKg extends Fragment {
 
     private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
         for (int i = start; i <= end; i++) {
-            if (list[i] != 0) {
-                values.add(new Entry(i, list[i]));
+            if (list[i-1] != 0) {
+                values.add(new Entry(i, list[i-1]));
                 Log.d("for문123", "값: " + list[i]);
             }
         }

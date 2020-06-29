@@ -164,7 +164,7 @@ public class ChildFragMonth extends Fragment {
                 ArryClear(mArrKg, mArrCm, mArrHead, mArrFever, monthArrKg, monthArrCm, monthArrHead, monthArrFever);
                 //if (monthStartDate.equals(mBabyBirthYear)) {//아이의 출생년도랑 비교해야함
                 int a=Integer.valueOf(monthStartDate.substring(0,4));
-                    a-=1;
+                a-=1;
                 mCal.set(a,1,1);
                 monthStartDate = sFormat.format(mCal.getTime());
 
@@ -435,7 +435,7 @@ public class ChildFragMonth extends Fragment {
 
 
 
-                cursor.close();
+        cursor.close();
     }
 
     // 현재값 받기
@@ -466,7 +466,7 @@ public class ChildFragMonth extends Fragment {
 
     private void monthAvg(String[] dayArr, float[] YearArr) {
         Log.d("weekarry", "실행 mMaxDay= "+mMaxDay);
-        int monthCount=0,avgCount=0;
+        int monthCount=1,avgCount=0;
         for (int i = 0; i < 367; i++) {
             if (dayArr[i] != null) {
                 try {
@@ -482,7 +482,6 @@ public class ChildFragMonth extends Fragment {
             }
         }
 
-
     }
 
     public void monthString() {
@@ -497,8 +496,6 @@ public class ChildFragMonth extends Fragment {
             SearchDay[i + 1] = readChartD.format((mCal.getTime()));
 
         }
-//        for (int i = 0; i < 367; i++)
-//            Log.d("주간 학습", " SearchDay[0] = " + SearchDay[i]);
 
     }
 

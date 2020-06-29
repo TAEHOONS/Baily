@@ -51,7 +51,7 @@ public class ChildFragHead  extends Fragment {
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardHeadBoy,standardHeadGirl;
-    float[] standardHeadBaby=new float[100];
+    float[] standardHeadBaby=new float[80];
 
     public static ChildFragHead newInstance(){
         ChildFragHead childFragHead = new ChildFragHead();
@@ -228,8 +228,8 @@ public class ChildFragHead  extends Fragment {
 
     private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
         for (int i = start; i <= end; i++) {
-            if (list[i] != 0) {
-                values.add(new Entry(i, list[i]));
+            if (list[i-1] != 0) {
+                values.add(new Entry(i, list[i-1]));
                 Log.d("for문123", "값: " + list[i]);
             }
         }
