@@ -148,6 +148,12 @@ public class setting extends AppCompatActivity {
             db.execSQL(deleteThig);
             deleteThig = "DELETE FROM growlog ";
             db.execSQL(deleteThig);
+            deleteThig = "DELETE FROM events ";
+            db.execSQL(deleteThig);
+            deleteThig = "DELETE FROM recode ";
+            db.execSQL(deleteThig);
+
+
 
             ActivityCompat.finishAffinity(this);
             ContentValues values = new ContentValues();
@@ -198,6 +204,10 @@ public class setting extends AppCompatActivity {
             db.execSQL(Revisejob);
             Revisejob = "UPDATE growlog SET name='" + NewBabyName + "' WHERE name='" + mBabyname + "'";
             db.execSQL(Revisejob);
+            Revisejob = "UPDATE recode SET name='" + NewBabyName + "' WHERE name='" + mBabyname + "'";
+            db.execSQL(Revisejob);
+            Revisejob = "UPDATE events SET name='" + NewBabyName + "' WHERE name='" + mBabyname + "'";
+            db.execSQL(Revisejob);
 
         }
 
@@ -237,9 +247,15 @@ public class setting extends AppCompatActivity {
             deletejob = "DELETE FROM baby where name='" + mBabyname + "'";
             db.execSQL(deletejob);
 
-            // 현재 아기 growlog 지우기
+            // 현재 아기 데이터 지우기
             deletejob = "DELETE FROM growlog where name='" + mBabyname + "'";
             db.execSQL(deletejob);
+            deletejob = "DELETE FROM events where name='" + mBabyname + "'";
+            db.execSQL(deletejob);
+            deletejob = "DELETE FROM recode where name='" + mBabyname + "'";
+            db.execSQL(deletejob);
+
+
 
             if (newbaby == null) {
 
