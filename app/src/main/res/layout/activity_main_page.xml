@@ -91,6 +91,9 @@
                 android:layout_height="match_parent"
                 android:background="#EAEEFA">
                 //탭레이아웃(탭선택하는것)
+
+                //변경되는 화면
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
@@ -98,31 +101,36 @@
                     android:background="#BEC8E6"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:tabIndicatorHeight="5dp"
+                    app:tabGravity="fill"
                     app:tabIndicatorColor="#161B5B"
-                    app:tabTextColor="#000000"
+                    app:tabIndicatorHeight="5dp"
                     app:tabSelectedTextColor="#121EB8"
-                    app:tabGravity="fill">
+                    app:tabTextColor="#000000">
                     //일기탭
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:icon="@drawable/book5"
                         android:text="일기" />
                     //기록탭
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:icon="@drawable/write3"
                         android:text="기록" />
                     //홈탭
+
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:icon="@drawable/home6"
                         android:text="홈" />
                     //성장 및 상태기록탭
+
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/tabItem"
                         android:layout_width="wrap_content"
@@ -130,6 +138,7 @@
                         android:icon="@drawable/growth7"
                         android:text="성장 기록" />
                     //표준그래프탭
+
                     <com.google.android.material.tabs.TabItem
                         android:id="@+id/tabItem2"
                         android:layout_width="wrap_content"
@@ -137,7 +146,6 @@
                         android:icon="@drawable/stand5"
                         android:text="표준성장" />
                 </com.google.android.material.tabs.TabLayout>
-                //변경되는 화면
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/const_vp"
