@@ -235,11 +235,11 @@ public class ChildFragHead  extends Fragment {
 
         dataStack(sM,eM,valuesBoy, standardHeadBoy);
         dataStack(sM,eM,valuesGirl, standardHeadGirl);
-        dataStack(sM, eM,valuesBaby, monthArrHead);
+        insertdataStack(sM, eM,valuesBaby, monthArrHead);
     }
 
     private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
-        for (int i = 1; i <= 12; i++) {
+        for (int i = sM; i <= eM; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
 
@@ -247,6 +247,16 @@ public class ChildFragHead  extends Fragment {
             start+=1;
         }
     }
+    private void insertdataStack(int start, int end, ArrayList<Entry> values, float[] list) {
+        for (int i = 1; i <= 12; i++) {
+            if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
+                values.add(new Entry(start, list[i - 1]));
+                Log.d("for문123", "값: " + list[i]);
+            }
+            start+=1;
+        }
+    }
+
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();

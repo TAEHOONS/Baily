@@ -240,10 +240,19 @@ public class ChildFragTall  extends Fragment {
 
         dataStack(sM,eM,valuesBoy, standardTallBoy);
         dataStack(sM,eM,valuesGirl, standardTallGirl);
-        dataStack(sM,eM,valuesBaby, monthArrTall);
+        insertdataStack(sM,eM,valuesBaby, monthArrTall);
     }
 
     private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
+        for (int i = sM; i <= eM; i++) {
+            if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
+                values.add(new Entry(start, list[i - 1]));
+                Log.d("for문123", "값: " + list[i]);
+            }
+            start+=1;
+        }
+    }
+    private void insertdataStack(int start, int end, ArrayList<Entry> values, float[] list) {
         for (int i = 1; i <= 12; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
