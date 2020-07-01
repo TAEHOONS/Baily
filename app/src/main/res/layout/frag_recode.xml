@@ -68,52 +68,59 @@
                     android:background="#EAEEFA"
                     android:src="@drawable/bowel" />
 
-                <ImageButton
-                    android:id="@+id/dosage_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#EAEEFA"
-                    android:src="@drawable/dosage" />
-
-                <ImageButton
-                    android:id="@+id/temperature_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#EAEEFA"
-                    android:src="@drawable/temperature" />
-
-                <ImageButton
-                    android:id="@+id/bath_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#EAEEFA"
-                    android:src="@drawable/bath" />
-
-                <ImageButton
-                    android:id="@+id/health_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#EAEEFA"
-                    android:src="@drawable/health" />
-
-                <ImageButton
-                    android:id="@+id/play_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#EAEEFA"
-                    android:src="@drawable/play" />
             </LinearLayout>
         </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/dosage_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#EAEEFA"
+                android:src="@drawable/dosage" />
+
+            <ImageButton
+                android:id="@+id/temperature_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#EAEEFA"
+                android:src="@drawable/temperature" />
+
+            <ImageButton
+                android:id="@+id/bath_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#EAEEFA"
+                android:src="@drawable/bath" />
+
+            <ImageButton
+                android:id="@+id/health_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#EAEEFA"
+                android:src="@drawable/health" />
+
+            <ImageButton
+                android:id="@+id/play_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#EAEEFA"
+                android:src="@drawable/play" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/tab"

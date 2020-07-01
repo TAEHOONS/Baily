@@ -40,9 +40,7 @@ public class InfoPwmilk extends AppCompatActivity {
 
     String mMilkMl=null, saveTime, memo,getHour, getMinu;
     String tthou, ttmin, lastTime;
-    String test = null;
-    Button tagAdd;
-    ImageView back, end;
+    ImageView back;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
 
@@ -51,14 +49,9 @@ public class InfoPwmilk extends AppCompatActivity {
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    private LinearLayout horizontalLayout;
     EditText edmemo;
     TextView tSum, eating, startDate, endDate;
     int strt, endt;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

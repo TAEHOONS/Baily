@@ -75,33 +75,25 @@ public class InfoTemp extends AppCompatActivity {
 
         usingDB();
 
-
-
-
-
-
         memo = edmemo.getText().toString();
 
 
         startDate.setText(stt);
 
 
-        mSeekBar.setProgress(36);
-        eating.setText(String.valueOf(mSeekBarVal) + "℃");
-
         mSeekBar.setMax(38);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress <= 350){
+
                     progress = 350 + progress;
 
                     float decimalProgress = (float) progress/10;
 
-                    mSeekBarVal = decimalProgress;
-                    String strNumber = String.format("%.1f", mSeekBarVal);
-                    eating.setText(String.valueOf(strNumber) + "℃");
-                }
+                double strNumber = decimalProgress;
+                double mSeekBarVal =  Double.parseDouble(String.format("%.1f", strNumber));
+                    eating.setText(mSeekBarVal+ "℃");
+
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -113,10 +105,6 @@ public class InfoTemp extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,14 +195,16 @@ public class InfoTemp extends AppCompatActivity {
         cursor = db.rawQuery(sql, null);
         // 기본 데이터
         while (cursor.moveToNext()) {
-
+            saveTime = cursor.getString(3);
             mMilkMl = cursor.getString(5);
             memo = cursor.getString(6);
 
+            Log.d("tempCount", "mMilkMl" + mMilkMl);
             if(mMilkMl!=null) {
+                eating.setText(mMilkMl);
                 mMilkMl =mMilkMl.replace("℃","");
                 mSeekBar.setProgress((int) Double.parseDouble(mMilkMl));
-                eating.setText(Double.parseDouble(mMilkMl) + "℃");
+
             }
             if(memo!=null)
                 edmemo.setText(memo);
