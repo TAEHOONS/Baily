@@ -35,6 +35,7 @@ public class FindIdPage2 extends AppCompatActivity {
                     Toast.makeText(FindIdPage2.this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
                     break;
                 }
+
                 SendMail mailServer = new SendMail();
                 mailServer.sendSecurityCode(getApplicationContext(), fip_emailEdt.getText().toString());
                 SendRandomCode = mailServer.getRandomNum();

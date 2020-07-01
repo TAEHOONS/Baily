@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -157,12 +158,12 @@ public class FragRecode extends Fragment {
         bath = v.findViewById(R.id.bath_btn);
         health = v.findViewById(R.id. health_btn);
         play = v.findViewById(R.id.play_btn);
-
+        ImageView imageView = v.findViewById(R.id.whencal);
         day = v.findViewById(R.id.whenDate);
-        day.setText("   " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "월 "
+        day.setText(" " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "월 "
                 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "일");
         Log.d("recodeDate", "Date : " + Calendar.getInstance().get(Calendar.YEAR) + " , " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + " , " + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        day.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
