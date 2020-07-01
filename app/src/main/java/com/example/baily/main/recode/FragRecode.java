@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class FragRecode extends Fragment {
     private DBlink helper;
     private SQLiteDatabase db;
     String dbName = "user.db", mId, mBabyname;
+    String Timenurs="0" ,Timebowel="0" , Timesleep="0";
     int dbVersion = 3, requestCode = 0;
 
     private View v;
@@ -58,7 +60,7 @@ public class FragRecode extends Fragment {
     RecyclerView recyclerView;
     private String sel;
     ViewGroup container;
-
+    Boolean nurSQL=false,bowSQL=false,sleepSQL=false;
 
     AppCompatImageButton  nurs, bbfood, sleep, pwmilk, bowel, dosage, tem, bath, health, play;
     TextView day, nursT, bowerT, sleepT;
@@ -130,7 +132,7 @@ public class FragRecode extends Fragment {
         FragRecode fragRecode = new FragRecode();
         return fragRecode;
     }
-    long nurs_start,sleep_start,bower_start;
+    long nurs_start=0,sleep_start=0,bower_start=0;
     long nurs_end,sleep_end,bower_end;
     int suma,sumb,sumc;
     private int index;
@@ -156,12 +158,12 @@ public class FragRecode extends Fragment {
         bath = v.findViewById(R.id.bath_btn);
         health = v.findViewById(R.id. health_btn);
         play = v.findViewById(R.id.play_btn);
-
+        ImageView imageView = v.findViewById(R.id.whencal);
         day = v.findViewById(R.id.whenDate);
-        day.setText("   " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "월 "
+        day.setText(" " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "월 "
                 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "일");
         Log.d("recodeDate", "Date : " + Calendar.getInstance().get(Calendar.YEAR) + " , " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + " , " + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        day.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -170,10 +172,6 @@ public class FragRecode extends Fragment {
 
         usingDB(container);
 
-
-        nursT = v.findViewById(R.id.last_nursing);
-        sleepT = v.findViewById(R.id.last_sleep);
-        bowerT = v.findViewById(R.id.last_bower);
 
         if (getArguments() != null) {
             sel = getArguments().getString("select");
@@ -201,11 +199,9 @@ public class FragRecode extends Fragment {
             @Override
             public void onClick(View v) {
                 insertDB("모유");
-
                 //excute를 통해 백그라운드 task를 실행시킨다
                 //여기선 100을 매개변수로 보내는데 여기 예제에서는 이 매개변수를 doInBackGround에서 사용을 안했다.
                 //여기선 100을 매개변수로 보내는데 여기 예제에서는 이 매개변수를 doInBackGround에서 사용을 안했다.
-                new NursTask(nursT).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,100);
             }
         });
 
@@ -222,10 +218,10 @@ public class FragRecode extends Fragment {
             public void onClick(View v) {
 
                 insertDB("잠");
+                sleep_start  = System.currentTimeMillis();
 
                 //excute를 통해 백그라운드 task를 실행시킨다
                 //여기선 100을 매개변수로 보내는데 여기 예제에서는 이 매개변수를 doInBackGround에서 사용을 안했다.
-                new SleepTask(sleepT).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,100);
 
             }
         });
@@ -239,10 +235,10 @@ public class FragRecode extends Fragment {
             @Override
             public void onClick(View v) {
                 insertDB("기저귀");
+                bower_start  = System.currentTimeMillis();
 
                 //excute를 통해 백그라운드 task를 실행시킨다
                 //여기선 100을 매개변수로 보내는데 여기 예제에서는 이 매개변수를 doInBackGround에서 사용을 안했다.
-               new BowerTask(bowerT).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,100);
 
             }
         });
@@ -287,183 +283,6 @@ public class FragRecode extends Fragment {
 
 
 
-    //새로운 TASK정의 (AsyncTask)
-    // < >안에 들은 자료형은 순서대로 doInBackground, onProgressUpdate, onPostExecute의 매개변수 자료형을 뜻한다.(내가 사용할 매개변수타입을 설정하면된다)
-    //수유쪽 시간계산
-    class NursTask extends AsyncTask<Integer , Integer , Integer> {
-        //초기화 단계에서 사용한다. 초기화관련 코드를 작성했다.
-        TextView tv;
-        public NursTask(TextView tv) {
-            this.tv = tv;
-        }
-        protected void onPreExecute() {
-             suma = 0;
-             nurs_start  = System.currentTimeMillis();
-        }
-        //스레드의 백그라운드 작업 구현
-        //여기서 매개변수 Intger ... values란 values란 이름의 Integer배열이라 생각하면된다.
-        //배열이라 여러개를 받을 수 도 있다. ex) excute(100, 10, 20, 30); 이런식으로 전달 받으면 된다.
-        protected Integer doInBackground(Integer ... values) {
-            //isCancelled()=> Task가 취소되었을때 즉 cancel당할때까지 반복
-            while (isCancelled() == false) {
-                final long end = System.currentTimeMillis();
-                long sum = (end - nurs_start) / 1000;
-                suma = (int) sum;
-                //위에 onCreate()에서 호출한 excute(100)의 100을 사용할려면 이런식으로 해줘도 같은 결과가 나온다.
-                //밑 대신 이렇게해도됨 if (value >= values[0].intValue())
-                if (suma >= 99999) {
-                    break;
-                } else {
-                    //publishProgress()는 onProgressUpdate()를 호출하는 메소드(그래서 onProgressUpdate의 매개변수인 int즉 Integer값을 보냄)
-                    //즉, 이 메소드를 통해 백그라운드 스레드작업을 실행하면서 중간중간  UI에 업데이트를 할 수 있다.
-                    //백그라운드에서는 UI작업을 할 수 없기 때문에 사용
-                    publishProgress(suma);
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return suma;
-        }
-        //UI작업 관련 작업 (백그라운드 실행중 이 메소드를 통해 UI작업을 할 수 있다)
-        //publishProgress(value)의 value를 값으로 받는다.values는 배열이라 여러개 받기가능
-        protected void onProgressUpdate(Integer ... values) {
-            if( values[0] < TIME_MAXIMUM.SEC) {
-            tv.setText(values[0].toString() + "초 전");}
-            else if( (values[0] /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
-                tv.setText(values[0].toString() + "분 전");
-            }else if(( values[0] /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
-                tv.setText(values[0].toString() + "시간 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
-                tv.setText(values[0].toString() + "일 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
-                tv.setText(values[0].toString() + "달 전");
-            }else {
-                tv.setText(values[0].toString() + "년 전");
-
-            }
-        }
-    }
-    //새로운 TASK정의 (AsyncTask)
-    // < >안에 들은 자료형은 순서대로 doInBackground, onProgressUpdate, onPostExecute의 매개변수 자료형을 뜻한다.(내가 사용할 매개변수타입을 설정하면된다)
-    //기저귀쪽 시간계산
-    class BowerTask extends AsyncTask<Integer , Integer , Integer> {
-        //초기화 단계에서 사용한다. 초기화관련 코드를 작성했다.
-        TextView tvb;
-        public BowerTask(TextView tvb) {
-            this.tvb = tvb;
-        }
-        protected void onPreExecute() {
-            sumc= 0;
-            bower_start  = System.currentTimeMillis();
-        }
-        //스레드의 백그라운드 작업 구현
-        //여기서 매개변수 Intger ... values란 values란 이름의 Integer배열이라 생각하면된다.
-        //배열이라 여러개를 받을 수 도 있다. ex) excute(100, 10, 20, 30); 이런식으로 전달 받으면 된다.
-        protected Integer doInBackground(Integer ... values) {
-            //isCancelled()=> Task가 취소되었을때 즉 cancel당할때까지 반복
-            while (isCancelled() == false) {
-                final long end = System.currentTimeMillis();
-                 long sum = (end - bower_start) / 1000;
-                sumc = (int) sum;
-                //위에 onCreate()에서 호출한 excute(100)의 100을 사용할려면 이런식으로 해줘도 같은 결과가 나온다.
-                //밑 대신 이렇게해도됨 if (value >= values[0].intValue())
-                if (sumc >= 99999) {
-                    break;
-                } else {
-                    //publishProgress()는 onProgressUpdate()를 호출하는 메소드(그래서 onProgressUpdate의 매개변수인 int즉 Integer값을 보냄)
-                    //즉, 이 메소드를 통해 백그라운드 스레드작업을 실행하면서 중간중간  UI에 업데이트를 할 수 있다.
-                    //백그라운드에서는 UI작업을 할 수 없기 때문에 사용
-                    publishProgress(sumc);
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return sumc;
-        }
-        //UI작업 관련 작업 (백그라운드 실행중 이 메소드를 통해 UI작업을 할 수 있다)
-        //publishProgress(value)의 value를 값으로 받는다.values는 배열이라 여러개 받기가능
-        protected void onProgressUpdate(Integer ... values) {
-            if( values[0] < TIME_MAXIMUM.SEC) {
-                tvb.setText(values[0].toString() + "초 전");}
-            else if( (values[0] /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
-                tvb.setText(values[0].toString() + "분 전");
-            }else if(( values[0] /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
-                tvb.setText(values[0].toString() + "시간 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
-                tvb.setText(values[0].toString() + "일 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
-                tvb.setText(values[0].toString() + "달 전");
-            }else {
-                tvb.setText(values[0].toString() + "년 전");
-
-            }
-        }
-    }
-    //새로운 TASK정의 (AsyncTask)
-    // < >안에 들은 자료형은 순서대로 doInBackground, onProgressUpdate, onPostExecute의 매개변수 자료형을 뜻한다.(내가 사용할 매개변수타입을 설정하면된다)
-    // 잠쪽 시간계산
-    class SleepTask extends AsyncTask<Integer , Integer , Integer> {
-        //초기화 단계에서 사용한다. 초기화관련 코드를 작성했다.
-        TextView tva;
-        public SleepTask(TextView tva) {
-            this.tva = tva;
-        }
-        protected void onPreExecute() {
-            sumb = 0;
-            sleep_start  = System.currentTimeMillis();
-        }
-        //스레드의 백그라운드 작업 구현
-        //여기서 매개변수 Intger ... values란 values란 이름의 Integer배열이라 생각하면된다.
-        //배열이라 여러개를 받을 수 도 있다. ex) excute(100, 10, 20, 30); 이런식으로 전달 받으면 된다.
-        protected Integer doInBackground(Integer ... values) {
-            //isCancelled()=> Task가 취소되었을때 즉 cancel당할때까지 반복
-            while (isCancelled() == false) {
-                final long end = System.currentTimeMillis();
-                long sum = (end - sleep_start) / 1000;
-                sumb = (int) sum;
-                //위에 onCreate()에서 호출한 excute(100)의 100을 사용할려면 이런식으로 해줘도 같은 결과가 나온다.
-                //밑 대신 이렇게해도됨 if (value >= values[0].intValue())
-                if (sumb >= 99999) {
-                    break;
-                } else {
-                    //publishProgress()는 onProgressUpdate()를 호출하는 메소드(그래서 onProgressUpdate의 매개변수인 int즉 Integer값을 보냄)
-                    //즉, 이 메소드를 통해 백그라운드 스레드작업을 실행하면서 중간중간  UI에 업데이트를 할 수 있다.
-                    //백그라운드에서는 UI작업을 할 수 없기 때문에 사용
-                    publishProgress(sumb);
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return sumb;
-        }
-        //UI작업 관련 작업 (백그라운드 실행중 이 메소드를 통해 UI작업을 할 수 있다)
-        //publishProgress(value)의 value를 값으로 받는다.values는 배열이라 여러개 받기가능
-        protected void onProgressUpdate(Integer ... values) {
-            if( values[0] < TIME_MAXIMUM.SEC) {
-                tva.setText(values[0].toString() + "초 전");}
-            else if( (values[0] /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
-                tva.setText(values[0].toString() + "분 전");
-            }else if(( values[0] /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
-                tva.setText(values[0].toString() + "시간 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
-                tva.setText(values[0].toString() + "일 전");
-            }else if( (values[0]  /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
-                tva.setText(values[0].toString() + "달 전");
-            }else {
-                tva.setText(values[0].toString() + "년 전");
-
-            }
-        }
-    }
     @Override
     public void onResume() {
         super.onResume();
@@ -497,6 +316,9 @@ public class FragRecode extends Fragment {
             mId = cursor.getString(1);
             mBabyname = cursor.getString(2);
         }
+
+
+
 
     }
 

@@ -34,13 +34,14 @@ public class FragDiary extends Fragment {
         diary_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diary_album.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                diary_album.setBackgroundColor(getResources().getColor(R.color.colorPink));
 
-                diary_date.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                diary_date.setBackgroundColor(getResources().getColor(R.color.colorPinkDark));
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragD, new FragDiaryDate());
                 fragmentTransaction.commit();
+
 
             }
         });
@@ -48,8 +49,8 @@ public class FragDiary extends Fragment {
         diary_album.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diary_album.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                diary_date.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                diary_album.setBackgroundColor(getResources().getColor(R.color.colorPinkDark));
+                diary_date.setBackgroundColor(getResources().getColor(R.color.colorPink));
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragD, new FragDiarysearch());
@@ -58,9 +59,9 @@ public class FragDiary extends Fragment {
             }
         });
         if (count == 1){
-            diary_album.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            diary_album.setBackgroundColor(getResources().getColor(R.color.colorPink));
 
-            diary_date.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            diary_date.setBackgroundColor(getResources().getColor(R.color.colorPinkDark));
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragD, new FragDiaryDate());

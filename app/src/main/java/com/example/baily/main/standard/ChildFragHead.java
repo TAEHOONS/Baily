@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class ChildFragHead  extends Fragment {
     private View view;
-    private LineChart headCart;
+    private LineChart headChart;
 
     String dbName = "user.db";
     int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
@@ -51,7 +51,7 @@ public class ChildFragHead  extends Fragment {
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardHeadBoy,standardHeadGirl;
-    float[] standardHeadBaby=new float[73];
+    float[] standardHeadBaby=new float[80];
 
     public static ChildFragHead newInstance(){
         ChildFragHead childFragHead = new ChildFragHead();
@@ -67,13 +67,14 @@ public class ChildFragHead  extends Fragment {
         headBeforeBtn = (ImageView) view.findViewById(R.id.sHeadBeforeBtn);
         headAfterBtn = (ImageView) view.findViewById(R.id.sHeadAfterBtn);
         //표준머리둘레 차트
-        headCart = view.findViewById(R.id.headLineCart);
+        headChart = view.findViewById(R.id.headLineCart);
 
         sM=1;
         eM=12;
 
         usingDB(container);
         loadgrowLog();
+
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
@@ -91,7 +92,7 @@ public class ChildFragHead  extends Fragment {
         MidDataSet();
 
         // 차트 속성
-        setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
+        setGraph(headChart,boyHeadData,girlHeadData,babyHeadData);
 
         //이전버튼눌렀을 때
         headBeforeBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +116,8 @@ public class ChildFragHead  extends Fragment {
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
-                    ChartChange(headCart);
+                    setGraph(headChart,boyHeadData,girlHeadData,babyHeadData);
+                    ChartChange(headChart);
                 }
             }
         });
@@ -142,8 +143,8 @@ public class ChildFragHead  extends Fragment {
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성
-                    setGraph(headCart,boyHeadData,girlHeadData,babyHeadData);
-                    ChartChange(headCart);
+                    setGraph(headChart,boyHeadData,girlHeadData,babyHeadData);
+                    ChartChange(headChart);
                 }
             }
         });
@@ -188,14 +189,9 @@ public class ChildFragHead  extends Fragment {
         // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
-        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
-
         YAxis yAxisLeft = headChart.getAxisLeft(); //Y축의 왼쪽면 설정
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(true);
-        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
 
         YAxis yAxisRight = headChart.getAxisRight(); //Y축의 오른쪽면 설정
         yAxisRight.setDrawGridLines(false);
@@ -232,8 +228,12 @@ public class ChildFragHead  extends Fragment {
 
     private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
         for (int i = start; i <= end; i++) {
-            values.add(new Entry(i, list[i]));
+            if (list[i-1] != 0) {
+                values.add(new Entry(i, list[i-1]));
+                Log.d("for문123", "값: " + list[i]);
+            }
         }
+
     }
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
@@ -268,15 +268,16 @@ public class ChildFragHead  extends Fragment {
         while (c.moveToNext()) {
 
             k = c.getString(4);
-            if (k!=null) {
-                try {
+            try {
+                if (k == null)
+                    n = 0;
+                else
                     n = Float.parseFloat(k);
-                    setBabyList(i, n);
-                    i++;
-                    Log.d("n값", "loadgrowLog: " + n);
-                    Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
-                } catch (Exception e) {
-                }
+                setBabyList(i, n);
+                i++;
+                Log.d("n값", "loadgrowLog: " + n);
+                Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
+            } catch (Exception e) {
             }
 
         }

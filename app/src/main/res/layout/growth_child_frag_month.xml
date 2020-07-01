@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
+                android:fontFamily="@font/godo"
                 android:text="오늘날짜 - 오늘날짜+7일까지"
                 android:textColor="#000000" />
 
@@ -86,6 +87,7 @@
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
                                     android:text="몸무게"
+                                    android:fontFamily="@font/godo"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                     android:textColor="#000000" />
 
@@ -101,6 +103,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginRight="8dp"
+                                        android:fontFamily="@font/godo"
                                         android:text="평균무게" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -150,6 +153,7 @@
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
                                     android:text="신장"
+                                    android:fontFamily="@font/godo"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                     android:textColor="#000000" />
 
@@ -165,6 +169,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginRight="8dp"
+                                        android:fontFamily="@font/godo"
                                         android:text="평균신장" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -214,6 +219,7 @@
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
                                     android:text="머리둘레"
+                                    android:fontFamily="@font/godo"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                     android:textColor="#000000" />
 
@@ -229,6 +235,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginRight="8dp"
+                                        android:fontFamily="@font/godo"
                                         android:text="평균머리둘레" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -278,6 +285,7 @@
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
                                     android:text="체온"
+                                    android:fontFamily="@font/godo"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                     android:textColor="#000000" />
 
@@ -293,6 +301,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:layout_marginRight="8dp"
+                                        android:fontFamily="@font/godo"
                                         android:text="평균체온" />
                                 </LinearLayout>
                             </LinearLayout>

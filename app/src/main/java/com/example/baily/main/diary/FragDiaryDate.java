@@ -89,7 +89,7 @@ public class FragDiaryDate extends Fragment {
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(false);
-        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_36pt);
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_round_home_menu);
         activity.getSupportActionBar().setTitle("");
 
         ymdate = v.findViewById(R.id.ymdate);

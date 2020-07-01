@@ -1,7 +1,6 @@
 package com.example.baily.main.recode;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,20 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baily.DBlink;
 import com.example.baily.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class InfoBbfood extends AppCompatActivity {
@@ -35,9 +29,7 @@ public class InfoBbfood extends AppCompatActivity {
     private SQLiteDatabase db;
 
     String mMilkMl=null, saveTime, memo,getHour, getMinu;
-    String test = null;
-    Button tagAdd;
-    ImageView back, end;
+    ImageView back;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
 
@@ -46,11 +38,9 @@ public class InfoBbfood extends AppCompatActivity {
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    private LinearLayout horizontalLayout;
     EditText edmemo;
-    TextView tSum, eating, startDate, endDate;
-    int strt, endt;
-
+    TextView  eating, startDate;
+    int strt;
 
 
 

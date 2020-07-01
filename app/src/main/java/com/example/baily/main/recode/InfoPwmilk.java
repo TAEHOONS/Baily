@@ -40,9 +40,7 @@ public class InfoPwmilk extends AppCompatActivity {
 
     String mMilkMl=null, saveTime, memo,getHour, getMinu;
     String tthou, ttmin, lastTime;
-    String test = null;
-    Button tagAdd;
-    ImageView back, end;
+    ImageView back;
     private SeekBar mSeekBar;
     private int mSeekBarVal = 0;
 
@@ -51,14 +49,9 @@ public class InfoPwmilk extends AppCompatActivity {
     int hour = myCalender.get(Calendar.HOUR_OF_DAY);
     int minute = myCalender.get(Calendar.MINUTE);
 
-    private LinearLayout horizontalLayout;
     EditText edmemo;
     TextView tSum, eating, startDate, endDate;
     int strt, endt;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,11 +186,11 @@ public class InfoPwmilk extends AppCompatActivity {
         if (lastTime.equals(saveTime))
             lastTime = (lastTime + " ");
         else
-            lastTime = lastTime + " 까지 먹었습니다.";
+            lastTime = lastTime;
 
         Log.d("recodePwmilk", "memo: " + memo + "    ," + saveTime + "  <=> " + lastTime);
-        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + lastTime + "'," +
-                "contents1='" + memo + "',contents2 ='"+eating.getText().toString()+"'" +
+        String Revisejob = "UPDATE recode SET time='" + saveTime + "',subt='" + eating.getText().toString() + "'," +
+                "contents1='" + memo + "',contents2 ='"+lastTime+"'" +
                 "WHERE id='" + infoId + "' AND name='" + mBabyname + "'";
         db.execSQL(Revisejob);
         finish();
@@ -227,9 +220,9 @@ public class InfoPwmilk extends AppCompatActivity {
         // 기본 데이터
         while (cursor.moveToNext()) {
             saveTime = cursor.getString(3);
-            lastTime = cursor.getString(5);
+            lastTime = cursor.getString(7);
             memo = cursor.getString(6);
-            mMilkMl= cursor.getString(7);
+            mMilkMl= cursor.getString(5);
             if (lastTime != null)
                 lastTime = lastTime.substring(0, 5);
 

@@ -88,7 +88,7 @@ public class FragHome extends Fragment {
     TextView kgInfor, cmInfor, girthInfo, feverInfo;
     //기록한 날짜와 D-day표시 텍스트
     TextView recodeDate, recodeDday, homeDday;
-    String recodeDateNow, kg, cm, head, fever, Bheight,Bweight;
+    String recodeDateNow, kg, cm, head, fever, Bheight,Bweight,Bhead;
     //기록할때 몸무게, 키, 머리둘레 입력하는 에디트텍스트
     EditText kgAdd, cmAdd, girthAdd, feverAdd;
     //기록버튼 눌렀을 때 dialog로 기록하는 거 띄움
@@ -206,9 +206,6 @@ public class FragHome extends Fragment {
 
                         recodeDate = (TextView) view.findViewById(R.id.h_recodeDateTxt);
                         recodeDday = (TextView) view.findViewById(R.id.h_recodeDdayTxt);
-
-
-
 
 
 
@@ -339,6 +336,7 @@ public class FragHome extends Fragment {
         Log.d("Eventsetting", "Home-growUpdate Start date = "+recodeDateNow);
         Bheight=cm;
         Bweight=kg;
+        Bhead = head;
 
         kg = kg + "kg";
         cm = cm + "cm";
@@ -353,7 +351,17 @@ public class FragHome extends Fragment {
         growDataList.set(growDataList.size()-1,growData);
         recyclerView.setAdapter(adapter);
 
-        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
+        String k=Bweight,c=Bheight,h=Bhead;
+        if(Bweight==null||Bweight.equals(""))
+             k = " - ";
+
+        if(Bheight==null||Bheight.equals(""))
+            c=" - ";
+
+        if(Bhead==null||Bhead.equals(""))
+            h=" - ";
+
+        tvbabyKgCmTxt.setText("- 신장 "+c+" cm\n- 몸무게 "+k+" kg\n- 머리둘레 "+h+" cm");
     }
 
     // recycle 넣기
@@ -361,6 +369,16 @@ public class FragHome extends Fragment {
         Log.d("Eventsetting", "Home-growInsert Start date = "+recodeDateNow);
         Bheight=cm;
         Bweight=kg;
+        Bhead = head;
+
+        if(kg==null||kg.equals(""))
+            kg=" - ";
+        if(cm==null||cm.equals(""))
+            cm=" - ";
+        if(head==null||head.equals(""))
+            head=" - ";
+        if(fever==null||fever.equals(""))
+            fever=" - ";
 
         kg = kg + "kg";
         cm = cm + "cm";
@@ -374,7 +392,7 @@ public class FragHome extends Fragment {
         growDataList.add(growData);
         recyclerView.setAdapter(adapter);
 
-        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
+        tvbabyKgCmTxt.setText("- 신장 "+cm+" \n- 몸무게 "+kg+" \n- 머리둘레 "+head+" ");
     }
 
 
@@ -481,6 +499,7 @@ public class FragHome extends Fragment {
             BYear = cursor.getInt(3);
             BMonth = cursor.getInt(4);
             BDay = cursor.getInt(5);
+            Bhead = cursor.getString(6);
             Bheight = cursor.getString(7);
             Bweight = cursor.getString(8);
             imgpath = cursor.getString(10);
@@ -492,7 +511,7 @@ public class FragHome extends Fragment {
 
         int calint = Integer.valueOf(caldate.result);
         homeDday.setText("D + " + caldate.result + ", " + (calint / 30) + " 개월 " + (calint % 30) + "일");
-        tvbabyKgCmTxt.setText("현재 "+Bheight+" cm, "+Bweight+" kg");
+        tvbabyKgCmTxt.setText("- 신장 "+Bheight+" cm\n- 몸무게 "+Bweight+" kg\n- 머리둘레 "+Bhead+" cm");
     }
 
     // 팝업 메뉴 생성 함수
