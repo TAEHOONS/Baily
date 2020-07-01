@@ -204,7 +204,7 @@ public class InfoTemp extends AppCompatActivity {
 
             Log.d("tempCount", "mMilkMl" + mMilkMl);
             if(mMilkMl!=null) {
-                eating.setText(mMilkMl);
+                eating.setText(mMilkMl );
                 mMilkMl =mMilkMl.replace("℃","");
                 mMilkMl=mMilkMl.replace(".","");
                 mSeekBar.setProgress(Integer.valueOf(mMilkMl)-350);
