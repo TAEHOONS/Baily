@@ -467,8 +467,6 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                         Log.w("regitFire", "입력 실패", e);
                     }
                 });
-
-
 // Add a new document with a generated ID
 
 

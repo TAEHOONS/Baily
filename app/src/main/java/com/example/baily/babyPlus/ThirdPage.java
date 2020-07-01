@@ -126,7 +126,7 @@ public class ThirdPage extends AppCompatActivity {
 
     public class InfoBaby {
         // 무적권 public 으로해야 데이더 읽힘
-        public String name, sex, headline, tall, weight, parents;
+        public String name, sex, headline, tall, weight, parents,path;
         public int year, month, day;
 
         public InfoBaby() {
@@ -134,7 +134,7 @@ public class ThirdPage extends AppCompatActivity {
         }
 
         public InfoBaby(String name, String sex, int year, int month, int day
-                , String headline, String tall, String weight, String parents) {
+                , String headline, String tall, String weight, String parents,String path) {
             this.name = name;
             this.sex = sex;
             this.year = year;
@@ -144,6 +144,7 @@ public class ThirdPage extends AppCompatActivity {
             this.tall = tall;
             this.weight = weight;
             this.parents = parents;
+            this.path=path;
         }
 
     }
@@ -163,23 +164,10 @@ public class ThirdPage extends AppCompatActivity {
                 , in.getStringExtra("headline")
                 , in.getStringExtra("height")
                 , in.getStringExtra("weight")
-                , mLoginId);
+                , mLoginId,imgpath);
 
         Log.w("입력", "db 입력");
-        db.collection("baby")
-                .add(baby)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("입력", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("입력", "Error adding document", e);
-                    }
-                });
+
 
 
         // 사진 db 저장
@@ -230,8 +218,26 @@ public class ThirdPage extends AppCompatActivity {
 
         String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
         db.execSQL(sqlUpdate) ;
+
         sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id="+mLoginId+"" ;
         db.execSQL(sqlUpdate) ;
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(mLoginId)
+                .update("lastbaby",baby.name)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("regitFire", "파베 입력 성공");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("regitFire", "입력 실패", e);
+                    }
+                });
 
     }
 
@@ -247,4 +253,7 @@ public class ThirdPage extends AppCompatActivity {
         }
 
     }
+
+
+
 }

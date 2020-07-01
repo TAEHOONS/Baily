@@ -48,6 +48,7 @@ import com.example.baily.main.ViewPagerAdapter;
 import com.example.baily.main.recode.FragRecode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -324,6 +325,8 @@ public class FragHome extends Fragment {
             // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
             db.insert("growlog", null, values);
 
+
+
             // db 에 저장 후 recycle 에 입력값-추가하기
             growInsert(kg,cm,head,fever,recodeDateNow,date);
         }
@@ -545,7 +548,31 @@ public class FragHome extends Fragment {
         }
 
     }
-    
-    
+
+    public class growlogFDB {
+        // 무적권 public 으로해야 데이더 읽힘
+        public String name, sex, headline, tall, weight, parents,path;
+        public int year, month, day;
+
+        public growlogFDB() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public growlogFDB(String name, String sex, int year, int month, int day
+                , String headline, String tall, String weight, String parents,String path) {
+            this.name = name;
+            this.sex = sex;
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.headline = headline;
+            this.tall = tall;
+            this.weight = weight;
+            this.parents = parents;
+            this.path=path;
+        }
+
+    }
+
 
 }

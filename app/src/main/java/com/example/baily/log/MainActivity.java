@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -25,16 +26,27 @@ import com.example.baily.babyPlus.FirstPage;
 import com.example.baily.main.BackPressClose;
 import com.example.baily.main.MainPage;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     String dbName = "user.db";
-    int dbVersion = 3,checkFirst=0;
+    int dbVersion = 3, checkFirst = 0;
     private DBlink helper;
     private SQLiteDatabase db;
 
@@ -45,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     //파이어베이스 연동
     FirebaseDatabase database;
     DatabaseReference myRef;
-
-
 
     private BackPressClose backPressClose;
 
@@ -80,6 +90,14 @@ public class MainActivity extends AppCompatActivity {
         myRef = database.getReference("Baliy");
 
         AutoLogin();
+
+
+
+
+
+
+
+
 
         // 터치 입력 처리 //findID,findPW
         mBfid.setOnTouchListener(new View.OnTouchListener() {
@@ -121,12 +139,12 @@ public class MainActivity extends AppCompatActivity {
                 editId = mETid.getText().toString();
                 mTVeid.setText("");
                 mTVepw.setText("");
-                if (editId.equals(null) || editId.equals("")){
+                if (editId.equals(null) || editId.equals("")) {
                     mTVeid.setText("아이디를 입력해 주시길 바랍니다");
                     Toast.makeText(this, "아이디를 입력해 주시길 바랍니다", Toast.LENGTH_SHORT).show();
-                }else{
-                    loaddb(mETid.getText().toString());
-                    checkLogin(editId);
+                } else {
+                    loaddb(mETid.getText().toString(), editId);
+
                 }
 
                 break;
@@ -140,74 +158,94 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     //파이어베이스에서 데이터 로드
-    public void loaddb(String id) {
+    public void loaddb(final String id, String editId) {
+        Log.d("FireDownLoad", "loaddb: Start");
+        final String finalid = editId;
+
+
+        FireUser(id);
+        FireBaby(id);
+        FireGrowlog(id);
+        FireRecode(id);
+        FireEvents(id);
+
+
+        new Handler().postDelayed(new Runnable() {// 0.5 초 후에 실행
+            @Override
+            public void run() {
+                checkLogin(finalid);
+            }
+        }, 15000);
+
+
+    }
+
+
+    //로그인 경우의 수 체크
+    private void checkLogin(String insetId) {
+        Log.d("FireDownLoad", "checkLogin start !!");
+        final String sqlId = insetId;
 
         Log.d("들어가기", "DB 들어가기");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d("접속", "DB 접속");
 
 
-        DocumentReference docRef = db.collection("users").document(id);
-
+        DocumentReference docRef = db.collection("users").document(insetId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("검색1", "DocumentSnapshot data: " + document.getData());
-                        Log.d("검색2", "DocumentSnapshot data: " + document.getData());
-                        Log.d("검색3", "DocumentSnapshot data: " + document.getData());
+                        String pw = String.valueOf(document.get("pw"));
+                        logchack(sqlId, pw, false);
+                        Log.d("검색1", sqlId + "-containsKey data: " + pw);
+
                     } else {
-                        Log.d("검색", "No such document");
+                        logchack("", "", true);
                     }
                 } else {
                     Log.d("출력", "get failed with ", task.getException());
                 }
             }
         });
+
+
     }
 
+    private void logchack(String id, String pw, boolean go) {
 
-    //로그인 경우의 수 체크
-    private void checkLogin(String insetId) {
-        String sql = "select * from user where id = '" + insetId + "'"; // 검색용
-        Cursor cursor = db.rawQuery(sql, null);
-        String sqlId = "", sqlPw = "", editId = "", editPw = "", sqlName = "";
-        while (cursor.moveToNext()) {
-            sqlId = cursor.getString(1);
-            sqlPw = cursor.getString(2);
-            sqlName = cursor.getString(3);
-        }
-        editId = mETid.getText().toString();
-        editPw = mETpw.getText().toString();
+        String editId = mETid.getText().toString();
+        String editPw = mETpw.getText().toString();
 
         mTVeid.setText("");
         mTVepw.setText("");
 
         // 아이디 False 비번 False
-        if (!editId.equals(sqlId)) {
-            mTVeid.setText("아이디가 없습니다.");
+        if (go)
             Toast.makeText(this, "아이디가 없습니다.", Toast.LENGTH_SHORT).show();
-        }
+        else {
             // 아이디 OK 비번 Null
-        else if (editId.equals(sqlId) && editPw.equals(null) || editPw.equals("")){
-            mTVepw.setText("비밀번호를 입력해 주시길 바랍니다.");
-            Toast.makeText(this, "비밀번호를 입력해 주시길 바랍니다.", Toast.LENGTH_SHORT).show();
-        }
+            if (editId.equals(id) && editPw.equals(null) || editPw.equals("")) {
+                mTVepw.setText("비밀번호를 입력해 주시길 바랍니다.");
+                Toast.makeText(this, "비밀번호를 입력해 주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+            }
 
             // 아이디 OK 비번 False
-        else if (editId.equals(sqlId) && !editPw.equals(sqlPw)){
-            mTVepw.setText("비밀번호가 틀렸습니다.");
-            Toast.makeText(this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-        }
+            else if (editId.equals(id) && !editPw.equals(pw)) {
+                mTVepw.setText("비밀번호가 틀렸습니다.");
+                Toast.makeText(this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+            }
 
             // 아이디 OK 비번 OK
-        else if (editId.equals(sqlId) && editPw.equals(sqlPw))
-            DBcopy(sqlId);
-
+            else if (editId.equals(id) && editPw.equals(pw))
+                DBcopy(id);
+        }
     }
+
 
     // 로그인시 현재 아이디 기록
     private void DBcopy(String id) {
@@ -215,12 +253,11 @@ public class MainActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
 
 
-
         String sql = "select * from thisusing where _id=1"; // 검생용
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             checkFirst = cursor.getInt(0);
-            Log.d("사용 아이디", "thisusing: checkFirst ="+checkFirst);
+            Log.d("사용 아이디", "thisusing: checkFirst =" + checkFirst);
         }
 
 
@@ -234,7 +271,8 @@ public class MainActivity extends AppCompatActivity {
             db.execSQL(sqlUpdate);
             Log.d("사용 아이디", "DBcopy: update 동작");
         }
-        // 테이블 이름 + 이제까지 입력한것을 저장한 변수(values)
+        // 테이블 이름 + 이제까지 입력한것을 저장
+        // 한 변수(values)
         MainScreen(id);
     }
 
@@ -333,4 +371,214 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         backPressClose.onBackPressed();
     }
+
+    // 파이어베이스 다운로드 시리즈
+    // user
+    private void FireUser(final String parent) {
+        Log.d("FireDownLoad", "Thread: FireUser");
+        FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+        final ContentValues values = new ContentValues();
+
+        DocumentReference docRef = firedb.collection("users").document(parent);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        values.put("id ", parent);
+                        values.put("pw", (String) document.get("pw"));
+                        values.put("name", (String) document.get("name"));
+                        values.put("email", (String) document.get("email"));
+                        values.put("lastbaby", (String) document.get("lastbaby"));
+                        db.insert("user", null, values);
+
+                        Log.d("FireDownLoad", "FireUser: run");
+                    } else {
+                        Log.d("검색1", "No such document");
+                    }
+                } else {
+                    Log.d("출력", "get failed with ", task.getException());
+                }
+            }
+        });
+        Log.d("DownLoad", "FireUser end");
+    }
+
+    // baby
+    private void FireBaby(final String parent) {
+        Log.d("FireDownLoad", "Thread: FireBaby");
+        FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+        firedb.collection(parent + "baby").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.get("parents").equals(parent)) {
+                                    ContentValues values = new ContentValues();
+                                    values.put("name", (String) document.get("name"));
+                                    values.put("sex", (String) document.get("sex"));
+                                    values.put("ybirth", (long) document.get("year"));
+                                    values.put("mbirth", (long) document.get("month"));
+                                    values.put("dbirthy", (long) document.get("day"));
+                                    values.put("headline", (String) document.get("headline"));
+                                    values.put("tall", (String) document.get("tall"));
+                                    values.put("weight", (String) document.get("weight"));
+                                    values.put("parents", (String) document.get("parents"));
+                                    values.put("imgpath", (String) document.get("imgpath"));
+                                    db.insert("baby", null, values);
+                                    Log.d("FireDownLoad", "Thread: FireBaby run");
+
+                                    Fireimg(parent,(String) document.get("name"));
+                                }
+                            }
+                        } else {
+                            Log.d("검색", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        Log.d("DownLoad", "FireBaby end");
+    }
+
+    // growlog
+    private void FireGrowlog(final String parent) {
+        Log.d("FireDownLoad", "Thread: FireGrowlog");
+        FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+
+        firedb.collection(parent + "growlog").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.get("parents").equals(parent)) {
+                                    ContentValues values = new ContentValues();
+                                    values.put("name", (String) document.get("name"));
+                                    values.put("weight", (String) document.get("weight"));
+                                    values.put("tall", (String) document.get("tall"));
+                                    values.put("headline", (String) document.get("headline"));
+                                    values.put("fever", (String) document.get("fever"));
+                                    values.put("date", (String) document.get("date"));
+                                    values.put("caldate", (String) document.get("caldate"));
+                                    values.put("parents", (String) document.get("parents"));
+                                    db.insert("growlog", null, values);
+                                    Log.d("FireDownLoad", "Thread: FireGrowlog run");
+                                }
+                            }
+                        } else {
+                            Log.d("검색", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        Log.d("DownLoad", "FireGrowlog End");
+    }
+
+    // events
+    private void FireEvents(final String parent) {
+        Log.d("DownLoad", "FireEvents Start");
+        FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+        firedb.collection(parent + "events").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.get("parents").equals(parent)) {
+                                    ContentValues values = new ContentValues();
+                                    values.put("name", (String) document.get("name"));
+                                    values.put("title", (String) document.get("title"));
+                                    values.put("date", (String) document.get("date"));
+                                    values.put("memo", (String) document.get("memo"));
+                                    values.put("parents", (String) document.get("parents"));
+                                    db.insert("events", null, values);
+                                }
+                            }
+                        } else {
+                            Log.d("검색", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        Log.d("DownLoad", "FireEvents End");
+    }
+
+    // recode
+    private void FireRecode(final String parent) {
+        Log.d("DownLoad", "FireRecode Start");
+        final FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+        firedb.collection(parent + "recode").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.get("parents").equals(parent)) {
+                                    ContentValues values = new ContentValues();
+                                    values.put("name", (String) document.get("name"));
+                                    values.put("date", (String) document.get("date"));
+                                    values.put("time", (String) document.get("time"));
+                                    values.put("title", (String) document.get("title"));
+                                    values.put("subt", (String) document.get("subt"));
+                                    values.put("contents1", (String) document.get("contents1"));
+                                    values.put("contents2", (String) document.get("contents2"));
+                                    values.put("parents", (String) document.get("parents"));
+                                    db.insert("recode", null, values);
+                                }
+                            }
+                        } else {
+                            Log.d("검색", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        Log.d("DownLoad", "FireRecode End");
+    }
+
+
+    private void Fireimg(String id,String name){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        Log.d("Fireimg", "Baily/201/하이.jpg");
+        StorageReference pathReference = storageRef.child("/Baily/"+id+"/"+name+".jpg");
+
+        try {
+            //로컬에 저장할 폴더의 위치
+            File path = new File("data/data/com.example.baily/files/");
+
+            //저장하는 파일의 이름
+            final File file = new File(path, name+".jpg");
+            try {
+                if (!path.exists()) {
+                    //저장할 폴더가 없으면 생성
+                    path.mkdirs();
+                }
+                file.createNewFile();
+
+                //파일을 다운로드하는 Task 생성, 비동기식으로 진행
+                final FileDownloadTask fileDownloadTask = pathReference.getFile(file);
+                fileDownloadTask.addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        //다운로드 성공 후 할 일
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        //다운로드 실패 후 할 일
+                    }
+                }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    //진행상태 표시
+                    public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
