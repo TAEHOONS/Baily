@@ -348,7 +348,17 @@ public class FragHome extends Fragment {
         growDataList.set(growDataList.size()-1,growData);
         recyclerView.setAdapter(adapter);
 
-        tvbabyKgCmTxt.setText("- 신장 "+Bheight+" cm\n- 몸무게 "+Bweight+" kg\n- 머리둘레 "+Bhead+" cm");
+        String k=Bweight,c=Bheight,h=Bhead;
+        if(Bweight==null||Bweight.equals(""))
+             k = " - ";
+
+        if(Bheight==null||Bheight.equals(""))
+            c=" - ";
+
+        if(Bhead==null||Bhead.equals(""))
+            h=" - ";
+
+        tvbabyKgCmTxt.setText("- 신장 "+c+" cm\n- 몸무게 "+k+" kg\n- 머리둘레 "+h+" cm");
     }
 
     // recycle 넣기
@@ -357,6 +367,15 @@ public class FragHome extends Fragment {
         Bheight=cm;
         Bweight=kg;
         Bhead = head;
+
+        if(kg==null||kg.equals(""))
+            kg=" - ";
+        if(cm==null||cm.equals(""))
+            cm=" - ";
+        if(head==null||head.equals(""))
+            head=" - ";
+        if(fever==null||fever.equals(""))
+            fever=" - ";
 
         kg = kg + "kg";
         cm = cm + "cm";
@@ -370,7 +389,7 @@ public class FragHome extends Fragment {
         growDataList.add(growData);
         recyclerView.setAdapter(adapter);
 
-        tvbabyKgCmTxt.setText("- 신장 "+Bheight+" cm\n- 몸무게 "+Bweight+" kg\n- 머리둘레 "+Bhead+" cm");
+        tvbabyKgCmTxt.setText("- 신장 "+cm+" \n- 몸무게 "+kg+" \n- 머리둘레 "+head+" ");
     }
 
 
