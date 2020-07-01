@@ -88,12 +88,15 @@ public class InfoTemp extends AppCompatActivity {
 
                     progress = 350 + progress;
 
+
                     float decimalProgress = (float) progress/10;
 
                 double strNumber = decimalProgress;
+
+
                 double mSeekBarVal =  Double.parseDouble(String.format("%.1f", strNumber));
                     eating.setText(mSeekBarVal+ "℃");
-
+                Log.d("tempCount", " 계산전 : "+(progress-350)+"   계산후 : "+progress);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -203,8 +206,8 @@ public class InfoTemp extends AppCompatActivity {
             if(mMilkMl!=null) {
                 eating.setText(mMilkMl);
                 mMilkMl =mMilkMl.replace("℃","");
-                mSeekBar.setProgress((int) Double.parseDouble(mMilkMl));
-
+                mMilkMl=mMilkMl.replace(".","");
+                mSeekBar.setProgress(Integer.valueOf(mMilkMl)-350);
             }
             if(memo!=null)
                 edmemo.setText(memo);
