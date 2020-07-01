@@ -105,18 +105,21 @@ public class ThirdPage extends AppCompatActivity {
     }
 
     private void MainScreen() {
+        Log.d("3page", "putFireStore 시작");
+        putFireStore();
+        Log.d("3page", "putFireStore 끝  putLocalDB 시작");
+        putLocalDB();
+
+
+
+        FirstPage fir = (FirstPage) FirstPage.activity;
+        SecondPage scn = (SecondPage) SecondPage.activity;
+
         Intent intent = new Intent(ThirdPage.this, MainPage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         intent.putExtra("login", mLoginId);
         startActivity(intent);
 
-        FirstPage fir = (FirstPage) FirstPage.activity;
-        SecondPage scn = (SecondPage) SecondPage.activity;
-
-        Log.d("3page", "putFireStore 시작");
-        putFireStore();
-        Log.d("3page", "putFireStore 끝  putLocalDB 시작");
-        putLocalDB();
         Log.d("3page", "putLocalDB 끝");
         fir.finish();
         scn.finish();
