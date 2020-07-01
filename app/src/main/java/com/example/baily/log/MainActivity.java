@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                     mTVeid.setText("아이디를 입력해 주시길 바랍니다");
                     Toast.makeText(this, "아이디를 입력해 주시길 바랍니다", Toast.LENGTH_SHORT).show();
                 } else {
-                    loaddb(mETid.getText().toString(), editId);
 
+                    checkLogin(editId);
                 }
 
                 break;
@@ -160,9 +160,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //파이어베이스에서 데이터 로드
-    public void loaddb(final String id, String editId) {
+    public void loaddb(final String id) {
         Log.d("FireDownLoad", "loaddb: Start");
-        final String finalid = editId;
+
 
 
         FireUser(id);
@@ -172,12 +172,7 @@ public class MainActivity extends AppCompatActivity {
         FireEvents(id);
 
 
-        new Handler().postDelayed(new Runnable() {// 0.5 초 후에 실행
-            @Override
-            public void run() {
-                checkLogin(finalid);
-            }
-        }, 15000);
+
 
 
     }
@@ -216,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void logchack(String id, String pw, boolean go) {
+    private void logchack(final String id, String pw, boolean go) {
 
         String editId = mETid.getText().toString();
         String editPw = mETpw.getText().toString();
@@ -241,8 +236,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // 아이디 OK 비번 OK
-            else if (editId.equals(id) && editPw.equals(pw))
-                DBcopy(id);
+            else if (editId.equals(id) && editPw.equals(pw)) {
+                loaddb(id);
+
+                new Handler().postDelayed(new Runnable() {// 0.5 초 후에 실행
+                    @Override
+                    public void run() {
+                        final String i=id;
+                        DBcopy(i);
+                    }
+                }, 15000);
+
+            }
         }
     }
 
