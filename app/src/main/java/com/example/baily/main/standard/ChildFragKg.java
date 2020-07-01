@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
@@ -27,10 +26,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ChildFragKg extends Fragment {
     private View view;
@@ -48,7 +44,7 @@ public class ChildFragKg extends Fragment {
     TextView kgDateTxt;//생후 N개월 텍스트뷰
     ImageView kgBeforeBtn, kgAfterBtn;//이전 이후 버튼
     String kgDate, mToday;
-    int StartDay, EndDay, sM, eM;//sM=시작개월, eM=끝개월
+    int StartDay, EndDay, sM=1, eM=12;//sM=시작개월, eM=끝개월
     LineData boyKgData, girlKgData, babyKgData;
 
     ArrayList<ILineDataSet> dataSets;
@@ -75,8 +71,8 @@ public class ChildFragKg extends Fragment {
         //표준머리둘레 차트
         KgChart = view.findViewById(R.id.kgLineChart);
 
-        sM = 1;
-        eM = 12;
+//        sM = 1;
+//        eM = 12;
         StartDay = 1;
         EndDay = 360;
 
@@ -142,10 +138,11 @@ public class ChildFragKg extends Fragment {
                 if (eM == 72) {
                     Toast.makeText(getActivity(), "72개월 이후 기록은 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    StartDay = StartDay + 360;
-                    EndDay = EndDay + 360;
                     sM = sM + 12;
                     eM = eM + 12;
+                    StartDay = StartDay + 360;
+                    EndDay = EndDay + 360;
+
                     kgDate = "~ 생후 " + eM + "개월";
                     kgDateTxt.setText(kgDate);
 
@@ -239,11 +236,11 @@ public class ChildFragKg extends Fragment {
         valuesBaby.clear();
         dataStack(sM, eM, valuesBoy, standardKgBoy);
         dataStack(sM, eM, valuesGirl, standardKgGirl);
-        dataStack(sM, eM, valuesBaby, monthArrKg);
+        insertdataStack(sM, eM, valuesBaby, monthArrKg);
     }
 
     private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
-        for (int i = 1; i <= 12; i++) {
+        for (int i = sM; i <= eM; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
                 Log.d("for문123", "값: " + list[i]);
@@ -252,6 +249,15 @@ public class ChildFragKg extends Fragment {
         }
     }
 
+    private void insertdataStack(int start, int end, ArrayList<Entry> values, float[] list) {
+        for (int i = 1; i <= 12; i++) {
+            if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
+                values.add(new Entry(start, list[i - 1]));
+                Log.d("for문123", "값: " + list[i]);
+            }
+            start+=1;
+        }
+    }
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
@@ -318,21 +324,12 @@ public class ChildFragKg extends Fragment {
                 monthCount++;
                 sumMonth = 0;
                 avgCount = 0;
-                //Log.d("avgViewday", "monthArrKg["+(monthCount-1)+"] = "+monthArrKg[monthCount-1]);
+
             }
 
         }
 
-//        for (int i = 0; i < 30; i++) {
-//
-//            YearArr[monthCount] = YearArr[monthCount] / avgCount;
-//            //  Log.d("gggg", "monthcount"+monthCount+"======n"+n+"========yeararr"+YearArr[monthCount]);
-//            monthCount += 1;
-//            avgCount = 0;
-//            n = YearArr[monthCount];
-//            setBabyList(i, n);
-//
-//        }
+
 
     }
 

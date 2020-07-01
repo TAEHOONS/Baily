@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
@@ -34,7 +33,7 @@ public class ChildFragHead  extends Fragment {
     private LineChart headChart;
 
     String dbName = "user.db";
-    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0;
+    int dbVersion = 3, BYear, BMonth, BDay, i = 0,count=0,dDay;
     // mId= 현재 사용 id, baby
     private String mId, mBabyname;
     private DBlink helper;
@@ -45,13 +44,15 @@ public class ChildFragHead  extends Fragment {
     TextView headDateTxt;//생후 N개월 텍스트뷰
     ImageView headBeforeBtn, headAfterBtn;//이전 이후 버튼
     String headDate, mToday;
-    int sM, eM;//sM=시작개월, eM=끝개월
+    int StartDay, EndDay,sM, eM;//sM=시작개월, eM=끝개월
     LineData boyHeadData, girlHeadData, babyHeadData;
 
     ArrayList<ILineDataSet> dataSets;
     ArrayList<Entry> valuesBoy, valuesGirl, valuesBaby;
     float[] standardHeadBoy,standardHeadGirl;
-    float[] standardHeadBaby=new float[80];
+    float[] standardHeadBaby=new float[1000];
+    String[] mArrHead, monthDday;
+    float[] monthArrHead;
 
     public static ChildFragHead newInstance(){
         ChildFragHead childFragHead = new ChildFragHead();
@@ -71,10 +72,16 @@ public class ChildFragHead  extends Fragment {
 
         sM=1;
         eM=12;
+        StartDay = 1;
+        EndDay = 360;
 
         usingDB(container);
-        loadgrowLog();
 
+        monthDday = new String[dDay + 5];
+        mArrHead = new String[380];
+        monthArrHead = new float[20];
+        monthString();
+        loadgrowLog();
 
         valuesBoy = new ArrayList<>();
         valuesGirl = new ArrayList<>();
@@ -102,6 +109,8 @@ public class ChildFragHead  extends Fragment {
                     Toast.makeText(getActivity(), "이전 기록은 없습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    StartDay = StartDay - 360;
+                    EndDay = EndDay - 360;
                     sM= sM-12;
                     eM = eM-12;
                     headDate = "~ 생후 "+eM+"개월";
@@ -111,7 +120,7 @@ public class ChildFragHead  extends Fragment {
                     setBoyList();
                     //여아 표준 그래프(몸무게) 배열 값 삽입
                     setGirlList();
-
+                    monthString();
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
@@ -129,6 +138,8 @@ public class ChildFragHead  extends Fragment {
                     Toast.makeText(getActivity(), "72개월 이후 기록은 없습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    StartDay = StartDay + 360;
+                    EndDay = EndDay + 360;
                     sM = sM + 12;
                     eM = eM + 12;
                     headDate = "~ 생후 " + eM + "개월";
@@ -138,7 +149,8 @@ public class ChildFragHead  extends Fragment {
                     setBoyList();
                     //여아 표준 그래프(몸무게) 배열 값 삽입
                     setGirlList();
-
+                    monthString();
+                    loadgrowLog();
                     SetGraphData();
                     //  중간 업데이트
                     MidDataSet();
@@ -223,18 +235,28 @@ public class ChildFragHead  extends Fragment {
 
         dataStack(sM,eM,valuesBoy, standardHeadBoy);
         dataStack(sM,eM,valuesGirl, standardHeadGirl);
-        dataStack(sM,eM,valuesBaby, standardHeadBaby);
+        insertdataStack(sM, eM,valuesBaby, monthArrHead);
     }
 
-    private void dataStack(int start, int end, ArrayList<Entry> values,float[] list) {
-        for (int i = start; i <= end; i++) {
-            if (list[i-1] != 0) {
-                values.add(new Entry(i, list[i-1]));
+    private void dataStack(int start, int end, ArrayList<Entry> values, float[] list) {
+        for (int i = sM; i <= eM; i++) {
+            if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
+                values.add(new Entry(start, list[i - 1]));
+
+            }
+            start+=1;
+        }
+    }
+    private void insertdataStack(int start, int end, ArrayList<Entry> values, float[] list) {
+        for (int i = 1; i <= 12; i++) {
+            if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
+                values.add(new Entry(start, list[i - 1]));
                 Log.d("for문123", "값: " + list[i]);
             }
+            start+=1;
         }
-
     }
+
     // 차트 변경 적용
     private void ChartChange(LineChart chart) {
         chart.notifyDataSetChanged();
@@ -261,28 +283,56 @@ public class ChildFragHead  extends Fragment {
     // 저장된 growlog DB 에 있는걸 불러와서 그래프에 넣기
     private void loadgrowLog() {
 
-        String sql = "select * from growlog where name='" + mBabyname + "'"; // 검색용
-        Cursor c = db.rawQuery(sql, null);
-        int i = 0;
+        monthAvg();
 
-        while (c.moveToNext()) {
+    }
 
-            k = c.getString(4);
-            try {
-                if (k == null)
-                    n = 0;
-                else
-                    n = Float.parseFloat(k);
-                setBabyList(i, n);
-                i++;
-                Log.d("n값", "loadgrowLog: " + n);
-                Log.d("k값 쌓이는거", "loadgrowLog 와일 내부: " + k);
-            } catch (Exception e) {
+    private void monthAvg() {
+        mArrHead = new String[380];
+        int count = 0;
+
+        for (int i = StartDay; i <= EndDay; i++) {
+
+            String sql = "select * from growlog where name='" + mBabyname + "'AND caldate=" + i + ""; // 검색용
+            Cursor c = db.rawQuery(sql, null);
+            while (c.moveToNext()) {
+                mArrHead[count] = c.getString(4);
+                Log.d("avgViewday", count + " mArrKg[i] = " + mArrHead[count]);
+
+            }
+            count += 1;
+        }
+
+
+        int monthCount = 0, avgCount = 0;
+        float sumMonth = 0;
+        for (int i = 1; i <= 360; i++) {
+
+            if (mArrHead[i] != null) {
+                try {
+
+                    sumMonth += Float.parseFloat(mArrHead[i].trim());
+
+                    avgCount += 1;
+                } catch (Exception e) {
+                }
+            }
+            if (i % 30 == 0) {
+
+                monthArrHead[monthCount] = sumMonth / avgCount;
+                monthCount++;
+                sumMonth = 0;
+                avgCount = 0;
             }
 
         }
-        Log.d("와일 나와서 ", "standardHeadBaby[i] " + standardHeadBaby[i]);
 
+    }
+    public void monthString() {
+        for (i = 0; i < dDay; i++) {
+            String s = Integer.toString(i);
+            monthDday[i] = s;
+        }
     }
     private void setBoyList(){
         standardHeadBoy = new float[73];
