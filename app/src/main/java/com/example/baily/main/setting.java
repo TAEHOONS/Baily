@@ -33,6 +33,7 @@ import com.example.baily.babyPlus.ThirdPage;
 import com.example.baily.log.MainActivity;
 import com.example.baily.R;
 import com.example.baily.main.home.FragHome;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -118,10 +119,24 @@ public class setting extends AppCompatActivity {
 
     // 로그아웃
     private void thisLogout() {
-        Log.d("setting", "delete 끝");
+
+        FireSave();
+
+        // 지금 로그인 지우기
         String deleteThig = "DELETE FROM thisusing ";
         db.execSQL(deleteThig);
-        Log.d("setting", "delete 끝");
+        // 아이디 데이터들 지우기
+        deleteThig = "DELETE FROM baby ";
+        db.execSQL(deleteThig);
+        // 아이디 삭제
+        deleteThig = "DELETE FROM user ";
+        db.execSQL(deleteThig);
+        deleteThig = "DELETE FROM growlog ";
+        db.execSQL(deleteThig);
+        deleteThig = "DELETE FROM events ";
+        db.execSQL(deleteThig);
+        deleteThig = "DELETE FROM recode ";
+        db.execSQL(deleteThig);
         ActivityCompat.finishAffinity(this);
 
         ContentValues values = new ContentValues();
@@ -415,5 +430,125 @@ public class setting extends AppCompatActivity {
     private void usingDB() {
         helper = new DBlink(this, dbName, null, dbVersion);
         db = helper.getWritableDatabase();
+    }
+
+
+    private void FireSave(){
+        FirebaseFirestore firedb = FirebaseFirestore.getInstance();
+        firedb.collection(mId + "baby").document().delete();
+        firedb.collection(mId + "growth").document().delete();
+        firedb.collection(mId + "recode").document().delete();
+        firedb.collection(mId + "event").document().delete();
+
+        // baby 검색
+        String sql = "select * from baby where parents='" + mId + "' "; // 검색용
+        Cursor c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            baby member = new baby(c.getString(1), c.getString(2), c.getInt(3)
+                    , c.getInt(4), c.getInt(5), c.getString(6), c.getString(7)
+                    , c.getString(8), c.getString(9), c.getString(10));
+            firedb.collection(mId + "baby").document(c.getString(0)).set(member);
+        }
+        c.close();
+        // growlog 검색
+        sql = "select * from growlog where parents='" + mId + "' "; // 검색용
+        c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            growthlog member = new growthlog(c.getString(1), c.getString(2), c.getString(3)
+                    , c.getString(4), c.getString(5), c.getString(6), c.getString(7)
+                    , c.getString(8));
+            firedb.collection(mId + "growlog").document(c.getString(0)).set(member);
+        }
+        c.close();
+        // recode 검색
+        sql = "select * from recode where parents='" + mId + "' "; // 검색용
+        c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            recode member = new recode(c.getString(1), c.getString(2), c.getString(3)
+                    , c.getString(4), c.getString(5), c.getString(6), c.getString(7)
+                    , c.getString(8));
+            firedb.collection(mId + "recode").document(c.getString(0)).set(member);
+        }
+        c.close();
+        // event 검색
+        sql = "select * from events where parents='" + mId + "' "; // 검색용
+        c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            diary member = new diary(c.getString(1), c.getString(2), c.getString(3)
+                    , c.getString(4), c.getString(5));
+            firedb.collection(mId + "events").document(c.getString(0)).set(member);
+        }
+        c.close();
+    }
+
+    public class baby {
+        public int year, month, day;
+        public String name, sex, headline, tall, weight, parents, imgpath;
+
+        public baby() {
+        }
+
+        public baby(String name, String sex, int year, int month, int day,
+                    String headline, String tall, String weight, String parents, String imgpath) {
+            this.name = name;
+            this.sex = sex;
+            this.headline = headline;
+            this.tall = tall;
+            this.weight = weight;
+            this.parents = parents;
+            this.imgpath = imgpath;
+            this.year = year;
+            this.month = month;
+            this.day = day;
+        }
+
+    }
+
+    public class growthlog {
+
+        public String name, weight, tall, headline, fever, date, caldate, parents;;
+
+        public growthlog() {
+        }
+
+        public growthlog(String name, String weight, String tall, String headline, String fever
+                , String date, String caldate, String parents) {
+            this.name = name; this.weight = weight; this.tall = tall;
+            this.headline = headline; this.fever = fever; this.date = date;
+            this.caldate = caldate; this.parents = parents;
+        }
+
+    }
+
+    public class recode {
+
+        public String name, date, time, title, subt, contents1, contents2, parents;
+
+        public recode() {
+
+        }
+
+        public recode(String name, String date, String time, String title, String subt
+                , String contents1, String contents2, String parents) {
+            this.name = name;this.date = date;this.time = time;
+            this.title = title;this.subt = subt;this.contents1 = contents1;
+            this.contents2 = contents2;this.parents = parents;
+        }
+
+    }
+
+    public class diary {
+
+        public String name,title , date , memo ,parents ;
+
+        public diary() {
+        }
+
+        public diary(String name, String title, String date, String memo, String parents) {
+            this.name = name; this.title = title;
+            this.date = date; this.memo = memo;
+            this.parents = parents;
+        }
+
     }
 }

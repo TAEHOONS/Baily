@@ -559,7 +559,21 @@ public class FragHome extends Fragment {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
 
-
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users").document(mId)
+                    .update("lastbaby",item.getTitle().toString())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("regitFire", "파베 입력 성공");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("regitFire", "입력 실패", e);
+                        }
+                    });
 
             ((MainPage) getActivity()).getDay();
             growDataList.clear();
@@ -568,30 +582,6 @@ public class FragHome extends Fragment {
 
     }
 
-    public class growlogFDB {
-        // 무적권 public 으로해야 데이더 읽힘
-        public String name, sex, headline, tall, weight, parents,path;
-        public int year, month, day;
-
-        public growlogFDB() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public growlogFDB(String name, String sex, int year, int month, int day
-                , String headline, String tall, String weight, String parents,String path) {
-            this.name = name;
-            this.sex = sex;
-            this.year = year;
-            this.month = month;
-            this.day = day;
-            this.headline = headline;
-            this.tall = tall;
-            this.weight = weight;
-            this.parents = parents;
-            this.path=path;
-        }
-
-    }
 
 
 }
