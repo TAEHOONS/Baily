@@ -71,8 +71,8 @@ public class ChildFragKg extends Fragment {
         //표준머리둘레 차트
         KgChart = view.findViewById(R.id.kgLineChart);
 
-//        sM = 1;
-//        eM = 12;
+        sM = 1;
+        eM = 12;
         StartDay = 1;
         EndDay = 360;
 
@@ -138,10 +138,12 @@ public class ChildFragKg extends Fragment {
                 if (eM == 72) {
                     Toast.makeText(getActivity(), "72개월 이후 기록은 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    sM = sM + 12;
-                    eM = eM + 12;
+
                     StartDay = StartDay + 360;
                     EndDay = EndDay + 360;
+                    sM = sM + 12;
+                    eM = eM + 12;
+
 
                     kgDate = "~ 생후 " + eM + "개월";
                     kgDateTxt.setText(kgDate);
@@ -199,7 +201,6 @@ public class ChildFragKg extends Fragment {
 
         XAxis xAxis = KgChart.getXAxis(); // x 축 설정
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
 
         YAxis yAxisLeft = KgChart.getAxisLeft(); //Y축의 왼쪽면 설정
@@ -243,17 +244,16 @@ public class ChildFragKg extends Fragment {
         for (int i = sM; i <= eM; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
-                Log.d("for문123", "값: " + list[i]);
+
             }
             start+=1;
         }
     }
-
     private void insertdataStack(int start, int end, ArrayList<Entry> values, float[] list) {
         for (int i = 1; i <= 12; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
-                Log.d("for문123", "값: " + list[i]);
+
             }
             start+=1;
         }
