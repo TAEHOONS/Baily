@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.baily.DBlink;
@@ -27,10 +26,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ChildFragKg extends Fragment {
     private View view;
@@ -318,21 +314,12 @@ public class ChildFragKg extends Fragment {
                 monthCount++;
                 sumMonth = 0;
                 avgCount = 0;
-                //Log.d("avgViewday", "monthArrKg["+(monthCount-1)+"] = "+monthArrKg[monthCount-1]);
+
             }
 
         }
 
-//        for (int i = 0; i < 30; i++) {
-//
-//            YearArr[monthCount] = YearArr[monthCount] / avgCount;
-//            //  Log.d("gggg", "monthcount"+monthCount+"======n"+n+"========yeararr"+YearArr[monthCount]);
-//            monthCount += 1;
-//            avgCount = 0;
-//            n = YearArr[monthCount];
-//            setBabyList(i, n);
-//
-//        }
+
 
     }
 
