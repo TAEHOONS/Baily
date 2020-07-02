@@ -33,7 +33,7 @@ public class PopupSet extends Dialog {
     private DBlink helper;
     private SQLiteDatabase db;
 
-    TextView mPopUpText;
+    TextView mPopUpText,mPopUpText1;
     Button mCinfirmBtn, mCancleBtn;
     int setting = 0;
     private CustomDialogListener customDialogListener;
@@ -47,6 +47,7 @@ public class PopupSet extends Dialog {
 
         mCinfirmBtn = (Button) findViewById(R.id.popup_Confirm);
         mCancleBtn = (Button) findViewById(R.id.popup_Cancle);
+        mPopUpText1= (TextView)findViewById(R.id.popup_TextView1);
         mPopUpText = (TextView) findViewById(R.id.popup_TextView2);
 
 
@@ -91,15 +92,18 @@ public class PopupSet extends Dialog {
     private void SettingText(int textnum) {
         switch (textnum) {
             case 1:
-                mPopUpText.setText("계정을 삭제 \n 하시겠습니까?");
+                mPopUpText1.setText("계정을 삭제 \n 하시겠습니까?");
+                mPopUpText.setText("");
                 setting = 1;
                 break;
             case 2:
-                mPopUpText.setText("아기를 수정 \n 하시겠습니까?");
+                mPopUpText1.setText("아기를 수정 \n 하시겠습니까?");
+                mPopUpText.setText("");
                 setting = 2;
                 break;
             case 3:
-                mPopUpText.setText("아기를 삭제 \n 하시겠습니까?");
+                mPopUpText1.setText("아기를 삭제 \n 하시겠습니까?");
+                mPopUpText.setText("");
                 setting = 3;
                 break;
         }

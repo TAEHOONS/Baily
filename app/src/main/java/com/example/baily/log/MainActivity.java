@@ -171,10 +171,6 @@ public class MainActivity extends AppCompatActivity {
         FireRecode(id);
         FireEvents(id);
 
-
-
-
-
     }
 
 
