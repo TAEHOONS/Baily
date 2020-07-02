@@ -34,6 +34,7 @@ public class FirstPage extends AppCompatActivity {
     private void SecondScreen() {
         Intent intent = new Intent(FirstPage.this, SecondPage.class);
         startActivity(intent);
+        finish();
     }
 
 

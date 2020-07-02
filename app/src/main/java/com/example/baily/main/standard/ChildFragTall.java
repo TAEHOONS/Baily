@@ -122,7 +122,7 @@ public class ChildFragTall  extends Fragment {
                     setGirlList();
                     monthString();
                     SetGraphData();
-                    loadgrowLog();
+                   
                     //  중간 업데이트
                     MidDataSet();
                     // 차트 속성

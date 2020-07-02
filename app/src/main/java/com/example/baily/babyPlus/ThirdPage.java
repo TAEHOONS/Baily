@@ -82,7 +82,9 @@ public class ThirdPage extends AppCompatActivity {
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.tp_plusBtn: {
-                MainScreen();
+                Log.d("3page", "putFireStore 시작");
+                putFireStore();
+
                 break;
             }
 
@@ -105,25 +107,12 @@ public class ThirdPage extends AppCompatActivity {
     }
 
     private void MainScreen() {
-        Log.d("3page", "putFireStore 시작");
-        putFireStore();
-        Log.d("3page", "putFireStore 끝  putLocalDB 시작");
-        putLocalDB();
 
 
-
-        FirstPage fir = (FirstPage) FirstPage.activity;
-        SecondPage scn = (SecondPage) SecondPage.activity;
 
         Intent intent = new Intent(ThirdPage.this, MainPage.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         intent.putExtra("login", mLoginId);
         startActivity(intent);
-
-        Log.d("3page", "putLocalDB 끝");
-        fir.finish();
-        scn.finish();
-        finish();
     }
 
 
@@ -199,6 +188,8 @@ public class ThirdPage extends AppCompatActivity {
             }
         });
 
+
+        putLocalDB();
     }
     // local DB 에 저장
     public void putLocalDB(){
@@ -222,7 +213,8 @@ public class ThirdPage extends AppCompatActivity {
         String sqlUpdate = "UPDATE thisusing SET baby='"+baby.name+"' WHERE _id=1" ;
         db.execSQL(sqlUpdate) ;
 
-        sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id="+mLoginId+"" ;
+        Log.d("ttttttttttttttttttt", "baby.name =  "+baby.name+"   id = "+mLoginId);
+        sqlUpdate = "UPDATE user SET lastbaby='"+baby.name+"' WHERE id='"+mLoginId+"'" ;
         db.execSQL(sqlUpdate) ;
 
 
@@ -242,6 +234,8 @@ public class ThirdPage extends AppCompatActivity {
                     }
                 });
 
+
+        MainScreen();
     }
 
     private void usingDB(){

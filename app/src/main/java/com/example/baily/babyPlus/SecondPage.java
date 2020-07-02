@@ -157,6 +157,7 @@ public class SecondPage extends AppCompatActivity {
         intent.putExtra("weight", mWeight);
         setPhotoNextScreen();
         startActivity(intent);
+        finish();
 
     }
 

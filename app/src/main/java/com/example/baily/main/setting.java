@@ -237,7 +237,7 @@ public class setting extends AppCompatActivity {
 
             // 현재 아기 지우고 새로 셋팅
             // 현재 아기 외 찾기
-            String sql = "select * from baby where not name='" + mBabyname + "'"; // 검색용
+            String sql = "select * from baby where not name='" + mBabyname + "' And parents = '"+mId+"'"; // 검색용
             Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()) {
                 Log.d("DeleteBaby", "while start: " + newbaby);
