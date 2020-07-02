@@ -123,6 +123,7 @@ public class ChildFragHead  extends Fragment {
                     monthString();
                     SetGraphData();
                     //  중간 업데이트
+                    loadgrowLog();
                     MidDataSet();
                     // 차트 속성
                     setGraph(headChart,boyHeadData,girlHeadData,babyHeadData);
