@@ -245,7 +245,7 @@ public class SecondPage extends AppCompatActivity {
             Log.d("저장", "파일 생성 전");
             FileOutputStream fos = openFileOutput(mName.getText().toString() + ".jpg", 0);
             //   사진 저장 타입, 사진 퀄리티, 사진 명칭
-            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
 

@@ -596,7 +596,7 @@ public class setting extends AppCompatActivity {
 
             FileOutputStream fos = openFileOutput(mBabyname + ".jpg", 0);
             //   사진 저장 타입, 사진 퀄리티, 사진 명칭
-            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
 

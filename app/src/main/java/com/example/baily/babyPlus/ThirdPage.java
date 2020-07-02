@@ -172,7 +172,7 @@ public class ThirdPage extends AppCompatActivity {
         Log.w("입력", "db 입력");
 
 
-/*
+
         // 사진 db 저장
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -198,7 +198,7 @@ public class ThirdPage extends AppCompatActivity {
 
             }
         });
-        */
+
     }
     // local DB 에 저장
     public void putLocalDB(){

@@ -278,6 +278,7 @@ public class FragHome extends Fragment {
             d = c.getString(7);
             growInsert(k, sqlcm, h, f, r, d);
         }
+        c.close();
     }
 
     // grow에 적용시키기 전에 저장할지 업데이트 할지 판단하는 함수
@@ -294,7 +295,7 @@ public class FragHome extends Fragment {
             getDBdate = cursor.getString(6);
 
         }
-
+        cursor.close();
 
         // if 오늘 날짜와 DB 내부 날짜와 일치하는게 있으면 if-update 실행
         if (recodeDateNow.equals(getDBdate)) {
@@ -430,7 +431,7 @@ public class FragHome extends Fragment {
 
             FileOutputStream fos = getActivity().openFileOutput(mBabyname + ".jpg", 0);
             //   사진 저장 타입, 사진 퀄리티, 사진 명칭
-            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
 

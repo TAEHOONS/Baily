@@ -420,6 +420,7 @@ public class ChildFragWeek extends Fragment {
                 Log.d("searchWeek", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
+            c.close();
         }
         weekAvg(mArrKg ,weekArrKg);
         weekAvg(mArrCm ,weekArrCm);

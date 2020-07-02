@@ -477,6 +477,7 @@ public class ChildFragDay extends Fragment {
                 Log.d("searchDay", "SearchDay = " + SearchDay[i] + " ,mArrKg = "
                         + mArrKg[i] + "   ,mArrCm = " + mArrCm[i] + "   ,mArrHead = " + mArrHead[i] + "   ,mArrFever = " + mArrFever[i]);
             }
+            c.close();
         }
 
     }

@@ -375,6 +375,7 @@ public class FragRecode extends Fragment {
             Log.d("recodeDBget", "db받기 time = " + time + "  ,title = " + title + "  , subt = " + subt);
             insertRecode(time, title, subt,recodeId);
         }
+        c.close();
     }
 
 
