@@ -135,8 +135,8 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         DayText.setText("D + " + caldate.result);
         fragmentPagerAdapter.notifyDataSetChanged();
     }
-
-
+// 파이어 베이스 저장용
+/*
     @Override
     protected void onPause() {
         super.onPause();
@@ -185,7 +185,7 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
             firedb.collection(mId + "events").document(c.getString(0)).set(member);
         }
         c.close();
-    }
+    }*/
 
     @Override
     protected void onResume() {

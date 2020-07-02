@@ -326,7 +326,6 @@
                 android:id="@+id/ms_profileImg"
                 android:layout_width="141dp"
                 android:layout_height="118dp"
-                android:onClick="mOnClick"
                 android:src="@drawable/ic_baby"
                 app:civ_border_color="#FFCCCCCC"
                 app:civ_border_width="1dp"

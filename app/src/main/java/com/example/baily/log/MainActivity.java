@@ -92,13 +92,6 @@ public class MainActivity extends AppCompatActivity {
         AutoLogin();
 
 
-
-
-
-
-
-
-
         // 터치 입력 처리 //findID,findPW
         mBfid.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -164,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("FireDownLoad", "loaddb: Start");
 
 
-
         FireUser(id);
         FireBaby(id);
         FireGrowlog(id);
@@ -180,10 +172,20 @@ public class MainActivity extends AppCompatActivity {
         final String sqlId = insetId;
 
         Log.d("들어가기", "DB 들어가기");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         Log.d("접속", "DB 접속");
 
+        String sql = "select * from user where id='"+insetId+"' "; // 검생용
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            String pw = cursor.getString(2);
+            logchack(sqlId, pw, false);
+        }
 
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // 파이어 베이스 잔재
+        /*
         DocumentReference docRef = db.collection("users").document(insetId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -192,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String pw = String.valueOf(document.get("pw"));
-                        logchack(sqlId, pw, false);
+
                         Log.d("검색1", sqlId + "-containsKey data: " + pw);
 
                     } else {
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+*/
     }
 
     private void logchack(final String id, String pw, boolean go) {
@@ -233,15 +235,17 @@ public class MainActivity extends AppCompatActivity {
 
             // 아이디 OK 비번 OK
             else if (editId.equals(id) && editPw.equals(pw)) {
-                loaddb(id);
+                final String i = id;
+                DBcopy(id);
+                // 파이어 베이스 잔재
+                /*loaddb(id);
 
                 new Handler().postDelayed(new Runnable() {// 0.5 초 후에 실행
                     @Override
                     public void run() {
-                        final String i=id;
-                        DBcopy(i);
+
                     }
-                }, 15000);
+                }, 15000);*/
 
             }
         }
@@ -431,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
                                     db.insert("baby", null, values);
                                     Log.d("FireDownLoad", "Thread: FireBaby run");
 
-                                    Fireimg(parent,(String) document.get("name"));
+                                    Fireimg(parent, (String) document.get("name"));
                                 }
                             }
                         } else {
@@ -536,18 +540,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void Fireimg(String id,String name){
+    private void Fireimg(String id, String name) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         Log.d("Fireimg", "Baily/201/하이.jpg");
-        StorageReference pathReference = storageRef.child("/Baily/"+id+"/"+name+".jpg");
+        StorageReference pathReference = storageRef.child("/Baily/" + id + "/" + name + ".jpg");
 
         try {
             //로컬에 저장할 폴더의 위치
             File path = new File("data/data/com.example.baily/files/");
 
             //저장하는 파일의 이름
-            final File file = new File(path, name+".jpg");
+            final File file = new File(path, name + ".jpg");
             try {
                 if (!path.exists()) {
                     //저장할 폴더가 없으면 생성

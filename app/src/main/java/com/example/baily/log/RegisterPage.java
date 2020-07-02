@@ -405,7 +405,8 @@ public class RegisterPage extends AppCompatActivity implements View.OnClickListe
                         dlg.setPositiveButton("확인", null);
                         dlg.show();
                     } else {
-                        putFireStore(reg_textEdt.getText().toString());
+                        //파베 봉인
+                        //putFireStore(reg_textEdt.getText().toString());
                         dlg.setTitle("회원가입 완료");
                         dlg.setMessage(mgetNameCk + "님 환영합니다.");
 

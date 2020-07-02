@@ -558,7 +558,8 @@ public class FragHome extends Fragment {
             Fragment frg = getFragmentManager().findFragmentByTag("Recode");
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
-
+            // 파베 잔재
+            /*
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users").document(mId)
                     .update("lastbaby",item.getTitle().toString())
@@ -574,7 +575,7 @@ public class FragHome extends Fragment {
                             Log.w("regitFire", "입력 실패", e);
                         }
                     });
-
+            */
             ((MainPage) getActivity()).getDay();
             growDataList.clear();
 

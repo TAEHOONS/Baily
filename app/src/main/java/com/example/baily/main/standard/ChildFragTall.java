@@ -300,6 +300,7 @@ public class ChildFragTall  extends Fragment {
 
             }
             count += 1;
+            c.close();
         }
 
 

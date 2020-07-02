@@ -302,6 +302,7 @@ public class ChildFragKg extends Fragment {
 
             }
             count += 1;
+            c.close();
         }
 
 

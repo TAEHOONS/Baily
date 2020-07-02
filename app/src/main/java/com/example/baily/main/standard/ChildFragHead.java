@@ -301,6 +301,7 @@ public class ChildFragHead  extends Fragment {
 
             }
             count += 1;
+            c.close();
         }
 
 

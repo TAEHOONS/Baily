@@ -1,5 +1,6 @@
 package com.example.baily.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -10,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,7 +36,15 @@ import com.example.baily.babyPlus.ThirdPage;
 import com.example.baily.log.MainActivity;
 import com.example.baily.R;
 import com.example.baily.main.home.FragHome;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,6 +63,8 @@ public class setting extends AppCompatActivity {
     TextView NameTV, EmailTV, IdTV, BirthDayTV;
     EditText BabyNameEdit;
     private CircleImageView imageview;
+    //프로필변경관련
+    private final int GET_GALLERY_IMAGE = 150;
 
     private int BYear, BMonth, BDay, NewBYear, NewBMonth, NewBDay,mPopint;
     private String imgpath, BGender, newbaby = null;
@@ -119,24 +132,13 @@ public class setting extends AppCompatActivity {
 
     // 로그아웃
     private void thisLogout() {
-
-        FireSave();
+        // 파이어 베이스 저장
+        //FireSave();
 
         // 지금 로그인 지우기
         String deleteThig = "DELETE FROM thisusing ";
         db.execSQL(deleteThig);
-        // 아이디 데이터들 지우기
-        deleteThig = "DELETE FROM baby ";
-        db.execSQL(deleteThig);
-        // 아이디 삭제
-        deleteThig = "DELETE FROM user ";
-        db.execSQL(deleteThig);
-        deleteThig = "DELETE FROM growlog ";
-        db.execSQL(deleteThig);
-        deleteThig = "DELETE FROM events ";
-        db.execSQL(deleteThig);
-        deleteThig = "DELETE FROM recode ";
-        db.execSQL(deleteThig);
+
         ActivityCompat.finishAffinity(this);
 
         ContentValues values = new ContentValues();
@@ -402,9 +404,17 @@ public class setting extends AppCompatActivity {
         NameTV.setText(mUserName);
         EmailTV.setText(mEmail);
         IdTV.setText(mId);
-        ;
-        BabyNameEdit.setHint(mBabyname);
 
+        BabyNameEdit.setHint(mBabyname);
+//프로필사진눌렀을 때
+        imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_GALLERY_IMAGE);
+            }
+        });
     }
 
     // 아기이름 체크
@@ -550,5 +560,79 @@ public class setting extends AppCompatActivity {
             this.parents = parents;
         }
 
+    }
+
+
+    // 사진작업 터치시 갤러리 사진 선택
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 갤러리 접속 사진 가져오기
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri selectedImageUri = data.getData();
+            imageview.setImageURI(selectedImageUri);
+
+        }
+
+        setPhotoNextScreen();
+        savePhotoFB();
+    }
+
+    // 사진 divice 에 저장
+    public void setPhotoNextScreen() {
+        Log.d("저장", "저장 시작");
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        Bitmap bm;
+        Log.d("저장", "비트맵 받기");
+
+        bm = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+
+        try {
+
+            Log.d("저장", "파일 생성 전");
+
+            FileOutputStream fos = openFileOutput(mBabyname + ".jpg", 0);
+            //   사진 저장 타입, 사진 퀄리티, 사진 명칭
+            bm.compress(Bitmap.CompressFormat.JPEG, 30, fos);
+            fos.flush();
+            fos.close();
+
+        } catch (Exception e) {
+        }
+
+
+    }
+
+    // FB 에 사진 저장
+    public void savePhotoFB() {
+
+        // 사진 db 저장
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference mountainsRef = storageRef.child("Baily/" + mId + "/" + mBabyname + ".jpg");
+
+        imageview.setDrawingCacheEnabled(true);
+        imageview.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("저장", "실패: ");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d("저장", "onSuccess: ");
+
+            }
+        });
     }
 }
