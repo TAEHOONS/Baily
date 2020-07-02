@@ -251,7 +251,7 @@ public class ChildFragHead  extends Fragment {
         for (int i = 1; i <= 12; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
-                Log.d("for문123", "값: " + list[i]);
+                //Log.d("for문123", "값: " + list[i]);
             }
             start+=1;
         }

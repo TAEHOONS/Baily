@@ -92,7 +92,7 @@
             android:layout_margin="5dp"
             android:ems="4"
             android:inputType="numberDecimal"
-            android:maxLength="6" />
+            android:maxLength="5" />
 
         <EditText
             android:id="@+id/h_girthAddEdt"

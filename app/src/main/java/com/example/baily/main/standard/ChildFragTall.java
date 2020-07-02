@@ -198,17 +198,11 @@ public class ChildFragTall  extends Fragment {
 
         XAxis xAxis = tallChart.getXAxis(); // x 축 설정
         xAxis.setPosition(XAxis.XAxisPosition.TOP); //x 축 표시에 대한 위치 설정
-        // xAxis.setValueFormatter(new ChartXValueFormatter()); //X축의 데이터를 제 가공함. new ChartXValueFormatter은 Custom한 소스
         xAxis.setLabelCount(12, true); //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-
-        //xAxis.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 텍스트컬러설정
-        //xAxis.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // X축 줄의 컬러 설정
 
         YAxis yAxisLeft = tallChart.getAxisLeft(); //Y축의 왼쪽면 설정
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(true);
-        //yAxisLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); //Y축 텍스트 컬러 설정
-        //yAxisLeft.setGridColor(ContextCompat.getColor(getContext(), R.color.textColor)); // Y축 줄의 컬러 설정
 
         YAxis yAxisRight = tallChart.getAxisRight(); //Y축의 오른쪽면 설정
         yAxisRight.setDrawGridLines(false);
@@ -247,7 +241,7 @@ public class ChildFragTall  extends Fragment {
         for (int i = sM; i <= eM; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
-                Log.d("for문123", "값: " + list[i]);
+
             }
             start+=1;
         }
@@ -256,7 +250,7 @@ public class ChildFragTall  extends Fragment {
         for (int i = 1; i <= 12; i++) {
             if (list[i - 1] != 0 && Float.isNaN(list[i - 1]) == false) {
                 values.add(new Entry(start, list[i - 1]));
-                Log.d("for문123", "값: " + list[i]);
+
             }
             start+=1;
         }
